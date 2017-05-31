@@ -4,15 +4,23 @@ namespace AppBundle\Controller\Front;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends Controller
 {
 
     /**
-     * @Route("/", name="app.index")
+     * @param string $page
+     * @return Response
+     * @Route("/{page}", name="front.renderMenu")
      */
-    public function indexAction() {
-        return $this->render(':default/front:index.html.twig');
+    public function mainMenuPageRenderAction(string $page = null) {
+
+        if(!$page) {
+            $page = 'index';
+        }
+
+        return $this->render(':default/front/page:'.$page.'.html.twig');
     }
 }

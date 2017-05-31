@@ -1,3 +1,7 @@
+@font-face {
+  font-family: 'bebas';
+  src: url(../fonts/BebasNeue.otf);
+}
 * {
   margin: 0;
   padding: 0;
@@ -12,8 +16,16 @@ body {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  background: #F5F7FA;
   font: 14px/20px Arial, sans-serif;
+  /* Custom classes*/
+  /* End custom classes*/
+}
+.wrapper .container-padding-0-100px {
+  padding: 0 100px;
+}
+.wrapper .index-page-banner {
+  padding-left: 0;
+  padding-right: 0;
 }
 .wrapper .header {
   margin-right: 0;
@@ -26,6 +38,8 @@ body {
 .wrapper .header .main-header {
   padding: 20px 0 0 0;
   margin-bottom: 0;
+  background-color: transparent;
+  border: none;
 }
 .wrapper .header .main-header .row {
   position: relative;
@@ -34,13 +48,32 @@ body {
   position: absolute;
   bottom: 0;
   right: 0;
-  padding-bottom: 20px;
+  padding-bottom: 50px;
 }
-.wrapper .header .main-header .container {
-  padding: 0 100px;
+.wrapper .header .main-header .main-menu li a {
+  color: #6b3e21;
 }
 .wrapper .content {
   flex: 1 0 auto;
+}
+.wrapper .content #main-banner-index {
+  background: url("../img/main_banner.jpg");
+  background-size: cover;
+  height: 400px;
+  position: relative;
+}
+.wrapper .content .banner-text {
+  background: grey;
+  opacity: .8;
+  position: absolute;
+  bottom: 30%;
+  right: 0;
+  padding: 20px 0 20px 10px;
+}
+.wrapper .content .banner-text h3 {
+  color: white;
+  opacity: 1;
+  font-family: bebas;
 }
 .wrapper .footer {
   flex: 0 0 auto;

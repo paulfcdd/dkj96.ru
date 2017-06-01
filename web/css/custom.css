@@ -1,6 +1,10 @@
 @font-face {
-  font-family: 'bebas';
-  src: url(../fonts/BebasNeue.otf);
+  font-family: 'Bebas Bold';
+  src: url(../fonts/bebas_neue_bold.otf);
+}
+@font-face {
+  font-family: 'Bebas Ligth';
+  src: url(../fonts/bebas_neue_light.otf);
 }
 * {
   margin: 0;
@@ -20,8 +24,23 @@ body {
   /* Custom classes*/
   /* End custom classes*/
 }
-.wrapper .container-padding-0-100px {
+.wrapper .padding-0-100px {
   padding: 0 100px;
+}
+.wrapper .padding-left-0 {
+  padding-left: 0;
+}
+.wrapper .padding-right-0 {
+  padding-right: 0;
+}
+.wrapper .letter-spacing-1px {
+  letter-spacing: 1px;
+}
+.wrapper .padding-0-50px {
+  padding: 0 50px;
+}
+.wrapper .padding-top-20px {
+  padding-top: 20px;
 }
 .wrapper .index-page-banner {
   padding-left: 0;
@@ -59,7 +78,7 @@ body {
 .wrapper .content #main-banner-index {
   background: url("../img/main_banner.jpg");
   background-size: cover;
-  height: 400px;
+  height: 350px;
   position: relative;
 }
 .wrapper .content .banner-text {
@@ -68,12 +87,14 @@ body {
   position: absolute;
   bottom: 30%;
   right: 0;
-  padding: 20px 0 20px 10px;
+  padding: 0 0 0 10px;
 }
 .wrapper .content .banner-text h3 {
+  padding-left: 10px;
   color: white;
   opacity: 1;
-  font-family: bebas;
+  letter-spacing: 5px;
+  font-family: 'Bebas Bold';
 }
 .wrapper .footer {
   flex: 0 0 auto;

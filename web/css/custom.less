@@ -1,6 +1,11 @@
 @font-face {
-  font-family: 'bebas';
-  src: url(../fonts/BebasNeue.otf);
+  font-family: 'Bebas Bold';
+  src: url(../fonts/bebas_neue_bold.otf);
+}
+
+@font-face {
+  font-family: 'Bebas Ligth';
+  src: url(../fonts/bebas_neue_light.otf)
 }
 
 * {
@@ -20,8 +25,28 @@ body {
   font: 14px/20px Arial, sans-serif;
 
   /* Custom classes*/
-  .container-padding-0-100px {
+  .padding-0-100px {
     padding: 0 100px;
+  }
+
+  .padding-left-0 {
+    padding-left: 0;
+  }
+
+  .padding-right-0 {
+    padding-right: 0;
+  }
+
+  .letter-spacing-1px {
+    letter-spacing: 1px;
+  }
+
+  .padding-0-50px {
+    padding: 0 50px;
+  }
+
+  .padding-top-20px {
+    padding-top: 20px;
   }
 
   .index-page-banner {
@@ -73,7 +98,7 @@ body {
     #main-banner-index {
       background: url("../img/main_banner.jpg");
       background-size: cover;
-      height: 400px;
+      height: 350px;
       position: relative;
 
     }
@@ -84,12 +109,15 @@ body {
       position: absolute;
       bottom: 30%;
       right: 0;
-      padding: 20px 0 20px 10px;
+      padding: 0 0 0 10px;
+
 
       h3 {
+        padding-left: 10px;
         color: white;
         opacity: 1;
-        font-family: bebas;
+        letter-spacing: 5px;
+        font-family: 'Bebas Bold';
       }
     }
   }

@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+
 @font-face {
-  font-family: 'Main Front Font';
+  font-family: 'Century Gothic Regular';
   src: url(../fonts/CenturyGothicRegular.ttf)
 }
 
@@ -34,6 +36,13 @@ body {
   margin: 0 auto;
   font: 14px/20px Arial, sans-serif;
 
+  .read-more-link {
+    color: #767A7D;
+    text-decoration: underline;
+    font-size: 18px;
+    line-height: 26px;
+  }
+
   /* Custom classes*/
 
   .fa-6x {
@@ -55,6 +64,7 @@ body {
   .fa-10x {
     font-size: 10em;
   }
+
 
   .padding-0-100px {
     padding: 0 100px;
@@ -88,11 +98,15 @@ body {
   .space-fix-container {
     margin: 30px 0;
   }
+
+  .space-fix-container-2x {
+    margin: 60px 0;
+  }
   /* End custom classes*/
 
   .header {
     margin-right: 0;
-    font-family: 'Main Front Font';
+    font-family: 'Century Gothic Regular';
 
     .site-logo {
       padding-bottom: 0;
@@ -142,9 +156,11 @@ body {
 
   .content {
     flex: 1 0 auto;
-    padding-bottom: 200px;
 
     .upcoming-events {
+      font-family: 'Century Gothic Regular';
+
+
       #upcoming-events-label {
         color: #673506;
         //color: #f0deba;
@@ -156,15 +172,58 @@ body {
         border-bottom: 2px solid #d22027;
         font-family: 'Bebas Book';
       }
+
+      .upcoming-event {
+
+        .media-content {
+          padding-left: 0;
+          padding-right: 0;
+          font-size: 18px;
+          line-height: 26px;
+          color: #333333;
+
+        }
+
+        .event-heading {
+
+          .event-date-time {
+            span {
+              display: inline-block;
+              position: relative;
+              float: left;
+              font-size: 14px;
+              //margin-top: 20px;
+              //margin-right: 10px;
+              color: #767A7D;
+              padding: 0;
+            }
+          }
+
+          .event-label {
+            a {
+              color: #673506;
+              display: inline-block;
+              text-decoration: none;
+              font-family: "Bebas Book";
+              font-weight: bold;
+              font-size: 18px;
+              line-height: 20px;
+
+            }
+          }
+
+        }
+
+      }
     }
 
     .widget-panel {
-      font-family: 'Main Front Font';
+      font-family: 'Century Gothic Regular';
     }
 
     #main-text-under-banner {
       h4 {
-        font-family: 'Main Front Font';
+        font-family: 'Century Gothic Regular';
         font-size: 15px;
         color: #673506;
         line-height: 21px;
@@ -220,6 +279,75 @@ body {
         opacity: 1;
         letter-spacing: 5px;
         font-family: 'Bebas Bold';
+      }
+    }
+
+    .review-block {
+      background-color: #898989;
+
+
+      #reviews-block-label {
+        font-family: 'Bebas Book';
+        font-size: 30px;
+        color: #673506;
+        border-bottom: 2px solid #d22027;
+        display: inline-block;
+      }
+
+      .container {
+        margin-top: 25px;
+        margin-bottom: 25px;
+      }
+
+      .single-review {
+        .single-review-label {
+          a {
+            color: #fff;
+            text-decoration: underline;
+            font-family: 'Century Gothic Regular';
+            font-size: 18px;
+            line-height: 26px;
+          }
+        }
+
+        .review-text, .review-add-time {
+          color: #fff;
+          font-family: 'Century Gothic Regular';
+          font-size: 18px;
+          line-height: 26px;
+
+          span {
+            display: flex;
+
+          }
+        }
+      }
+    }
+
+    .counter-widgets-block {
+
+      border: 1px solid #dbdbdb;
+      border-left: none;
+      overflow: hidden;
+
+      .counter-widget {
+        border-left: 1px solid #dbdbdb;
+        float: left;
+        width: 25%;
+        text-align: center;
+        font-family: "Titillium Web", sans-serif;
+        padding: 25px 0 35px;
+
+        .counter-widget-show {
+          font-size: 48px;
+          color: #673506;
+          display: block;
+        }
+
+        .counter-widget-label {
+          font-size: 18px;
+          color: #cc1719;
+        }
       }
     }
   }

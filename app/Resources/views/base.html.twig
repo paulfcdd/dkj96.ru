@@ -30,9 +30,13 @@
             'kontakty' : 'Контакты',
             } %}
 
-            {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}
+            <div class="hidden-xs">
+                {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}
+            </div>
 
-            {% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}
+            <div class="hidden-lg">
+                {% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}
+            </div>
 
         {% endblock %}
     </div>
@@ -47,8 +51,8 @@
                 </div>
             </div>
         {% endblock %}
+        <div class="container space-fix-container-2x"></div>
     </div><!-- .content -->
-
     <div class="footer">
         {% block footer %}{% endblock %}
     </div>

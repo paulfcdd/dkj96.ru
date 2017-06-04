@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
 @font-face {
-  font-family: 'Main Front Font';
+  font-family: 'Century Gothic Regular';
   src: url(../fonts/CenturyGothicRegular.ttf);
 }
 @font-face {
@@ -31,6 +32,12 @@ body {
   font: 14px/20px Arial, sans-serif;
   /* Custom classes*/
   /* End custom classes*/
+}
+.wrapper .read-more-link {
+  color: #767A7D;
+  text-decoration: underline;
+  font-size: 18px;
+  line-height: 26px;
 }
 .wrapper .fa-6x {
   font-size: 6em;
@@ -72,9 +79,12 @@ body {
 .wrapper .space-fix-container {
   margin: 30px 0;
 }
+.wrapper .space-fix-container-2x {
+  margin: 60px 0;
+}
 .wrapper .header {
   margin-right: 0;
-  font-family: 'Main Front Font';
+  font-family: 'Century Gothic Regular';
 }
 .wrapper .header .site-logo {
   padding-bottom: 0;
@@ -112,7 +122,9 @@ body {
 }
 .wrapper .content {
   flex: 1 0 auto;
-  padding-bottom: 200px;
+}
+.wrapper .content .upcoming-events {
+  font-family: 'Century Gothic Regular';
 }
 .wrapper .content .upcoming-events #upcoming-events-label {
   color: #673506;
@@ -124,11 +136,35 @@ body {
   border-bottom: 2px solid #d22027;
   font-family: 'Bebas Book';
 }
+.wrapper .content .upcoming-events .upcoming-event .media-content {
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 18px;
+  line-height: 26px;
+  color: #333333;
+}
+.wrapper .content .upcoming-events .upcoming-event .event-heading .event-date-time span {
+  display: inline-block;
+  position: relative;
+  float: left;
+  font-size: 14px;
+  color: #767A7D;
+  padding: 0;
+}
+.wrapper .content .upcoming-events .upcoming-event .event-heading .event-label a {
+  color: #673506;
+  display: inline-block;
+  text-decoration: none;
+  font-family: "Bebas Book";
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 20px;
+}
 .wrapper .content .widget-panel {
-  font-family: 'Main Front Font';
+  font-family: 'Century Gothic Regular';
 }
 .wrapper .content #main-text-under-banner h4 {
-  font-family: 'Main Front Font';
+  font-family: 'Century Gothic Regular';
   font-size: 15px;
   color: #673506;
   line-height: 21px;
@@ -172,6 +208,60 @@ body {
   opacity: 1;
   letter-spacing: 5px;
   font-family: 'Bebas Bold';
+}
+.wrapper .content .review-block {
+  background-color: #898989;
+}
+.wrapper .content .review-block #reviews-block-label {
+  font-family: 'Bebas Book';
+  font-size: 30px;
+  color: #673506;
+  border-bottom: 2px solid #d22027;
+  display: inline-block;
+}
+.wrapper .content .review-block .container {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.wrapper .content .review-block .single-review .single-review-label a {
+  color: #fff;
+  text-decoration: underline;
+  font-family: 'Century Gothic Regular';
+  font-size: 18px;
+  line-height: 26px;
+}
+.wrapper .content .review-block .single-review .review-text,
+.wrapper .content .review-block .single-review .review-add-time {
+  color: #fff;
+  font-family: 'Century Gothic Regular';
+  font-size: 18px;
+  line-height: 26px;
+}
+.wrapper .content .review-block .single-review .review-text span,
+.wrapper .content .review-block .single-review .review-add-time span {
+  display: flex;
+}
+.wrapper .content .counter-widgets-block {
+  border: 1px solid #dbdbdb;
+  border-left: none;
+  overflow: hidden;
+}
+.wrapper .content .counter-widgets-block .counter-widget {
+  border-left: 1px solid #dbdbdb;
+  float: left;
+  width: 25%;
+  text-align: center;
+  font-family: "Titillium Web", sans-serif;
+  padding: 25px 0 35px;
+}
+.wrapper .content .counter-widgets-block .counter-widget .counter-widget-show {
+  font-size: 48px;
+  color: #673506;
+  display: block;
+}
+.wrapper .content .counter-widgets-block .counter-widget .counter-widget-label {
+  font-size: 18px;
+  color: #cc1719;
 }
 .wrapper .footer {
   flex: 0 0 auto;

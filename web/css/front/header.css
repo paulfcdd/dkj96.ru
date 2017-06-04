@@ -1,0 +1,38 @@
+.header {
+  margin-right: 0;
+  font-family: 'Century Gothic Regular';
+}
+.header .site-logo {
+  padding-bottom: 0;
+  padding-top: 0;
+  height: 170px;
+}
+.header .site-logo img {
+  margin-left: auto;
+  margin-right: auto;
+  height: 150px;
+  width: auto;
+}
+.header .mobile-nav {
+  background-color: transparent;
+  border: none;
+  padding: 30px 20px;
+}
+.header .main-header {
+  padding: 20px 0 0 0;
+  margin-bottom: 0;
+  background-color: transparent;
+  border: none;
+  margin-top: 20px;
+}
+.header .main-header .row {
+  position: relative;
+}
+.header .main-header .col-sm-10 {
+  position: absolute;
+  top: 20px;
+  left: 250px;
+}
+.header .main-header .main-menu li a {
+  color: #6b3e21;
+}

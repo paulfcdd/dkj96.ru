@@ -10,6 +10,15 @@
     <link rel="stylesheet" href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
 
+    {% set page = app.request.get('page') %}
+
+    {% if page is null %}
+        {% set page = 'index' %}
+    {% endif %}
+
+    {% block css_loader %}
+        <link rel="stylesheet" href="{{ asset('css/front/page/'~page~'.css') }}">
+    {% endblock %}
 
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>

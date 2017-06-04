@@ -62,8 +62,35 @@
         {% endblock %}
         <div class="container space-fix-container-2x"></div>
     </div><!-- .content -->
+
     <div class="footer">
-        {% block footer %}{% endblock %}
+        {% block footer %}
+            <div class="container padding-left-0 padding-right-0 padding-top-20px">
+                <div class="col-sm-6 padding-0-100px footer-widget">
+                    <h4 class="footer-widget-label">Контакты</h4>
+                    <ul class="footer-widget-data-list list-unstyled">
+                        <li><i class="fa fa-phone"></i>&nbsp;Телефон: +7 (343) 310-53-58; 8-952-733-15-27 - администрация</li>
+                        <li><i class="fa fa-phone"></i>&nbsp;Телефон: +7 (343) 310-53-29 - касса</li>
+                        <li><i class="fa fa-envelope-o"></i>&nbsp;Email:<a href="mailto:dkj96@ya.ru" class="text-style-5">dkj96@ya.ru</a></li>
+                        <li><i class="fa fa-map-marker"></i>&nbsp;Адрес: г. Екатеринбург, ул. Челюскинцев, 102 / Свердлова, 35</li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 padding-0-100px footer-widget">
+                    <h4 class="footer-widget-label">Социальные сети</h4>
+                    <ul class="footer-widget-data-list list-unstyled">
+                        <li>
+                            <i class="fa fa-facebook fa-2x"></i>
+                            <a href="facebook.com/dssekb">facebook.com/dssekb</a>
+                        </li>
+
+                        <li>
+                            <i class="fa fa-vk fa-2x"></i>
+                            <a href="vk.com/dkz_ekb">vk.com/dkz_ekb</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endblock %}
     </div>
 
 </div><!-- .wrapper -->

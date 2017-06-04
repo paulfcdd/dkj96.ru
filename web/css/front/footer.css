@@ -1,5 +1,30 @@
 .footer {
   flex: 0 0 auto;
-  height: 80px;
-  background: #3498DB;
+  height: auto;
+  background: #673506;
+}
+.footer .footer-widget .footer-widget-label {
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  font-family: "Bebas Book";
+  font-size: 30px;
+  line-height: 33px;
+  font-weight: 500;
+}
+.footer .footer-widget .footer-widget-data-list {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 300;
+  color: white;
+}
+.footer .footer-widget .footer-widget-data-list a {
+  color: white;
+  text-decoration: underline;
+}
+.footer .footer-widget .footer-widget-data-list li {
+  white-space: nowrap;
+  margin-bottom: 26px;
+  padding-left: 27px;
+  position: relative;
+  font-size: 18px;
 }

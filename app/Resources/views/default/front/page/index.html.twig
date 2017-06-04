@@ -1,21 +1,46 @@
 {% extends '::base.html.twig' %}
 
 {% block content %}
+    {{ parent() }}
 
-    <div class="container-fluid index-page-banner" id="main-banner-index">
-        <div class="col-sm-4 col-sm-offset-8 banner-text">
-            <h3>Дворец</h3>
-            <h3>Культуры</h3>
-            <h3>Железнодорожников</h3>
+    <div class="container padding-0-100px" id="main-text-under-banner">
+        <h4 class="text-center letter-spacing-1px">
+            {{ 'Что такое Дворец Культуры Железнодорожников?
+            С одной стороны, это одно из старейших культурных учреждений Екатеринбурга с уже вековой историей, а с другой:
+            современная площадка для концертных выступлений, крупных бизнес-мероприятий или праздников любого масштаба.' | nl2br }}
+        </h4>
+    </div>
+
+    <div class="container widget-panel text-center padding-top-20px">
+        <div class="col-md-4 single-widget">
+            <span class="fa fa-camera fa-6x"></span>
+            <h4>Портфолио</h4>
+            <p>
+               {{ ' Фото и видео материалы
+                с мероприятий дома культуры' | nl2br }}
+            </p>
+        </div>
+        <div class="col-md-4 single-widget">
+            <span class="fa fa-search fa-6x"></span>
+            <h4>Планы залов и информация</h4>
+            <p>
+                {{ '3D тур по залам и холам
+                Дворца культуры' | nl2br }}
+            </p>
+        </div>
+        <div class="col-md-4 single-widget">
+            <span class="fa fa-key fa-6x"></span>
+            <h4>Аренда залов</h4>
+            <p>
+                {{ 'Занятость залов
+                на ближайший месяц' | nl2br }}
+            </p>
         </div>
     </div>
 
-    <div class="container padding-right-0 padding-left-0 padding-top-20px">
-        <h4 class="text-center letter-spacing-1px">
-            {{
-            'Дворец культуры железнодорожников предоставляет услуги по организации и проведению мероприятий.
-            А так же аренда помещений и технического оборудования' | nl2br
-            }}
-        </h4>
+    <div class="container space-fix-container"></div>
+
+    <div class="container padding-0-100px upcoming-events">
+        <h4 id="upcoming-events-label">Ближайшие мероприятия</h4>
     </div>
 {% endblock %}

@@ -1,10 +1,18 @@
 @font-face {
+  font-family: 'Main Front Font';
+  src: url(../fonts/CenturyGothicRegular.ttf);
+}
+@font-face {
   font-family: 'Bebas Bold';
   src: url(../fonts/bebas_neue_bold.otf);
 }
 @font-face {
   font-family: 'Bebas Ligth';
   src: url(../fonts/bebas_neue_light.otf);
+}
+@font-face {
+  font-family: 'Bebas Book';
+  src: url(../fonts/BebasNeue_Book.otf);
 }
 * {
   margin: 0;
@@ -23,6 +31,21 @@ body {
   font: 14px/20px Arial, sans-serif;
   /* Custom classes*/
   /* End custom classes*/
+}
+.wrapper .fa-6x {
+  font-size: 6em;
+}
+.wrapper .fa-7x {
+  font-size: 7em;
+}
+.wrapper .fa-8x {
+  font-size: 8em;
+}
+.wrapper .fa-9x {
+  font-size: 9em;
+}
+.wrapper .fa-10x {
+  font-size: 10em;
 }
 .wrapper .padding-0-100px {
   padding: 0 100px;
@@ -46,40 +69,94 @@ body {
   padding-left: 0;
   padding-right: 0;
 }
+.wrapper .space-fix-container {
+  margin: 30px 0;
+}
 .wrapper .header {
   margin-right: 0;
+  font-family: 'Main Front Font';
 }
 .wrapper .header .site-logo {
   padding-bottom: 0;
   padding-top: 0;
-  height: 120px;
+  height: 170px;
+}
+.wrapper .header .site-logo img {
+  margin-left: auto;
+  margin-right: auto;
+  height: 150px;
+  width: auto;
+}
+.wrapper .header .mobile-nav {
+  background-color: transparent;
+  border: none;
+  padding: 30px 20px;
 }
 .wrapper .header .main-header {
   padding: 20px 0 0 0;
   margin-bottom: 0;
   background-color: transparent;
   border: none;
+  margin-top: 20px;
 }
 .wrapper .header .main-header .row {
   position: relative;
 }
 .wrapper .header .main-header .col-sm-10 {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  padding-bottom: 50px;
+  top: 20px;
+  left: 250px;
 }
 .wrapper .header .main-header .main-menu li a {
   color: #6b3e21;
 }
 .wrapper .content {
   flex: 1 0 auto;
+  padding-bottom: 200px;
+}
+.wrapper .content .upcoming-events #upcoming-events-label {
+  color: #673506;
+  display: inline-block;
+  line-height: 33px;
+  font-size: 30px;
+  font-weight: 500;
+  font-style: normal;
+  border-bottom: 2px solid #d22027;
+  font-family: 'Bebas Book';
+}
+.wrapper .content .widget-panel {
+  font-family: 'Main Front Font';
+}
+.wrapper .content #main-text-under-banner h4 {
+  font-family: 'Main Front Font';
+  font-size: 15px;
+  color: #673506;
+  line-height: 21px;
+  font-weight: normal;
+  font-style: normal;
+}
+.wrapper .content .error-500-page .error-page {
+  padding: 40px 15px;
+  text-align: center;
+}
+.wrapper .content .error-500-page .error-actions {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.wrapper .content .error-500-page .error-actions .btn {
+  margin-right: 10px;
+}
+.wrapper .content .error-500-page .label-404 {
+  font-size: 100px;
 }
 .wrapper .content #main-banner-index {
   background: url("../img/main_banner.jpg");
-  background-size: cover;
   height: 350px;
   position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .wrapper .content .banner-text {
   background: grey;

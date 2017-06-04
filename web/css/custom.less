@@ -1,4 +1,9 @@
 @font-face {
+  font-family: 'Main Front Font';
+  src: url(../fonts/CenturyGothicRegular.ttf)
+}
+
+@font-face {
   font-family: 'Bebas Bold';
   src: url(../fonts/bebas_neue_bold.otf);
 }
@@ -6,6 +11,11 @@
 @font-face {
   font-family: 'Bebas Ligth';
   src: url(../fonts/bebas_neue_light.otf)
+}
+
+@font-face {
+  font-family: 'Bebas Book';
+  src: url(../fonts/BebasNeue_Book.otf)
 }
 
 * {
@@ -25,6 +35,27 @@ body {
   font: 14px/20px Arial, sans-serif;
 
   /* Custom classes*/
+
+  .fa-6x {
+    font-size: 6em;
+  }
+
+  .fa-7x {
+    font-size: 7em;
+  }
+
+  .fa-8x {
+    font-size: 8em;
+  }
+
+  .fa-9x {
+    font-size: 9em;
+  }
+
+  .fa-10x {
+    font-size: 10em;
+  }
+
   .padding-0-100px {
     padding: 0 100px;
   }
@@ -53,16 +84,33 @@ body {
     padding-left: 0;
     padding-right: 0;
   }
+
+  .space-fix-container {
+    margin: 30px 0;
+  }
   /* End custom classes*/
 
   .header {
     margin-right: 0;
+    font-family: 'Main Front Font';
 
     .site-logo {
       padding-bottom: 0;
       padding-top: 0;
-      height: 120px;
+      height: 170px;
 
+      img {
+        margin-left: auto;
+        margin-right: auto;
+        height: 150px;
+        width: auto;
+      }
+    }
+
+    .mobile-nav {
+      background-color: transparent;
+      border: none;
+      padding: 30px 20px;
     }
 
     .main-header {
@@ -70,6 +118,7 @@ body {
       margin-bottom: 0;
       background-color: transparent;
       border: none;
+      margin-top: 20px;
 
       .row {
         position: relative;
@@ -77,9 +126,8 @@ body {
 
       .col-sm-10 {
         position: absolute;
-        bottom: 0;
-        right: 0;
-        padding-bottom: 50px;
+        top: 20px;
+        left: 250px;
       }
 
       .main-menu {
@@ -94,13 +142,67 @@ body {
 
   .content {
     flex: 1 0 auto;
+    padding-bottom: 200px;
+
+    .upcoming-events {
+      #upcoming-events-label {
+        color: #673506;
+        //color: #f0deba;
+        display: inline-block;
+        line-height: 33px;
+        font-size: 30px;
+        font-weight: 500;
+        font-style: normal;
+        border-bottom: 2px solid #d22027;
+        font-family: 'Bebas Book';
+      }
+    }
+
+    .widget-panel {
+      font-family: 'Main Front Font';
+    }
+
+    #main-text-under-banner {
+      h4 {
+        font-family: 'Main Front Font';
+        font-size: 15px;
+        color: #673506;
+        line-height: 21px;
+        font-weight: normal;
+        font-style: normal;
+      }
+    }
+
+    .error-500-page {
+
+      .error-page {
+        padding: 40px 15px;
+        text-align: center;
+      }
+
+      .error-actions {
+        margin-top:15px;
+        margin-bottom:15px;
+
+        .btn {
+          margin-right:10px;
+        }
+      }
+
+      .label-404 {
+        font-size :100px;
+      }
+    }
 
     #main-banner-index {
       background: url("../img/main_banner.jpg");
       background-size: cover;
       height: 350px;
       position: relative;
-
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
 
     .banner-text {

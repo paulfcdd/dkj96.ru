@@ -23,17 +23,22 @@
 
                             {% set active = null %}
 
+                            {% if page == 'index' %}
+                                {% if link == '' %}
+                                    {% set active = 'active' %}
+                                {% endif %}
+                            {% endif %}
+
                             {% if page == link %}
                                 {% set active = 'active' %}
                             {% endif %}
 
+
                             <li {% if active is not null %}class="{{ active }}"{% endif %}><a href="{{ path('front.renderMenu', {
                                     'page': link
                                 }) }}">{{ name }}</a></li>
-                        {% endfor %}
 
-                        {#<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>#}
-                        {#<li><a href="#">Link</a></li>#}
+                        {% endfor %}
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div>

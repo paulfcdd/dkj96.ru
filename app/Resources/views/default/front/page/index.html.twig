@@ -4,6 +4,8 @@
 
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
+    <div class="space-fix-container"></div>
+
     {% block under_banner_text_widget %}
         <div class="container padding-0-100px" id="main-text-under-banner">
             <div class="text-center letter-spacing-1px banner-content-block">
@@ -18,7 +20,7 @@
 
     <div class="container widget-panel text-center padding-top-20px">
         <div class="col-md-4 single-widget">
-            <span class="fa fa-camera fa-6x"></span>
+            <span class="fa fa-camera fa-6x widget-panel-icon"></span>
             <h4>Портфолио</h4>
             <p>
                 {{ ' Фото и видео материалы
@@ -26,7 +28,7 @@
             </p>
         </div>
         <div class="col-md-4 single-widget">
-            <span class="fa fa-search fa-6x"></span>
+            <span class="fa fa-search fa-6x widget-panel-icon"></span>
             <h4>Планы залов и информация</h4>
             <p>
                 {{ '3D тур по залам и холам
@@ -34,7 +36,7 @@
             </p>
         </div>
         <div class="col-md-4 single-widget">
-            <span class="fa fa-key fa-6x"></span>
+            <span class="fa fa-key fa-6x widget-panel-icon"></span>
             <h4>Аренда залов</h4>
             <p>
                 {{ 'Занятость залов

@@ -38,6 +38,12 @@
 .widget-panel {
   font-family: 'Century Gothic Regular';
 }
+.widget-panel .single-widget .widget-panel-icon {
+  cursor: pointer;
+}
+.widget-panel .single-widget .widget-panel-icon:hover {
+  color: #673506;
+}
 .error-500-page .error-page {
   padding: 40px 15px;
   text-align: center;

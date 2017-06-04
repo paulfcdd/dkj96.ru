@@ -163,13 +163,17 @@ body {
 .wrapper .content .widget-panel {
   font-family: 'Century Gothic Regular';
 }
-.wrapper .content #main-text-under-banner h4 {
+.wrapper .content #main-text-under-banner .banner-content-block {
   font-family: 'Century Gothic Regular';
   font-size: 15px;
   color: #673506;
   line-height: 21px;
   font-weight: normal;
   font-style: normal;
+}
+.wrapper .content #main-text-under-banner .banner-content-block .content-block-row {
+  padding: 0;
+  white-space: nowrap;
 }
 .wrapper .content .error-500-page .error-page {
   padding: 40px 15px;

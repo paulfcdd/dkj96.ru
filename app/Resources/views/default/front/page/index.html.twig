@@ -4,11 +4,12 @@
     {{ parent() }}
 
     <div class="container padding-0-100px" id="main-text-under-banner">
-        <h4 class="text-center letter-spacing-1px">
-            {{ 'Что такое Дворец Культуры Железнодорожников?
-            С одной стороны, это одно из старейших культурных учреждений Екатеринбурга с уже вековой историей, а с другой:
-            современная площадка для концертных выступлений, крупных бизнес-мероприятий или праздников любого масштаба.' | nl2br }}
-        </h4>
+        <div class="text-center letter-spacing-1px banner-content-block">
+            {{ '
+            <p>Что такое Дворец Культуры Железнодорожников?</p>
+            <p class="content-block-row">С одной стороны, это одно из старейших культурных учреждений Екатеринбурга с уже вековой историей, а с другой:</p>
+            <p class="content-block-row">современная площадка для концертных выступлений, крупных бизнес-мероприятий или праздников любого масштаба.</p>' | raw }}
+        </div>
     </div>
 
     <div class="container widget-panel text-center padding-top-20px">
@@ -122,6 +123,8 @@
         </div>
 
     </div>
+
+    <div class="container space-fix-container"></div>
 
     <div class="container-fluid padding-left-0 padding-right-0 review-block">
         <div class="container padding-0-100px">

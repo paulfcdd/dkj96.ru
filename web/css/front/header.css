@@ -38,6 +38,9 @@
   color: #fff;
   border-bottom: 10px solid #673506;
 }
+.header .main-header .main-menu ul .active:hover {
+  border-bottom: none;
+}
 .header .main-header .main-menu ul li:hover {
   border-bottom: 10px solid #673506;
 }

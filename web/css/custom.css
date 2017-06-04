@@ -122,6 +122,9 @@ body {
   color: #fff;
   border-bottom: 10px solid #673506;
 }
+.wrapper .header .main-header .main-menu ul .active:hover {
+  border-bottom: none;
+}
 .wrapper .header .main-header .main-menu ul li:hover {
   border-bottom: 10px solid #673506;
 }

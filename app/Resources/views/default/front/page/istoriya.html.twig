@@ -1,0 +1,43 @@
+{% extends '::base.html.twig' %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <p class="padding-0-100px">
+                    В структуре ДКЖ успешно работают творческие коллективы различных направлениях искусств,
+                    многочисленных Коллективы ДКЖ лауреаты эстрадных конкурсов, фестивалей и Чемпионатов.Подробнее о
+                    коллективах и дополнительных услугах Вы можете узнать ниже.
+                </p>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container padding-left-0 padding-right-0 history-block">
+        <div class="col-sm-12">
+            <p class="history-block-content">
+                <img src="{{ asset('img/sample_img_2.png') }}" class="pull-left">
+                Дворец культуры железнодорожников – старейшее учреждение культуры Екатеринбурга. Здание, в котором он
+                расположен, является исторической достопримечательностью города. Историю дворца можно условно разделить на
+                две неравные части. Первая связана с тем замечательным зданием, в котором сейчас располагается ДКЖ.
+            </p>
+            <div class="space-fix-container-2x"></div>
+
+            <p class="history-block-content">
+                <img src="{{ asset('img/sample_img_3.png') }}" class="pull-right">
+                Именно здесь писались главные страницы его истории, здесь готовились и достигались важнейшие успехи на
+                российских и международных конкурсах. Для гигантского количества завоёванных кубков и наград сегодня уже не
+                хватает места на полках под стеклянными витринами. Вторая часть - это история собственно «души» первого на
+                Урале рабочего клуба - центра культуры железнодорожников, начиная с его открытия 24 ноября 1917 года по
+                проекту архитектора Константина Бабыкина.
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

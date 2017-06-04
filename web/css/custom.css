@@ -147,6 +147,18 @@ body {
   letter-spacing: 5px;
   font-family: 'Bebas Bold';
 }
+.wrapper .content #main-text-under-banner .banner-content-block {
+  font-family: 'Century Gothic Regular';
+  font-size: 15px;
+  color: #673506;
+  line-height: 21px;
+  font-weight: normal;
+  font-style: normal;
+}
+.wrapper .content #main-text-under-banner .banner-content-block .content-block-row {
+  padding: 0;
+  white-space: nowrap;
+}
 .wrapper .footer {
   flex: 0 0 auto;
   height: auto;

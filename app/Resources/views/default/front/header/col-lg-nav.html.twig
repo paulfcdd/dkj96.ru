@@ -20,7 +20,14 @@
                     <ul class="nav navbar-nav">
 
                         {% for link, name in mainMenu %}
-                            <li><a href="{{ path('front.renderMenu', {
+
+                            {% set active = null %}
+
+                            {% if page == link %}
+                                {% set active = 'active' %}
+                            {% endif %}
+
+                            <li {% if active is not null %}class="{{ active }}"{% endif %}><a href="{{ path('front.renderMenu', {
                                     'page': link
                                 }) }}">{{ name }}</a></li>
                         {% endfor %}

@@ -1,3 +1,9 @@
+{% set page = app.request.get('page') %}
+
+{% if page is null %}
+    {% set page = 'index' %}
+{% endif %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,12 +15,6 @@
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
-
-    {% set page = app.request.get('page') %}
-
-    {% if page is null %}
-        {% set page = 'index' %}
-    {% endif %}
 
     {% block css_loader %}
         <link rel="stylesheet" href="{{ asset('css/front/page/'~page~'.css') }}">
@@ -52,13 +52,18 @@
 
     <div class="content">
         {% block content %}
-            <div class="container-fluid index-page-banner" id="main-banner-index">
-                <div class="col-sm-4 col-sm-offset-8 banner-text">
-                    <h3>Дворец</h3>
-                    <h3>Культуры</h3>
-                    <h3>Железнодорожников</h3>
+            {% block main_banner_widget %}
+                <div class="container-fluid index-page-banner" id="main-banner-index">
+                    <div class="col-sm-4 col-sm-offset-8 banner-text">
+                        <h3>Дворец</h3>
+                        <h3>Культуры</h3>
+                        <h3>Железнодорожников</h3>
+                    </div>
                 </div>
-            </div>
+            {% endblock %}
+
+        {% block under_banner_text_widget %}{% endblock %}
+
         {% endblock %}
         <div class="container space-fix-container-2x"></div>
     </div><!-- .content -->

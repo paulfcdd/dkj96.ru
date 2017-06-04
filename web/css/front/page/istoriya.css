@@ -1,0 +1,13 @@
+.history-block .history-block-content {
+  letter-spacing: 1px;
+  line-height: 1.8;
+  color: #767A7D;
+  font-family: 'Century Gothic Regular';
+  font-size: 18px;
+}
+.history-block .history-block-content img:first-child {
+  padding-right: 20px;
+}
+.history-block .history-block-content img:last-child {
+  padding-left: 20px;
+}

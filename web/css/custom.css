@@ -57,6 +57,11 @@ body {
 .wrapper .padding-0-100px {
   padding: 0 100px;
 }
+@media only screen and (max-width: 479px) {
+  .wrapper .padding-0-100px {
+    padding: 0;
+  }
+}
 .wrapper .padding-left-0 {
   padding-left: 0;
 }
@@ -178,6 +183,11 @@ body {
   padding: 0;
   white-space: nowrap;
 }
+@media only screen and (max-width: 479px) {
+  .wrapper .content #main-text-under-banner .banner-content-block .content-block-row {
+    white-space: normal;
+  }
+}
 .wrapper .footer {
   flex: 0 0 auto;
   height: auto;
@@ -207,4 +217,9 @@ body {
   padding-left: 27px;
   position: relative;
   font-size: 18px;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .footer .footer-widget .footer-widget-data-list li {
+    white-space: normal;
+  }
 }

@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
 
+@import "rwd_config";
+
 @font-face {
   font-family: 'Century Gothic Regular';
   src: url(../fonts/CenturyGothicRegular.ttf)
@@ -68,6 +70,10 @@ body {
 
   .padding-0-100px {
     padding: 0 100px;
+
+    @media @phone {
+      padding: 0;
+    }
   }
 
   .padding-left-0 {

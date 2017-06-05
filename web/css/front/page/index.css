@@ -90,6 +90,12 @@
 .review-block .single-review .review-add-time span {
   display: flex;
 }
+@media only screen and (max-width: 479px) {
+  .review-block .single-review .review-text span,
+  .review-block .single-review .review-add-time span {
+    display: block;
+  }
+}
 .counter-widgets-block {
   border: 1px solid #dbdbdb;
   border-left: none;
@@ -102,6 +108,11 @@
   text-align: center;
   font-family: "Titillium Web", sans-serif;
   padding: 25px 0 35px;
+}
+@media only screen and (max-width: 479px) {
+  .counter-widgets-block .counter-widget {
+    width: 100%;
+  }
 }
 .counter-widgets-block .counter-widget .counter-widget-show {
   font-size: 48px;

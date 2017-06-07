@@ -5,14 +5,13 @@
 
   .footer-widget {
     .footer-widget-label {
-      color: #fff;
+      color: #f0deba;
       text-decoration: none;
       border: none;
       font-family: "Bebas Book";
-      font-size: 30px;
+      font-size: 28px;
       line-height: 33px;
       font-weight: 500;
-
     }
 
     .footer-widget-data-list {
@@ -20,17 +19,31 @@
       font-weight: 300;
       color: white;
 
+      .social-icon-link {
+        border: 1px solid;
+        border-radius: 10px;
+        background-color: #673506;
+        width: 4em;
+        height: 4em;
+        padding: 12px 0 15px 0;
+
+        &:hover {
+          background-color: #f0deba;
+          color: #673506;
+        }
+      }
+
       a {
-        color: white;
+        color: #f0deba;
         text-decoration: underline;
       }
 
       li {
         white-space: nowrap;
         margin-bottom: 26px;
-        padding-left: 27px;
         position: relative;
-        font-size: 18px;
+        font-size: 16px;
+        color: #f0deba;;
 
         @media @phone {
           white-space: normal;

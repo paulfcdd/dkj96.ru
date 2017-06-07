@@ -65,7 +65,7 @@
         {% block under_banner_text_widget %}{% endblock %}
 
         {% endblock %}
-        <div id="gotop"></div>
+        <div id="scroll-on-top"></div>
         <div class="container space-fix-container-2x"></div>
 
     </div><!-- .content -->
@@ -107,11 +107,8 @@
 <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/jquery.gotop.js') }}"></script>
 
-<script>
-    $(document).ready(function () {
-        $('#gotop').gotop();
-    })
-</script>
+<script src="{{ asset('js/utils.js') }}"></script>
+
 {% block javascripts %}{% endblock %}
 </body>
 </html>

@@ -1,5 +1,7 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}{{ pageData[page] }}{% endblock %}
+
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 

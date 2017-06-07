@@ -14,7 +14,7 @@
             <ul class="nav navbar-nav">
 
                 {% for link, name in mainMenu %}
-                    <li><a href="{{ path('front.renderMenu', {
+                    <li><a href="{{ path('front.renderPage', {
                             'page': link
                         }) }}">{{ name }}</a></li>
                 {% endfor %}

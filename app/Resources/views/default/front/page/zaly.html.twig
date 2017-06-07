@@ -1,5 +1,7 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}{{ pageData[page] }}{% endblock %}
+
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
@@ -33,7 +35,10 @@
                         Вместимость до 250 человек
                         Большой зал отлично подойдет для корпоративных мероприятий и широких свадеб. Светлый зал с большими окнами.
                     </p>
-                    <a href="#" class="read-more-link pull-right">Подробнее</a>
+                    <a href="#" class="read-more-link pull-right">Подробнее</a> <i class="pull-right read-more-link">
+                        | </i> <a href="{{ path('front.renderPage', {
+                        'page': 'booking'
+                    }) }}" class="read-more-link pull-right">Бронировать</a>
                 </div>
             </div>
         </div>
@@ -51,7 +56,10 @@
                         Вместимость до 250 человек
                         Большой зал отлично подойдет для корпоративных мероприятий и широких свадеб. Светлый зал с большими окнами.
                     </p>
-                    <a href="#" class="read-more-link pull-right">Подробнее</a>
+                    <a href="#" class="read-more-link pull-right">Подробнее</a> <i class="pull-right read-more-link">
+                        | </i> <a href="{{ path('front.renderPage', {
+                        'page': 'booking'
+                    }) }}" class="read-more-link pull-right">Бронировать</a>
                 </div>
             </div>
         </div>
@@ -68,7 +76,10 @@
                         Вместимость до 250 человек
                         Большой зал отлично подойдет для корпоративных мероприятий и широких свадеб. Светлый зал с большими окнами.
                     </p>
-                    <a href="#" class="read-more-link pull-right">Подробнее</a>
+                    <a href="#" class="read-more-link pull-right">Подробнее</a> <i class="pull-right read-more-link">
+                        | </i> <a href="{{ path('front.renderPage', {
+                        'page': 'booking'
+                    }) }}" class="read-more-link pull-right">Бронировать</a>
                 </div>
             </div>
         </div>
@@ -86,7 +97,10 @@
                         Вместимость до 250 человек
                         Большой зал отлично подойдет для корпоративных мероприятий и широких свадеб. Светлый зал с большими окнами.
                     </p>
-                    <a href="#" class="read-more-link pull-right">Подробнее</a>
+                    <a href="#" class="read-more-link pull-right">Подробнее</a> <i class="pull-right read-more-link">
+                        | </i> <a href="{{ path('front.renderPage', {
+                        'page': 'booking'
+                    }) }}" class="read-more-link pull-right">Бронировать</a>
                 </div>
             </div>
         </div>
@@ -104,7 +118,10 @@
                         Вместимость до 250 человек
                         Большой зал отлично подойдет для корпоративных мероприятий и широких свадеб. Светлый зал с большими окнами.
                     </p>
-                    <a href="#" class="read-more-link pull-right">Подробнее</a>
+                    <a href="#" class="read-more-link pull-right">Подробнее</a> <i class="pull-right read-more-link">
+                        | </i> <a href="{{ path('front.renderPage', {
+                        'page': 'booking'
+                    }) }}" class="read-more-link pull-right">Бронировать</a>
                 </div>
             </div>
         </div>

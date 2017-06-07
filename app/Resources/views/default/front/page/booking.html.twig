@@ -1,0 +1,41 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ pageData[page] }}{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+
+    {% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container padding-left-0 padding-right-0 booking-block">
+        <div class="col-xs-12 padding-0-100px">
+            <form>
+                <div class="form-group col-sm-6 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Телефон" required>
+                </div>
+                <div class="form-group col-sm-6 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Дата" required>
+                </div>
+                <div class="form-group col-sm-6 col-xs-12">
+                    <input type="text" class="form-control" placeholder="E-mail" required>
+                </div>
+                <div class="form-group col-sm-6 col-xs-12">
+                    <input type="text" class="form-control" placeholder="Кол-во человек" required>
+                </div>
+                <div class="form-group col-sm-12 col-xs-12">
+                   <textarea cols="5" rows="5" placeholder="Краткая информация о мероприятии" class="form-control"></textarea>
+                </div>
+                <div class="form-group col-sm-12 col-xs-12">
+                    <button class="btn btn-default pull-right" type="submit">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

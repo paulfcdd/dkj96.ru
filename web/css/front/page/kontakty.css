@@ -1,0 +1,12 @@
+@media only screen and (max-width: 479px) {
+  .contact-block .col-xs-padding-right-0 {
+    padding-right: 0;
+  }
+}
+.contact-block h4 {
+  font-family: 'Century Gothic Regular';
+  color: #673506;
+}
+.contact-block .contact-block-line {
+  font-family: 'Century Gothic Regular';
+}

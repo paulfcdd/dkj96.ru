@@ -20,6 +20,7 @@ class FrontController extends Controller
         'istoriya' => 'История',
         'otzyvy' => 'Отзывы',
         'kontakty' => 'Контакты',
+        'booking' => 'Бронирование'
     ];
 
 
@@ -28,7 +29,7 @@ class FrontController extends Controller
      * @param Http\Request $request
      * @return Response
      * @Route("/{page}",
-     *     name="front.renderMenu"
+     *     name="front.renderPage"
      * )
      */
     public function mainMenuPageRenderAction(string $page = null, Http\Request $request) {
@@ -54,6 +55,7 @@ class FrontController extends Controller
 
         return $this->render(':default/front/page:'.$page.'.html.twig', [
             'page' => $page,
+            'pageData' => self::PAGES,
         ]);
     }
 }

@@ -65,7 +65,7 @@
         {% block under_banner_text_widget %}{% endblock %}
 
         {% endblock %}
-
+        <div id="gotop"></div>
         <div class="container space-fix-container-2x"></div>
 
     </div><!-- .content -->
@@ -105,6 +105,13 @@
 
 <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/jquery.gotop.js') }}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#gotop').gotop();
+    })
+</script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

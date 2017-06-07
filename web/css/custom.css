@@ -32,6 +32,7 @@ body {
   font: 14px/20px Arial, sans-serif;
   /* Custom classes*/
   /* End custom classes*/
+  /* Responsive classes*/
 }
 .wrapper .read-more-link {
   color: #767A7D;
@@ -77,6 +78,15 @@ body {
 .wrapper .padding-right-0 {
   padding-right: 0;
 }
+.wrapper .margin-left-0 {
+  margin-left: 0;
+}
+.wrapper .margin-right-0 {
+  margin-right: 0;
+}
+.wrapper .padding-left-15px {
+  padding-left: 15px;
+}
 .wrapper .letter-spacing-1px {
   letter-spacing: 1px;
 }
@@ -98,6 +108,11 @@ body {
 }
 .wrapper .nowrap {
   white-space: nowrap;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .xs-padding-0-10px {
+    padding: 0 10px;
+  }
 }
 .wrapper .header {
   margin-right: 0;

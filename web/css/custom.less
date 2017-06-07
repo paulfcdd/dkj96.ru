@@ -93,6 +93,18 @@ body {
     padding-right: 0;
   }
 
+  .margin-left-0 {
+    margin-left: 0;
+  }
+
+  .margin-right-0 {
+    margin-right: 0;
+  }
+
+  .padding-left-15px {
+    padding-left: 15px;
+  }
+
   .letter-spacing-1px {
     letter-spacing: 1px;
   }
@@ -122,6 +134,14 @@ body {
     white-space: nowrap;
   }
   /* End custom classes*/
+
+  /* Responsive classes*/
+  .xs-padding-0-10px {
+    @media @phone {
+      padding: 0 10px;
+    }
+  }
+
 
   @import "front/header.less";
 

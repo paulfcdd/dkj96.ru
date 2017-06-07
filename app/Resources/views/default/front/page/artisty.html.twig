@@ -24,59 +24,25 @@
     <div class="container padding-left-0 padding-right-0 halls-list-block">
 
         {% for artist in artists %}
-            {#{{ dump(artist) }}#}
             <div class="col-xs-12 padding-0-100px single-hall">
                 <div class="media">
                     <a class="pull-left" href="#">
-                        <img class="media-object" src="{{ artist.avatar }}" alt="..." style="height: 256px; width: 256px; border-radius: 50%; margin-right: 20px;">
+                        <img class="media-object" src="{{ artist.avatar }}" alt="..."
+                             style="height: 256px; width: 256px; border-radius: 50%; margin-right: 20px;">
                     </a>
                     <div class="media-body">
                         <h3 class="media-heading hall-label">
                             <a href="#">{{ artist.name }}</a>
                         </h3>
                         <p class="by-author hall-description">
-                            Детский коллектив танцоров легко разнообразит Ваш юбилей или корпоративный вечер. Также в коллективе есть взрослые группы, которые могут выступать на больших городских площадках
+                            Детский коллектив танцоров легко разнообразит Ваш юбилей или корпоративный вечер. Также в
+                            коллективе есть взрослые группы, которые могут выступать на больших городских площадках
                         </p>
                         <a href="#" class="read-more-link pull-right">Подробнее</a>
                     </div>
                 </div>
             </div>
         {% endfor %}
-
-        {#<div class="col-xs-12 padding-0-100px single-hall">#}
-            {#<div class="media">#}
-                {#<a class="pull-left" href="#">#}
-                    {#<img class="media-object" src="{{ asset('img/sample_img_3.png') }}" alt="...">#}
-                {#</a>#}
-                {#<div class="media-body">#}
-                    {#<h3 class="media-heading hall-label">#}
-                        {#<a href="#">Детская студия (с 5 лет)</a>#}
-                    {#</h3>#}
-                    {#<p class="by-author hall-description">#}
-                        {#Детский коллектив танцоров легко разнообразит Ваш юбилей или корпоративный вечер. Также в коллективе есть взрослые группы, которые могут выступать на больших городских площадках#}
-                    {#</p>#}
-                    {#<a href="#" class="read-more-link pull-right">Подробнее</a>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-
-        {#<div class="col-xs-12 padding-0-100px single-hall">#}
-            {#<div class="media">#}
-                {#<a class="pull-left" href="#">#}
-                    {#<img class="media-object" src="{{ asset('img/sample_img_2.png') }}" alt="...">#}
-                {#</a>#}
-                {#<div class="media-body">#}
-                    {#<h3 class="media-heading hall-label">#}
-                        {#<a href="#">Шоу барабанщиков</a>#}
-                    {#</h3>#}
-                    {#<p class="by-author hall-description">#}
-                        {#Творческий коллектив "Чувство ритма"#}
-                        {#Профессиональное шоу барабанщиков из Екатеринбурга. Группа привлекла большое внимание слушателей яркими концертными номерами.#}
-                    {#</p>#}
-                    {#<a href="#" class="read-more-link pull-right">Подробнее</a>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
 
     </div>
 

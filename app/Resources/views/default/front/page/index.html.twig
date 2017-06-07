@@ -9,161 +9,171 @@
     <div class="space-fix-container"></div>
 
     {% block under_banner_text_widget %}
-        <div class="container padding-0-100px" id="main-text-under-banner">
-            <div class="text-center letter-spacing-1px banner-content-block col-xs-12">
-                <p>Что такое Дворец Культуры Железнодорожников?</p>
-                <p class="content-block-row">С одной стороны, это одно из старейших культурных учреждений Екатеринбурга
-                    с уже вековой историей, а с другой:</p>
-                <p class="content-block-row">современная площадка для концертных выступлений, крупных бизнес-мероприятий
-                    или праздников любого масштаба.</p>
+        <div class="container text-center col-xs-padding-right-0">
+
+            <div class="container padding-0-100px" id="main-text-under-banner">
+                <div class="text-center letter-spacing-1px banner-content-block col-xs-12">
+                    <p>Что такое Дворец Культуры Железнодорожников?</p>
+                    <p>С одной стороны, это одно из старейших культурных учреждений Екатеринбурга с уже вековой историей, а с другой:</p>
+                    <p>современная площадка для концертных выступлений, крупных бизнес-мероприятий
+                        или праздников любого масштаба.</p>
+                </div>
             </div>
+
         </div>
     {% endblock %}
 
-    <div class="container widget-panel text-center padding-top-20px">
-        <div class="col-md-4 single-widget">
-            <a href="#">
-            <span class="fa fa-camera fa-6x widget-panel-icon"></span>
-            <h4>Портфолио</h4>
-            <p>
-                {{ ' Фото и видео материалы
+    <div class="container text-center col-xs-padding-right-0">
+        <div class="row widget-panel">
+            <div class="col-md-4 single-widget padding-0-100px">
+                <a href="#">
+                    <span class="fa fa-camera fa-6x widget-panel-icon"></span>
+                    <h4>Портфолио</h4>
+                    <p>
+                        {{ ' Фото и видео материалы
                 с мероприятий дома культуры' | nl2br }}
-            </p>
-            </a>
-        </div>
-        <div class="col-md-4 single-widget">
-            <a href="#">
-            <span class="fa fa-search fa-6x widget-panel-icon"></span>
-            <h4>Планы залов и информация</h4>
-            <p>
-                {{ '3D тур по залам и холам
+                    </p>
+                </a>
+            </div>
+            <div class="col-md-4 single-widget">
+                <a href="#">
+                    <span class="fa fa-search fa-6x widget-panel-icon"></span>
+                    <h4>Планы залов и информация</h4>
+                    <p>
+                        {{ '3D тур по залам и холам
                 Дворца культуры' | nl2br }}
-            </p>
-            </a>
-        </div>
-        <div class="col-md-4 single-widget">
-            <a href="{{ path('front.renderPage', {
-                'page': 'booking'
-            }) }}">
-                <span class="fa fa-key fa-6x widget-panel-icon"></span>
-                <h4>Аренда залов</h4>
-                <p>
-                    {{ 'Занятость залов
+                    </p>
+                </a>
+            </div>
+            <div class="col-md-4 single-widget">
+                <a href="{{ path('front.renderPage', {
+                    'page': 'booking'
+                }) }}">
+                    <span class="fa fa-key fa-6x widget-panel-icon"></span>
+                    <h4>Аренда залов</h4>
+                    <p>
+                        {{ 'Занятость залов
                 на ближайший месяц' | nl2br }}
-                </p>
-            </a>
+                    </p>
+                </a>
+            </div>
+        </div>
+
+        <div class="row space-fix-container"></div>
+
+        <div class="row upcoming-events xs-padding-0-10px">
+            <div class="col-xs-12 text-left padding-0-100px">
+                <h4 id="upcoming-events-label">Ближайшие мероприятия</h4>
+            </div>
+
+            <div class="col-xs-12 padding-0-100px text-left">
+                <div class="upcoming-event">
+                    <ul class="media-list main-list">
+                        <!--SINGLE EVENT START-->
+                        <li class="media">
+                            <div class="media-body">
+                                <div class="row event-heading">
+                                    <div class="col-sm-2 col-xs-12 event-date-time">
+                                        <span>05/31/2017 - 19:00</span>
+                                    </div>
+                                    <div class="col-sm-10 col-xs-12 event-label">
+                                        <a href="#">
+                                            Отчётный концерт театра танца «Степ»
+                                        </a>
+                                    </div>
+                                </div>
+                                <p class="media-content">
+                                    Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31 мая в
+                                    концертном зале Дворца культуры железнодорожников состоится спектакль (и отчётный концерт)
+                                    Театра танца «Степ», посвященный приближающемуся столетию Дворца.
+                                </p>
+                                <a href="#" class="read-more-link">
+                                    Подробнее
+                                </a>
+                            </div>
+                        </li>
+                        <!--SINGLE EVENT END-->
+                        <!--SINGLE EVENT START-->
+                        <li class="media">
+                            <div class="media-body">
+                                <div class="row event-heading">
+                                    <div class="col-sm-2 col-xs-12 event-date-time">
+                                        <span>05/31/2017 - 19:00</span>
+                                    </div>
+                                    <div class="col-sm-10 col-xs-12 event-label">
+                                        <a href="#">
+                                            Отчётный концерт театра танца «Степ»
+                                        </a>
+                                    </div>
+                                </div>
+                                <p class="media-content">
+                                    Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31 мая в
+                                    концертном зале Дворца культуры железнодорожников состоится спектакль (и отчётный концерт)
+                                    Театра танца «Степ», посвященный приближающемуся столетию Дворца.
+                                </p>
+                                <a href="#" class="read-more-link">
+                                    Подробнее
+                                </a>
+                            </div>
+                        </li>
+                        <!--SINGLE EVENT END-->
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="container space-fix-container"></div>
+    <div class="row space-fix-container"></div>
 
-    <div class="container padding-0-100px upcoming-events">
-
-        <h4 id="upcoming-events-label">Ближайшие мероприятия</h4>
-
-        <div class="upcoming-event">
-            <ul class="media-list main-list">
-                <!--SINGLE EVENT START-->
-                <li class="media">
-                    <div class="media-body">
-                        <div class="row event-heading">
-                            <div class="col-sm-2 col-xs-12 event-date-time">
-                                <span>05/31/2017 - 19:00</span>
-                            </div>
-                            <div class="col-sm-10 col-xs-12 event-label">
-                                <a href="#">
-                                    Отчётный концерт театра танца «Степ»
-                                </a>
-                            </div>
-                        </div>
-                        <p class="media-content">
-                            Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31 мая в
-                            концертном зале Дворца культуры железнодорожников состоится спектакль (и отчётный концерт)
-                            Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                        </p>
-                        <a href="#" class="read-more-link">
-                            Подробнее
-                        </a>
-                    </div>
-                </li>
-                <!--SINGLE EVENT END-->
-                <!--SINGLE EVENT START-->
-                <li class="media">
-                    <div class="media-body">
-                        <div class="row event-heading">
-                            <div class="col-sm-2 col-xs-12 event-date-time">
-                                <span>05/31/2017 - 19:00</span>
-                            </div>
-                            <div class="col-sm-10 col-xs-12 event-label">
-                                <a href="#">
-                                    Отчётный концерт театра танца «Степ»
-                                </a>
-                            </div>
-                        </div>
-                        <p class="media-content">
-                            Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31 мая в
-                            концертном зале Дворца культуры железнодорожников состоится спектакль (и отчётный концерт)
-                            Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                        </p>
-                        <a href="#" class="read-more-link">
-                            Подробнее
-                        </a>
-                    </div>
-                </li>
-                <!--SINGLE EVENT END-->
-            </ul>
-        </div>
-
-    </div>
-
-    <div class="container space-fix-container"></div>
-
-    <div class="container-fluid padding-left-0 padding-right-0 review-block">
+    <div class="container-fluid padding-0-100px xs-padding-0-10px review-block">
         <div class="container padding-0-100px">
-            <div class="col-xs-12 padding-left-0 padding-right-0">
-                <h4 id="reviews-block-label">Отзывы</h4>
-            </div>
-            <div class="col-md-6 single-review">
-                <h4 class="single-review-label">
-                    <a href="#">Прошлое мероприятие</a>
-                </h4>
-                <p class="review-text padding-right-0 padding-left-0">
-                    Каждая книга Дины Ильиничны Рубиной – яркое и долгожданное событие для многомиллионной аудитории ее
-                    читателей. Все отлично прошло, зал просто замечательный.
-                </p>
-                <p class="review-add-time padding-right-0 padding-left-0">
-                    <span>05/25/2017 - 04:13</span>
-                    <span>
+            <div class="row margin-right-0">
+                <div class="col-xs-12">
+                    <h4 id="reviews-block-label">Отзывы</h4>
+                </div>
+                <div class="col-md-6 single-review">
+                    <h4 class="single-review-label">
+                        <a href="#">Прошлое мероприятие</a>
+                    </h4>
+                    <p class="review-text padding-right-0 padding-left-0">
+                        Каждая книга Дины Ильиничны Рубиной – яркое и долгожданное событие для многомиллионной аудитории ее
+                        читателей. Все отлично прошло, зал просто замечательный.
+                    </p>
+                    <p class="review-add-time padding-right-0 padding-left-0">
+                        <span>05/25/2017 - 04:13</span>
+                        <span>
                          <a href="#" class="read-more-link" style="color: white">
                             Подробнее
                         </a>
                     </span>
-                </p>
-            </div>
-            <div class="col-md-6 single-review">
-                <h4 class="single-review-label">
-                    <a href="#">Прошлое мероприятие</a>
-                </h4>
-                <p class="review-text padding-right-0 padding-left-0">
-                    Каждая книга Дины Ильиничны Рубиной – яркое и долгожданное событие для многомиллионной аудитории ее
-                    читателей. Все отлично прошло, зал просто замечательный.
-                </p>
-                <p class="review-add-time padding-right-0 padding-left-0">
-                    <span>05/25/2017 - 04:13</span>
-                    <span>
+                    </p>
+                </div>
+                <div class="col-md-6 single-review">
+                    <h4 class="single-review-label">
+                        <a href="#">Прошлое мероприятие</a>
+                    </h4>
+                    <p class="review-text padding-right-0 padding-left-0">
+                        Каждая книга Дины Ильиничны Рубиной – яркое и долгожданное событие для многомиллионной аудитории ее
+                        читателей. Все отлично прошло, зал просто замечательный.
+                    </p>
+                    <p class="review-add-time padding-right-0 padding-left-0">
+                        <span>05/25/2017 - 04:13</span>
+                        <span>
                          <a href="#" class="read-more-link" style="color: white">
                             Подробнее
                         </a>
                     </span>
-                </p>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="container space-fix-container-2x"></div>
+    <div class="row space-fix-container"></div>
 
-    <div class="container padding-left-0 padding-right-0 counter-widgets-block">
-        <div class="col-sm-12 padding-left-0 padding-right-0 text-center">
+
+    <div class="container text-center col-xs-padding-right-0 padding-0-100px xs-padding-0-10px">
+        <div class="counter-widgets-block">
             <div class="col-xs-12 col-sm-3 counter-widget">
                 <h4 class="counter-widget-show">455</h4>
                 <p class="counter-widget-label">Проведено мероприятий</p>

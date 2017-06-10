@@ -55,18 +55,25 @@ class FrontController extends Controller
         'booking' => 'Бронирование'
     ];
 
+    const SAMPLE_PAGE = [
+        'id' => 0,
+        'title' => 'Концертный зал',
+        'capacity' => 'до 50 человек',
+        'description' => '
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ut erat auctor odio finibus facilisis eu et ligula. Fusce bibendum gravida lacus. Proin ac sodales purus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse placerat porta odio, eu vehicula lacus gravida ut. Quisque condimentum ipsum in leo malesuada, vel elementum tortor viverra. Nulla justo quam, convallis a venenatis vel, tempus ac augue. Donec placerat ligula convallis, venenatis dui in, mattis nisi. Curabitur eu vestibulum lacus. Curabitur sollicitudin odio in egestas viverra. Etiam gravida maximus sapien, sed consequat justo auctor eu. Phasellus quis justo vulputate, luctus turpis ut, ultricies nulla.</p>
+        ',
+    ];
+
 
     /**
-     * @param string $page
-     * @param Http\Request $request
+     * @param string | null $page
+     * @param int | null $id
      * @return Response
-     * @Route("/{page}",
+     * @Route("/{page}/{id}",
      *     name="front.renderPage"
      * )
      */
-    public function mainMenuPageRenderAction(string $page = null, Http\Request $request) {
-
-        $response = new Http\Response();
+    public function pageRenderAction(string $page = null, int $id = null) {
 
         $env = $this->container->getParameter('kernel.environment');
 
@@ -76,7 +83,7 @@ class FrontController extends Controller
 
         if (!in_array($page, array_flip(self::PAGES))) {
 
-            $errorMessage = '';
+            $errorMessage = ':((9';
 
             if ($env == 'dev') {
                 $errorMessage = 'Шаблон '.$page.'.html.twig не найден в папке app/Resources/views/default/front/page';
@@ -84,6 +91,23 @@ class FrontController extends Controller
 
             throw new Exception($errorMessage, 404);
         }
+
+
+//            switch ($id){
+//                case 0:
+//                    return $this->render('default/front/page/'.$page.'/default.html.twig', [
+//                        'defaultPage' => self::SAMPLE_PAGE,
+//                        'page' => $page,
+//                        'pages' => self::PAGES
+//                    ]);
+//                    break;
+//                default:
+//                    $id = 0;
+//                    return $this->redirectToRoute('front.renderPage', [
+//                        'page' => $page,
+//                        'id' => $id
+//                    ]);
+//            }
 
 
         return $this->render(':default/front/page:'.$page.'.html.twig', [

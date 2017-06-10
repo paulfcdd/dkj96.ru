@@ -1,0 +1,16 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ defaultPage.title }}{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="container col-xs-padding-right-0">
+        <div class="row xs-padding-0-10px">
+            <div class="col-xs-12 text-left padding-0-100px">
+                <h5>{{ pages[page] }} - {{ defaultPage.title }}</h5>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

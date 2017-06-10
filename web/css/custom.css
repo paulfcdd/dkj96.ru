@@ -233,15 +233,16 @@ body {
 .wrapper .footer .footer-widget .footer-widget-data-list {
   font-family: "Titillium Web", sans-serif;
   font-weight: 300;
+  line-height: 8px;
   color: white;
 }
 .wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link {
   border: 1px solid;
   border-radius: 10px;
   background-color: #673506;
-  width: 4em;
-  height: 4em;
-  padding: 12px 0 15px 0;
+  width: 3.5em;
+  height: 3.5em;
+  padding: 8px 0 0 0;
 }
 .wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link:hover {
   background-color: #f0deba;

@@ -12,11 +12,11 @@
   font-family: 'Bebas Book';
 }
 .upcoming-events .upcoming-event .media-content {
+  color: #898989;
   padding-left: 0;
   padding-right: 0;
   font-size: 18px;
-  line-height: 26px;
-  color: #333333;
+  line-height: 20px;
 }
 .upcoming-events .upcoming-event .event-heading .event-date-time span {
   display: inline-block;
@@ -26,13 +26,18 @@
   color: #767A7D;
   padding: 0;
 }
-.upcoming-events .upcoming-event .event-heading .event-label a {
+.upcoming-events .upcoming-event .event-heading .event-label {
   color: #6B3E21;
   display: inline-block;
+  cursor: pointer;
+}
+.upcoming-events .upcoming-event .event-heading .event-label a {
+  color: #6B3E21;
   text-decoration: none;
   font-family: "Bebas Book";
   font-weight: bold;
   font-size: 18px;
+  letter-spacing: 1px;
   line-height: 20px;
 }
 .widget-panel {

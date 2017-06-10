@@ -24,8 +24,8 @@
         </div>
     {% endblock %}
 
-    {% block widget_panel_block %}
-        <div class="container text-center col-xs-padding-right-0">
+    <div class="container text-center col-xs-padding-right-0">
+        {% block widget_panel_block %}
             <div class="row widget-panel">
                 <div class="col-md-4 single-widget padding-0-100px">
                     <a href="#">
@@ -60,9 +60,11 @@
                     </a>
                 </div>
             </div>
+        {% endblock %}
 
-            <div class="row space-fix-container"></div>
+        <div class="row space-fix-container"></div>
 
+        {% block upcoming_events_block %}
             <div class="row upcoming-events xs-padding-0-10px">
                 <div class="col-xs-12 text-left padding-0-100px">
                     <h4 id="upcoming-events-label">Ближайшие мероприятия</h4>
@@ -75,13 +77,13 @@
                             <li class="media">
                                 <div class="media-body">
                                     <div class="row event-heading">
-                                        <div class="col-sm-2 col-xs-12 event-date-time">
-                                            <span>05/31/2017 - 19:00</span>
-                                        </div>
                                         <div class="col-sm-10 col-xs-12 event-label">
-                                            <a href="#">
-                                                Отчётный концерт театра танца «Степ»
-                                            </a>
+                                            <h4>
+                                                <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-clock-o"></i> 19:00 |&nbsp;
+                                                <a href="#">
+                                                    Отчётный концерт театра танца «Степ»
+                                                </a>
+                                            </h4>
                                         </div>
                                     </div>
                                     <p class="media-content">
@@ -91,9 +93,6 @@
                                         отчётный концерт)
                                         Театра танца «Степ», посвященный приближающемуся столетию Дворца.
                                     </p>
-                                    <a href="#" class="read-more-link">
-                                        Подробнее
-                                    </a>
                                 </div>
                             </li>
                             <!--SINGLE EVENT END-->
@@ -101,13 +100,13 @@
                             <li class="media">
                                 <div class="media-body">
                                     <div class="row event-heading">
-                                        <div class="col-sm-2 col-xs-12 event-date-time">
-                                            <span>05/31/2017 - 19:00</span>
-                                        </div>
                                         <div class="col-sm-10 col-xs-12 event-label">
-                                            <a href="#">
-                                                Отчётный концерт театра танца «Степ»
-                                            </a>
+                                            <h4>
+                                                <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-clock-o"></i> 19:00 |&nbsp;
+                                                <a href="#">
+                                                    Отчётный концерт театра танца «Степ»
+                                                </a>
+                                            </h4>
                                         </div>
                                     </div>
                                     <p class="media-content">
@@ -117,9 +116,6 @@
                                         отчётный концерт)
                                         Театра танца «Степ», посвященный приближающемуся столетию Дворца.
                                     </p>
-                                    <a href="#" class="read-more-link">
-                                        Подробнее
-                                    </a>
                                 </div>
                             </li>
                             <!--SINGLE EVENT END-->
@@ -127,9 +123,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    {% endblock %}
-
+        {% endblock %}
+    </div>
     <div class="row space-fix-container"></div>
 
     {% block review_panel_block %}
@@ -164,7 +159,7 @@
                             <a href="#">Прошлое мероприятие</a>
                         </h4>
                         <p class="review-add-time text-right">
-                                05/25/2017 - 04:13
+                            05/25/2017 - 04:13
                         </p>
                         <p class="review-text padding-right-0 padding-left-0">
                             Каждая книга Дины Ильиничны Рубиной – яркое и долгожданное событие для многомиллионной

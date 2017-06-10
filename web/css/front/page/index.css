@@ -64,6 +64,7 @@
 }
 .review-block {
   background-color: #898989;
+  color: #F0DEBA;
 }
 .review-block #reviews-block-label {
   font-family: 'Bebas Book';
@@ -77,15 +78,14 @@
   margin-bottom: 25px;
 }
 .review-block .single-review .single-review-label a {
-  color: #fff;
-  text-decoration: underline;
+  color: #F0DEBA;
+  text-decoration: none;
   font-family: 'Century Gothic Regular';
   font-size: 18px;
   line-height: 26px;
 }
 .review-block .single-review .review-text,
 .review-block .single-review .review-add-time {
-  color: #fff;
   font-family: 'Century Gothic Regular';
   font-size: 18px;
   line-height: 26px;

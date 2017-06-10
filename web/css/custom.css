@@ -150,20 +150,20 @@ body {
   left: 250px;
 }
 .wrapper .header .main-header .main-menu ul .active a {
-  background: #673506;
+  background: #6B3E21;
   color: #fff;
-  border-bottom: 10px solid #673506;
+  border-bottom: 10px solid #6B3E21;
 }
 .wrapper .header .main-header .main-menu ul .active:hover {
   border-bottom: none;
 }
 .wrapper .header .main-header .main-menu ul li:hover {
-  border-bottom: 10px solid #673506;
+  border-bottom: 10px solid #6B3E21;
 }
 .wrapper .header .main-header .main-menu ul li a {
   font-size: 16px;
   background: #fff;
-  color: #673506;
+  color: #6B3E21;
   padding-top: 50px;
   padding-bottom: 3px;
   text-align: center;
@@ -202,7 +202,7 @@ body {
 .wrapper .content #main-text-under-banner .banner-content-block {
   font-family: 'Century Gothic Regular';
   font-size: 15px;
-  color: #673506;
+  color: #6B3E21;
   line-height: 21px;
   font-weight: normal;
   font-style: normal;
@@ -219,10 +219,10 @@ body {
 .wrapper .footer {
   flex: 0 0 auto;
   height: auto;
-  background: #673506;
+  background: #6B3E21;
 }
 .wrapper .footer .footer-widget .footer-widget-label {
-  color: #f0deba;
+  color: #F0DEBA;
   text-decoration: none;
   border: none;
   font-family: "Bebas Book";
@@ -239,17 +239,17 @@ body {
 .wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link {
   border: 1px solid;
   border-radius: 10px;
-  background-color: #673506;
+  background-color: #6B3E21;
   width: 3.5em;
   height: 3.5em;
   padding: 8px 0 0 0;
 }
 .wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link:hover {
-  background-color: #f0deba;
-  color: #673506;
+  background-color: #F0DEBA;
+  color: #6B3E21;
 }
 .wrapper .footer .footer-widget .footer-widget-data-list a {
-  color: #f0deba;
+  color: #F0DEBA;
   text-decoration: underline;
 }
 .wrapper .footer .footer-widget .footer-widget-data-list li {
@@ -257,7 +257,7 @@ body {
   margin-bottom: 26px;
   position: relative;
   font-size: 16px;
-  color: #f0deba;
+  color: #F0DEBA;
 }
 @media only screen and (max-width: 479px) {
   .wrapper .footer .footer-widget .footer-widget-data-list li {

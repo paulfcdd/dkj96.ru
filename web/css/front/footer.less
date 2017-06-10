@@ -1,11 +1,11 @@
 .footer {
   flex: 0 0 auto;
   height: auto;
-  background: #673506;
+  background: @main-color-dark;
 
   .footer-widget {
     .footer-widget-label {
-      color: #f0deba;
+      color: @main-color-light;
       text-decoration: none;
       border: none;
       font-family: "Bebas Book";
@@ -30,19 +30,19 @@
 
         border: 1px solid;
         border-radius: 10px;
-        background-color: #673506;
+        background-color: @main-color-dark;
         width: 3.5em;
         height: 3.5em;
         padding: 8px 0 0 0;
 
         &:hover {
-          background-color: #f0deba;
-          color: #673506;
+          background-color: @main-color-light;
+          color: @main-color-dark;
         }
       }
 
       a {
-        color: #f0deba;
+        color: @main-color-light;
         text-decoration: underline;
       }
 
@@ -51,7 +51,7 @@
         margin-bottom: 26px;
         position: relative;
         font-size: 16px;
-        color: #f0deba;;
+        color: @main-color-light;
 
         @media @phone {
           white-space: normal;

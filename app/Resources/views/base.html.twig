@@ -1,4 +1,6 @@
 {% set page = app.request.get('page') %}
+{% set _route_params = app.request.attributes.get('_route_params') %}
+
 
 {% if page is null %}
     {% set page = 'index' %}
@@ -15,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
+    {#<link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">#}
 
     {% block css_loader %}
         <link rel="stylesheet" href="{{ asset('css/front/page/'~page~'.css') }}">

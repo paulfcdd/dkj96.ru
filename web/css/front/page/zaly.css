@@ -28,3 +28,27 @@
   line-height: 26px;
   color: #333333;
 }
+.single-hall-page .single-hall-page-breadcrumbs {
+  background: none;
+  border: none;
+  color: #F0DEBA;
+  font-size: 18px;
+  font-family: 'Century Gothic Regular';
+}
+.single-hall-page .single-hall-page-breadcrumbs a {
+  color: #F0DEBA;
+}
+.single-hall-page .single-hall-page-breadcrumbs .active {
+  color: #F0DEBA;
+}
+.single-hall-page .single-hall-page-content {
+  font-family: 'Century Gothic Regular';
+}
+.single-hall-page .single-hall-page-content p {
+  font-size: 16px;
+  color: #717171;
+}
+.single-hall-page .single-hall-page-content .label-capacity {
+  color: #717171;
+  font-size: 18px;
+}

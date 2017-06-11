@@ -1,3 +1,6 @@
+@import "../config/color_config";
+@import "../config/rwd_config";
+
 .footer {
   flex: 0 0 auto;
   height: auto;
@@ -19,6 +22,10 @@
       font-weight: 300;
       line-height: 8px;
       color: white;
+
+      @media @phone {
+        line-height: 15px;
+      }
 
       .social-icon-link {
         //border: 1px solid;

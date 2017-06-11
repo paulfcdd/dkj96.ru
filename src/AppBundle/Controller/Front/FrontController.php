@@ -92,23 +92,13 @@ class FrontController extends Controller
             throw new Exception($errorMessage, 404);
         }
 
-
-//            switch ($id){
-//                case 0:
-//                    return $this->render('default/front/page/'.$page.'/default.html.twig', [
-//                        'defaultPage' => self::SAMPLE_PAGE,
-//                        'page' => $page,
-//                        'pages' => self::PAGES
-//                    ]);
-//                    break;
-//                default:
-//                    $id = 0;
-//                    return $this->redirectToRoute('front.renderPage', [
-//                        'page' => $page,
-//                        'id' => $id
-//                    ]);
-//            }
-
+        if (is_int($id)) {
+            return $this->render('default/front/page/'.$page.'/default.html.twig', [
+                'defaultPage' => self::SAMPLE_PAGE,
+                'page' => $page,
+                'pages' => self::PAGES
+            ]);
+        }
 
         return $this->render(':default/front/page:'.$page.'.html.twig', [
             'page' => $page,

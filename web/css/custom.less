@@ -44,7 +44,7 @@ body {
 
   .read-more-link {
     color: @main-color-light;
-    text-decoration: underline;
+    text-decoration: none;
     font-size: 18px;
     line-height: 26px;
   }
@@ -137,12 +137,30 @@ body {
   .nowrap {
     white-space: nowrap;
   }
+
+  .underscored-label {
+    color: @main-color-dark;
+    display: inline-block;
+    line-height: 33px;
+    font-size: 30px;
+    font-weight: 500;
+    font-style: normal;
+    border-bottom: 2px solid #d22027;
+    font-family: 'Bebas Book';
+  }
+
   /* End custom classes*/
 
   /* Responsive classes*/
   .xs-padding-0-10px {
     @media @phone {
       padding: 0 10px;
+    }
+  }
+
+  .xs-width-100 {
+    @media @phone {
+      width: 100%;
     }
   }
 

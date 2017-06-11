@@ -2,14 +2,21 @@
   flex: 1 0 auto;
 
   #main-banner-index {
-    background: url("../img/banner_2.jpg");
-    background-size: cover;
-    height: 350px;
-    position: relative;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    .item {
+      height: 30em;
+
+      @media @phone {
+        height: 15em;
+      }
+    }
+    //background: url("../img/banner_2.jpg");
+    //background-size: cover;
+    //height: 350px;
+    //position: relative;
+    //background-attachment: fixed;
+    //background-position: center;
+    //background-repeat: no-repeat;
+    //background-size: cover;
   }
 
   .banner-text {

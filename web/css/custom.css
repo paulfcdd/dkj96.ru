@@ -189,14 +189,13 @@ body {
 .wrapper .content {
   flex: 1 0 auto;
 }
-.wrapper .content #main-banner-index {
-  background: url("../img/banner_2.jpg");
-  height: 350px;
-  position: relative;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.wrapper .content #main-banner-index .item {
+  height: 30em;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .content #main-banner-index .item {
+    height: 15em;
+  }
 }
 .wrapper .content .banner-text {
   background: grey;

@@ -34,6 +34,16 @@ body {
   /* End custom classes*/
   /* Responsive classes*/
 }
+.wrapper .label-underscored {
+  color: #6B3E21;
+  display: inline-block;
+  line-height: 33px;
+  font-size: 30px;
+  font-weight: 500;
+  font-style: normal;
+  border-bottom: 2px solid #d22027;
+  font-family: 'Bebas Book';
+}
 .wrapper .read-more-link {
   color: #F0DEBA;
   text-decoration: none;
@@ -93,6 +103,11 @@ body {
 .wrapper .padding-0-50px {
   padding: 0 50px;
 }
+@media only screen and (max-width: 479px) {
+  .wrapper .padding-0-50px {
+    padding: 0;
+  }
+}
 .wrapper .padding-top-20px {
   padding-top: 20px;
 }
@@ -122,6 +137,16 @@ body {
 @media only screen and (max-width: 479px) {
   .wrapper .xs-padding-0-10px {
     padding: 0 10px;
+  }
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .xs-margin-left-0 {
+    margin-left: 0;
+  }
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .xs-margin-right-0 {
+    margin-right: 0;
   }
 }
 @media only screen and (max-width: 479px) {

@@ -52,7 +52,8 @@ class FrontController extends Controller
         'istoriya' => 'История',
         'otzyvy' => 'Отзывы',
         'kontakty' => 'Контакты',
-        'booking' => 'Бронирование'
+        'booking' => 'Бронирование',
+        'portfolio' => 'Портфолио',
     ];
 
     const SAMPLE_PAGE = [

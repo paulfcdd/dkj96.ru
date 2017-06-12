@@ -42,6 +42,17 @@ body {
   margin: 0 auto;
   font: 14px/20px Arial, sans-serif;
 
+  .label-underscored {
+    color: @main-color-dark;
+    display: inline-block;
+    line-height: 33px;
+    font-size: 30px;
+    font-weight: 500;
+    font-style: normal;
+    border-bottom: 2px solid #d22027;
+    font-family: 'Bebas Book';
+  }
+
   .read-more-link {
     color: @main-color-light;
     text-decoration: none;
@@ -115,6 +126,10 @@ body {
 
   .padding-0-50px {
     padding: 0 50px;
+
+    @media @phone {
+      padding: 0;
+    }
   }
 
   .padding-top-20px {
@@ -155,6 +170,18 @@ body {
   .xs-padding-0-10px {
     @media @phone {
       padding: 0 10px;
+    }
+  }
+
+  .xs-margin-left-0 {
+    @media @phone {
+      margin-left: 0;
+    }
+  }
+
+  .xs-margin-right-0 {
+    @media @phone {
+      margin-right: 0;
     }
   }
 

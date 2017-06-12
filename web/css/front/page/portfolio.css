@@ -1,0 +1,39 @@
+@media only screen and (max-width: 479px) {
+  .portfolio .single-news {
+    padding: 15px;
+  }
+}
+.portfolio .event-header {
+  color: #6B3E21;
+  text-decoration: none;
+  font-family: "Bebas Book";
+  font-weight: bold;
+  font-size: 20px;
+  white-space: nowrap;
+  letter-spacing: 1px;
+  line-height: 20px;
+}
+.portfolio .event-subheader {
+  font-size: 13px;
+  color: #6B3E21;
+}
+.portfolio .media-content {
+  color: #898989;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 18px;
+  line-height: 20px;
+}
+.portfolio .event-heading .event-date-time span {
+  display: inline-block;
+  position: relative;
+  float: left;
+  font-size: 14px;
+  color: #767A7D;
+  padding: 0;
+}
+.portfolio .event-heading .event-label {
+  color: #6B3E21;
+  display: inline-block;
+  cursor: pointer;
+}

@@ -1,0 +1,59 @@
+@import "../../config/rwd_config";
+@import "../../config/color_config";
+
+.portfolio {
+
+  .single-news {
+    @media @phone {
+      padding: 15px;
+    }
+  }
+
+  .event-header {
+    color: @main-color-dark;
+    text-decoration: none;
+    font-family: "Bebas Book";
+    font-weight: bold;
+    font-size: 20px;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    line-height: 20px;
+  }
+
+  .event-subheader {
+    font-size: 13px;
+    color: @main-color-dark;
+
+  }
+
+  .media-content {
+    color: @main-color-grey-light;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 18px;
+    line-height: 20px;
+
+  }
+
+  .event-heading {
+
+    .event-date-time {
+      span {
+        display: inline-block;
+        position: relative;
+        float: left;
+        font-size: 14px;
+        color: #767A7D;
+        padding: 0;
+      }
+    }
+
+    .event-label {
+      color: @main-color-dark;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+  }
+
+}

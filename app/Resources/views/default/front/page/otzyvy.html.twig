@@ -1,0 +1,54 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ pageData[page] }}{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+
+    {% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container padding-left-0 padding-right-0 review-block">
+        <div class="col-md-12 single-review">
+            <h4 class="single-review-label">
+                <a href="#">Прошлое мероприятие</a>
+            </h4>
+            <p class="review-text padding-right-0 padding-left-0">
+                Каждая книга Дины Ильиничны Рубиной – яркое и долгожданное событие для многомиллионной аудитории ее
+                читателей. Все отлично прошло, зал просто замечательный.
+            </p>
+            <p class="review-add-time padding-right-0 padding-left-0">
+                <span>05/25/2017 - 04:13</span>
+                <span>
+                         <a href="#" class="read-more-link" style="color: white">
+                            Подробнее
+                        </a>
+                    </span>
+            </p>
+        </div>
+
+        <div class="col-md-12 single-review">
+            <h4 class="single-review-label">
+                <a href="#">Прошлое мероприятие</a>
+            </h4>
+            <p class="review-text padding-right-0 padding-left-0">
+                Каждая книга Дины Ильиничны Рубиной – яркое и долгожданное событие для многомиллионной аудитории ее
+                читателей. Все отлично прошло, зал просто замечательный.
+            </p>
+            <p class="review-add-time padding-right-0 padding-left-0">
+                <span>05/25/2017 - 04:13</span>
+                <span>
+                         <a href="#" class="read-more-link" style="color: white">
+                            Подробнее
+                        </a>
+                    </span>
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

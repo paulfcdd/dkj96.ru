@@ -1,0 +1,76 @@
+@import "../../config/color_config";
+@import "../../config/rwd_config";
+
+.halls-list-block {
+
+  .single-hall {
+
+    padding-bottom: 20px;
+    padding-top: 20px;
+
+    &:first-child {
+      padding-bottom: 20px;
+      padding-top: 0;
+    }
+
+    &:last-child {
+      padding-top: 20px;
+      padding-bottom: 0;
+    }
+
+    .hall-label {
+      font-family: 'Bebas Book';
+      border-bottom: 2px solid #d22027;
+      display: inline-block;
+
+      a {
+        font-size: 30px;
+        line-height: 33px;
+        color: @main-color-dark;
+        font-weight: 600;
+        text-decoration: none;
+      }
+    }
+
+    .hall-description {
+      font-family: 'Century Gothic Regular';
+      font-size: 18px;
+      line-height: 26px;
+      color: #333333;
+    }
+  }
+
+}
+
+.single-hall-page {
+
+  .single-hall-page-breadcrumbs {
+    background: none;
+    border: none;
+    color: @main-color-light;
+    font-size: 18px;
+    font-family: 'Century Gothic Regular';
+
+    a {
+      color: @main-color-light;
+    }
+
+    .active {
+      color: @main-color-light;
+    }
+  }
+
+  .single-hall-page-content {
+    font-family: 'Century Gothic Regular';
+
+    p {
+      font-size: 16px;
+      color: @main-color-grey-dark;
+    }
+
+    .label-capacity {
+      color: @main-color-grey-dark;
+      font-size: 18px;
+    }
+  }
+}

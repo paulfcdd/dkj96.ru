@@ -1,0 +1,43 @@
+@import "../../config/color_config";
+
+
+.halls-list-block {
+
+  .single-hall {
+
+    padding-bottom: 20px;
+    padding-top: 20px;
+
+    &:first-child {
+      padding-bottom: 20px;
+      padding-top: 0;
+    }
+
+    &:last-child {
+      padding-top: 20px;
+      padding-bottom: 0;
+    }
+
+    .hall-label {
+      font-family: 'Bebas Book';
+      border-bottom: 2px solid #d22027;
+      display: inline-block;
+
+      a {
+        font-size: 30px;
+        line-height: 33px;
+        color: @main-color-dark;
+        font-weight: 600;
+        text-decoration: none;
+      }
+    }
+
+    .hall-description {
+      font-family: 'Century Gothic Regular';
+      font-size: 18px;
+      line-height: 26px;
+      color: #333333;
+    }
+  }
+
+}

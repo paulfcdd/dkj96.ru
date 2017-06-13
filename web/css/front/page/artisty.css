@@ -1,0 +1,30 @@
+.halls-list-block .single-hall {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+.halls-list-block .single-hall:first-child {
+  padding-bottom: 20px;
+  padding-top: 0;
+}
+.halls-list-block .single-hall:last-child {
+  padding-top: 20px;
+  padding-bottom: 0;
+}
+.halls-list-block .single-hall .hall-label {
+  font-family: 'Bebas Book';
+  border-bottom: 2px solid #d22027;
+  display: inline-block;
+}
+.halls-list-block .single-hall .hall-label a {
+  font-size: 30px;
+  line-height: 33px;
+  color: #6B3E21;
+  font-weight: 600;
+  text-decoration: none;
+}
+.halls-list-block .single-hall .hall-description {
+  font-family: 'Century Gothic Regular';
+  font-size: 18px;
+  line-height: 26px;
+  color: #333333;
+}

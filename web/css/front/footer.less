@@ -1,0 +1,69 @@
+@import "../config/color_config";
+@import "../config/rwd_config";
+
+.footer {
+  flex: 0 0 auto;
+  height: auto;
+  background: @main-color-dark;
+
+  .footer-widget {
+    .footer-widget-label {
+      color: @main-color-light;
+      text-decoration: none;
+      border: none;
+      font-family: "Bebas Book";
+      font-size: 28px;
+      line-height: 33px;
+      font-weight: 500;
+    }
+
+    .footer-widget-data-list {
+      font-family: "Titillium Web", sans-serif;
+      font-weight: 300;
+      line-height: 8px;
+      color: white;
+
+      @media @phone {
+        line-height: 15px;
+      }
+
+      .social-icon-link {
+        //border: 1px solid;
+        //border-radius: 10px;
+        //background-color: #673506;
+        //width: 4em;
+        //height: 4em;
+        //padding: 12px 0 15px 0;
+
+        border: 1px solid;
+        border-radius: 10px;
+        background-color: @main-color-dark;
+        width: 3.5em;
+        height: 3.5em;
+        padding: 8px 0 0 0;
+
+        &:hover {
+          background-color: @main-color-light;
+          color: @main-color-dark;
+        }
+      }
+
+      a {
+        color: @main-color-light;
+        text-decoration: underline;
+      }
+
+      li {
+        white-space: nowrap;
+        margin-bottom: 26px;
+        position: relative;
+        font-size: 16px;
+        color: @main-color-light;
+
+        @media @phone {
+          white-space: normal;
+        }
+      }
+    }
+  }
+}

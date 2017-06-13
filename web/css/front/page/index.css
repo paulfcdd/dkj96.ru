@@ -1,0 +1,132 @@
+.upcoming-events {
+  font-family: 'Century Gothic Regular';
+}
+.upcoming-events #upcoming-events-label {
+  color: #6B3E21;
+  display: inline-block;
+  line-height: 33px;
+  font-size: 30px;
+  font-weight: 500;
+  font-style: normal;
+  border-bottom: 2px solid #d22027;
+  font-family: 'Bebas Book';
+}
+.upcoming-events .upcoming-event .media-content {
+  color: #898989;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 18px;
+  line-height: 20px;
+}
+.upcoming-events .upcoming-event .event-heading .event-date-time span {
+  display: inline-block;
+  position: relative;
+  float: left;
+  font-size: 14px;
+  color: #767A7D;
+  padding: 0;
+}
+.upcoming-events .upcoming-event .event-heading .event-label {
+  color: #6B3E21;
+  display: inline-block;
+  cursor: pointer;
+}
+.upcoming-events .upcoming-event .event-heading .event-label a {
+  color: #6B3E21;
+  text-decoration: none;
+  font-family: "Bebas Book";
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 1px;
+  line-height: 20px;
+}
+.widget-panel {
+  font-family: 'Century Gothic Regular';
+}
+.widget-panel .single-widget a {
+  color: #333;
+  text-decoration: none;
+}
+.widget-panel .single-widget a .widget-panel-icon {
+  cursor: pointer;
+}
+.widget-panel .single-widget a .widget-panel-icon:hover {
+  color: #6B3E21;
+}
+.error-500-page .error-page {
+  padding: 40px 15px;
+  text-align: center;
+}
+.error-500-page .error-actions {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.error-500-page .error-actions .btn {
+  margin-right: 10px;
+}
+.error-500-page .label-404 {
+  font-size: 100px;
+}
+.review-block {
+  background-color: #898989;
+  color: #F0DEBA;
+}
+.review-block #reviews-block-label {
+  font-family: 'Bebas Book';
+  font-size: 30px;
+  color: #6B3E21;
+  border-bottom: 2px solid #d22027;
+  display: inline-block;
+}
+.review-block .container {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.review-block .single-review .single-review-label a {
+  color: #F0DEBA;
+  text-decoration: none;
+  font-family: 'Century Gothic Regular';
+  font-size: 18px;
+  line-height: 26px;
+}
+.review-block .single-review .review-text,
+.review-block .single-review .review-add-time {
+  font-family: 'Century Gothic Regular';
+  font-size: 18px;
+  line-height: 26px;
+}
+.review-block .single-review .review-text span,
+.review-block .single-review .review-add-time span {
+  display: flex;
+}
+@media only screen and (max-width: 479px) {
+  .review-block .single-review .review-text span,
+  .review-block .single-review .review-add-time span {
+    display: block;
+  }
+}
+.counter-widgets-block {
+  border-left: none;
+  overflow: hidden;
+}
+.counter-widgets-block .counter-widget {
+  float: left;
+  width: 25%;
+  text-align: center;
+  font-family: "Titillium Web", sans-serif;
+  padding: 25px 0 35px;
+}
+@media only screen and (max-width: 479px) {
+  .counter-widgets-block .counter-widget {
+    width: 100%;
+  }
+}
+.counter-widgets-block .counter-widget .counter-widget-show {
+  font-size: 36px;
+  color: #6B3E21;
+  display: block;
+}
+.counter-widgets-block .counter-widget .counter-widget-label {
+  font-size: 18px;
+  color: #cc1719;
+}

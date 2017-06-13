@@ -1,0 +1,42 @@
+@import "../../config/color_config";
+
+
+.review-block {
+
+  #reviews-block-label {
+    font-family: 'Bebas Book';
+    font-size: 30px;
+    color: @main-color-dark;
+    border-bottom: 2px solid #d22027;
+    display: inline-block;
+  }
+
+  .container {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  .single-review {
+    .single-review-label {
+      a {
+        color: #333333;
+        text-decoration: underline;
+        font-family: 'Century Gothic Regular';
+        font-size: 18px;
+        line-height: 26px;
+      }
+    }
+
+    .review-text, .review-add-time {
+      color: #333333;
+      font-family: 'Century Gothic Regular';
+      font-size: 18px;
+      line-height: 26px;
+
+      span {
+        display: flex;
+
+      }
+    }
+  }
+}

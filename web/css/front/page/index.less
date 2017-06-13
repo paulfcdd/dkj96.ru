@@ -1,0 +1,177 @@
+@import "../../config/rwd_config";
+@import "../../config/color_config";
+
+
+.upcoming-events {
+  font-family: 'Century Gothic Regular';
+
+
+  #upcoming-events-label {
+    color: @main-color-dark;
+    display: inline-block;
+    line-height: 33px;
+    font-size: 30px;
+    font-weight: 500;
+    font-style: normal;
+    border-bottom: 2px solid #d22027;
+    font-family: 'Bebas Book';
+  }
+
+  .upcoming-event {
+
+    .media-content {
+      color: @main-color-grey-light;
+      padding-left: 0;
+      padding-right: 0;
+      font-size: 18px;
+      line-height: 20px;
+
+    }
+
+    .event-heading {
+
+      .event-date-time {
+        span {
+          display: inline-block;
+          position: relative;
+          float: left;
+          font-size: 14px;
+          color: #767A7D;
+          padding: 0;
+        }
+      }
+
+      .event-label {
+        color: @main-color-dark;
+        display: inline-block;
+        cursor: pointer;
+
+        a {
+          color: @main-color-dark;
+          text-decoration: none;
+          font-family: "Bebas Book";
+          font-weight: bold;
+          font-size: 18px;
+          letter-spacing: 1px;
+          line-height: 20px;
+
+        }
+      }
+
+    }
+
+  }
+}
+
+.widget-panel {
+  font-family: 'Century Gothic Regular';
+
+  .single-widget {
+    a {
+      color: #333;
+      text-decoration: none;
+
+      .widget-panel-icon {
+        cursor: pointer;
+        &:hover {
+          color: @main-color-dark;
+        }
+      }
+    }
+  }
+}
+
+.error-500-page {
+
+  .error-page {
+    padding: 40px 15px;
+    text-align: center;
+  }
+
+  .error-actions {
+    margin-top:15px;
+    margin-bottom:15px;
+
+    .btn {
+      margin-right:10px;
+    }
+  }
+
+  .label-404 {
+    font-size :100px;
+  }
+}
+
+.review-block {
+  background-color: #898989;
+  color: @main-color-light;
+
+  #reviews-block-label {
+    font-family: 'Bebas Book';
+    font-size: 30px;
+    color: @main-color-dark;
+    border-bottom: 2px solid #d22027;
+    display: inline-block;
+  }
+
+  .container {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  .single-review {
+    .single-review-label {
+      a {
+        color: @main-color-light;
+        text-decoration: none;
+        font-family: 'Century Gothic Regular';
+        font-size: 18px;
+        line-height: 26px;
+      }
+    }
+
+    .review-text, .review-add-time {
+      font-family: 'Century Gothic Regular';
+      font-size: 18px;
+      line-height: 26px;
+
+      span {
+        display: flex;
+        @media @phone {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.counter-widgets-block {
+
+  //border: 1px solid #dbdbdb;
+  border-left: none;
+  overflow: hidden;
+
+  .counter-widget {
+    //border-left: 1px solid #dbdbdb;
+    float: left;
+    width: 25%;
+    text-align: center;
+    font-family: "Titillium Web", sans-serif;
+    padding: 25px 0 35px;
+
+    @media @phone {
+      width: 100%;
+    }
+
+    .counter-widget-show {
+      font-size: 36px;
+      color: @main-color-dark;
+      display: block;
+    }
+
+    .counter-widget-label {
+      font-size: 18px;
+      color: #cc1719;
+    }
+  }
+}

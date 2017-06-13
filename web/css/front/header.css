@@ -1,0 +1,57 @@
+.header {
+  margin-right: 0;
+  font-family: 'Century Gothic Regular';
+}
+.header .site-logo {
+  padding-bottom: 0;
+  padding-top: 0;
+  height: 170px;
+}
+.header .site-logo img {
+  margin-left: auto;
+  margin-right: auto;
+  height: 150px;
+  width: auto;
+}
+.header .mobile-nav {
+  background-color: transparent;
+  border: none;
+  padding: 30px 20px;
+}
+.header .main-header {
+  padding: 20px 0 0 0;
+  margin-bottom: 0;
+  background-color: transparent;
+  border: none;
+  margin-top: 20px;
+}
+.header .main-header .row {
+  position: relative;
+}
+.header .main-header .col-sm-10 {
+  position: absolute;
+  top: 0;
+  left: 250px;
+}
+.header .main-header .main-menu ul .active a {
+  background: #673506;
+  color: #fff;
+  border-bottom: 10px solid #673506;
+}
+.header .main-header .main-menu ul .active:hover {
+  border-bottom: none;
+}
+.header .main-header .main-menu ul li:hover {
+  border-bottom: 10px solid #673506;
+}
+.header .main-header .main-menu ul li a {
+  font-size: 16px;
+  background: #fff;
+  color: #673506;
+  padding-top: 50px;
+  padding-bottom: 3px;
+  text-align: center;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}

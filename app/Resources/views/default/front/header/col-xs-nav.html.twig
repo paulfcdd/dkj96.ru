@@ -1,0 +1,26 @@
+<nav class="navbar navbar-default hidden-lg hidden-md mobile-nav">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand site-logo" href="{{ path('front.renderPage') }}">
+                <img src="{{ asset('img/logo_dkj.jpg') }}">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+
+                {% for link, name in mainMenu %}
+                    <li><a href="{{ path('front.renderPage', {
+                            'page': link
+                        }) }}">{{ name }}</a></li>
+                {% endfor %}
+
+                {#<li class="active"><a href="#">Home</a></li>#}
+            </ul>
+        </div>
+    </div>
+</nav>

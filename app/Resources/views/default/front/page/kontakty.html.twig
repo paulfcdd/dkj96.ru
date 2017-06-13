@@ -1,0 +1,84 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ pageData[page] }}{% endblock %}
+
+{% block javascripts %}
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&scroll=false" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        ymaps.ready(init);
+        var contactsMap,
+            marker,
+            coordinates = [56.855492, 60.602796];
+
+        function init(){
+            contactsMap = new ymaps.Map("map", {
+                center: coordinates,
+                zoom: 16
+            });
+
+            marker = new ymaps.Placemark(coordinates, {
+                hintContent: 'Дворец культуры железнодорожников',
+                balloonContent: ''
+            }
+            );
+
+            contactsMap.behaviors.disable('scrollZoom');
+
+
+            contactsMap.geoObjects.add(marker);
+
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+    {% block under_banner_text_widget %}
+        <div class="container text-center col-xs-padding-right-0">
+
+            <div class="container padding-0-100px" id="main-text-under-banner">
+                <div class="text-center letter-spacing-1px banner-content-block col-xs-12">
+                    <p>Если у Вас остались вопросы или хотите узнать подробности, наши специалисты</p>
+                    <p>Вам с радостью помогут. Мы работаем по будням с 10 до 19 часов</p>
+                </div>
+            </div>
+
+        </div>
+    {% endblock %}
+    <div class="space-fix-container"></div>
+
+    <div class="container text-center contact-block col-xs-padding-right-0">
+        <div class="row">
+            <div class="col-md-5 col-xs-12 padding-left-0 xs-padding-0-10px">
+                <h4 class="text-left padding-0-100px">Контактная информация</h4>
+                <p class="text-left padding-0-100px  contact-block-line">Адрес:</p>
+                <p class="text-left padding-0-100px contact-block-line nowrap">г. Екатеринбург, ул. Челюскинцев, 102</p>
+                <p class="text-left padding-0-100px  contact-block-line">Телефон:</p>
+                <p class="text-left padding-0-100px contact-block-line nowrap">общий +7 (343) 310-53-58</p>
+                <p class="text-left padding-0-100px contact-block-line nowrap">администрация +7 (343) 310-53-58</p>
+                <p class="text-left padding-0-100px contact-block-line nowrap">касса +7 (343) 310-53-58</p>
+                <p class="text-left padding-0-100px  contact-block-line">Email dkj96@ya.ru</p>
+            </div>
+            <div class="col-md-7 col-xs-12 pull-right xs-padding-0-10px">
+                <div id="map" style="width: 100%; height: 400px"></div>
+            </div>
+            <div class="col-md-12 col-xs-12 padding-top-20px xs-padding-0-10px padding-left-0">
+                <form class="padding-left-100px">
+                    <div class="form-group">
+                        <input type="email" placeholder="Ваш email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Ваше сообщение" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-default btn pull-right" type="button">Отправить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

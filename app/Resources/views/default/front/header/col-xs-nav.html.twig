@@ -6,7 +6,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand site-logo" href="{{ path('front.renderPage') }}">
+            <a class="navbar-brand site-logo" href="{{ path('front.index') }}">
                 <img src="{{ asset('img/logo_dkj.jpg') }}">
             </a>
         </div>
@@ -14,7 +14,7 @@
             <ul class="nav navbar-nav">
 
                 {% for link, name in mainMenu %}
-                    <li><a href="{{ path('front.renderPage', {
+                    <li><a href="{{ path('front.index', {
                             'page': link
                         }) }}">{{ name }}</a></li>
                 {% endfor %}

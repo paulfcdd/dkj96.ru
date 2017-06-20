@@ -1,6 +1,10 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ pageData[page] }}{% endblock %}
+{% block title %}title{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/front/page/index.css') }}">
+{% endblock %}
 
 {% block content %}
 
@@ -28,9 +32,7 @@
         {% block widget_panel_block %}
             <div class="row widget-panel">
                 <div class="col-md-4 single-widget padding-0-100px">
-                    <a href="{{ path('front.renderPage', {
-                        'page': 'portfolio'
-                    }) }}">
+                    <a href="#">
                         <span class="fa fa-camera fa-6x widget-panel-icon"></span>
                         <h4>Портфолио</h4>
                         <p>
@@ -50,9 +52,7 @@
                     </a>
                 </div>
                 <div class="col-md-4 single-widget">
-                    <a href="{{ path('front.renderPage', {
-                        'page': 'booking'
-                    }) }}">
+                    <a href="#">
                         <span class="fa fa-key fa-6x widget-panel-icon"></span>
                         <h4>Аренда залов</h4>
                         <p>

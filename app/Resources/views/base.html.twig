@@ -19,10 +19,6 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
     {#<link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">#}
 
-    {% block css_loader %}
-        <link rel="stylesheet" href="{{ asset('css/front/page/'~page~'.css') }}">
-    {% endblock %}
-
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>

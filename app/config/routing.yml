@@ -21,15 +21,3 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
-
-#admin.login:
-#    path:  /admin/login
-#    defaults: { _controller: AppBundle:Security:login }
-#
-#fos_user_security_check:
-#    path:  /admin/login_check
-#    defaults: { _controller: FOSUserBundle:Security:check }
-#
-#admin.logout:
-#    path:  /admin/logout
-#    defaults: { _controller: FOSUserBundle:Security:logout }

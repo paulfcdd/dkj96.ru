@@ -11,14 +11,11 @@
     <link href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 
-    <!-- Toastr style -->
-    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
-
-    <!-- Gritter -->
-    <link href="js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
-
-    <link href="css/animate.css" rel="stylesheet">
+    <link href="{{ asset('admin/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
+    <script src="//cdn.ckeditor.com/4.7.0/full/ckeditor.js"></script>
+
+    {% block styles %}{% endblock %}
 
 </head>
 
@@ -53,7 +50,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Новости</span></a>
+                        <a href="{{ path('admin.list', {
+                            'entity': 'news'
+                        }) }}"><i class="fa fa-diamond"></i> <span class="nav-label">Новости</span></a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Graphs</span><span class="fa arrow"></span></a>
@@ -279,6 +278,7 @@
 <!-- Toastr -->
 <script src="{{ asset('admin/js/plugins/toastr/toastr.min.js') }}"></script>
 
+{% block scripts %}{% endblock %}
 
 <script>
     $(document).ready(function() {

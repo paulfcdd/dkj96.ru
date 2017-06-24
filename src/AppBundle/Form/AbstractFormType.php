@@ -18,34 +18,13 @@ class AbstractFormType extends AbstractType
                'attr' => [
                    'class' => 'form-control'
                ],
-               'label' => 'Заголовок'
+               'label' => 'Название'
            ])
            ->add('content', TextareaType::class, [
                'attr' => [
-                   'class' => 'form-control',
+                   'class' => 'form-control ckeditor',
                ],
-           ])
-           ->add('metaKeywords', TextType::class, [
-               'attr' => [
-                   'class' => 'form-control'
-               ],
-           ])
-           ->add('metaTitle', TextType::class, [
-               'attr' => [
-                   'class' => 'form-control'
-               ],
-           ])
-           ->add('metaDescription', TextareaType::class, [
-               'attr' => [
-                   'class' => 'form-control'
-               ],
-           ])
-           ->add('save', SubmitType::class, [
-               'attr' => [
-                   'class' => 'btn btn-primary',
-                   'role' => 'button'
-               ],
-               'label' => 'Добавить'
+               'label' => 'Контент'
            ]);
     }
 }

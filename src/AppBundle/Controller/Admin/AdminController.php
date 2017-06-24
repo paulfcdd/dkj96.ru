@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller\Admin;
 
+
 use AppBundle\Entity\News;
 use AppBundle\Form\AbstractFormType;
+use AppBundle\Form\NewsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -67,13 +69,18 @@ class AdminController extends Controller
         }
 
         $form = $this
-            ->createForm(AbstractFormType::class, $object)
+            ->entityFormBuilder($className, $object)
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData()->setAuthor($this->getUser());
+
+            $formData = $form
+                ->getData()
+                ->setAuthor($this->getUser());
+
             $em->persist($formData);
             $em->flush();
+
             return $this->redirectToRoute('admin.manage', [
                 'entity' => $entity,
                 'id' => $formData->getId()
@@ -83,6 +90,21 @@ class AdminController extends Controller
         return $this->render(':default/admin:manage.html.twig', [
             'form' => $form->createView(),
         ]);
+
+    }
+
+    /**
+     * @param $className
+     * @param $object
+     * @return Form
+     */
+    private function entityFormBuilder($className, $object) {
+
+        $formName = 'AppBundle\Form\\'.$className.'Type';
+
+        $form = $this->createForm($formName, $object);
+
+        return $form;
 
     }
 

@@ -15,7 +15,8 @@
     <title>{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}">
+    {#<link rel="stylesheet" href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}">#}
+    <script src="https://use.fontawesome.com/dd34fe19f7.js"></script>
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
     {#<link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">#}
 
@@ -30,12 +31,12 @@
         {% block header %}
 
             {% set mainMenu = {
-            '' : 'Главная',
-            'zaly' : 'Залы',
-            'artisty' : 'Артисты',
-            'istoriya' : 'История',
-            'otzyvy' : 'Отзывы',
-            'kontakty' : 'Связь',
+            'front.index' : 'Главная',
+            'halls.list' : 'Залы',
+            'front.index' : 'Артисты',
+            'front.index' : 'История',
+            'front.index' : 'Отзывы',
+            'front.index' : 'Связь',
             } %}
 
             <div>
@@ -114,6 +115,7 @@
 
 
 <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/jquery.gotop.js') }}"></script>
 

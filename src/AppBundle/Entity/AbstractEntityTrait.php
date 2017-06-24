@@ -18,31 +18,13 @@ trait AbstractEntityTrait {
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255)
-     */
-    private $metaTitle;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=500)
-     */
-    private $metaKeywords;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     */
-    private $metaDescription;
-
-    /**
-     * @var string
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $title;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=10000)
+     * @ORM\Column(type="string", length=20000)
      */
     private $content;
 
@@ -71,60 +53,6 @@ trait AbstractEntityTrait {
      */
     public function getId() {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMetaTitle()
-    {
-        return $this->metaTitle;
-    }
-
-    /**
-     * @param string $metaTitle
-     * @return $this
-     */
-    public function setMetaTitle(string $metaTitle)
-    {
-        $this->metaTitle = $metaTitle;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMetaKeywords()
-    {
-        return $this->metaKeywords;
-    }
-
-    /**
-     * @param string $metaKeywords
-     * @return $this
-     */
-    public function setMetaKeywords(string $metaKeywords)
-    {
-        $this->metaKeywords = $metaKeywords;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMetaDescription()
-    {
-        return $this->metaDescription;
-    }
-
-    /**
-     * @param string $metaDescription
-     * @return $this
-     */
-    public function setMetaDescription(string $metaDescription)
-    {
-        $this->metaDescription = $metaDescription;
-        return $this;
     }
 
     /**

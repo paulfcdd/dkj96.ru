@@ -34,6 +34,16 @@ body {
   /* End custom classes*/
   /* Responsive classes*/
 }
+.wrapper .intl-tel-input,
+.wrapper .allow-dropdown {
+  width: 100%;
+}
+.wrapper .no-resize {
+  resize: none;
+}
+.wrapper .no-border-radius {
+  border-radius: 0;
+}
 .wrapper .label-underscored {
   color: #6B3E21;
   display: inline-block;

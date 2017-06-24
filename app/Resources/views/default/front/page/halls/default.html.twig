@@ -1,0 +1,59 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ hall.title }}{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+    {% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="container col-xs-padding-right-0 single-hall-page">
+        <div class="space-fix-container"></div>
+
+        <div class="row xs-padding-0-10px">
+            <div class="col-xs-12 text-left padding-0-100px">
+                <ol class="breadcrumb single-hall-page-breadcrumbs">
+                    <li class="breadcrumb-item"><a href="{{ path('halls.list') }}">Залы</a></li>
+                    <li class="breadcrumb-item active">{{ hall.title }}</li>
+                </ol>
+
+            </div>
+        </div>
+
+        <div class="space-fix-container"></div>
+
+        <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+            <div class="col-xs-12">
+               <div class="row">
+                   <div class="col-sm-10">
+                       <h4 class="underscored-label">
+                           {{ hall.title }}
+                       </h4>
+                   </div>
+                   <div class="col-sm-2">
+                       <a href="#" class="btn btn-success pull-right xs-width-100" role="button" target="_blank">
+                           Бронирование
+                       </a>
+                   </div>
+               </div>
+            </div>
+            <div class="col-xs-12">
+                <h5 class="label-capacity">
+                    Вместимость: до {{ hall.capacity }} человек
+                </h5>
+            </div>
+            <div class="col-xs-12">
+               {{ hall.content | raw }}
+            </div>
+            <div class="col-xs-12">
+                <a href="#" class="read-more-link pull-right">
+                    Подробнее о дополнительных услугах
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

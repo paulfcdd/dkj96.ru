@@ -7,66 +7,38 @@
     <script>
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
-       CKEDITOR.replace('abstract_form_content');
+       CKEDITOR.replace('ckeditor');
     </script>
 {% endblock %}
+
+{% form_theme form _self %}
+
+{#{%- block form_widget_simple -%}#}
+    {#{%- set type = type|default('text') -%}#}
+    {#<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>#}
+{#{%- endblock form_widget_simple -%}#}
+
+
+{%- block date_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{ block('form_widget_simple') }}
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- date_pattern|replace({
+                '{{ day }}':   form_widget(form.day),
+                '{{ month }}': form_widget(form.month),
+                '{{ year }}':  form_widget(form.year),
+            })|raw -}}
+        </div>
+    {%- endif -%}
+{%- endblock date_widget -%}
+
 
 {% block content %}
     <div class="col-md-12">
         <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Basic Data Tables example with responsive plugin</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#">Config option 1</a>
-                        </li>
-                        <li><a href="#">Config option 2</a>
-                        </li>
-                    </ul>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </div>
-
 
             {{ form_start(form) }}
-            <div class="ibox-content">
-                <div class="form-group">
-                    {{ form_label(form.metaTitle) }}
-                    {{ form_widget(form.metaTitle) }}
-                </div>
-
-                <div class="form-group">
-                    {{ form_label(form.metaKeywords) }}
-                    {{ form_widget(form.metaKeywords) }}
-                </div>
-
-                <div class="form-group">
-                    {{ form_label(form.metaDescription) }}
-                    {{ form_widget(form.metaDescription) }}
-                </div>
-
-                <div class="form-group">
-                    {{ form_label(form.title) }}
-                    {{ form_widget(form.title) }}
-                </div>
-
-                <div class="form-group">
-                    {{ form_label(form.content) }}
-                    {{ form_widget(form.content) }}
-                </div>
-            </div>
-
-            <div class="ibox-footer">
-                {{ form_widget(form.save) }}
-            </div>
             {{ form_end(form) }}
 
         </div>

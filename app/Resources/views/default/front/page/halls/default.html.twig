@@ -33,7 +33,9 @@
                        </h4>
                    </div>
                    <div class="col-sm-2">
-                       <a href="#" class="btn btn-success pull-right xs-width-100" role="button" target="_blank">
+                       <a href="{{ path('halls.book_hall', {
+                           'hall': hall.id
+                       }) }}" class="btn btn-success pull-right xs-width-100" role="button" target="_blank">
                            Бронирование
                        </a>
                    </div>

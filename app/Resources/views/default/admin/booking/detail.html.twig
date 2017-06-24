@@ -1,0 +1,50 @@
+{% extends ':default/admin/booking:list.html.twig' %}
+
+{% block booking_main_blok %}
+    <div class="mail-box-header">
+        <h2>
+            Просмотреть сообщение
+        </h2>
+        <div class="mail-tools tooltip-demo m-t-md">
+
+
+            <h4>
+                <span class="font-normal">Тема: </span>Запрос на бронирование зала <a href="{{ path('admin.manage', {
+                    'entity': 'hall',
+                    'id': booking.hall.id
+                }) }}" target="_blank">"{{ booking.hall.title }}"</a> (дата: {{ booking.date | date('d.m.Y') }})
+            </h4>
+            <h5>
+                <span class="pull-right font-normal"> {{ booking.dateReceived | date('H:i')~' '~booking.dateReceived |date('d.m.Y') }}</span>
+                <span class="font-normal">От: </span> {{ booking.email }}
+            </h5>
+        </div>
+    </div>
+    <div class="mail-box">
+
+
+        <div class="mail-body">
+            {{ booking.about }}
+        </div>
+
+        <div class="mail-body text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" href="{{ path('admin.booking.compose', {'booking': booking.id}) }}">
+                <i class="fa fa-reply"></i> Ответить
+            </a>
+            <a class="btn btn-sm btn-success" href="#">
+                <i class="fa fa-star"></i> Забронировать
+            </a>
+            <button title="" class="btn btn-sm btn-warning">
+                <i class="fa fa-envelope"></i> В непрочитанные
+            </button>
+            <button title="" class="btn btn-sm btn-danger">
+                <i class="fa fa-trash-o"></i> Удалить
+            </button>
+        </div>
+        <div class="clearfix"></div>
+
+
+    </div>
+{% endblock %}
+
+

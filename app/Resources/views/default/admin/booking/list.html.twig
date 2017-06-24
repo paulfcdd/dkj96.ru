@@ -1,0 +1,263 @@
+{% extends ':default/admin:base.html.twig' %}
+
+{% block content %}
+    <div class="col-lg-3">
+        {% block booking_left_menu %}
+            {{ render(controller('AppBundle:Admin/Admin:renderBookingMenu')) }}
+        {% endblock %}
+    </div>
+    <div class="col-lg-9 animated fadeInRight">
+       {% block booking_main_blok %}
+           <div class="mail-box-header">
+
+               <h2>
+                   Входящие ({{ bookings | length }})
+               </h2>
+
+           </div>
+           <div class="mail-box">
+
+               <table class="table table-hover table-mail">
+                   <thead>
+                   <th></th>
+                   <th>Телефон</th>
+                   <th>Тема</th>
+                   <th>Дата брони</th>
+                   <th colspan="2" class="text-center">Дата получения</th>
+                   </thead>
+                   <tbody>
+
+                   {% for booking in bookings %}
+                       {% set unread = null %}
+                       {% if booking.status == null %}
+                           {% set unread = 'unread' %}
+                       {% endif %}
+
+                       <tr class="{{ unread }}">
+                           <td class="check-mail">
+                               <input type="checkbox" class="i-checks">
+                           </td>
+                           <td class="mail-ontact">
+                               <a href="{{ path('admin.booking.details', {'booking': booking.id}) }}">
+                                   {{ booking.phone }}
+                               </a>
+                           </td>
+                           <td class="mail-subject">
+                               {% set about = booking.about %}
+
+                               {% if booking.about | length > 30 %}
+                                   {% set about = booking.about | slice (0,30) %}
+                                   {% set about = about~'...' %}
+                               {% endif %}
+
+                               <a href="{{ path('admin.booking.details', {'booking': booking.id}) }}">
+                                   {{ about }}
+                               </a>
+                           </td>
+                           <td class="mail-date">{{ booking.date | date('d.m.Y') }}</td>
+                           <td class="text-right mail-date">
+                               <span class="fa fa-calendar"></span> {{ booking.dateReceived | date('d.m.Y') }}
+                           </td>
+                           <td class="text-right mail-date">
+                               <span class="fa fa-clock-o"></span> {{ booking.dateReceived | date('H:i') }}
+                           </td>
+                       </tr>
+
+                   {% endfor %}
+
+
+
+                   {#<tr class="unread">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Anna Smith</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Lorem ipsum dolor noretek imit set.</a></td>#}
+                   {#<td class=""><i class="fa fa-paperclip"></i></td>#}
+                   {#<td class="text-right mail-date">6.10 AM</td>#}
+                   {#</tr>#}
+                   {#<tr class="unread">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks" checked>#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Jack Nowak</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Aldus PageMaker including versions of Lorem#}
+                   {#Ipsum.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">8.22 PM</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Facebook</a> <span#}
+                   {#class="label label-warning pull-right">Clients</span></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Many desktop publishing packages and web page#}
+                   {#editors.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">Jan 16</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Mailchip</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">There are many variations of passages of Lorem#}
+                   {#Ipsum.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">Mar 22</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Alex T.</a> <span#}
+                   {#class="label label-danger pull-right">Documents</span></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Lorem ipsum dolor noretek imit set.</a></td>#}
+                   {#<td class=""><i class="fa fa-paperclip"></i></td>#}
+                   {#<td class="text-right mail-date">December 22</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Monica Ryther</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">The standard chunk of Lorem Ipsum used.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">Jun 12</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Sandra Derick</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Contrary to popular belief.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">May 28</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Patrick Pertners</a> <span#}
+                   {#class="label label-info pull-right">Adv</span></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">If you are going to use a passage of Lorem </a>#}
+                   {#</td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">May 28</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Michael Fox</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Humour, or non-characteristic words etc.</a>#}
+                   {#</td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">Dec 9</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Damien Ritz</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Oor Lorem Ipsum is that it has a more-or-less#}
+                   {#normal.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">Jun 11</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Anna Smith</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Lorem ipsum dolor noretek imit set.</a></td>#}
+                   {#<td class=""><i class="fa fa-paperclip"></i></td>#}
+                   {#<td class="text-right mail-date">6.10 AM</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Jack Nowak</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Aldus PageMaker including versions of Lorem#}
+                   {#Ipsum.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">8.22 PM</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Mailchip</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">There are many variations of passages of Lorem#}
+                   {#Ipsum.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">Mar 22</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Alex T.</a> <span#}
+                   {#class="label label-warning pull-right">Clients</span></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Lorem ipsum dolor noretek imit set.</a></td>#}
+                   {#<td class=""><i class="fa fa-paperclip"></i></td>#}
+                   {#<td class="text-right mail-date">December 22</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Monica Ryther</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">The standard chunk of Lorem Ipsum used.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">Jun 12</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Sandra Derick</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Contrary to popular belief.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">May 28</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Patrick Pertners</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">If you are going to use a passage of Lorem </a>#}
+                   {#</td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">May 28</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Michael Fox</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Humour, or non-characteristic words etc.</a>#}
+                   {#</td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">Dec 9</td>#}
+                   {#</tr>#}
+                   {#<tr class="read">#}
+                   {#<td class="check-mail">#}
+                   {#<input type="checkbox" class="i-checks">#}
+                   {#</td>#}
+                   {#<td class="mail-ontact"><a href="mail_detail.html">Damien Ritz</a></td>#}
+                   {#<td class="mail-subject"><a href="mail_detail.html">Oor Lorem Ipsum is that it has a more-or-less#}
+                   {#normal.</a></td>#}
+                   {#<td class=""></td>#}
+                   {#<td class="text-right mail-date">Jun 11</td>#}
+                   {#</tr>#}
+                   </tbody>
+               </table>
+
+
+           </div>
+       {% endblock %}
+    </div>
+{% endblock %}

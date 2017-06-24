@@ -32,12 +32,15 @@
 
             {% set mainMenu = {
             'front.index' : 'Главная',
-            'halls.list' : 'Залы',
-            'front.index' : 'Артисты',
+            'halls.list' : 'Залы'
+            } %}
+
+            {#
+             'front.index' : 'Артисты',
             'front.index' : 'История',
             'front.index' : 'Отзывы',
             'front.index' : 'Связь',
-            } %}
+            #}
 
             <div>
                 {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}

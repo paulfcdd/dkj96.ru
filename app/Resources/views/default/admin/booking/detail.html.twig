@@ -34,17 +34,67 @@
             <a class="btn btn-sm btn-success" href="#">
                 <i class="fa fa-star"></i> Забронировать
             </a>
-            <button title="" class="btn btn-sm btn-warning">
+            <button class="btn btn-sm btn-warning set-as-unread" data-bookingid="{{ booking.id }}">
                 <i class="fa fa-envelope"></i> В непрочитанные
             </button>
-            <button title="" class="btn btn-sm btn-danger">
+            <button title="" class="btn btn-sm btn-danger remove-booking" data-bookingid="{{ booking.id }}">
                 <i class="fa fa-trash-o"></i> Удалить
             </button>
         </div>
         <div class="clearfix"></div>
-
-
     </div>
 {% endblock %}
 
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('.set-as-unread').on('click', function () {
+                var id = $(this).data('bookingid'),
+                    url = '{{ path('admin.api.booking_unread', {'booking': '_booking'}) }}';
 
+                $.ajax({
+                    url: url.replace('_booking', id),
+                    method:'post',
+                    success: function () {
+                        window.location.replace("{{ path('admin.booking.listing') }}");
+                    },
+                    error: function (resp) {
+                        alert(resp)
+                    }
+                })
+            })
+            
+            $('.remove-booking').on('click', function () {
+
+                var id = $(this).data('bookingid'),
+                    url = '{{ path('admin.api.booking_delete', {'booking': '_booking'}) }}';
+
+                swal({
+                    title: "Удалить запрос на бронирование?",
+                    text: "Удаленный запрос нельзя восстановить!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Удалить",
+                    closeOnConfirm: false
+                }, function () {
+                    $.ajax({
+                        url: url.replace('_booking', id),
+                        method: 'POST',
+                        success: function () {
+
+                            swal({
+                                title: 'Удалено',
+                                text: 'Запрос на бронирование был успешно удален',
+                                type: 'success'
+                            }, function () {
+                                window.location.replace("{{ path('admin.booking.listing') }}");
+                            });
+
+                        }
+                    });
+                });
+            })
+        })
+    </script>
+{% endblock %}

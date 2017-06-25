@@ -21,7 +21,6 @@ class HallType extends AbstractFormType
                 'attr' => [
                     'class' => 'form-control'
                 ]
-            ])
-            ->add('submit', SubmitButtonType::class, ['mapped' => false]);
+            ]);
     }
 }

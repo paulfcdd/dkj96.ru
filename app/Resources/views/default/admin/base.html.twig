@@ -9,7 +9,7 @@
     <title>{% block title %}{% endblock %}</title>
 
     <link href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
-    {#<link href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">#}
+    <link href="{{ asset('node_modules/sweetalert/dist/sweetalert.css') }}" rel="stylesheet">
     <script src="https://use.fontawesome.com/dd34fe19f7.js"></script>
 
     <link href="{{ asset('admin/css/animate.css') }}" rel="stylesheet">
@@ -21,6 +21,20 @@
 </head>
 
 {% set entity = app.request.attributes.get('_route_params') %}
+{% set routeName = app.request.attributes.get('_route') %}
+{% set activeTabId = '' %}
+
+{#{% if entity is empty %}#}
+    {#{% set activeTabId = 'dashboard' %}#}
+{#{% else %}#}
+    {#{% set activeTabId = entity.entity %}#}
+{#{% endif %}#}
+
+{#{% if routeName == 'admin.index' %}#}
+    {#{% set entity = 'dashboard' %}#}
+{#{% endif %}#}
+
+{#{{ dump(app.request.attributes.get('_route')) }}#}
 
 <body>
 <div id="wrapper">
@@ -47,7 +61,7 @@
                             IN+
                         </div>
                     </li>
-                    <li class="active" id="dashboard">
+                    <li id="dashboard">
                         <a href="{{ path('admin.index') }}"><i class="fa fa-th-large"></i>
                             <span class="nav-label">Главная</span>
                         </a>
@@ -73,7 +87,7 @@
                         </a>
                     </li>
 
-                    <li id="booking">
+                    <li id="bookings">
                         <a href="{{ path('admin.booking.listing') }}">
                             <i class="fa fa-pie-chart"></i>
                             <span class="nav-label">Бронирование</span>
@@ -246,6 +260,7 @@
 <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('admin/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
 <script src="{{ asset('admin/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('node_modules/sweetalert/dist/sweetalert.min.js') }}"></script>
 
 <!-- Flot -->
 <script src="{{ asset('admin/js/plugins/flot/jquery.flot.js') }}"></script>
@@ -277,19 +292,15 @@
 <script src="{{ asset('admin/js/plugins/toastr/toastr.min.js') }}"></script>
 
 
-<script>
+{#<script>#}
     {#$(document).ready(function () {#}
-        {#var current;#}
+        {#var current = '{{ activeTabId }}';#}
 
-        {#{% if entity is empty %}#}
-        {#current = 'dashboard';#}
-        {#{% else %}#}
-        {#current = '{{ entity.entity }}';#}
-        {#{% endif %}#}
+        {#$('#'+current).addClass('active');#}
 
         {#console.log(current);#}
     {#})#}
-</script>
+{#</script>#}
 
 {% block scripts %}{% endblock %}
 

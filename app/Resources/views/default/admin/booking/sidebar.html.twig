@@ -7,9 +7,8 @@
                     <a href="{{ path('admin.booking.listing') }}">
                         <i class="fa fa-inbox "></i> Входящие
 
-                        {% if bookings | unreadMessages != 0 %}
-                            <span class="label label-warning pull-right">{{ bookings | unreadMessages }}</span>
-                        {% endif %}
+                        <span class="label label-warning pull-right">{{ bookings | unreadMessages }} / {{ bookings | length }}</span>
+
 
 
                     </a>

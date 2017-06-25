@@ -26,5 +26,9 @@ class AbstractFormType extends AbstractType
                ],
                'label' => 'Контент'
            ]);
+//           ->add('submit', SubmitButtonType::class, [
+//               'label' => false,
+//               'mapped' => false,
+//           ]);
     }
 }

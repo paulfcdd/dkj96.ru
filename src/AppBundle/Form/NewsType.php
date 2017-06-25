@@ -13,7 +13,5 @@ class NewsType extends AbstractFormType
     {
         parent::buildForm($builder, $options);
 
-        $builder
-            ->add('submit', SubmitButtonType::class, ['mapped' => false]);
     }
 }

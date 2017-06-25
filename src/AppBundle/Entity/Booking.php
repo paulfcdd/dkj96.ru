@@ -69,6 +69,30 @@ class Booking
     private $status = 0;
 
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $booked = 0;
+
+    /**
+     * @return bool
+     */
+    public function isBooked()
+    {
+        return $this->booked;
+    }
+
+    /**
+     * @param bool $booked
+     * @return $this
+     */
+    public function setBooked(bool $booked)
+    {
+        $this->booked = $booked;
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isStatus()

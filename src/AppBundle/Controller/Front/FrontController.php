@@ -3,9 +3,11 @@
 namespace AppBundle\Controller\Front;
 
 
+use AppBundle\Entity\Artist;
 use AppBundle\Entity\Booking;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Hall;
+use AppBundle\Entity\History;
 use AppBundle\Entity\News;
 use AppBundle\Form\BookingType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,6 +35,31 @@ class FrontController extends Controller
             'news' => $doctrine->getRepository(News::class)->findAll(),
             'events' => $doctrine->getRepository(Event::class)->findBy([], ['eventDate' => 'ASC'], 3, null)
         ]);
+    }
+
+    /**
+     * @Route("/artists", name="front.artists")
+     */
+    public function listArtistsPage() {
+        return $this->render(':default/front/page:artisty.html.twig', [
+            'artists' => $this->getDoctrine()->getRepository(Artist::class)->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/history", name="front.history")
+     */
+    public function listHistoryPage() {
+        return $this->render(':default/front/page:istoriya.html.twig', [
+            'history' => $this->getDoctrine()->getRepository(History::class)->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/contact", name="front.contact")
+     */
+    public function contactPageAction() {
+        return $this->render(':default/front/page:kontakty.html.twig', []);
     }
 
 

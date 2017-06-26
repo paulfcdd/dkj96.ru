@@ -19,14 +19,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-/**
- * @Route("/admin")
- */
+
 class AdminController extends Controller
 {
 
     /**
-     * @Route("", name="admin.index")
+     * @Route("/admin", name="admin.index")
      */
     public function indexAction() {
 
@@ -37,7 +35,7 @@ class AdminController extends Controller
      * @param string $entity
      *
      * @return Response
-     * @Route("/{entity}/list", name="admin.list")
+     * @Route("/admin/{entity}/list", name="admin.list")
      */
     public function listAction(string $entity) {
 
@@ -56,7 +54,7 @@ class AdminController extends Controller
      * @param $entity
      * @param $id
      * @return Response
-     * @Route("/{entity}/manage/{id}", name="admin.manage")
+     * @Route("/admin/{entity}/manage/{id}", name="admin.manage")
      */
     public function manageAction(string $entity, int $id = null, Request $request) {
 

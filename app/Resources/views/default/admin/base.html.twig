@@ -89,6 +89,20 @@
                         </a>
                     </li>
 
+                    <li id="hall">
+                        <a href="{{ path('admin.list', {
+                            'entity': 'artist'
+                        }) }}"><i class="fa fa-pie-chart"></i> <span class="nav-label">Артисты</span>
+                        </a>
+                    </li>
+
+                    <li id="history">
+                        <a href="{{ path('admin.list', {
+                            'entity': 'history'
+                        }) }}"><i class="fa fa-pie-chart"></i> <span class="nav-label">История</span>
+                        </a>
+                    </li>
+
                     <li id="bookings">
                         <a href="{{ path('admin.booking.listing') }}">
                             <i class="fa fa-pie-chart"></i>

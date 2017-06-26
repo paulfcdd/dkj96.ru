@@ -24,13 +24,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 /**
  * Class BookingController
  * @package AppBundle\Controller\Admin
- * @Route("/admin/bookings")
  */
 class BookingController extends AdminController
 {
     /**
      * @return Response
-     * @Route("", name="admin.booking.listing")
+     * @Route("/admin/bookings", name="admin.booking.listing")
      */
     public function listBookingsAction() {
 
@@ -43,7 +42,7 @@ class BookingController extends AdminController
     }
 
     /**
-     * @Route("/detail/{booking}", name="admin.booking.details")
+     * @Route("/admin/bookings/detail/{booking}", name="admin.booking.details")
      */
     public function bookingDetailAction(Booking $booking, Request $request) {
 
@@ -72,7 +71,7 @@ class BookingController extends AdminController
 
     /**
      * @Method({"POST", "GET"})
-     * @Route("/compose/{booking}", name="admin.booking.compose")
+     * @Route("/admin/bookings/compose/{booking}", name="admin.booking.compose")
      */
     public function bookingComposeAction(Booking $booking, Request $request) {
 
@@ -106,7 +105,7 @@ class BookingController extends AdminController
      * @param Hall $hall
      * @param Request $request
      * @return Response
-     * @Route("/calendar/{hall}", name="admin.booking.calendar")
+     * @Route("/admin/bookings/calendar/{hall}", name="admin.booking.calendar")
      */
     public function bookingCalendarAction(Hall $hall, Request $request) {
 
@@ -119,7 +118,7 @@ class BookingController extends AdminController
     }
 
     /**
-     * @Route("/halls/booking/hall{hall}", name="halls.book_hall")
+     * @Route("/admin/bookings/halls/booking/hall{hall}", name="halls.book_hall")
      */
     public function bookHallAction(Hall $hall, Request $request) {
 

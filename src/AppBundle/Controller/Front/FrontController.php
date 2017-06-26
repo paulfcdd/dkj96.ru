@@ -41,6 +41,20 @@ class FrontController extends Controller
     }
 
     /**
+     * @return Http\Response
+     * @Route("/portfolio", name="front.portfolio")
+     */
+    public function portfolioAction() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        return $this->render(':default/front/page:portfolio.html.twig', [
+            'events' => $em->getRepository(Event::class)->findAll(),
+            'news' => $em->getRepository(News::class)->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/artists", name="front.artists")
      */
     public function listArtistsPage() {

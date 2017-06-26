@@ -2,6 +2,10 @@
 
 {% block title %}{{ event.title }}{% endblock %}
 
+{% block stylesheets %}
+    <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 

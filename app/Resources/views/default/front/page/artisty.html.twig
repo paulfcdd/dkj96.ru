@@ -28,10 +28,20 @@
     <div class="container padding-left-0 padding-right-0 halls-list-block">
 
         {% for artist in artists %}
+            {% set defaultImage = null %}
+
+            {% if artist.files | length > 0 %}
+                {% for file in artist.files %}
+                    {% if file.isDefault == 1 %}
+                        {% set defaultImage = file %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
             <div class="col-xs-12 padding-0-100px single-hall xs-padding-0-10px">
                 <div class="media">
                     <a class="pull-left" href="#">
-                        <img class="media-object" src="" style="height: 256px; width: 256px; border-radius: 50%; margin-right: 20px;">
+                        <img class="media-object" src="{{ asset('upload/artist/'~defaultImage.name) }}" style="height: 256px; width: 256px; border-radius: 50%; margin-right: 20px;">
                     </a>
                     <div class="media-body">
                         <h3 class="media-heading hall-label">

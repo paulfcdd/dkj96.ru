@@ -4,6 +4,14 @@
 
     {% block stylesheets %}
         <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+
+        <style>
+            .media-object {
+                width: 20em;
+                height: 20em;
+                border-radius: 50%;
+            }
+        </style>
     {% endblock %}
 
 {% block content %}
@@ -28,12 +36,25 @@
 
 
         {% for hall in halls %}
+
             {% set hallDetailPath =  path('halls.detail', {'hall': hall.id}) %}
+
+            {% set defaultImage = null %}
+
+            {% if hall.files | length > 0 %}
+                {% for file in hall.files %}
+                    {% if file.isDefault == 1 %}
+                        {% set defaultImage = file %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
 
             <div class="col-xs-12 padding-0-100px xs-padding-0-10px single-hall">
                 <div class="media">
                     <a class="pull-left" href="#">
-                        <img class="media-object" src="{{ asset('img/sample_img_1.png') }}" alt="...">
+                        {% if defaultImage is not null %}
+                           <img class="media-object" src="{{ asset('upload/hall/'~defaultImage.name) }}">
+                        {% endif %}
                     </a>
                     <div class="media-body">
                         <h3 class="media-heading hall-label">

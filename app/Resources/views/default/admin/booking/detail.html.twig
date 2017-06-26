@@ -12,7 +12,7 @@
                 <span class="font-normal">Тема: </span>Запрос на бронирование зала <a href="{{ path('admin.manage', {
                     'entity': 'hall',
                     'id': booking.hall.id
-                }) }}" target="_blank">"{{ booking.hall.title }}"</a> (дата: {{ booking.date | date('d.m.Y') }})
+                }) }}" target="_blank">"{{ booking.hall.title }}"</a>
             </h4>
             <h5>
                 <span class="pull-right font-normal"> {{ booking.dateReceived | date('H:i')~' '~booking.dateReceived |date('d.m.Y') }}</span>
@@ -24,16 +24,49 @@
 
 
         <div class="mail-body">
-            {{ booking.about }}
+            <table>
+                <tr>
+                    <td>
+                        <b>Дата:&nbsp;</b>
+                    </td>
+                    <td>{{  booking.date | date('d.m.Y') }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Кол-во человек:&nbsp;</b>
+                    </td>
+                    <td>{{  booking.guests }} чел.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Контактный телефон:&nbsp;</b>
+                    </td>
+                    <td>{{  booking.phone }}</td>
+                </tr>
+            </table>
+            <p>
+                {{ booking.about }}
+            </p>
         </div>
 
         <div class="mail-body text-right tooltip-demo">
             <a class="btn btn-sm btn-primary" href="{{ path('admin.booking.compose', {'booking': booking.id}) }}">
                 <i class="fa fa-reply"></i> Ответить
             </a>
-            <a class="btn btn-sm btn-success" href="#">
-                <i class="fa fa-star"></i> Забронировать
-            </a>
+
+            {% set fa_class = 'fa-star' %}
+            {% set confirm_btn_text = 'Забронировать' %}
+            {% set disabled = '' %}
+
+            {% if booking.booked == 1 %}
+                {% set fa_class = 'fa-check' %}
+                {% set confirm_btn_text = 'Забронировано' %}
+                {% set disabled = 'disabled' %}
+            {% endif %}
+
+            <button class="btn btn-sm btn-success confirm-booking" {{ disabled }} data-bookingid="{{ booking.id }}">
+                <i class="fa {{ fa_class }}"></i> {{ confirm_btn_text }}
+            </button>
             <button class="btn btn-sm btn-warning set-as-unread" data-bookingid="{{ booking.id }}">
                 <i class="fa fa-envelope"></i> В непрочитанные
             </button>
@@ -89,6 +122,41 @@
                                 type: 'success'
                             }, function () {
                                 window.location.replace("{{ path('admin.booking.listing') }}");
+                            });
+
+                        }
+                    });
+                });
+            })
+
+            $('.confirm-booking').on('click', function () {
+                var id = $(this).data('bookingid'),
+                    url = '{{ path('admin.api.booking_confirm', {'booking': '_booking'}) }}';
+
+                swal({
+                    title: "Подтверждение бронирования",
+                    text: "Вы уверенны, что хотите подтвердить бронирование зала {{ booking.hall.title }}",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#82DD82",
+                    confirmButtonText: "Подтвердить",
+                    closeOnConfirm: false
+                }, function () {
+                    $.ajax({
+                        url: url.replace('_booking', id),
+                        method: 'POST',
+                        success: function () {
+
+                            swal({
+                                title: 'Успешно',
+                                text: 'Бронь зала {{ booking.hall.title }} подтверждена. Клиенту выслано письмо на указанный email',
+                                type: 'success'
+                            }, function () {
+                                var confirmBtn = $('.confirm-booking');
+
+                                confirmBtn
+                                    .html('<i class="fa fa-check"></i> Забронировано')
+                                    .attr('disabled', true);
                             });
 
                         }

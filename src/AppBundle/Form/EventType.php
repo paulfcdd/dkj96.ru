@@ -17,10 +17,12 @@ class EventType extends AbstractFormType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('eventTime', TimeType::class)
-            ->add('eventDate', DateType::class)
-            ->add('submit', SubmitButtonType::class, ['mapped' => false]);
-
+            ->add('eventTime', TimeType::class, [
+                'label' => 'Время события'
+            ])
+            ->add('eventDate', DateType::class, [
+                'label' => 'Дата события'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -3,8 +3,10 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Booking;
+use AppBundle\Entity\Hall;
 use AppBundle\Entity\News;
 use AppBundle\Form\AbstractFormType;
+use AppBundle\Form\BookingType;
 use AppBundle\Form\NewsType;
 use AppBundle\Service\MailerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class BookingController
@@ -43,7 +47,6 @@ class BookingController extends AdminController
      */
     public function bookingDetailAction(Booking $booking, Request $request) {
 
-        $doctrine = $this->getDoctrine();
 
         if (!$booking->isStatus()) {
             $this->changeBookingStatus($booking);
@@ -96,6 +99,67 @@ class BookingController extends AdminController
 
         return $this->render(':default/admin/booking:sidebar.html.twig', [
             'bookings' => $this->getDoctrine()->getRepository(Booking::class)->findAll()
+        ]);
+    }
+
+    /**
+     * @param Hall $hall
+     * @param Request $request
+     * @return Response
+     * @Route("/calendar/{hall}", name="admin.booking.calendar")
+     */
+    public function bookingCalendarAction(Hall $hall, Request $request) {
+
+        $bookings = $this->getDoctrine()->getRepository(Booking::class)->findBy(['hall'=>$hall]);
+
+        return $this->render(':default/admin/booking:calendar.html.twig', [
+            'hall' => $hall,
+            'bookings' => $bookings
+        ]);
+    }
+
+    /**
+     * @Route("/halls/booking/hall{hall}", name="halls.book_hall")
+     */
+    public function bookHallAction(Hall $hall, Request $request) {
+
+        /** @var Session $session */
+        $session = $request->getSession();
+
+        /** @var FlashBag $flashBag */
+        $flashBag = $session->getFlashBag();
+
+        $flashBagMessage = null;
+
+        $doctrine = $this->getDoctrine();
+
+        $form = $this
+            ->createForm(BookingType::class)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $flashBag->add('success', 'Ваш запрос отправлен');
+            $flashBag->add('error', 'Не удалось отправить форму');
+
+            /** @var Booking $formData */
+            $formData = $form->getData();
+
+            $formData->setHall($hall);
+            $doctrine->getManager()->persist($formData);
+
+            try {
+                $doctrine->getManager()->flush();
+                $flashBagMessage = $flashBag->get('success');
+            } catch (\Exception $exception) {
+                $flashBagMessage = $flashBag->get('error');
+            }
+        }
+
+        return $this->render(':default/front/page:booking.html.twig', [
+            'hall' => $hall,
+            'form' => $form->createView(),
+            'formMessage' => $flashBagMessage,
         ]);
     }
 

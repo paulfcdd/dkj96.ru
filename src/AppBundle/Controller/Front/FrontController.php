@@ -74,49 +74,4 @@ class FrontController extends Controller
             'hall' => $hall
         ]);
     }
-
-    /**
-     * @Route("/halls/booking/hall{hall}", name="halls.book_hall")
-     */
-    public function bookHallAction(Hall $hall, Http\Request $request) {
-
-        /** @var Http\Session\Session $session */
-        $session = $request->getSession();
-
-        /** @var Http\Session\Flash\FlashBag $flashBag */
-        $flashBag = $session->getFlashBag();
-
-        $flashBagMessage = null;
-
-        $doctrine = $this->getDoctrine();
-
-        $form = $this
-            ->createForm(BookingType::class)
-            ->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $flashBag->add('success', 'Ваш запрос отправлен');
-            $flashBag->add('error', 'Не удалось отправить форму');
-
-            /** @var Booking $formData */
-            $formData = $form->getData();
-
-            $formData->setHall($hall);
-            $doctrine->getManager()->persist($formData);
-
-            try {
-                $doctrine->getManager()->flush();
-                $flashBagMessage = $flashBag->get('success');
-            } catch (\Exception $exception) {
-                $flashBagMessage = $flashBag->get('error');
-            }
-        }
-
-        return $this->render(':default/front/page:booking.html.twig', [
-            'hall' => $hall,
-            'form' => $form->createView(),
-            'formMessage' => $flashBagMessage,
-        ]);
-    }
 }

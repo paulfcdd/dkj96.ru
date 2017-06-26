@@ -63,4 +63,22 @@ class ApiController extends AdminController
         }
 
     }
+
+    /**
+     * @param Booking $booking
+     * @Route("/booking_confirm/{booking}", name="admin.api.booking_confirm")
+     * @return JsonResponse
+     */
+    public function confirmBookingAjaxAction(Booking $booking) {
+
+        $booking->setBooked(true);
+
+        try {
+            $this->doctrineManager()->flush();
+            return JsonResponse::create();
+        } catch (DBALException $exception) {
+            return JsonResponse::create('not ok', 500);
+        }
+
+    }
 }

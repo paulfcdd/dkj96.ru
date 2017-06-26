@@ -50,11 +50,18 @@
                                 {{ object.author.username }}
                             </td>
                             <td class="text-right">
+
                                 <div class="btn-group">
                                     <a href="{{ path('admin.manage', {
                                         'entity': entity,
                                         'id': object.id
                                     }) }}" role="button" class="btn btn-success"><span class="fa fa-edit"></span></a>
+                                    {% if entity == 'hall' %}
+                                        <a href="{{ path('admin.booking.calendar', {
+                                            'hall': object.id
+                                        }) }}" role="button" class="btn btn-primary">
+                                            <span class="fa fa-calendar"></span></a>
+                                    {% endif %}
                                     <a href="#" role="button" class="btn btn-danger"><span class="fa fa-trash"></span></a>
                                 </div>
                             </td>

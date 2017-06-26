@@ -15,12 +15,6 @@
 
 {% form_theme form _self %}
 
-{#{%- block form_widget_simple -%}#}
-    {#{%- set type = type|default('text') -%}#}
-    {#<input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>#}
-{#{%- endblock form_widget_simple -%}#}
-
-
 {%- block date_widget -%}
     {%- if widget == 'single_text' -%}
         {{ block('form_widget_simple') }}
@@ -46,7 +40,14 @@
             </div>
             <div class="ibox-content">
 
-                {#{{ dump(form.vars) }}#}
+                {% if object.files is not empty %}
+                   <a href="{{ path('admin.manage.files', {
+                       'entity': routeParams.entity,
+                       'id': routeParams.id
+                   }) }}" class="btn btn-success">
+                       <i class="fa fa-files-o" aria-hidden="true"></i> Медиафайлы
+                   </a>
+                {% endif %}
 
                 {{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}
 

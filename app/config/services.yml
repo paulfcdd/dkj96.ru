@@ -21,10 +21,15 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    AppBundle\Listener\:
+        resource: '../../src/AppBundle/Listener'
+        public: true
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
     AppBundle\Service\:
         resource: '../../src/AppBundle/Service'
         public: true
-        tags: ['mailer', 'swift_message']
+        tags: ['mailer', 'swift_message', "@doctrine.orm.entity_manager", '@service_container']
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:

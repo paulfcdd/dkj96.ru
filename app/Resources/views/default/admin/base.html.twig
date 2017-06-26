@@ -22,7 +22,7 @@
 
 </head>
 
-{% set entity = app.request.attributes.get('_route_params') %}
+{% set routeParams = app.request.attributes.get('_route_params') %}
 {% set routeName = app.request.attributes.get('_route') %}
 {% set activeTabId = '' %}
 

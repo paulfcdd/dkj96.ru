@@ -10,8 +10,11 @@ use AppBundle\Entity\Hall;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
 use AppBundle\Form\BookingType;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation as Http;
 
@@ -99,6 +102,69 @@ class FrontController extends Controller
 
         return $this->render('default/front/page/halls/default.html.twig', [
             'hall' => $hall
+        ]);
+    }
+
+    /**
+     * @Route("/halls/booking/{hall}", name="halls.book_hall")
+     */
+    public function bookHallAction(Hall $hall = null, Http\Request $request) {
+
+        /** @var Http\Session\Session $session */
+        $session = $request->getSession();
+
+        /** @var Http\Session\Flash\FlashBag $flashBag */
+        $flashBag = $session->getFlashBag();
+
+        $flashBagMessage = null;
+
+        $doctrine = $this->getDoctrine();
+
+        $form = $this->createForm(BookingType::class);
+
+        if (!$hall) {
+            $form->add('hall', EntityType::class, [
+                'class' => Hall::class,
+                'label' => 'Выберите зал',
+                'attr' => [
+                    'class' => 'form-control no-border-radius'
+                ],
+                'choice_label' => 'title',
+                'required' => false,
+                'placeholder' => null
+            ]);
+        }
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $flashBag->add('success', 'Ваш запрос отправлен');
+            $flashBag->add('error', 'Не удалось отправить форму');
+
+            /** @var Booking $formData */
+            $formData = $form->getData();
+
+            if ($hall) {
+                $formData->setHall($hall);
+            }
+
+            $doctrine->getManager()->persist($formData);
+
+            try {
+                $doctrine->getManager()->flush();
+                $flashBagMessage = $flashBag->get('success');
+            } catch (\Exception $exception) {
+                $flashBagMessage = $flashBag->get('error');
+            }
+        }
+
+        return $this->render(':default/front/page:booking.html.twig', [
+            'hall' => $hall,
+            'form' => $form->createView(),
+            'formMessage' => $flashBagMessage,
+            'halls' => $doctrine->getRepository(Hall::class)->findAll(),
         ]);
     }
 }

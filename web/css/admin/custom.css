@@ -1,3 +1,7 @@
 .fc-day-grid-event .fc-content {
   height: 100px;
 }
+.single-file img {
+  width: 10em;
+  height: 10em !important;
+}

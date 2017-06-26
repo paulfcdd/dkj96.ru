@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\File;
 use Doctrine\DBAL\DBALException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Booking;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
@@ -17,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request as HttpRequest;
  */
 class ApiController extends AdminController
 {
+
+    const ENTITY_NAMESPACE_PATTERN = 'AppBundle\\Entity\\';
 
     /**
      * @param string|null $name
@@ -80,5 +84,72 @@ class ApiController extends AdminController
             return JsonResponse::create('not ok', 500);
         }
 
+    }
+
+    /**
+     * @param File $file
+     * @return JsonResponse
+     * @Route("/set_image_as_default/{file}", name="admin.api.set_as_default")
+     *
+     */
+    public function setImageAsDefaultAjaxAction(File $file) {
+
+        $doctrine = $this->getDoctrine();
+
+        $resp = [
+            'data' => null,
+            'status' => null
+        ];
+
+
+        $objectFiles = $doctrine->getRepository(File::class)->findBy([
+            'entity' => $file->getEntity(),
+            'foreignKey' => $file->getForeignKey()
+        ]);
+
+
+        foreach ($objectFiles as $objectFile) {
+            if ($objectFile->isIsDefault() == 1) {
+                $objectFile->setIsDefault(0);
+            }
+        }
+
+        $file->setIsDefault(1);
+
+        try {
+            $doctrine->getManager()->flush();
+            $resp['data'] = 'ok';
+            $resp['status'] = 200;
+        } catch (\Exception $exception) {
+            $resp['data'] = 'not ok';
+            $resp['status'] = 500;
+        }
+
+
+        return JsonResponse::create($resp['data'], $resp['status']);
+    }
+
+    /**
+     * @param File $file
+     * @return JsonResponse
+     * @Route("/file_delete/{file}", name="admin.api.file_delete")
+     */
+    public function deleteFileAjaxAction(File $file) {
+
+        $finder = new Finder();
+
+        $fileDir = $this->getParameter('upload_directory');
+
+        $finder->name($file->getName());
+
+        foreach ($finder->in($fileDir) as $item) {
+            unlink($item);
+        }
+
+        $this->doctrineManager()->remove($file);
+
+        $this->doctrineManager()->flush();
+
+        return JsonResponse::create('ok', 200);
     }
 }

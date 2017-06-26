@@ -85,6 +85,12 @@
             <div class="form-group col-sm-6 col-xs-12">
                 {{ form_widget(form.guests) }}
             </div>
+            {% if hall is empty %}
+                <div class="form-group col-sm-12 col-xs-12">
+                    {{ form_label(form.hall) }}
+                    {{ form_widget(form.hall) }}
+                </div>
+            {% endif %}
             <div class="form-group col-sm-12 col-xs-12">
                 {{ form_widget(form.about) }}
             </div>

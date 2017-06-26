@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 
 use AppBundle\Entity\Hall;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +22,12 @@ class HallType extends AbstractFormType
                 'attr' => [
                     'class' => 'form-control'
                 ]
+            ])
+            ->add('files', FileType::class, [
+                'label' => 'Файлы для загрузки',
+                'required' => false,
+                'mapped' => false,
+                'multiple' => true,
             ]);
     }
 }

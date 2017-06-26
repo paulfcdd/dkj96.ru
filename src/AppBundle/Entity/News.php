@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Traits\FileTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,4 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class News
 {
     use AbstractEntityTrait;
+
+    use FileTrait;
 }

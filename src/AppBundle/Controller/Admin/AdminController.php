@@ -4,9 +4,11 @@ namespace AppBundle\Controller\Admin;
 
 
 use AppBundle\Entity\Booking;
+use AppBundle\Entity\File;
 use AppBundle\Entity\News;
 use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
+use AppBundle\Service\FileUploaderService;
 use AppBundle\Service\MailerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -60,14 +62,20 @@ class AdminController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $uploader = $this->get(FileUploaderService::class);
+
+        $files = null;
+
         $className = ucfirst($entity);
 
         $class = 'AppBundle\\Entity\\'.$className;
+
 
         $object = new $class();
 
         if ($id) {
             $object = $em->getRepository('AppBundle\\Entity\\'.$className)->findOneById($id);
+            $files = $this->fileLoader($class, $id);
         }
 
         $form = $this
@@ -76,12 +84,37 @@ class AdminController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $attachedFiles = $form['files']->getData();
+
             $formData = $form
                 ->getData()
                 ->setAuthor($this->getUser());
 
             $em->persist($formData);
             $em->flush();
+
+            if (!empty($attachedFiles)) {
+
+                foreach ($attachedFiles as $attachedFile) {
+
+                    $file = new File();
+
+                    $uploader
+                        ->setDir($entity)
+                        ->setFile($attachedFile);
+
+                    $file
+                        ->setForeignKey($formData->getId())
+                        ->setMimeType($uploader->getMimeType())
+                        ->setEntity($class)
+                        ->setName($uploader->upload());
+
+                    $em->persist($file);
+
+                }
+
+                $em->flush();
+            }
 
             return $this->redirectToRoute('admin.manage', [
                 'entity' => $entity,
@@ -91,8 +124,19 @@ class AdminController extends Controller
 
         return $this->render(':default/admin:manage.html.twig', [
             'form' => $form->createView(),
+            'files' => $files,
+            'object' => $object,
         ]);
+    }
 
+    /**
+     * @Route("/admin/{entity}/manage/{id}/files", name="admin.manage.files")
+     */
+    public function fileManagerAction(string $entity, int $id) {
+
+        return $this->render(':default/admin:files.html.twig', [
+            'files' => $this->fileLoader($this->getClassName($entity), $id),
+        ]);
     }
 
     /**
@@ -110,10 +154,31 @@ class AdminController extends Controller
 
     }
 
-    private function saveFormData($formData) {
 
-        $em = $this->getDoctrine()->getManager();
+    /**
+     * @param string $class
+     * @param int $id
+     * @return array
+     */
+    private function fileLoader(string $class, int $id) {
 
+        $doctrine = $this->getDoctrine();
+
+        $files = $doctrine->getRepository(File::class)->findBy(
+            ['foreignKey' => $id, 'entity' => $class]
+        );
+
+        return $files;
+
+    }
+
+    private function getClassName(string $entity) {
+
+        $className = ucfirst($entity);
+
+        $class = 'AppBundle\\Entity\\'.$className;
+
+        return $class;
     }
 
 

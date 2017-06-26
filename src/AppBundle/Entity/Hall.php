@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\Traits\FileTrait;
 
 /**
  * @ORM\Entity()
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Hall
 {
     use AbstractEntityTrait;
+    use FileTrait;
 
     /**
      * @var integer

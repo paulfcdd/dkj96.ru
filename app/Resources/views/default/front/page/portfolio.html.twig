@@ -89,7 +89,13 @@
                                     </div>
                                 </div>
                                 <div class="media-content">
-                                  {{ item.content | raw }}
+                                    {% set description = item.description %}
+
+                                    {% if item.description | length > 100 %}
+                                        {% set description = item.description | slice (0,100) %}
+                                        {% set description = description~'...' %}
+                                    {% endif %}
+                                    {{ description }}
                                 </div>
                             </div>
                         </li>

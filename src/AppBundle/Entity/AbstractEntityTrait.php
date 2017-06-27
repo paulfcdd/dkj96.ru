@@ -24,7 +24,13 @@ trait AbstractEntityTrait {
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=20000)
+     * @ORM\Column(type="text", length=2000)
+     */
+    private $description;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", length=20000)
      */
     private $content;
 
@@ -139,6 +145,24 @@ trait AbstractEntityTrait {
     public function setDateUpdated()
     {
         $this->dateUpdated = new \DateTime('now');
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+        return $this;
     }
 
 }

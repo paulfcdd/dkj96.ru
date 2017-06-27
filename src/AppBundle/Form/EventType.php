@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Event;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +23,14 @@ class EventType extends AbstractFormType
             ])
             ->add('eventDate', DateType::class, [
                 'label' => 'Дата события'
+            ])
+            ->add('files', FileType::class, [
+                'label' => 'Файлы для загрузки',
+                'required' => false,
+                'mapped' => false,
+                'multiple' => true,
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

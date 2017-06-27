@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Traits\FileTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Event
 {
     use AbstractEntityTrait;
+    use FileTrait;
 
     /**
      * @var \DateTime $eventDate

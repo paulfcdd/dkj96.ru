@@ -22,10 +22,13 @@
     {% block under_banner_text_widget %}
         <div class="container padding-0-100px" id="main-text-under-banner">
             <div class="text-center letter-spacing-1px banner-content-block">
-                <p class="padding-0-100px">Дворец культуры железнодорожников для любого вашего торжества предлагает
-                5 залов.4 зала под банкет на 50-250 человек, также концертный зал
-                на 834 пасадочных места. Подробнее о залах и дополнительных  услугах
-                Вы можете узнать ниже</p>
+                <p class="padding-0-100px">
+                    Современный комплекс Дворца культуры железнодорожников обладает целым рядом преимуществ. Помимо
+                    удобного расположения рядом с развязками всех видов городского транспорта, уникальной особенностью
+                    Дворца культуры является его многофункциональность и разнообразие залов.е о залах и дополнительных
+                    услугах
+                    Вы можете узнать ниже
+                </p>
             </div>
         </div>
     {% endblock %}
@@ -53,7 +56,7 @@
                 <div class="media">
                     <a class="pull-left" href="#">
                         {% if defaultImage is not null %}
-                           <img class="media-object" src="{{ asset('upload/hall/'~defaultImage.name) }}">
+                            <img class="media-object" src="{{ asset('upload/hall/'~defaultImage.name) }}">
                         {% endif %}
                     </a>
                     <div class="media-body">
@@ -61,7 +64,7 @@
                             <a href="{{ hallDetailPath }}">{{ hall.title }}</a>
                         </h3>
                         <div class="by-author hall-description">
-                           {{ hall.content | raw }}
+                            {{ hall.content | raw }}
                         </div>
                         <a href="{{ hallDetailPath }}" class="read-more-link pull-right xs-width-100">
                             Подробнее

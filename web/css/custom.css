@@ -270,7 +270,7 @@ body {
 .wrapper .footer {
   flex: 0 0 auto;
   height: auto;
-  background: #6B3E21;
+  background: #717171;
 }
 .wrapper .footer .footer-widget .footer-widget-label {
   color: #F0DEBA;
@@ -295,14 +295,14 @@ body {
 .wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link {
   border: 1px solid;
   border-radius: 10px;
-  background-color: #6B3E21;
+  background-color: #717171;
   width: 3.5em;
   height: 3.5em;
   padding: 8px 0 0 0;
 }
 .wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link:hover {
   background-color: #F0DEBA;
-  color: #6B3E21;
+  color: #717171;
 }
 .wrapper .footer .footer-widget .footer-widget-data-list a {
   color: #F0DEBA;

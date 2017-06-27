@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\File;
+use AppBundle\Entity\News;
 use Doctrine\DBAL\DBALException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -47,6 +48,24 @@ class ApiController extends AdminController
         } catch (DBALException $exception) {
             return JsonResponse::create('not ok', 500);
         }
+
+    }
+
+    /**
+     * @Route("/object_delete/{object}/{id}", name="admin.api.object_delete")
+     */
+    public function deleteObjectAjaxAction($object, $id) {
+
+        $objectClass = 'AppBundle\\Entity\\'.ucfirst($object);
+
+        $objectEntity = $this->doctrineManager()->getRepository($objectClass)->findOneById($id);
+
+        if ($this->deleteObjectRelatedFiles($objectClass, intval($id))) {
+            $this->doctrineManager()->remove($objectEntity);
+            $this->doctrineManager()->flush();
+            return JsonResponse::create($objectClass);
+        }
+
 
     }
 
@@ -151,5 +170,24 @@ class ApiController extends AdminController
         $this->doctrineManager()->flush();
 
         return JsonResponse::create('ok', 200);
+    }
+
+    /**
+     * @param string $objectClass
+     * @param int $objectId
+     */
+    private function deleteObjectRelatedFiles(string $objectClass, int $objectId) {
+
+        $objectFiles = $this->doctrineManager()->getRepository(File::class)->findBy([
+            'entity' => $objectClass,
+            'foreignKey' => $objectId,
+        ]);
+
+        foreach ($objectFiles as $objectFile) {
+            $this->deleteFileAjaxAction($objectFile);
+        }
+
+        return true;
+
     }
 }

@@ -38,7 +38,7 @@
                     </thead>
                     <tbody>
                     {% for object in objects %}
-                        <tr>
+                        <tr id="{{ routeParams.entity~'_'~object.id }}">
                             <td>{{ object.title }}</td>
                             <td>{{ object.dateCreated | date('d.m.Y') }}</td>
                             <td>
@@ -62,7 +62,11 @@
                                         }) }}" role="button" class="btn btn-primary">
                                             <span class="fa fa-calendar"></span></a>
                                     {% endif %}
-                                    <a href="#" role="button" class="btn btn-danger"><span class="fa fa-trash"></span></a>
+                                    <a href="#" role="button" class="btn btn-danger delete-object"
+                                       data-objectname="{{ routeParams.entity }}"
+                                       data-objectid="{{ object.id }}">
+                                        <span class="fa fa-trash"></span>
+                                    </a>
                                 </div>
                             </td>
                         </tr>

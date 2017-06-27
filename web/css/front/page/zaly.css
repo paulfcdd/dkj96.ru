@@ -22,7 +22,7 @@
   font-weight: 600;
   text-decoration: none;
 }
-.halls-list-block .single-hall .hall-description p {
+.halls-list-block .single-hall .hall-description {
   font-family: 'Century Gothic Regular';
   font-size: 18px;
   line-height: 26px;

@@ -42,17 +42,16 @@
                </div>
             </div>
             <div class="col-xs-12">
-                <h5 class="label-capacity">
-                    Вместимость: до {{ hall.capacity }} человек
-                </h5>
+               {{ hall.description }}
             </div>
             <div class="col-xs-12">
-               {{ hall.content | raw }}
-            </div>
-            <div class="col-xs-12">
-                <a href="#" class="read-more-link pull-right">
+                <a href="#demo" class="read-more-link pull-right" data-toggle="collapse">
                     Подробнее о дополнительных услугах
                 </a>
+
+            </div>
+            <div class="col-xs-12 collapse" id="demo">
+                {{ hall.content | raw }}
             </div>
         </div>
 

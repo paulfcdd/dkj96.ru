@@ -3,8 +3,10 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\File;
+use AppBundle\Entity\Hall;
 use AppBundle\Entity\News;
 use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Booking;
@@ -59,6 +61,21 @@ class ApiController extends AdminController
         $objectClass = 'AppBundle\\Entity\\'.ucfirst($object);
 
         $objectEntity = $this->doctrineManager()->getRepository($objectClass)->findOneById($id);
+
+        if ($objectEntity instanceof Hall) {
+
+            /** @var EntityManager $em */
+            $em = $this->doctrineManager()->getRepository(Booking::class);
+
+            $qb = $em->createQueryBuilder('b')
+                ->delete('AppBundle:Booking', 'b')
+                ->where('b.hall = :hall')
+                ->setParameter('hall', $objectEntity->getId())
+                ->getQuery();
+
+            $qb->getResult();
+        }
+
 
         if ($this->deleteObjectRelatedFiles($objectClass, intval($id))) {
             $this->doctrineManager()->remove($objectEntity);

@@ -31,6 +31,9 @@
                 <table class="table table-responsive">
                     <thead>
                     <th>Название</th>
+                    {% if routeParams.entity == 'history' %}
+                        <th>Статус</th>
+                    {% endif %}
                     <th>Дата создания</th>
                     <th>Дата изменения</th>
                     <th class="text-center">Автор</th>
@@ -40,6 +43,17 @@
                     {% for object in objects %}
                         <tr id="{{ routeParams.entity~'_'~object.id }}">
                             <td>{{ object.title }}</td>
+                            {% if routeParams.entity == 'history' %}
+
+                                {% if object.enabled == 1 %}
+                                    {% set status = 'Включено' %}
+                                    {% else %}
+                                        {% set status = 'Выключено' %}
+                                {% endif %}
+
+
+                                <td>{{ status }}</td>
+                            {% endif %}
                             <td>{{ object.dateCreated | date('d.m.Y') }}</td>
                             <td>
                                 {% if object.dateUpdated is not null %}

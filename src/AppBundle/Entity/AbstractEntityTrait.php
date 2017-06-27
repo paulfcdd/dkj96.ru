@@ -24,7 +24,7 @@ trait AbstractEntityTrait {
 
     /**
      * @var string
-     * @ORM\Column(type="text", length=2000)
+     * @ORM\Column(type="text", length=2000, nullable=true)
      */
     private $description;
 

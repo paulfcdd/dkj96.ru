@@ -67,8 +67,9 @@ class FrontController extends Controller
      * @Route("/history", name="front.history")
      */
     public function listHistoryPage() {
+
         return $this->render(':default/front/page:istoriya.html.twig', [
-            'history' => $this->getDoctrine()->getRepository(History::class)->findAll(),
+            'history' => $this->getDoctrine()->getRepository(History::class)->findOneBy(['isEnabled' => true]),
         ]);
     }
 

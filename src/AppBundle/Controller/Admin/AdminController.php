@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Booking;
 use AppBundle\Entity\File;
+use AppBundle\Entity\History;
 use AppBundle\Entity\News;
 use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
@@ -78,42 +79,49 @@ class AdminController extends Controller
             $files = $this->fileLoader($class, $id);
         }
 
-        $form = $this
-            ->entityFormBuilder($className, $object)
-            ->handleRequest($request);
+        $form = $this->entityFormBuilder($className, $object);
+
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $attachedFiles = $form['files']->getData();
 
             $formData = $form
                 ->getData()
                 ->setAuthor($this->getUser());
 
+            if ($formData instanceof History) {
+                $history = $em->getRepository(History::class)->findOneBy(['isEnabled' => 1]);
+                $history->setEnabled(0);
+            }
+
             $em->persist($formData);
             $em->flush();
 
-            if (!empty($attachedFiles)) {
+            if (isset($form['files'])) {
+                $attachedFiles = $form['files']->getData();
 
-                foreach ($attachedFiles as $attachedFile) {
+                if (!empty($attachedFiles)) {
 
-                    $file = new File();
+                    foreach ($attachedFiles as $attachedFile) {
 
-                    $uploader
-                        ->setDir($entity)
-                        ->setFile($attachedFile);
+                        $file = new File();
 
-                    $file
-                        ->setForeignKey($formData->getId())
-                        ->setMimeType($uploader->getMimeType())
-                        ->setEntity($class)
-                        ->setName($uploader->upload());
+                        $uploader
+                            ->setDir($entity)
+                            ->setFile($attachedFile);
 
-                    $em->persist($file);
+                        $file
+                            ->setForeignKey($formData->getId())
+                            ->setMimeType($uploader->getMimeType())
+                            ->setEntity($class)
+                            ->setName($uploader->upload());
 
+                        $em->persist($file);
+
+                    }
+
+                    $em->flush();
                 }
-
-                $em->flush();
             }
 
             return $this->redirectToRoute('admin.manage', [

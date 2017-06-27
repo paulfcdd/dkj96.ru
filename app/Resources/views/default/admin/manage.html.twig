@@ -30,6 +30,7 @@
 {%- endblock date_widget -%}
 
 
+
 {% block content %}
     <div class="col-md-12">
 
@@ -40,13 +41,15 @@
             </div>
             <div class="ibox-content">
 
-                {% if object.files is not empty %}
-                   <a href="{{ path('admin.manage.files', {
-                       'entity': routeParams.entity,
-                       'id': routeParams.id
-                   }) }}" class="btn btn-success">
-                       <i class="fa fa-files-o" aria-hidden="true"></i> Медиафайлы
-                   </a>
+                {% if object.files is defined %}
+                    {% if object.files is not empty %}
+                        <a href="{{ path('admin.manage.files', {
+                            'entity': routeParams.entity,
+                            'id': routeParams.id
+                        }) }}" class="btn btn-success">
+                            <i class="fa fa-files-o" aria-hidden="true"></i> Медиафайлы
+                        </a>
+                    {% endif %}
                 {% endif %}
 
                 {{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}

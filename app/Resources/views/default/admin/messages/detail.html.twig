@@ -30,7 +30,10 @@
         </div>
 
         <div class="mail-body text-right tooltip-demo">
-            <a class="btn btn-sm btn-primary" href="{{ path('admin.booking.compose', {'booking': object.id}) }}">
+            <a class="btn btn-sm btn-primary" href="{{ path('admin.message.compose', {
+                'entity': routeParams.entity,
+                'id': object.id
+            }) }}">
                 <i class="fa fa-reply"></i> Ответить
             </a>
 

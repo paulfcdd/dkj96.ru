@@ -93,4 +93,38 @@ class MessageController extends AdminController
             'enableBookBtn' => $enableBookBtn,
         ]);
     }
+
+    /**
+     * @Method({"POST", "GET"})
+     * @Route("/admin/message/compose/{entity}/{id}", name="admin.message.compose")
+     */
+    public function messageComposeAction($entity, $id, Request $request) {
+
+        $mailer = $this->get(MailerService::class);
+
+        if ($request->isMethod('POST')) {
+            $emailForm = $request->request->all();
+
+            $mailer
+                ->setSubject($emailForm['email-subject'])
+                ->setFrom($this->getParameter('mail_from'))
+                ->setTo($emailForm['email-to'])
+                ->setBody($emailForm['email-body']);
+
+            $mailer->sendMessage();
+        }
+
+        $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
+
+        return $this->render(':default/admin/messages:compose.html.twig', [
+            'object' => $entityRepository,
+        ]);
+    }
+
+    public function renderBookingMenuAction() {
+
+        return $this->render(':default/admin/booking:sidebar.html.twig', [
+            'bookings' => $this->getDoctrine()->getRepository(Booking::class)->findAll()
+        ]);
+    }
 }

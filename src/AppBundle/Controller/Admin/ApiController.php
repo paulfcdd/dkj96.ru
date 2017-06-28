@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\File;
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\News;
+use AppBundle\Service\MailerService;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -113,8 +114,16 @@ class ApiController extends AdminController
     public function confirmBookingAjaxAction(Booking $booking) {
 
         $booking->setBooked(true);
+        $mailer = $this->get(MailerService::class);
+        $mailer
+            ->setSubject('Подтверждение брони зала '.$booking->getHall()->getTitle())
+            ->setFrom($this->getParameter('mail_from'))
+            ->setTo($booking->getEmail())
+            ->setBody('Ваше бронирование было подтверждено');
+
 
         try {
+            $mailer->sendMessage();
             $this->doctrineManager()->flush();
             return JsonResponse::create();
         } catch (DBALException $exception) {

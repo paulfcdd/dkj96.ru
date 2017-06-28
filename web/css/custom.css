@@ -41,6 +41,19 @@ body {
 .wrapper .no-resize {
   resize: none;
 }
+.wrapper .showSweetAlert {
+  border-radius: 0 !important;
+}
+.wrapper button.cancel,
+.wrapper button.confirm {
+  border-radius: 0 !important;
+}
+.wrapper .media-object {
+  width: 15em !important;
+  height: 15em !important;
+  border-radius: 50% !important;
+  margin-right: 15px !important;
+}
 .wrapper .no-border-radius {
   border-radius: 0;
   -webkit-appearance: none;

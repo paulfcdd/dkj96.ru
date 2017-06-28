@@ -27,19 +27,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class BookingController extends AdminController
 {
-    /**
-     * @return Response
-     * @Route("/admin/bookings", name="admin.booking.listing")
-     */
-    public function listBookingsAction() {
-
-        $doctrine = $this->getDoctrine();
-
-        return $this->render(':default/admin/booking:list.html.twig',[
-            'bookings' => $doctrine->getRepository(Booking::class)
-                ->findBy([], ['dateReceived' => 'DESC'], null, null),
-        ]);
-    }
 
     /**
      * @Route("/admin/bookings/detail/{booking}", name="admin.booking.details")
@@ -71,7 +58,7 @@ class BookingController extends AdminController
 
     /**
      * @Method({"POST", "GET"})
-     * @Route("/admin/bookings/compose/{booking}", name="admin.booking.compose")
+     * @Route("/admin/booking/compose/{booking}", name="admin.booking.compose")
      */
     public function bookingComposeAction(Booking $booking, Request $request) {
 
@@ -105,7 +92,7 @@ class BookingController extends AdminController
      * @param Hall $hall
      * @param Request $request
      * @return Response
-     * @Route("/admin/bookings/calendar/{hall}", name="admin.booking.calendar")
+     * @Route("/admin/booking/calendar/{hall}", name="admin.booking.calendar")
      */
     public function bookingCalendarAction(Hall $hall, Request $request) {
 

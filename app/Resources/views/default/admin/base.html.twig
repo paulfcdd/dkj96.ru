@@ -101,9 +101,16 @@
                     </li>
 
                     <li id="bookings">
-                        <a href="{{ path('admin.booking.listing') }}">
+                        <a href="{{ path('admin.message.listing', {'entity': 'booking'}) }}">
+                            <i class="fa fa-lock"></i>
+                            <span class="nav-label">Бронирования</span>
+                        </a>
+                    </li>
+
+                    <li id="feedback">
+                        <a href="{{ path('admin.message.listing', {'entity': 'feedback'}) }}">
                             <i class="fa fa-envelope"></i>
-                            <span class="nav-label">Сообщения</span>
+                            <span class="nav-label">Обратная связь</span>
                         </a>
                     </li>
 

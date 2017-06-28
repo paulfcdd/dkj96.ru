@@ -1,0 +1,163 @@
+{% extends ':default/admin/messages:list.html.twig' %}
+
+{% block message_content_block %}
+
+    <div class="mail-box-header">
+        <h2>
+            Просмотреть сообщение
+        </h2>
+        <div class="mail-tools tooltip-demo m-t-md">
+
+            <h4>
+                <span class="font-normal">Тема: </span> {{ msgSubject }}
+                <a href="#" target="_blank">
+                    {#"{{ booking.hall.title }}"#}
+                </a>
+            </h4>
+            <h5>
+                <span class="pull-right font-normal"> {{ object.dateReceived | date('H:i')~' '~object.dateReceived |date('d.m.Y') }}</span>
+                <span class="font-normal">От: </span> {{ object.email }}
+            </h5>
+        </div>
+    </div>
+    <div class="mail-box">
+
+
+        <div class="mail-body">
+            <p>
+                {{ object.message }}
+            </p>
+        </div>
+
+        <div class="mail-body text-right tooltip-demo">
+            <a class="btn btn-sm btn-primary" href="{{ path('admin.booking.compose', {'booking': object.id}) }}">
+                <i class="fa fa-reply"></i> Ответить
+            </a>
+
+            {% if enableBookBtn == true %}
+                {% set fa_class = 'fa-star' %}
+                {% set confirm_btn_text = 'Забронировать' %}
+                {% set disabled = '' %}
+
+                {% if object.booked == 1 %}
+                    {% set fa_class = 'fa-check' %}
+                    {% set confirm_btn_text = 'Забронировано' %}
+                    {% set disabled = 'disabled' %}
+                {% endif %}
+
+                <button class="btn btn-sm btn-success confirm-booking" {{ disabled }} data-bookingid="{{ object.id }}">
+                    <i class="fa {{ fa_class }}"></i> {{ confirm_btn_text }}
+                </button>
+            {% endif %}
+
+            <button class="btn btn-sm btn-warning set-as-unread"
+                    data-entity="{{ routeParams.entity }}"
+                    data-objectid="{{ object.id }}">
+                <i class="fa fa-envelope"></i> В непрочитанные
+            </button>
+            <button title="" class="btn btn-sm btn-danger remove-message"
+                    data-entity="{{ routeParams.entity }}"
+                    data-objectid="{{ object.id }}">
+                <i class="fa fa-trash-o"></i> Удалить
+            </button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('.set-as-unread').on('click', function () {
+                var id = $(this).data('objectid'),
+                    entity = $(this).data('entity'),
+                    url = '{{ path('admin.api.message_unread', {'id':'_id', 'entity': '_entity'}) }}';
+
+                $.ajax({
+                    url: url.replace('_id', id).replace('_entity', entity),
+                    method:'post',
+                    success: function () {
+                        window.location.replace("{{ path('admin.message.listing', {'entity': routeParams.entity}) }}");
+                    },
+                    error: function (resp) {
+                        alert(resp)
+                    }
+                })
+            });
+
+
+
+            $('.remove-message').on('click', function () {
+
+                var id = $(this).data('objectid'),
+                    entity = $(this).data('entity'),
+                    url = '{{ path('admin.api.message_delete', {'id':'_id', 'entity': '_entity'}) }}';
+
+                swal({
+                    title: "Удалить запрос на бронирование?",
+                    text: "Удаленный запрос нельзя восстановить!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Удалить",
+                    closeOnConfirm: false
+                }, function () {
+                    $.ajax({
+                        url: url.replace('_id', id).replace('_entity', entity),
+                        method: 'POST',
+                        success: function () {
+
+                            swal({
+                                title: 'Удалено',
+                                text: 'Запрос на бронирование был успешно удален',
+                                type: 'success'
+                            }, function () {
+                                window.location.replace("{{ path('admin.message.listing', {'entity': routeParams.entity}) }}");
+                            });
+
+                        }
+                    });
+                });
+            })
+
+            {% if enableBookBtn == true %}
+
+            $('.confirm-booking').on('click', function () {
+                var id = $(this).data('bookingid'),
+                    url = '{{ path('admin.api.booking_confirm', {'booking': '_booking'}) }}';
+
+                swal({
+                    title: "Подтверждение бронирования",
+                    text: "Вы уверенны, что хотите подтвердить бронирование зала",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#82DD82",
+                    confirmButtonText: "Подтвердить",
+                    closeOnConfirm: false
+                }, function () {
+                    $.ajax({
+                        url: url.replace('_booking', id),
+                        method: 'POST',
+                        success: function () {
+
+                            swal({
+                                title: 'Успешно',
+                                text: 'Бронь зала подтверждена. Клиенту выслано письмо на указанный email',
+                                type: 'success'
+                            }, function () {
+                                var confirmBtn = $('.confirm-booking');
+
+                                confirmBtn
+                                    .html('<i class="fa fa-check"></i> Забронировано')
+                                    .attr('disabled', true);
+                            });
+
+                        }
+                    });
+                });
+            })
+
+            {% endif %}
+        })
+    </script>
+{% endblock %}

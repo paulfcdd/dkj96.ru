@@ -10,6 +10,8 @@ use AppBundle\Entity\Hall;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
 use AppBundle\Form\BookingType;
+use AppBundle\Form\FeedbackType;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -76,8 +78,27 @@ class FrontController extends Controller
     /**
      * @Route("/contact", name="front.contact")
      */
-    public function contactPageAction() {
-        return $this->render(':default/front/page:kontakty.html.twig', []);
+    public function contactPageAction(Http\Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this
+            ->createForm(FeedbackType::class)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($form->getData());
+            try {
+                $em->flush();
+                $this->addFlash('success', 'Ваше сообщение успешно выслано.');
+            } catch (DBALException $exception) {
+                $this->addFlash('error', 'Не удалось выслать сообщение, попробуйте позже');
+            }
+        }
+
+        return $this->render(':default/front/page:kontakty.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
 

@@ -50,7 +50,7 @@ class BookingType extends AbstractType
                     'placeholder' => 'Кол-во человек'
                 ]
             ])
-            ->add('about', TextareaType::class, [
+            ->add('message', TextareaType::class, [
                 'attr' => [
                     'class' => 'form-control no-border-radius no-resize',
                     'placeholder' => 'Расскажите кратко о меропритяии',

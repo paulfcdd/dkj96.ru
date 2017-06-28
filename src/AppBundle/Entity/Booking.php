@@ -48,7 +48,7 @@ class Booking
      * @var string
      * @ORM\Column(length=2000)
      */
-    private $about;
+    private $message;
 
     /**
      * @ORM\ManyToOne(targetEntity="Hall")
@@ -233,27 +233,27 @@ class Booking
     }
 
     /**
-     * Set about
+     * Set message
      *
-     * @param string $about
+     * @param string $message
      *
      * @return Booking
      */
-    public function setAbout($about)
+    public function setMessage($message)
     {
-        $this->about = $about;
+        $this->message = $message;
 
         return $this;
     }
 
     /**
-     * Get about
+     * Get message
      *
      * @return string
      */
-    public function getAbout()
+    public function getMessage()
     {
-        return $this->about;
+        return $this->message;
     }
 
     /**

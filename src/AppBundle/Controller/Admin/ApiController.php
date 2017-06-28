@@ -34,15 +34,14 @@ class ApiController extends AdminController
     }
 
     /**
-     * @param Booking $booking
      * @return JsonResponse
-     * @Route("/mark_as_unread/{booking}", name="admin.api.booking_unread")
+     * @Route("/mark_as_unread/{id}/{entity}", name="admin.api.message_unread")
      */
-    public function markAsUnreadAjaxAction(Booking $booking) {
+    public function markAsUnreadAjaxAction($id, $entity) {
 
-        $booking->setStatus(0);
+        $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
 
-        $this->doctrineManager()->persist($booking);
+        $entityRepository->setStatus(0);
 
         try {
             $this->doctrineManager()->flush();
@@ -50,7 +49,6 @@ class ApiController extends AdminController
         } catch (DBALException $exception) {
             return JsonResponse::create('not ok', 500);
         }
-
     }
 
     /**
@@ -87,13 +85,16 @@ class ApiController extends AdminController
     }
 
     /**
-     * @param Booking $booking
+     * @param $entity
+     * @param $id
      * @return JsonResponse
-     * @Route("/booking_delete/{booking}", name="admin.api.booking_delete")
+     * @Route("/message_delete/{entity}/{id}", name="admin.api.message_delete")
      */
-    public function deleteBookingAjaxAction(Booking $booking) {
+    public function deleteMessageAjaxAction($entity, $id) {
 
-        $this->doctrineManager()->remove($booking);
+        $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
+
+        $this->doctrineManager()->remove($entityRepository);
 
         try {
             $this->doctrineManager()->flush();

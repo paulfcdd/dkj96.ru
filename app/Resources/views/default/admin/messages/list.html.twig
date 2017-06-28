@@ -3,11 +3,11 @@
 {% block content %}
     <div class="col-lg-3">
         {% block booking_left_menu %}
-            {{ render(controller('AppBundle:Admin/Booking:renderBookingMenu')) }}
+            {{ render(controller('AppBundle:Admin/Message:renderMessageMenu', {'entity': routeParams.entity})) }}
         {% endblock %}
     </div>
     <div class="col-lg-9 animated fadeInRight">
-       {% block booking_main_blok %}
+       {% block message_content_block %}
            <div class="mail-box-header">
 
                <h2>
@@ -33,14 +33,18 @@
 
                        <tr class="{{ unread }}">
                            <td class="mail-ontact">
-                               <a href="#">
-                               {#<a href="{{ path('admin.booking.details', {'booking': booking.id}) }}">#}
+                               <a href="{{ path('admin.messages.details', {
+                                   'entity': entity,
+                                   'id': object.id
+                               }) }}">
                                    {{ object.email }}
                                </a>
                            </td>
                            <td class="mail-subject">
-                               <a href="#">
-                               {#<a href="{{ path('admin.booking.details', {'booking': booking.id}) }}">#}
+                               <a href="{{ path('admin.messages.details', {
+                                   'entity': entity,
+                                   'id': object.id
+                               }) }}">
                                    {{ theme }}
                                </a>
                            </td>

@@ -71,13 +71,7 @@ class AdminController extends Controller
 
         $class = 'AppBundle\\Entity\\'.$className;
 
-
         $object = new $class();
-
-        if ($id) {
-            $object = $em->getRepository('AppBundle\\Entity\\'.$className)->findOneById($id);
-            $files = $this->fileLoader($class, $id);
-        }
 
         $form = $this->entityFormBuilder($className, $object);
 
@@ -132,7 +126,6 @@ class AdminController extends Controller
 
         return $this->render(':default/admin:manage.html.twig', [
             'form' => $form->createView(),
-            'files' => $files,
             'object' => $object,
         ]);
     }
@@ -180,7 +173,7 @@ class AdminController extends Controller
 
     }
 
-    private function getClassName(string $entity) {
+    protected function getClassName(string $entity) {
 
         $className = ucfirst($entity);
 
@@ -189,5 +182,14 @@ class AdminController extends Controller
         return $class;
     }
 
+    /**
+     * @param string $entity
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    public function getEntityRepository(string $entity) {
+
+        return $this->getDoctrine()->getRepository($this->getClassName($entity));
+
+    }
 
 }

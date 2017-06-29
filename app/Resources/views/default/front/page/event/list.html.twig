@@ -1,0 +1,71 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} Залы {% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('node_modules/fullcalendar/dist/locale/ru.js') }}"></script>
+
+    <script>
+
+        var events = [];
+
+        {% for event in events %}
+        var event = {
+            start: '{{ event.eventDate | date('Y-m-d') }}',
+            title: '{{ event.title }}',
+            date: '{{ event.eventDate | date('d.m.Y') }}',
+            time: '{{ event.eventTime | date('H:i') }}',
+            rendering: 'background'
+        };
+        events.push(event);
+        {% endfor %}
+
+
+        $('#calendar').fullCalendar({
+            defaultDate: $(this).fullCalendar('today'),
+            events: events,
+            eventBackgroundColor: '#0AD26E',
+            locale: 'ru',
+            eventRender: function(event, element) {
+                $(element).html(
+                    '<div class="event-info-block"">' +
+                    '<h4>'+event.title+'</h4>' +
+                    '<h5>'+event.date+'<h5>' +
+                    '<h5>'+event.time+'<h5>' +
+                    '</div>'
+                );
+
+//                element.find('.fc-bgevent').text("<p>"+event.title+"</p>");
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <p class="padding-0-100px">
+                   Анонс мероприятий в Доме Культуры Железнодорожников
+                </p>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container padding-left-0 padding-right-0 halls-list-block">
+        <div id="calendar"></div>
+    </div>
+
+{% endblock %}

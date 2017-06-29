@@ -34,6 +34,15 @@ body {
   /* End custom classes*/
   /* Responsive classes*/
 }
+.wrapper .event-info-block {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+.wrapper .event-info-block h4,
+.wrapper .event-info-block h5 {
+  color: black !important;
+}
 .wrapper .intl-tel-input,
 .wrapper .allow-dropdown {
   width: 100%;

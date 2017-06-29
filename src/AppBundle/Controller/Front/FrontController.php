@@ -125,6 +125,18 @@ class FrontController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/event/list", name="event.list")
+     */
+    public function eventListAction() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        return $this->render(':default/front/page/event:list.html.twig', [
+            'events' => $em->getRepository(Event::class)->findAll(),
+        ]);
+
+    }
 
     /**
      * @param $event

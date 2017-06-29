@@ -15,10 +15,11 @@
     <title>{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css">
-    {#<link rel="stylesheet" href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}">#}
     <script src="https://use.fontawesome.com/dd34fe19f7.js"></script>
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
-    {#<link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">#}
+    <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+    <link href="{{ asset('node_modules/photoswipe/dist/photoswipe.css') }}" rel="stylesheet">
+    <link href="{{ asset('node_modules/photoswipe/dist/default-skin/default-skin.css') }}" rel="stylesheet">
 
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
@@ -122,8 +123,9 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/jquery.gotop.js') }}"></script>
-
 <script src="{{ asset('js/utils.js') }}"></script>
+<script src="{{ asset('node_modules/photoswipe/dist/photoswipe.min.js') }}"></script>
+<script src="{{ asset('node_modules/photoswipe/dist/photoswipe-ui-default.min.js') }}"></script>
 
 <script>
     $(document).ready(function(){

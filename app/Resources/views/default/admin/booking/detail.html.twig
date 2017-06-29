@@ -134,7 +134,7 @@
                     url = '{{ path('admin.api.booking_confirm', {'booking': '_booking'}) }}';
 
                 swal({
-                    title: "Подтверждение бронирования",
+                    title: "Подтверждение бронирования,
                     text: "Вы уверенны, что хотите подтвердить бронирование зала {{ booking.hall.title }}",
                     type: "info",
                     showCancelButton: true,
@@ -145,20 +145,8 @@
                     $.ajax({
                         url: url.replace('_booking', id),
                         method: 'POST',
-                        success: function () {
-
-                            swal({
-                                title: 'Успешно',
-                                text: 'Бронь зала {{ booking.hall.title }} подтверждена. Клиенту выслано письмо на указанный email',
-                                type: 'success'
-                            }, function () {
-                                var confirmBtn = $('.confirm-booking');
-
-                                confirmBtn
-                                    .html('<i class="fa fa-check"></i> Забронировано')
-                                    .attr('disabled', true);
-                            });
-
+                        success: function (data) {
+                            console.log(data);
                         }
                     });
                 });

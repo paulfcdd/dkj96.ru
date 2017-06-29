@@ -2,23 +2,11 @@
 
 namespace AppBundle\Controller\Admin;
 
-
 use AppBundle\Entity\Feedback;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Booking;
-use AppBundle\Entity\File;
-use AppBundle\Entity\History;
-use AppBundle\Entity\News;
-use AppBundle\Form\AbstractFormType;
-use AppBundle\Form\NewsType;
-use AppBundle\Service\FileUploaderService;
 use AppBundle\Service\MailerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,6 +18,7 @@ class MessageController extends AdminController
     ];
 
     /**
+     * @param $entity
      * @return Response
      * @Route("/admin/messages/{entity}", name="admin.message.listing")
      */
@@ -48,6 +37,10 @@ class MessageController extends AdminController
 
     }
 
+    /**
+     * @param $entity
+     * @return Response
+     */
     public function renderMessageMenuAction($entity) {
 
         $entityClass = $this->getClassName($entity);
@@ -100,9 +93,10 @@ class MessageController extends AdminController
      */
     public function messageComposeAction($entity, $id, Request $request) {
 
-        $mailer = $this->get(MailerService::class);
-
         if ($request->isMethod('POST')) {
+
+            $mailer = $this->get(MailerService::class);
+
             $emailForm = $request->request->all();
 
             $mailer

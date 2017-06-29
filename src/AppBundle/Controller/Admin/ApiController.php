@@ -113,21 +113,33 @@ class ApiController extends AdminController
      */
     public function confirmBookingAjaxAction(Booking $booking) {
 
-        $booking->setBooked(true);
-        $mailer = $this->get(MailerService::class);
-        $mailer
-            ->setSubject('Подтверждение брони зала '.$booking->getHall()->getTitle())
-            ->setFrom($this->getParameter('mail_from'))
-            ->setTo($booking->getEmail())
-            ->setBody('Ваше бронирование было подтверждено');
+        $em = $this->getDoctrine()->getManager();
+
+        $bookings = $em->getRepository(Booking::class)->findBy([
+            'hall' => $booking->getHall()->getId(),
+            'date' => $booking->getDate(),
+            'booked' => 1
+        ]);
+
+        if (empty($bookings)) {
+            $booking->setBooked(true);
+            $mailer = $this->get(MailerService::class);
+            $mailer
+                ->setSubject('Подтверждение брони зала '.$booking->getHall()->getTitle())
+                ->setFrom($this->getParameter('mail_from'))
+                ->setTo($booking->getEmail())
+                ->setBody('Ваше бронирование было подтверждено');
 
 
-        try {
-            $mailer->sendMessage();
-            $this->doctrineManager()->flush();
-            return JsonResponse::create();
-        } catch (DBALException $exception) {
-            return JsonResponse::create('not ok', 500);
+            try {
+                $mailer->sendMessage();
+                $this->doctrineManager()->flush();
+                return JsonResponse::create(true);
+            } catch (DBALException $exception) {
+                return JsonResponse::create('not ok', 500);
+            }
+        } else {
+            return JsonResponse::create(false);
         }
 
     }
@@ -196,12 +208,13 @@ class ApiController extends AdminController
 
         $this->doctrineManager()->flush();
 
-        return JsonResponse::create('ok', 200);
+        return JsonResponse::create('ok');
     }
 
     /**
      * @param string $objectClass
      * @param int $objectId
+     * @return bool
      */
     private function deleteObjectRelatedFiles(string $objectClass, int $objectId) {
 

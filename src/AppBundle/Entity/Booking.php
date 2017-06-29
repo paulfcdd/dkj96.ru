@@ -27,8 +27,8 @@ class Booking
     private $phone;
 
     /**
-     * @var \DateTime
-     * @ORM\Column(type="datetime")
+     * @var string
+     * @ORM\Column(type="string", length=255)
      */
     private $date;
 
@@ -51,7 +51,7 @@ class Booking
     private $message;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Hall")
+     * @ORM\ManyToOne(targetEntity="Hall", inversedBy="bookings")
      * @ORM\JoinColumn(name="hall_id", referencedColumnName="id")
      */
     private $hall;
@@ -169,15 +169,16 @@ class Booking
      */
     public function setDate($date)
     {
-        $this->date = \DateTime::createFromFormat('d-m-Y', $date);
+
+        $date = \DateTime::createFromFormat('d-m-Y', $date);
+
+        $this->date = $date->format('Y-m-d');
 
         return $this;
     }
 
     /**
-     * Get date
-     *
-     * @return \DateTime
+     * @return string
      */
     public function getDate()
     {

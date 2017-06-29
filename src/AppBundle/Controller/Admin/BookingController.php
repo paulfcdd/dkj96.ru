@@ -96,7 +96,11 @@ class BookingController extends AdminController
      */
     public function bookingCalendarAction(Hall $hall, Request $request) {
 
-        $bookings = $this->getDoctrine()->getRepository(Booking::class)->findBy(['hall'=>$hall]);
+        $bookings = $this->getDoctrine()->getRepository(Booking::class)->findBy(
+            [
+                'hall'=>$hall,
+                'booked' => true,
+            ]);
 
         return $this->render(':default/admin/booking:calendar.html.twig', [
             'hall' => $hall,

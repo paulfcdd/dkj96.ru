@@ -31,7 +31,15 @@ class AdminController extends Controller
      */
     public function indexAction() {
 
-        return $this->render(':default/admin:index.html.twig');
+        $em = $this->getDoctrine()->getManager();
+
+        $bookings = $em->getRepository(Booking::class)->findBy(
+            ['booked' => 0, 'status' => 0], ['dateReceived' => 'DESC'], 10, null
+        );
+
+        return $this->render(':default/admin:index.html.twig', [
+            'bookings' => $bookings,
+        ]);
     }
 
     /**
@@ -72,6 +80,10 @@ class AdminController extends Controller
         $class = 'AppBundle\\Entity\\'.$className;
 
         $object = new $class();
+
+        if ($id) {
+            $object = $em->getRepository($class)->findOneById($id);
+        }
 
         $form = $this->entityFormBuilder($className, $object);
 

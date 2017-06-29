@@ -134,6 +134,7 @@
                     text: "Вы уверенны, что хотите подтвердить бронирование зала",
                     type: "info",
                     showCancelButton: true,
+                    cancelButtonText: 'Закрыть',
                     confirmButtonColor: "#82DD82",
                     confirmButtonText: "Подтвердить",
                     closeOnConfirm: false
@@ -141,20 +142,32 @@
                     $.ajax({
                         url: url.replace('_booking', id),
                         method: 'POST',
-                        success: function () {
+                        success: function (data) {
 
-                            swal({
-                                title: 'Успешно',
-                                text: 'Бронь зала подтверждена. Клиенту выслано письмо на указанный email',
-                                type: 'success'
-                            }, function () {
-                                var confirmBtn = $('.confirm-booking');
+                            if (data === true) {
+                                swal({
+                                    title: 'Успешно',
+                                    text: 'Бронь зала подтверждена. Клиенту выслано письмо на указанный email',
+                                    type: 'success'
+                                }, function () {
+                                    var confirmBtn = $('.confirm-booking');
 
-                                confirmBtn
-                                    .html('<i class="fa fa-check"></i> Забронировано')
-                                    .attr('disabled', true);
-                            });
-
+                                    confirmBtn
+                                        .html('<i class="fa fa-check"></i> Забронировано')
+                                        .attr('disabled', true);
+                                });
+                            } else {
+                                swal({
+                                    title: 'Ошибка',
+                                    text: 'Данный зал уже забронирован',
+                                    type: 'error',
+                                    closeOnConfirm: true,
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Закрыть',
+                                    confirmButtonColor: "#82DD82",
+                                    confirmButtonText: "Закрыть"
+                                });
+                            }
                         }
                     });
                 });

@@ -4,11 +4,11 @@ namespace AppBundle\Form;
 
 
 use AppBundle\Entity\Hall;
+use AppBundle\Form\Type\CKeditorType;
+use AppBundle\Form\Type\FileUploadType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HallType extends AbstractFormType
 {
@@ -23,11 +23,9 @@ class HallType extends AbstractFormType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('files', FileType::class, [
-                'label' => 'Файлы для загрузки',
-                'required' => false,
-                'mapped' => false,
-                'multiple' => true,
-            ]);
+            ->add('specification', CKeditorType::class, [
+                'label' => 'Спецификация'
+            ])
+            ->add('files', FileUploadType::class);
     }
 }

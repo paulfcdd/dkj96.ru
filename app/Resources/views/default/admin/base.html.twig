@@ -63,6 +63,14 @@
                             <span class="nav-label">Главная</span>
                         </a>
                     </li>
+
+                    <li id="hall">
+                        <a href="{{ path('admin.list', {
+                            'entity': 'hall'
+                        }) }}"><i class="fa fa-university" aria-hidden="true"></i> <span class="nav-label">Залы</span>
+                        </a>
+                    </li>
+
                     <li id="news">
                         <a href="{{ path('admin.list', {
                             'entity': 'news'
@@ -74,13 +82,6 @@
                         <a href="{{ path('admin.list', {
                             'entity': 'event'
                         }) }}"><i class="fa fa-calendar"></i> <span class="nav-label">События</span>
-                        </a>
-                    </li>
-
-                    <li id="hall">
-                        <a href="{{ path('admin.list', {
-                            'entity': 'hall'
-                        }) }}"><i class="fa fa-university" aria-hidden="true"></i> <span class="nav-label">Залы</span>
                         </a>
                     </li>
 

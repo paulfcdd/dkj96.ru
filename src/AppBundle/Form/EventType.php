@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 
 use AppBundle\Entity\Event;
+use AppBundle\Form\Type\FileUploadType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,12 +25,7 @@ class EventType extends AbstractFormType
             ->add('eventDate', DateType::class, [
                 'label' => 'Дата события'
             ])
-            ->add('files', FileType::class, [
-                'label' => 'Файлы для загрузки',
-                'required' => false,
-                'mapped' => false,
-                'multiple' => true,
-            ]);
+            ->add('files', FileUploadType::class);
 
     }
 

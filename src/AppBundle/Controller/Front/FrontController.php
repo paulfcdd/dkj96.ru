@@ -16,8 +16,10 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\DependencyInjection\Tests\Compiler\H;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation as Http;
 
 class FrontController extends Controller
@@ -132,12 +134,22 @@ class FrontController extends Controller
     }
 
     /**
-     * @Route("/halls/info/hall{hall}", name="halls.detail")
+     * @param Hall $hall
+     * @return Http\Response
+     * @Route("/halls/info/hall/{hall}", name="halls.detail")
      */
     public function hallInfoAction(Hall $hall) {
 
+        $em = $this->getDoctrine()->getManager();
+
+        $bookings = $em->getRepository(Booking::class)->findBy([
+            'hall' => $hall,
+            'booked' => true,
+            ]);
+
         return $this->render('default/front/page/halls/default.html.twig', [
-            'hall' => $hall
+            'hall' => $hall,
+            'bookings' => $bookings,
         ]);
     }
 
@@ -201,6 +213,18 @@ class FrontController extends Controller
             'form' => $form->createView(),
             'formMessage' => $flashBagMessage,
             'halls' => $doctrine->getRepository(Hall::class)->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/halls/{hall}/booking-calendar", name="halls.booking_calendar")
+     * @Method({"POST"})
+     */
+    public function renderBookingsModalAction(Hall $hall, Http\Request $request) {
+
+        return $this->render(':default/front/page/halls:hall_calendar_modal.html.twig', [
+            'bookings' => $hall->getBookings()
+
         ]);
     }
 }

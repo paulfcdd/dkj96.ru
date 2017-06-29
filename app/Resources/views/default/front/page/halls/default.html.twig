@@ -3,13 +3,90 @@
 {% block title %}{{ hall.title }}{% endblock %}
 
     {% block stylesheets %}
+        <link href="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('node_modules/photoswipe/dist/photoswipe.css') }}" rel="stylesheet">
+        <link href="{{ asset('node_modules/photoswipe/dist/default-skin/default-skin.css') }}" rel="stylesheet">
+
         <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
     {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('node_modules/fullcalendar/dist/locale/ru.js') }}"></script>
+    <script src="{{ asset('node_modules/photoswipe/dist/photoswipe.min.js') }}"></script>
+    <script src="{{ asset('node_modules/photoswipe/dist/photoswipe-ui-default.min.js') }}"></script>
+
+    <script>
+
+        var events = [],
+            url = '{{ path('admin.booking.details', {'booking': '_booking'}) }}';
+
+        {% for booking in bookings %}
+        var event = {
+            start: '{{ booking.date | date('Y-m-d') }}',
+            editable: false,
+            overlap: false,
+            rendering: 'background'
+        };
+        events.push(event);
+        {% endfor %}
+
+
+        $('#calendar').fullCalendar({
+            defaultDate: $(this).fullCalendar('today'),
+            events: events,
+            eventBackgroundColor: 'red',
+            locale: 'ru'
+        });
+
+        $('#myModal').on('shown.bs.modal', function () {
+            $("#calendar").fullCalendar('render');
+        });
+
+        $('#init-photoswipe').click(function () {
+            var pswpElement = document.querySelectorAll('.pswp')[0],
+                dir = $(this).data('dir'),
+                imgPath = '{{ asset('upload/_dir_/_file_name_') }}';
+
+                console.log(imgPath.replace('_dir_', dir).replace('_file_name_', 'jfdjjkfdhfjkd'));
+
+            // build items array
+            var items = [
+                {% for image in hall.files %}
+                {
+                    src: imgPath.replace('_dir_', dir).replace('_file_name_', '{{ image.name }}'),
+                    w: 1239,
+                    h: 953
+                },
+                {% endfor %}
+            ];
+
+            // define options (if needed)
+            var options = {
+                // history & focus options are disabled on CodePen
+                history: false,
+                focus: false,
+                showAnimationDuration: 0,
+                hideAnimationDuration: 0,
+                shareButtons: [
+                    {id:'facebook', label:'{{ 'interface.fb_share'|trans }}', url:'https://www.facebook.com/sharer/sharer.php?u=#'},
+                    {id:'twitter', label:'{{ 'interface.twitter_share'|trans }}', url:'https://twitter.com/intent/tweet?url=#'},
+                ],
+
+            };
+
+            var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery.init();
+        })
+    </script>
+{% endblock %}
 
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
+    {#{{ dump(hall.files) }}#}
     <div class="container col-xs-padding-right-0 single-hall-page">
+
         <div class="space-fix-container"></div>
 
         <div class="row xs-padding-0-10px">
@@ -32,17 +109,46 @@
                            {{ hall.title }}
                        </h4>
                    </div>
-                   <div class="col-sm-2">
-                       <a href="{{ path('halls.book_hall', {
-                           'hall': hall.id
-                       }) }}" class="btn btn-success pull-right xs-width-100" role="button" target="_blank">
-                           Бронирование
+
+                   <div class="col-sm-2 pull-right">
+                       <a href="{{ path('halls.book_hall', {'hall': hall.id}) }}"
+                          class="btn btn-default xs-width-100 no-border-radius"
+                          data-tooltip="tooltip"
+                          data-placement="top"
+                          title="Бронирование"
+                          role="button"
+                          target="_blank">
+                           <i class="fa fa-lock" aria-hidden="true"></i>
                        </a>
+
+                       <button type="button"
+                               class="btn btn-default xs-width-100 no-border-radius"
+                               data-tooltip="tooltip"
+                               data-placement="top"
+                               data-toggle="modal"
+                               title="Календарь"
+                               data-target="#myModal">
+                           <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                       </button>
+
+                       <button type="button" id="init-photoswipe"
+                               class="btn btn-default xs-width-100 no-border-radius"
+                               data-dir="hall"
+                               data-tooltip="tooltip"
+                               data-placement="top"
+                               title="Галерея">
+                           <i class="fa fa-camera" aria-hidden="true"></i>
+                       </button>
                    </div>
                </div>
             </div>
             <div class="col-xs-12">
-               {{ hall.description }}
+               <p>
+                   {{ hall.description }}
+               </p>
+            </div>
+            <div class="col-xs-12 padding-top-20px">
+                {{ hall.content | raw }}
             </div>
             <div class="col-xs-12">
                 <a href="#demo" class="read-more-link pull-right" data-toggle="collapse">
@@ -50,11 +156,107 @@
                 </a>
 
             </div>
-            <div class="col-xs-12 collapse" id="demo">
-                {{ hall.content | raw }}
+            <div class="col-xs-12 collapse padding-top-20px" id="demo">
+                {{ hall.specification | raw }}
             </div>
         </div>
 
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content no-border-radius">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Календарь бронирований зала "{{ hall.title }}"</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id='calendar'></div>
+
+                        <div>
+                            <p>
+                                <i class="fa fa-square" aria-hidden="true" style="color: red"></i> - Забронировано
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ path('halls.book_hall', {'hall': hall.id}) }}" class="btn btn-primary no-border-radius pull-left">
+                            <span class="fa fa-lock"></span> Бронировать
+                        </a>
+                        <button type="button" class="btn btn-danger no-border-radius pull-right" data-dismiss="modal">
+                            <span class="fa fa-times"></span> Закрыть
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+            <!-- Background of PhotoSwipe.
+                 It's a separate element as animating opacity is faster than rgba(). -->
+            <div class="pswp__bg"></div>
+
+            <!-- Slides wrapper with overflow:hidden. -->
+            <div class="pswp__scroll-wrap">
+
+                <!-- Container that holds slides.
+                    PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                    Don't modify these 3 pswp__item elements, data is added later on. -->
+                <div class="pswp__container">
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
+
+                <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                <div class="pswp__ui pswp__ui--hidden">
+
+                    <div class="pswp__top-bar">
+
+                        <!--  Controls are self-explanatory. Order can be changed. -->
+
+                        <div class="pswp__counter"></div>
+
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                        <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                        <!-- element will get class pswp__preloader--active when preloader is running -->
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                                <div class="pswp__preloader__cut">
+                                    <div class="pswp__preloader__donut"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div>
+                    </div>
+
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                    </button>
+
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                    </button>
+
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
 {% endblock %}

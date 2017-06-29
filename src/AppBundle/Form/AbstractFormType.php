@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 
+use AppBundle\Form\Type\CKeditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -28,10 +29,7 @@ class AbstractFormType extends AbstractType
                ],
                'label' => 'Краткое описание'
            ])
-           ->add('content', TextareaType::class, [
-               'attr' => [
-                   'class' => 'form-control ckeditor',
-               ],
+           ->add('content', CKeditorType::class, [
                'label' => 'Полная информация'
            ]);
     }

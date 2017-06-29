@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ artist.title }}{% endblock %}
+{% block title %}{{ news.title }}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
@@ -16,7 +16,7 @@
 
             // build items array
             var items = [
-                {% for image in artist.files %}
+                {% for image in news.files %}
                 {
                     src: imgPath.replace('_dir_', dir).replace('_file_name_', '{{ image.name }}'),
                     w: 1239,
@@ -54,8 +54,8 @@
         <div class="row xs-padding-0-10px">
             <div class="col-xs-12 text-left padding-0-100px">
                 <ol class="breadcrumb single-hall-page-breadcrumbs">
-                    <li class="breadcrumb-item"><a href="{{ path('front.artists') }}">Артисты</a></li>
-                    <li class="breadcrumb-item active">{{ artist.title }}</li>
+                    <li class="breadcrumb-item"><a href="{{ path('front.portfolio') }}">Новости</a></li>
+                    <li class="breadcrumb-item active">{{ news.title }}</li>
                 </ol>
 
             </div>
@@ -67,12 +67,12 @@
                 <div class="row">
                     <div class="col-sm-10">
                         <h4 class="underscored-label">
-                            {{ artist.title }}
+                            {{ news.title }}
                         </h4>
                     </div>
 
                     <div class="col-sm-2">
-                        <button type="button" id="init-photoswipe" data-dir="artist"
+                        <button type="button" id="init-photoswipe" data-dir="news"
                                 class="btn btn-default xs-width-100 no-border-radius pull-right">
                             <i class="fa fa-camera" aria-hidden="true"></i> Галерея
                         </button>
@@ -81,11 +81,11 @@
             </div>
             <div class="col-xs-12">
                 <p>
-                    {{ artist.description }}
+                    {{ news.description }}
                 </p>
             </div>
             <div class="col-xs-12 padding-top-20px">
-                {{ artist.content | raw }}
+                {{ news.content | raw }}
             </div>
         </div>
 

@@ -41,19 +41,28 @@
                             <div class="media-body">
                                 <div class="row event-heading">
                                     <div class="col-sm-10 col-xs-12 event-label">
-                                        <h4>
-                                            <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }} | <i class="fa fa-clock-o"></i>
-                                            {{ event.eventTime | date('H:i') }}
-                                        </h4>
-                                        <p>
-                                            <a href="{{ path('event.details_page', {'event': event.id}) }}" class="event-header">
+                                        <a href="{{ path('event.details_page', {'event': event.id}) }}"
+                                           class="event-header">
+                                            <h4>
+                                                <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }} |
+                                                <i class="fa fa-clock-o"></i>
+                                                {{ event.eventTime | date('H:i') }}
+                                            </h4>
+                                            <p>
                                                 {{ event.title }}
-                                            </a>
-                                        </p>
+                                            </p>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="media-content">
-                                    {{ event.content | raw }}
+                                    {% set description = event.description %}
+
+                                    {% if event.description | length > 100 %}
+                                        {% set description = event.description | slice (0,100) %}
+                                        {% set description = description~'...' %}
+                                    {% endif %}
+
+                                    {{ description }}
                                 </div>
                             </div>
                         </li>
@@ -77,7 +86,7 @@
                                     <div class="col-sm-10 col-xs-12 event-label">
                                         <h4>
                                             <p>
-                                                <a href="#" class="event-header">
+                                                <a href="{{ path('front.news.single', {'news': item.id}) }}" class="event-header">
                                                     {{ item.title }}
                                                 </a>
                                             </p>

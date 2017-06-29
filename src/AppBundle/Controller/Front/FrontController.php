@@ -45,6 +45,16 @@ class FrontController extends Controller
     }
 
     /**
+     * @Route("/news/{news}", name="front.news.single")
+     */
+    public function singleNewsPageAction(News $news) {
+
+        return $this->render(':default/front/page/news:single.html.twig', [
+            'news' => $news
+        ]);
+    }
+
+    /**
      * @return Http\Response
      * @Route("/portfolio", name="front.portfolio")
      */

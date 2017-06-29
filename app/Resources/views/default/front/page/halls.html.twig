@@ -47,8 +47,11 @@
                 <div class="media">
                     <a class="pull-left" href="#">
                         {% if defaultImage is not null %}
-                            <img class="media-object" src="{{ asset('upload/hall/'~defaultImage.name) }}">
+                            {% set imgPath = asset('upload/hall/'~defaultImage.name) %}
+                            {% else %}
+                            {% set imgPath = asset('img/logo_dkj.jpg') %}
                         {% endif %}
+                        <img class="media-object" src="{{ imgPath }}">
                     </a>
                     <div class="media-body">
                         <h3 class="media-heading hall-label">

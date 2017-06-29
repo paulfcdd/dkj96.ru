@@ -17,9 +17,11 @@
                         <li class="list-group-item">
                             <p>
                                 <a class="text-info" href="{{ path('admin.messages.details',
-                                {'id': booking.id, 'entity': 'booking'}) }}">{{ booking.email }}</a>
-                                {{ booking.hall.title }}
+                                {'id': booking.id, 'entity': 'booking'}) }}">
+                                    {{ booking.email }}
+                                </a>
                             </p>
+                            <p>{{ booking.hall.title }}</p>
                             <small class="block text-muted">
                                 <i class="fa fa-clock-o"></i> {{ booking.dateReceived | date('d.m.Y') }}
                             </small>

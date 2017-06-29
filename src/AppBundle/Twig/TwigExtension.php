@@ -2,7 +2,6 @@
 
 namespace AppBundle\Twig;
 
-
 use AppBundle\Entity\Booking;
 
 class TwigExtension extends \Twig_Extension
@@ -11,6 +10,13 @@ class TwigExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('unreadMessages', [$this, 'unreadMessages']),
+        ];
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('strtotime', [$this, 'strtotime']),
         ];
     }
 
@@ -25,5 +31,21 @@ class TwigExtension extends \Twig_Extension
         }
 
         return count($unread);
+    }
+
+    /**
+     * @param string $date
+     * @return \DateTime
+     */
+    public function strtotime(string $date) {
+
+        $timestamp = strtotime($date);
+
+        $dateTime = new \DateTime();
+
+        $time = $dateTime->setTimestamp($timestamp);
+
+        return $time;
+
     }
 }

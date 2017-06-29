@@ -61,9 +61,21 @@ class FrontController extends Controller
     /**
      * @Route("/artists", name="front.artists")
      */
-    public function listArtistsPage() {
+    public function listArtistsPageAction() {
         return $this->render(':default/front/page:artisty.html.twig', [
             'artists' => $this->getDoctrine()->getRepository(Artist::class)->findAll(),
+        ]);
+    }
+
+    /**
+     * @param $artist
+     * @return Http\Response
+     * @Route("/artists/detail/{artist}", name="front.artists.detail")
+     */
+    public function singleArtistAction(Artist $artist) {
+
+        return $this->render(':default/front/page/artists:single.html.twig', [
+            'artist' => $artist,
         ]);
     }
 

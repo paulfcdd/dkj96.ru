@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Бронирование зала{% endblock %}
+{% block title %}Бронирование зала {{ hall.title }}{% endblock %}
 
 {% set form_prefix = form.vars.name~'_' %}
 
@@ -53,7 +53,16 @@
     <div class="space-fix-container"></div>
 
     {% block under_banner_text_widget %}
-
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <p class="padding-0-100px">
+                    {{ hall.title }} - бронирование зала
+                </p>
+                <p class="padding-0-100px">
+                    Вместимость: до {{ hall.capacity }} чел.
+                </p>
+            </div>
+        </div>
     {% endblock %}
 
     <div class="space-fix-container"></div>

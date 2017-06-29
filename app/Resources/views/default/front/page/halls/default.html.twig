@@ -48,8 +48,6 @@
                 dir = $(this).data('dir'),
                 imgPath = '{{ asset('upload/_dir_/_file_name_') }}';
 
-                console.log(imgPath.replace('_dir_', dir).replace('_file_name_', 'jfdjjkfdhfjkd'));
-
             // build items array
             var items = [
                 {% for image in hall.files %}
@@ -180,7 +178,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="{{ path('halls.book_hall', {'hall': hall.id}) }}" class="btn btn-primary no-border-radius pull-left">
+                        <a href="{{ path('halls.book_hall', {'hall': hall.id}) }}"
+                           class="btn btn-primary no-border-radius pull-left" target="_blank">
                             <span class="fa fa-lock"></span> Бронировать
                         </a>
                         <button type="button" class="btn btn-danger no-border-radius pull-right" data-dismiss="modal">

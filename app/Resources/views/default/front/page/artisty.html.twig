@@ -48,8 +48,7 @@
                             <a href="{{ path('front.artists.detail', {'artist': artist.id}) }}">{{ artist.title }}</a>
                         </h3>
                         <div class="by-author hall-description">
-                            Детский коллектив танцоров легко разнообразит Ваш юбилей или корпоративный вечер. Также в
-                            коллективе есть взрослые группы, которые могут выступать на больших городских площадках
+                            {{ artist.description }}
                         </div>
                         <a href="{{ path('front.artists.detail', {'artist': artist.id}) }}" class="read-more-link pull-right">Подробнее</a>
                     </div>

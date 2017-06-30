@@ -97,7 +97,9 @@ class AdminController extends Controller
 
             if ($formData instanceof History) {
                 $history = $em->getRepository(History::class)->findOneBy(['isEnabled' => 1]);
-                $history->setEnabled(0);
+                if ($history) {
+                    $history->setEnabled(0);
+                }
             }
 
             $em->persist($formData);

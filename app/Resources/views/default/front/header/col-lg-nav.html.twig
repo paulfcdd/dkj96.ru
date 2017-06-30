@@ -9,7 +9,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand site-logo" href="{{ path('front.renderPage') }}">
+                    <a class="navbar-brand site-logo" href="{{ path('front.index') }}">
                         <img src="{{ asset('img/logo_dkj.jpg') }}">
                     </a>
                 </div>
@@ -23,7 +23,7 @@
 
                             {% set active = null %}
 
-                            {% if page == 'index' %}
+                            {% if page == 'front.index' %}
                                 {% if link == '' %}
                                     {% set active = 'active' %}
                                 {% endif %}
@@ -34,9 +34,7 @@
                             {% endif %}
 
 
-                            <li class="{{ active }} "><a href="{{ path('front.renderPage', {
-                                    'page': link
-                                }) }}">{{ name }}</a></li>
+                            <li class="{{ active }} "><a href="{{ path(link) }}">{{ name }}</a></li>
 
                         {% endfor %}
                     </ul>

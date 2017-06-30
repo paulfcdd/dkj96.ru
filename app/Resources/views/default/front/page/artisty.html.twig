@@ -1,6 +1,10 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ pageData[page] }}{% endblock %}
+{% block title %}Артисты{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/front/page/artisty.css') }}">
+{% endblock %}
 
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
@@ -24,21 +28,29 @@
     <div class="container padding-left-0 padding-right-0 halls-list-block">
 
         {% for artist in artists %}
+            {% set defaultImage = null %}
+
+            {% if artist.files | length > 0 %}
+                {% for file in artist.files %}
+                    {% if file.isDefault == 1 %}
+                        {% set defaultImage = file %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
             <div class="col-xs-12 padding-0-100px single-hall xs-padding-0-10px">
                 <div class="media">
                     <a class="pull-left" href="#">
-                        <img class="media-object" src="{{ artist.avatar }}" alt="..."
-                             style="height: 256px; width: 256px; border-radius: 50%; margin-right: 20px;">
+                        <img class="media-object" src="{{ asset('upload/artist/'~defaultImage.name) }}" style="height: 256px; width: 256px; border-radius: 50%; margin-right: 20px;">
                     </a>
                     <div class="media-body">
                         <h3 class="media-heading hall-label">
-                            <a href="#">{{ artist.name }}</a>
+                            <a href="{{ path('front.artists.detail', {'artist': artist.id}) }}">{{ artist.title }}</a>
                         </h3>
-                        <p class="by-author hall-description">
-                            Детский коллектив танцоров легко разнообразит Ваш юбилей или корпоративный вечер. Также в
-                            коллективе есть взрослые группы, которые могут выступать на больших городских площадках
-                        </p>
-                        <a href="#" class="read-more-link pull-right">Подробнее</a>
+                        <div class="by-author hall-description">
+                            {{ artist.description }}
+                        </div>
+                        <a href="{{ path('front.artists.detail', {'artist': artist.id}) }}" class="read-more-link pull-right">Подробнее</a>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,40 @@
+<div class="ibox float-e-margins">
+    <div class="ibox-content mailbox-content">
+        <div class="file-manager">
+            <h5>Папки</h5>
+            <ul class="folder-list m-b-md" style="padding: 0">
+                <li>
+                    <a href="{{ path('admin.booking.listing') }}">
+                        <i class="fa fa-inbox "></i> Входящие
+
+                        <span class="label label-warning pull-right">{{ bookings | unreadMessages }} / {{ bookings | length }}</span>
+
+
+
+                    </a>
+                </li>
+                <li>
+                    <a href="mailbox.html">
+                        <i class="fa fa-envelope-o"></i> Send Mail
+                    </a>
+                </li>
+                <li>
+                    <a href="mailbox.html">
+                        <i class="fa fa-certificate"></i> Important
+                    </a>
+                </li>
+                <li>
+                    <a href="mailbox.html">
+                        <i class="fa fa-file-text-o"></i> Drafts<span class="label label-danger pull-right">2</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="mailbox.html">
+                        <i class="fa fa-trash-o"></i> Trash
+                    </a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

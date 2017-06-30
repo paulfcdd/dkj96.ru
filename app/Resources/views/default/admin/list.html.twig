@@ -1,0 +1,100 @@
+{% extends ':default/admin:base.html.twig' %}
+
+{% block content %}
+
+    {% set entity = app.request.get('entity') %}
+
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                {% set sectionName = 'admin.'~app.request.attributes.get('_route_params')['entity']  %}
+                <h5>{{ sectionName | trans }}: список объектов</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#">Config option 1</a>
+                        </li>
+                        <li><a href="#">Config option 2</a>
+                        </li>
+                    </ul>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <table class="table table-responsive">
+                    <thead>
+                    <th>Название</th>
+                    {% if routeParams.entity == 'history' %}
+                        <th>Статус</th>
+                    {% endif %}
+                    <th>Дата создания</th>
+                    <th>Дата изменения</th>
+                    <th class="text-center">Автор</th>
+                    <th class="text-right">Управление</th>
+                    </thead>
+                    <tbody>
+                    {% for object in objects %}
+                        <tr id="{{ routeParams.entity~'_'~object.id }}">
+                            <td>{{ object.title }}</td>
+                            {% if routeParams.entity == 'history' %}
+
+                                {% if object.enabled == 1 %}
+                                    {% set status = 'Включено' %}
+                                    {% else %}
+                                        {% set status = 'Выключено' %}
+                                {% endif %}
+
+
+                                <td>{{ status }}</td>
+                            {% endif %}
+                            <td>{{ object.dateCreated | date('d.m.Y') }}</td>
+                            <td>
+                                {% if object.dateUpdated is not null %}
+                                    {{ object.dateUpdated | date('d.m.Y') }}
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {{ object.author.username }}
+                            </td>
+                            <td class="text-right">
+
+                                <div class="btn-group">
+                                    <a href="{{ path('admin.manage', {
+                                        'entity': entity,
+                                        'id': object.id
+                                    }) }}" role="button" class="btn btn-success"><span class="fa fa-edit"></span></a>
+                                    {% if entity == 'hall' %}
+                                        <a href="{{ path('admin.booking.calendar', {
+                                            'hall': object.id
+                                        }) }}" role="button" class="btn btn-primary">
+                                            <span class="fa fa-calendar"></span></a>
+                                    {% endif %}
+                                    <a href="#" role="button" class="btn btn-danger delete-object"
+                                       data-objectname="{{ routeParams.entity }}"
+                                       data-objectid="{{ object.id }}">
+                                        <span class="fa fa-trash"></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="ibox-footer">
+                <a href="{{ path('admin.manage', {
+                    'entity': app.request.get('entity')
+                }) }}" role="button" class="btn btn-primary">
+                    Добавить
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

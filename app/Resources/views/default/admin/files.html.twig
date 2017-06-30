@@ -1,0 +1,102 @@
+{% extends ':default/admin:base.html.twig' %}
+
+{% block scripts %}
+    <script>
+        $('.set-as-default').on('click', function () {
+            var fileId = $(this).data('fileid'),
+                url = '{{ path('admin.api.set_as_default', {'file': '_fileId' }) }}',
+                btn = $(this);
+
+            $.ajax({
+                url: url.replace('_fileId', fileId),
+                method:'post',
+                success: function (data) {
+
+                    var disableBtn = $.find('.set-as-default[disabled]');
+
+                    $(disableBtn)
+                        .attr('disabled', false)
+                        .text('Установить по умолчанию');
+
+                    btn
+                        .attr('disabled', true)
+                        .text('Выбрано по умолчанию');
+                },
+                error: function (resp) {
+                    alert(resp)
+                }
+            })
+        });
+
+        $('.delete-file').on('click', function () {
+            var fieldId = $(this).data('fileid'),
+                url = '{{ path('admin.api.file_delete', {'file': '_file'}) }}';
+
+            $.ajax({
+                url: url.replace('_file', fieldId),
+                method: 'post',
+                success: function (data) {
+                    $('#file_'+fieldId).remove();
+                }
+            });
+        });
+
+        $('.single-file-wrapper').on('click', function (e) {
+            e.preventDefault();
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>
+                    Управление медиаконтентом
+                </h5>
+            </div>
+            <div class="ibox-content">
+
+
+                <div class="row">
+                    {% for file in files %}
+
+                        {% set disabled = null %}
+                        {% set buttonText = 'Установить по умолчанию' %}
+
+                        <div class="col-md-4" id="file_{{ file.id }}">
+                            <div class="thumbnail single-file text-center">
+                                <a href="#" class="single-file-wrapper">
+                                    <img src="{{ asset(files_dir~'/'~routeParams.entity~'/'~file.name) }}">
+                                    <div class="caption btn-group">
+                                        {% if file.isDefault == 1 %}
+                                            {% set disabled = 'disabled' %}
+                                            {% set buttonText = 'Выбрано по умолчанию' %}
+                                        {% endif %}
+
+
+                                        <button type="button"
+                                                class="btn btn-primary btn-sm set-as-default" data-fileid="{{ file.id }}"
+                                                {{ disabled }}>
+                                            {{ buttonText }}
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm delete-file" data-fileid="{{ file.id }}">Удалить</button>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div class="ibox-footer">
+                <a role="button" class="btn btn-success" href="{{ path('admin.manage', {
+                    'entity': routeParams.entity,
+                    'id': routeParams.id
+                }) }}">Назад</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends ':default/admin:base.html.twig' %}
+
+{% block content %}
+    <div class="col-lg-3">
+        {% block booking_left_menu %}
+            {{ render(controller('AppBundle:Admin/Booking:renderBookingMenu')) }}
+        {% endblock %}
+    </div>
+    <div class="col-lg-9 animated fadeInRight">
+       {% block booking_main_blok %}
+           <div class="mail-box-header">
+
+               <h2>
+                   Входящие ({{ objects | length }})
+               </h2>
+
+           </div>
+           <div class="mail-box">
+
+               <table class="table table-hover table-mail">
+                   <thead>
+                   <th>Email</th>
+                   <th>Тема</th>
+                   <th colspan="2" class="text-center">Дата получения</th>
+                   </thead>
+                   <tbody>
+
+                   {% for object in objects %}
+                       {% set unread = null %}
+                       {% if object.status == null %}
+                           {% set unread = 'unread' %}
+                       {% endif %}
+
+                       <tr class="{{ unread }}">
+                           <td class="mail-ontact">
+                               <a href="#">
+                               {#<a href="{{ path('admin.booking.details', {'booking': booking.id}) }}">#}
+                                   {{ object.email }}
+                               </a>
+                           </td>
+                           <td class="mail-subject">
+                               <a href="#">
+                               {#<a href="{{ path('admin.booking.details', {'booking': booking.id}) }}">#}
+                                   {{ theme }}
+                               </a>
+                           </td>
+                           <td class="text-right mail-date">
+                               <span class="fa fa-calendar"></span> {{ object.dateReceived | date('d.m.Y') }}
+                           </td>
+                           <td class="text-right mail-date">
+                               <span class="fa fa-clock-o"></span> {{ object.dateReceived | date('H:i') }}
+                           </td>
+                       </tr>
+
+                   {% endfor %}
+
+
+                   </tbody>
+               </table>
+
+
+           </div>
+       {% endblock %}
+    </div>
+{% endblock %}

@@ -1,6 +1,10 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ pageData[page] }}{% endblock %}
+{% block title %}Портфолио{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/front/page/portfolio.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
 
@@ -30,101 +34,39 @@
 
                 <ul class="media-list main-list">
                     <!--SINGLE EVENT START-->
-                    <li class="media">
-                        <div class="media-body">
-                            <div class="row event-heading">
-                                <div class="col-sm-10 col-xs-12 event-label">
-                                    <h4>
-                                        <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-clock-o"></i> 19:00
-                                    </h4>
-                                    <p>
-                                        <a href="#" class="event-header">
-                                            Отчётный концерт театра танца «Степ»
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="media-content">
-                                Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31
-                                мая в
-                                концертном зале Дворца культуры железнодорожников состоится спектакль (и
-                                отчётный концерт)
-                                Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                            </p>
-                        </div>
-                    </li>
 
-                    <li class="media">
-                        <div class="media-body">
-                            <div class="row event-heading">
-                                <div class="col-sm-10 col-xs-12 event-label">
-                                    <h4>
-                                        <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-clock-o"></i> 19:00
-                                    </h4>
-                                    <p>
-                                        <a href="#" class="event-header">
-                                            Отчётный концерт театра танца «Степ»
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="media-content">
-                                Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31
-                                мая в
-                                концертном зале Дворца культуры железнодорожников состоится спектакль (и
-                                отчётный концерт)
-                                Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                            </p>
-                        </div>
-                    </li>
+                    {% for event in events %}
 
-                    <li class="media">
-                        <div class="media-body">
-                            <div class="row event-heading">
-                                <div class="col-sm-10 col-xs-12 event-label">
-                                    <h4>
-                                        <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-clock-o"></i> 19:00
-                                    </h4>
-                                    <p>
-                                        <a href="#" class="event-header">
-                                            Отчётный концерт театра танца «Степ»
+                        <li class="media">
+                            <div class="media-body">
+                                <div class="row event-heading">
+                                    <div class="col-sm-10 col-xs-12 event-label">
+                                        <a href="{{ path('event.details_page', {'event': event.id}) }}"
+                                           class="event-header">
+                                            <h4>
+                                                <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }} |
+                                                <i class="fa fa-clock-o"></i>
+                                                {{ event.eventTime | date('H:i') }}
+                                            </h4>
+                                            <p>
+                                                {{ event.title }}
+                                            </p>
                                         </a>
-                                    </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <p class="media-content">
-                                Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31
-                                мая в
-                                концертном зале Дворца культуры железнодорожников состоится спектакль (и
-                                отчётный концерт)
-                                Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                            </p>
-                        </div>
-                    </li>
+                                <div class="media-content">
+                                    {% set description = event.description %}
 
-                    <li class="media">
-                        <div class="media-body">
-                            <div class="row event-heading">
-                                <div class="col-sm-10 col-xs-12 event-label">
-                                    <h4>
-                                        <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-clock-o"></i> 19:00
-                                    </h4>
-                                    <p>
-                                        <a href="#" class="event-header">
-                                            Отчётный концерт театра танца «Степ»
-                                        </a>
-                                    </p>
+                                    {% if event.description | length > 100 %}
+                                        {% set description = event.description | slice (0,100) %}
+                                        {% set description = description~'...' %}
+                                    {% endif %}
+
+                                    {{ description }}
                                 </div>
                             </div>
-                            <p class="media-content">
-                                Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31
-                                мая в
-                                концертном зале Дворца культуры железнодорожников состоится спектакль (и
-                                отчётный концерт)
-                                Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                            </p>
-                        </div>
-                    </li>
+                        </li>
+                    {% endfor %}
                 </ul>
 
 
@@ -135,109 +77,38 @@
 
                 <ul class="media-list main-list">
                     <!--SINGLE EVENT START-->
-                    <li class="media single-news">
-                        <div class="media-body">
-                            <div class="row news-heading">
-                                <div class="col-sm-10 col-xs-12 event-label">
-                                    <h4>
-                                        <p>
-                                            <a href="#" class="event-header">
-                                                Отчётный концерт театра танца «Степ»
-                                            </a>
-                                        </p>
-                                        <p class="event-subheader">
-                                            <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-user"></i> Админ
-                                        </p>
-                                    </h4>
-                                </div>
-                            </div>
-                            <p class="media-content">
-                                Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31
-                                мая в
-                                концертном зале Дворца культуры железнодорожников состоится спектакль (и
-                                отчётный концерт)
-                                Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                            </p>
-                        </div>
-                    </li>
 
-                    <li class="media single-news">
-                        <div class="media-body">
-                            <div class="row news-heading">
-                                <div class="col-sm-10 col-xs-12 event-label">
-                                    <h4>
-                                        <p>
-                                            <a href="#" class="event-header">
-                                                Отчётный концерт театра танца «Степ»
-                                            </a>
-                                        </p>
-                                        <p class="event-subheader">
-                                            <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-user"></i> Админ
-                                        </p>
-                                    </h4>
-                                </div>
-                            </div>
-                            <p class="media-content">
-                                Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31
-                                мая в
-                                концертном зале Дворца культуры железнодорожников состоится спектакль (и
-                                отчётный концерт)
-                                Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                            </p>
-                        </div>
-                    </li>
+                    {% for item in news %}
 
-                    <li class="media single-news">
-                        <div class="media-body">
-                            <div class="row news-heading">
-                                <div class="col-sm-10 col-xs-12 event-label">
-                                    <h4>
-                                        <p>
-                                            <a href="#" class="event-header">
-                                                Отчётный концерт театра танца «Степ»
-                                            </a>
-                                        </p>
-                                        <p class="event-subheader">
-                                            <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-user"></i> Админ
-                                        </p>
-                                    </h4>
+                        <li class="media single-news">
+                            <div class="media-body">
+                                <div class="row news-heading">
+                                    <div class="col-sm-10 col-xs-12 event-label">
+                                        <h4>
+                                            <p>
+                                                <a href="{{ path('front.news.single', {'news': item.id}) }}" class="event-header">
+                                                    {{ item.title }}
+                                                </a>
+                                            </p>
+                                            <p class="event-subheader">
+                                                <i class="fa fa-calendar"></i> {{ item.dateCreated | date('d.m.Y') }} | <i class="fa fa-user"></i>
+                                                {{ item.author }}
+                                            </p>
+                                        </h4>
+                                    </div>
                                 </div>
-                            </div>
-                            <p class="media-content">
-                                Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31
-                                мая в
-                                концертном зале Дворца культуры железнодорожников состоится спектакль (и
-                                отчётный концерт)
-                                Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                            </p>
-                        </div>
-                    </li>
+                                <div class="media-content">
+                                    {% set description = item.description %}
 
-                    <li class="media single-news">
-                        <div class="media-body">
-                            <div class="row news-heading">
-                                <div class="col-sm-10 col-xs-12 event-label">
-                                    <h4>
-                                        <p>
-                                            <a href="#" class="event-header">
-                                                Отчётный концерт театра танца «Степ»
-                                            </a>
-                                        </p>
-                                        <p class="event-subheader">
-                                            <i class="fa fa-calendar"></i> 31.05.2017 | <i class="fa fa-user"></i> Админ
-                                        </p>
-                                    </h4>
+                                    {% if item.description | length > 100 %}
+                                        {% set description = item.description | slice (0,100) %}
+                                        {% set description = description~'...' %}
+                                    {% endif %}
+                                    {{ description }}
                                 </div>
                             </div>
-                            <p class="media-content">
-                                Зиму провожают блинами и хороводами. А весну давайте проводим в ритме степа! 31
-                                мая в
-                                концертном зале Дворца культуры железнодорожников состоится спектакль (и
-                                отчётный концерт)
-                                Театра танца «Степ», посвященный приближающемуся столетию Дворца.
-                            </p>
-                        </div>
-                    </li>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
 

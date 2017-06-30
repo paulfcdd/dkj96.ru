@@ -1,0 +1,160 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ news.title }}{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        $('#init-photoswipe').click(function () {
+            var pswpElement = document.querySelectorAll('.pswp')[0],
+                dir = $(this).data('dir'),
+                imgPath = '{{ asset('upload/_dir_/_file_name_') }}';
+
+            // build items array
+            var items = [
+                {% for image in news.files %}
+                {
+                    src: imgPath.replace('_dir_', dir).replace('_file_name_', '{{ image.name }}'),
+                    w: 1239,
+                    h: 953
+                },
+                {% endfor %}
+            ];
+
+            // define options (if needed)
+            var options = {
+                // history & focus options are disabled on CodePen
+                history: false,
+                focus: false,
+                showAnimationDuration: 0,
+                hideAnimationDuration: 0,
+                shareButtons: [
+                    {id:'facebook', label:'{{ 'interface.fb_share'|trans }}', url:'https://www.facebook.com/sharer/sharer.php?u=#'},
+                    {id:'twitter', label:'{{ 'interface.twitter_share'|trans }}', url:'https://twitter.com/intent/tweet?url=#'},
+                ],
+
+            };
+
+            var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery.init();
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="container col-xs-padding-right-0 single-hall-page">
+        <div class="space-fix-container"></div>
+
+        <div class="row xs-padding-0-10px">
+            <div class="col-xs-12 text-left padding-0-100px">
+                <ol class="breadcrumb single-hall-page-breadcrumbs">
+                    <li class="breadcrumb-item"><a href="{{ path('front.portfolio') }}">Новости</a></li>
+                    <li class="breadcrumb-item active">{{ news.title }}</li>
+                </ol>
+
+            </div>
+        </div>
+
+        <div class="space-fix-container"></div>
+        <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <h4 class="underscored-label">
+                            {{ news.title }}
+                        </h4>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button type="button" id="init-photoswipe" data-dir="news"
+                                class="btn btn-default xs-width-100 no-border-radius pull-right">
+                            <i class="fa fa-camera" aria-hidden="true"></i> Галерея
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <p>
+                    {{ news.description }}
+                </p>
+            </div>
+            <div class="col-xs-12 padding-top-20px">
+                {{ news.content | raw }}
+            </div>
+        </div>
+
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+            <!-- Background of PhotoSwipe.
+                 It's a separate element as animating opacity is faster than rgba(). -->
+            <div class="pswp__bg"></div>
+
+            <!-- Slides wrapper with overflow:hidden. -->
+            <div class="pswp__scroll-wrap">
+
+                <!-- Container that holds slides.
+                    PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                    Don't modify these 3 pswp__item elements, data is added later on. -->
+                <div class="pswp__container">
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
+
+                <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                <div class="pswp__ui pswp__ui--hidden">
+
+                    <div class="pswp__top-bar">
+
+                        <!--  Controls are self-explanatory. Order can be changed. -->
+
+                        <div class="pswp__counter"></div>
+
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                        <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                        <!-- element will get class pswp__preloader--active when preloader is running -->
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                                <div class="pswp__preloader__cut">
+                                    <div class="pswp__preloader__donut"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div>
+                    </div>
+
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                    </button>
+
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                    </button>
+
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

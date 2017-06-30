@@ -1,6 +1,51 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ pageData[page] }}{% endblock %}
+{% block title %}Бронирование зала {{ hall.title }}{% endblock %}
+
+{% set form_prefix = form.vars.name~'_' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ asset('js/plugins/phoneInput/css/intlTelInput.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/plugins/phoneInput/js/intlTelInput.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/phoneInput/js/utils.js') }}"></script>
+    <script src="{{ asset('js/i18n/datepicker-ru.js') }}"></script>
+    <script>
+        $( function() {
+            $( "#{{ form_prefix~'date' }}" ).datepicker({
+                dateFormat: 'dd-mm-yy',
+                numberOfMonths: 2
+            });
+
+        } );
+
+        $(document).ready(function () {
+
+            var phoneNumber = $("#{{ form_prefix~'phone' }}");
+
+            $(phoneNumber).intlTelInput({
+                allowDropdown: true,
+                autoHideDialCode: false,
+                initialCountry: "ru",
+                autoPlaceholder: "polite",
+                dropdownContainer: "body",
+                formatOnDisplay: true,
+                nationalMode: false,
+                placeholderNumberType: "MOBILE",
+                preferredCountries: ["ru"],
+                separateDialCode: false,
+                utilsScript: "{{ asset('js/plugins/phoneInput/js/utils.js') }}"
+            });
+
+            phoneNumber.blur(function() {
+                $(this).val($(this).intlTelInput("getNumber", intlTelInputUtils.numberFormat.INTERNATIONAL));
+            });
+        });
+    </script>
+{% endblock %}
 
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
@@ -8,33 +53,61 @@
     <div class="space-fix-container"></div>
 
     {% block under_banner_text_widget %}
-
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <p class="padding-0-100px">
+                    {{ hall.title }} - бронирование зала
+                </p>
+                <p class="padding-0-100px">
+                    Вместимость: до {{ hall.capacity }} чел.
+                </p>
+            </div>
+        </div>
     {% endblock %}
 
     <div class="space-fix-container"></div>
 
     <div class="container padding-left-0 padding-right-0 booking-block">
+
         <div class="col-xs-12 padding-0-100px">
-            <form>
-                <div class="form-group col-sm-6 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Телефон" required>
+
+            {{ form_start(form) }}
+
+            {% if formMessage is not null %}
+                <div class="form-group col-xs-12 col-sm-12">
+                    <div class="alert alert-info no-border-radius">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ formMessage | first }}
+                    </div>
                 </div>
-                <div class="form-group col-sm-6 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Дата" required>
-                </div>
-                <div class="form-group col-sm-6 col-xs-12">
-                    <input type="text" class="form-control" placeholder="E-mail" required>
-                </div>
-                <div class="form-group col-sm-6 col-xs-12">
-                    <input type="text" class="form-control" placeholder="Кол-во человек" required>
-                </div>
+            {% endif %}
+
+            <div class="form-group col-sm-6 col-xs-12">
+                {{ form_widget(form.phone) }}
+            </div>
+            <div class="form-group col-sm-6 col-xs-12">
+                {{ form_widget(form.date) }}
+            </div>
+            <div class="form-group col-sm-6 col-xs-12">
+                {{ form_widget(form.email) }}
+            </div>
+            <div class="form-group col-sm-6 col-xs-12">
+                {{ form_widget(form.guests) }}
+            </div>
+            {% if hall is empty %}
                 <div class="form-group col-sm-12 col-xs-12">
-                   <textarea cols="5" rows="5" placeholder="Краткая информация о мероприятии" class="form-control"></textarea>
+                    {{ form_label(form.hall) }}
+                    {{ form_widget(form.hall) }}
                 </div>
-                <div class="form-group col-sm-12 col-xs-12">
-                    <button class="btn btn-default pull-right" type="submit">Отправить</button>
-                </div>
-            </form>
+            {% endif %}
+            <div class="form-group col-sm-12 col-xs-12">
+                {{ form_widget(form.message) }}
+            </div>
+            <div class="form-group col-sm-12 col-xs-12">
+                {{ form_widget(form.send) }}
+            </div>
+            {{ form_end(form) }}
+
         </div>
     </div>
 

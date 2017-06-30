@@ -1,0 +1,61 @@
+{% extends ':default/admin:base.html.twig' %}
+
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            var form = $('#form_{{ form.vars.name }}');
+
+            form.append('<div style="margin-top: 20px;"><button class="btn btn-success" type="submit"><span class="fa fa-floppy-o"></span> Сохранить</button></div>')
+        })
+    </script>
+{% endblock %}
+
+{% form_theme form _self %}
+
+{%- block date_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{ block('form_widget_simple') }}
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- date_pattern|replace({
+                '{{ day }}':   form_widget(form.day),
+                '{{ month }}': form_widget(form.month),
+                '{{ year }}':  form_widget(form.year),
+            })|raw -}}
+        </div>
+    {%- endif -%}
+{%- endblock date_widget -%}
+
+
+
+{% block content %}
+    <div class="col-md-12">
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                {% set sectionName = 'admin.'~form.vars.name  %}
+                <h5>Управление разделом {{ sectionName | trans }}</h5>
+            </div>
+            <div class="ibox-content">
+
+                {% if object.files is defined %}
+                    {% if object.files is not empty %}
+                        <a href="{{ path('admin.manage.files', {
+                            'entity': routeParams.entity,
+                            'id': routeParams.id
+                        }) }}" class="btn btn-success">
+                            <i class="fa fa-files-o" aria-hidden="true"></i> Медиафайлы
+                        </a>
+                    {% endif %}
+                {% endif %}
+
+                {{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

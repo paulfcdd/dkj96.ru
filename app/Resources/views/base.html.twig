@@ -15,13 +15,11 @@
     <title>{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}">
+    <script src="https://use.fontawesome.com/dd34fe19f7.js"></script>
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
-    {#<link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">#}
-
-    {% block css_loader %}
-        <link rel="stylesheet" href="{{ asset('css/front/page/'~page~'.css') }}">
-    {% endblock %}
+    <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+    <link href="{{ asset('node_modules/photoswipe/dist/photoswipe.css') }}" rel="stylesheet">
+    <link href="{{ asset('node_modules/photoswipe/dist/default-skin/default-skin.css') }}" rel="stylesheet">
 
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
@@ -34,13 +32,16 @@
         {% block header %}
 
             {% set mainMenu = {
-            '' : 'Главная',
-            'zaly' : 'Залы',
-            'artisty' : 'Артисты',
-            'istoriya' : 'История',
-            'otzyvy' : 'Отзывы',
-            'kontakty' : 'Связь',
+            'front.index' : 'Главная',
+            'halls.list' : 'Залы',
+            'front.artists' : 'Артисты',
+            'front.history' : 'История',
+            'front.contact' : 'Связь',
             } %}
+
+            {#
+            'front.index' : 'Отзывы',
+            #}
 
             <div>
                 {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}
@@ -57,11 +58,11 @@
         {% block content %}
             {% block main_banner_widget %}
                 <div class="container-fluid index-page-banner" id="main-banner-index">
-                    <div class="col-sm-4 col-sm-offset-8 banner-text">
-                        <h3>Дворец</h3>
-                        <h3>Культуры</h3>
-                        <h3>Железнодорожников</h3>
-                    </div>
+                    {#<div class="col-sm-4 col-sm-offset-8 banner-text">#}
+                        {#<h3>Дворец</h3>#}
+                        {#<h3>Культуры</h3>#}
+                        {#<h3>Железнодорожников</h3>#}
+                    {#</div>#}
                 </div>
             {% endblock %}
 
@@ -104,7 +105,7 @@
                         </li>
 
                         <li>
-                            <a href="https://www.youtube.com/domkult-ekb" class="social-icon-link btn btn-default" target="_blank">
+                            <a href="https://www.youtube.com/channel/UC7vdhFn3qayCS8pkJ3yrPAQ" class="social-icon-link btn btn-default" target="_blank">
                                 <i class="fa fa-youtube fa-2x"></i>
                             </a>
                         </li>
@@ -118,11 +119,19 @@
 
 
 <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/jquery.gotop.js') }}"></script>
-
 <script src="{{ asset('js/utils.js') }}"></script>
+<script src="{{ asset('node_modules/photoswipe/dist/photoswipe.min.js') }}"></script>
+<script src="{{ asset('node_modules/photoswipe/dist/photoswipe-ui-default.min.js') }}"></script>
 
+<script>
+    $(document).ready(function(){
+        $('[data-tooltip="tooltip"]').tooltip();
+    });
+</script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

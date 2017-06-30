@@ -1,0 +1,77 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} Залы {% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+    {% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <p class="padding-0-100px">
+                    Современный комплекс Дворца культуры железнодорожников обладает целым рядом преимуществ. Помимо
+                    удобного расположения рядом с развязками всех видов городского транспорта, уникальной особенностью
+                    Дворца культуры является его многофункциональность и разнообразие залов.е о залах и дополнительных
+                    услугах Вы можете узнать ниже
+                </p>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container padding-left-0 padding-right-0 halls-list-block">
+
+
+        {% for hall in halls %}
+
+            {% set hallDetailPath =  path('halls.detail', {'hall': hall.id}) %}
+
+            {% set defaultImage = null %}
+
+            {% if hall.files | length > 0 %}
+                {% for file in hall.files %}
+                    {% if file.isDefault == 1 %}
+                        {% set defaultImage = file %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <div class="col-xs-12 padding-0-100px xs-padding-0-10px single-hall">
+                <div class="media">
+                    <a class="pull-left" href="#">
+                        {% if defaultImage is not null %}
+                            {% set imgPath = asset('upload/hall/'~defaultImage.name) %}
+                            {% else %}
+                            {% set imgPath = asset('img/logo_dkj.jpg') %}
+                        {% endif %}
+                        <img class="media-object" src="{{ imgPath }}">
+                    </a>
+                    <div class="media-body">
+                        <h3 class="media-heading hall-label">
+                            <a href="{{ hallDetailPath }}">{{ hall.title }}</a>
+                        </h3>
+                        <div class="by-author hall-description">
+                            {{ hall.description }}
+                        </div>
+                        <a href="{{ hallDetailPath }}" class="read-more-link pull-right xs-width-100">
+                            Подробнее
+                        </a>
+                        <a href="{{ path('halls.book_hall', {
+                            'hall': hall.id
+                        }) }}" class="pull-left read-more-link">
+                            Бронировать
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

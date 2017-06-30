@@ -1,0 +1,54 @@
+{% extends ':default/admin/booking:list.html.twig' %}
+
+{% block scripts %}
+    <script>
+        CKEDITOR.replace('email-body');
+    </script>
+{% endblock %}
+
+{% block booking_main_blok %}
+    <div class="mail-box-header">
+        <h2>
+            Отправить сообщение
+        </h2>
+    </div>
+    <div class="mail-box">
+
+        <form class="form-horizontal" method="post" action="{{ path('admin.booking.compose', {'booking': booking.id}) }}">
+            <div class="mail-body">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Кому:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="email-to" value="{{ booking.email }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Тема:</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" value="" name="email-subject">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mail-text h-200">
+
+                <textarea class="ckeditor no-resize" name="email-body" id="email-body"></textarea>
+                <div class="clearfix"></div>
+            </div>
+            <div class="mail-body text-right tooltip-demo">
+                <button type="submit" class="btn btn-sm btn-primary">
+                    <i class="fa fa-paper-plane"></i> Отправить
+                </button>
+                <a href="{{ path('admin.booking.listing') }}" class="btn btn-danger btn-sm">
+                    <i class="fa fa-times"></i> Отменить
+                </a>
+            </div>
+        </form>
+
+        <div class="clearfix"></div>
+
+    </div>
+{% endblock %}

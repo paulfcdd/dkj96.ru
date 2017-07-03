@@ -17,6 +17,7 @@ class TwigExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('strtotime', [$this, 'strtotime']),
+            new \Twig_SimpleFunction('in_array',  [$this, 'in_array'])
         ];
     }
 
@@ -47,5 +48,19 @@ class TwigExtension extends \Twig_Extension
 
         return $time;
 
+    }
+
+    /**
+     * @param string $needle
+     * @param array $haystack
+     * @return bool
+     */
+    public function in_array(string $needle, array $haystack) {
+
+        if (in_array($needle, $haystack)) {
+            return true;
+        }
+
+        return false;
     }
 }

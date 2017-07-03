@@ -34,14 +34,12 @@
             locale: 'ru',
             eventRender: function(event, element) {
                 $(element).html(
-                    '<div class="event-info-block"">' +
+                    '<div class="event-info-block">' +
                     '<h4>'+event.title+'</h4>' +
                     '<h5>'+event.date+'<h5>' +
                     '<h5>'+event.time+'<h5>' +
                     '</div>'
                 );
-
-//                element.find('.fc-bgevent').text("<p>"+event.title+"</p>");
             }
         });
     </script>

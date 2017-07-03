@@ -21,7 +21,10 @@
             title: '{{ event.title }}',
             date: '{{ event.eventDate | date('d.m.Y') }}',
             time: '{{ event.eventTime | date('H:i') }}',
-            rendering: 'background'
+            rendering: 'background',
+            url: '{{ path('event.details_page', {
+                'event': event.id
+            }) }}'
         };
         events.push(event);
         {% endfor %}
@@ -35,7 +38,7 @@
             eventRender: function(event, element) {
                 $(element).html(
                     '<div class="event-info-block">' +
-                    '<h4>'+event.title+'</h4>' +
+                    '<h4><a href="'+event.url+'" target="_blank">'+event.title+'</a></h4>' +
                     '<h5>'+event.date+'<h5>' +
                     '<h5>'+event.time+'<h5>' +
                     '</div>'

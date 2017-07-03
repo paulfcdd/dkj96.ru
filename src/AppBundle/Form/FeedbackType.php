@@ -20,7 +20,8 @@ class FeedbackType extends AbstractType
                 'attr' => [
                     'class' => 'form-control no-border-radius',
                     'placeholder' => 'Ваш email'
-                ]
+                ],
+                'label' => false,
             ])
             ->add('message', TextareaType::class, [
                 'attr' => [
@@ -28,7 +29,8 @@ class FeedbackType extends AbstractType
                     'placeholder' => 'Ваше сообщение',
                     'cols' => 3,
                     'rows' => 3
-                ]
+                ],
+                'label' => false,
             ]);
     }
     

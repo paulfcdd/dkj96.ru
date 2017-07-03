@@ -9,8 +9,10 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
+use AppBundle\Entity\Review;
 use AppBundle\Form\BookingType;
 use AppBundle\Form\FeedbackType;
+use AppBundle\Form\ReviewFormType;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -151,11 +153,32 @@ class FrontController extends Controller
      *     "/event/details/id{event}",
      *     name="event.details_page"
      * )
+     * @Method({"POST", "GET"})
      */
     public function eventDetailAction(Event $event, Http\Request $request) {
 
+        $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(ReviewFormType::class)->handleRequest($request);
+
+        if ($request->isMethod('POST')) {
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $formData = $form->getData();
+
+                $formData->setEvent($event);
+
+                $em->persist($formData);
+                
+                $em->flush();
+            }
+
+        }
+
         return $this->render(':default/front/page/event:details.html.twig', [
-            'event' => $event
+            'event' => $event,
+            'form' => $form->createView(),
         ]);
 
     }

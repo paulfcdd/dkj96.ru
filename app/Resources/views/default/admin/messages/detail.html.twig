@@ -153,40 +153,43 @@
     <script>
 
         {% if entity == 'booking' %}
-        var events = [];
+            var events = [];
 
-        {% for event in bookings %}
+            {% for event in bookings %}
 
-        {% if event.booked == 1 %}
-        {% set bgcolor = '#DD6B55' %}
-        {% set title = 'Занято' %}
-        {% endif %}
+                    {% if event.booked == 1 %}
+                        {% set bgcolor = '#DD6B55' %}
+                        {% set title = 'Занято' %}
+                    {% endif %}
 
-        var event = {
-            start: '{{ event.date }}',
-            title: '{{ title }}',
-            rendering: 'background',
-            backgroundColor: '{{ bgcolor }}'
-        };
-        events.push(event);
-        {% endfor %}
+                    {% set bgcolor = 'none' %}
+                    {% set title = null %}
 
-        $('#calendar').fullCalendar({
-            defaultDate: $(this).fullCalendar('today'),
-            events: events,
-            locale: 'ru',
-            eventRender: function(event, element) {
-                $(element).html(
-                    '<div class="event-info-block"">' +
-                    '<label style="color: black">'+event.title+'</label>' +
-                    '</div>'
-                );
-            }
-        });
+                    var event = {
+                        start: '{{ event.date }}',
+                        title: '{{ title }}',
+                        rendering: 'background',
+                        backgroundColor: '{{ bgcolor }}'
+                    };
+                    events.push(event);
+            {% endfor %}
 
-        $('#calendarModal').on('shown.bs.modal', function () {
-            $("#calendar").fullCalendar('render');
-        });
+            $('#calendar').fullCalendar({
+                defaultDate: $(this).fullCalendar('today'),
+                events: events,
+                locale: 'ru',
+                eventRender: function(event, element) {
+                    $(element).html(
+                        '<div class="event-info-block">' +
+                        '<label style="color: black">'+event.title+'</label>' +
+                        '</div>'
+                    );
+                }
+            });
+
+            $('#calendarModal').on('shown.bs.modal', function () {
+                $("#calendar").fullCalendar('render');
+            });
         {% endif %}
 
         $(document).ready(function () {

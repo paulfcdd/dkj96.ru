@@ -12,6 +12,7 @@ use AppBundle\Entity\News;
 use AppBundle\Form\BookingType;
 use AppBundle\Form\FeedbackType;
 use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,24 +28,24 @@ class FrontController extends Controller
 
     /**
      * @param string | null $page
-     * @param int | null $id
      * @return Http\Response
      * @Route("/",
      *     name="front.index"
      * )
      */
-    public function indexAction(string $page = null, int $id = null) {
-
-        $doctrine = $this->getDoctrine();
+    public function indexAction(string $page = null) {
 
         return $this->render(':default/front/page:index.html.twig', [
             'page' => $page,
-            'news' => $doctrine->getRepository(News::class)->findAll(),
-            'events' => $doctrine->getRepository(Event::class)->findBy([], ['eventDate' => 'ASC'], 3, null)
+            'events' => $this->getSortedList(
+                Event::class,['eventDate' => 'ASC'], new \DateTime(), 'eventDate', 3
+            )
         ]);
     }
 
     /**
+     * @param News $news
+     * @return Http\Response
      * @Route("/news/{news}", name="front.news.single")
      */
     public function singleNewsPageAction(News $news) {
@@ -60,11 +61,13 @@ class FrontController extends Controller
      */
     public function portfolioAction() {
 
-        $em = $this->getDoctrine()->getManager();
-
         return $this->render(':default/front/page:portfolio.html.twig', [
-            'events' => $em->getRepository(Event::class)->findAll(),
-            'news' => $em->getRepository(News::class)->findAll(),
+            'events' => $this->getSortedList(
+                Event::class,['eventDate' => 'ASC'], new \DateTime(), 'eventDate', 6
+            ),
+            'news' => $this->getSortedList(
+                News::class,['dateCreated' => 'ASC'], new \DateTime(), 'dateCreated', 6
+            ),
         ]);
     }
 
@@ -92,7 +95,7 @@ class FrontController extends Controller
     /**
      * @Route("/history", name="front.history")
      */
-    public function listHistoryPage() {
+    public function listHistoryPageActio() {
 
         return $this->render(':default/front/page:istoriya.html.twig', [
             'history' => $this->getDoctrine()->getRepository(History::class)->findOneBy(['isEnabled' => true]),
@@ -100,6 +103,8 @@ class FrontController extends Controller
     }
 
     /**
+     * @param Http\Request $request
+     * @return Http\Response
      * @Route("/contact", name="front.contact")
      */
     public function contactPageAction(Http\Request $request) {
@@ -188,6 +193,9 @@ class FrontController extends Controller
     }
 
     /**
+     * @param Hall|null $hall
+     * @param Http\Request $request
+     * @return Http\Response
      * @Route("/halls/booking/{hall}", name="halls.book_hall")
      */
     public function bookHallAction(Hall $hall = null, Http\Request $request) {
@@ -251,6 +259,9 @@ class FrontController extends Controller
     }
 
     /**
+     * @param Hall $hall
+     * @param Http\Request $request
+     * @return Http\Response
      * @Route("/halls/{hall}/booking-calendar", name="halls.booking_calendar")
      * @Method({"POST"})
      */
@@ -260,5 +271,33 @@ class FrontController extends Controller
             'bookings' => $hall->getBookings()
 
         ]);
+    }
+
+    /**
+     * @param string $class
+     * @param array $orderBy
+     * @param \DateTime $filterDate
+     * @param string $selectField
+     * @param int|null $limit
+     * @return array
+     */
+    private function getSortedList(string $class, array $orderBy, \DateTime $filterDate, string $selectField, int $limit = null) {
+
+        /** @var EntityManager $repository */
+        $repository = $this->getDoctrine()->getRepository($class);
+
+        $qb = $repository->createQueryBuilder('a')
+            ->where('a.'.$selectField.' > :filterdate')
+            ->orderBy('a.'.key($orderBy), current($orderBy));
+
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        $qb = $qb
+            ->setParameter('filterdate', $filterDate)
+            ->getQuery();
+
+        return $qb->getResult();
     }
 }

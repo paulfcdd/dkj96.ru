@@ -7,25 +7,19 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity()
  * @ORM\Table(name="reviews")
- * @ORM\AttributeOverrides({
- *     @ORM\AttributeOverride(
- *          name="status",
- *          column=@ORM\Column(
- *              name="status",
- *              type="boolean"
- *          )
- *      ),
- *     @ORM\AttributeOverride(
- *          name="dateReceived",
- *          column=@ORM\Column(
- *              name="date_received",
- *              type="datetime"
- *          )
- *      ),
- * })
+ * @ORM\HasLifecycleCallbacks()
  */
-class Review extends Feedback
+class Review extends NotificationClass
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event", inversedBy="reviews")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
@@ -38,6 +32,13 @@ class Review extends Feedback
      * @ORM\Column()
      */
     private $name;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $approved = 0;
 
     /**
      * @return string
@@ -53,6 +54,22 @@ class Review extends Feedback
     public function setName(string $name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isApproved()
+    {
+        return $this->approved;
+    }
+
+    /**
+     * @param bool $approved
+     */
+    public function setApproved(bool $approved)
+    {
+        $this->approved = $approved;
     }
 
 
@@ -76,5 +93,14 @@ class Review extends Feedback
         return $this;
     }
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
 }

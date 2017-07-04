@@ -9,6 +9,8 @@
     {% set hidden = null %}
 {% endif %}
 
+{% set afterAjaxText = '' %}
+
 {% block styles %}
     <link href="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet">
 {% endblock %}
@@ -107,12 +109,40 @@
         </div>
 
         <div class="mail-body text-right tooltip-demo">
-            <a class="btn btn-sm btn-primary" href="{{ path('admin.message.compose', {
+
+
+            {% set hideSendBtn = null %}
+            {% set showApproveBtn = 'hidden' %}
+
+            {% if approveButton == true %}
+                {% set hideSendBtn = 'hidden' %}
+                {% set showApproveBtn = null %}
+            {% endif %}
+
+            <a class="btn btn-sm btn-primary {{ hideSendBtn }}" href="{{ path('admin.message.compose', {
                 'entity': routeParams.entity,
                 'id': object.id
             }) }}">
                 <i class="fa fa-reply"></i> Ответить
             </a>
+
+            {% if approveButton == true %}
+                {% set fa_class = 'fa-star' %}
+                {% set confirm_btn_text = 'Одобрить' %}
+                {% set disabled = '' %}
+
+                {% if object.approved == 1 %}
+                    {% set fa_class = 'fa-check' %}
+                    {% set confirm_btn_text = 'Одобрено' %}
+                    {% set disabled = 'disabled' %}
+                {% endif %}
+
+                <button class="btn btn-sm btn-success {{ disabled }} confirm-action" data-id="{{ object.id }}" data-entity="{{ entity }}">
+                    <i class="fa {{ fa_class }}"></i> {{ confirm_btn_text }}
+                </button>
+
+                {% set afterAjaxText = confirm_btn_text %}
+            {% endif %}
 
             {% if enableBookBtn == true %}
                 {% set fa_class = 'fa-star' %}
@@ -125,9 +155,12 @@
                     {% set disabled = 'disabled' %}
                 {% endif %}
 
-                <button class="btn btn-sm btn-success confirm-booking" {{ disabled }} data-bookingid="{{ object.id }}">
+                <button class="btn btn-sm btn-success confirm-action" {{ disabled }} data-id="{{ object.id }}" data-entity="{{ entity }}">
                     <i class="fa {{ fa_class }}"></i> {{ confirm_btn_text }}
                 </button>
+
+                {% set afterAjaxText = confirm_btn_text %}
+
             {% endif %}
 
             <button class="btn btn-sm btn-warning set-as-unread"
@@ -153,40 +186,43 @@
     <script>
 
         {% if entity == 'booking' %}
-        var events = [];
+            var events = [];
 
-        {% for event in bookings %}
+            {% for event in bookings %}
 
-        {% if event.booked == 1 %}
-        {% set bgcolor = '#DD6B55' %}
-        {% set title = 'Занято' %}
-        {% endif %}
+                    {% if event.booked == 1 %}
+                        {% set bgcolor = '#DD6B55' %}
+                        {% set title = 'Занято' %}
+                    {% endif %}
 
-        var event = {
-            start: '{{ event.date }}',
-            title: '{{ title }}',
-            rendering: 'background',
-            backgroundColor: '{{ bgcolor }}'
-        };
-        events.push(event);
-        {% endfor %}
+                    {% set bgcolor = 'none' %}
+                    {% set title = null %}
 
-        $('#calendar').fullCalendar({
-            defaultDate: $(this).fullCalendar('today'),
-            events: events,
-            locale: 'ru',
-            eventRender: function(event, element) {
-                $(element).html(
-                    '<div class="event-info-block"">' +
-                    '<label style="color: black">'+event.title+'</label>' +
-                    '</div>'
-                );
-            }
-        });
+                    var event = {
+                        start: '{{ event.date }}',
+                        title: '{{ title }}',
+                        rendering: 'background',
+                        backgroundColor: '{{ bgcolor }}'
+                    };
+                    events.push(event);
+            {% endfor %}
 
-        $('#calendarModal').on('shown.bs.modal', function () {
-            $("#calendar").fullCalendar('render');
-        });
+            $('#calendar').fullCalendar({
+                defaultDate: $(this).fullCalendar('today'),
+                events: events,
+                locale: 'ru',
+                eventRender: function(event, element) {
+                    $(element).html(
+                        '<div class="event-info-block">' +
+                        '<label style="color: black">'+event.title+'</label>' +
+                        '</div>'
+                    );
+                }
+            });
+
+            $('#calendarModal').on('shown.bs.modal', function () {
+                $("#calendar").fullCalendar('render');
+            });
         {% endif %}
 
         $(document).ready(function () {
@@ -240,17 +276,17 @@
                         }
                     });
                 });
-            })
+            });
 
-            {% if enableBookBtn == true %}
-
-            $('.confirm-booking').on('click', function () {
-                var id = $(this).data('bookingid'),
-                    url = '{{ path('admin.api.booking_confirm', {'booking': '_booking'}) }}';
+            $('.confirm-action').on('click', function () {
+                var id = $(this).data('id'),
+                    entity = $(this).data('entity'),
+                    url = '{{ path('admin.api.confirm_action', {'id': '_id', 'entity': '_entity' }) }}',
+                    btn = $(this);
 
                 swal({
-                    title: "Подтверждение бронирования",
-                    text: "Вы уверенны, что хотите подтвердить бронирование зала",
+                    title: "Подтвердить действие",
+                    text: "Вы уверенны, что хотите одобрить?",
                     type: "info",
                     showCancelButton: true,
                     cancelButtonText: 'Закрыть',
@@ -259,20 +295,18 @@
                     closeOnConfirm: false
                 }, function () {
                     $.ajax({
-                        url: url.replace('_booking', id),
+                        url: url.replace('_id', id).replace('_entity', entity),
                         method: 'POST',
                         success: function (data) {
-
                             if (data === true) {
                                 swal({
                                     title: 'Успешно',
                                     text: 'Бронь зала подтверждена. Клиенту выслано письмо на указанный email',
                                     type: 'success'
                                 }, function () {
-                                    var confirmBtn = $('.confirm-booking');
 
-                                    confirmBtn
-                                        .html('<i class="fa fa-check"></i> Забронировано')
+                                    btn
+                                        .html('<i class="fa fa-check"></i> {{ afterAjaxText }}')
                                         .attr('disabled', true);
                                 });
                             } else {
@@ -290,9 +324,7 @@
                         }
                     });
                 });
-            })
-
-            {% endif %}
+            });
         })
     </script>
 {% endblock %}

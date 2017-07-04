@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Entity\Traits\FileTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +31,13 @@ class Event
      * @ORM\Column(type="time")
      */
     private $eventTime;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Review", mappedBy="event")
+     */
+    private $reviews;
 
     /**
      * Set eventDate

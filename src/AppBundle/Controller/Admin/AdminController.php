@@ -4,9 +4,11 @@ namespace AppBundle\Controller\Admin;
 
 
 use AppBundle\Entity\Booking;
+use AppBundle\Entity\Feedback;
 use AppBundle\Entity\File;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
+use AppBundle\Entity\Review;
 use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
 use AppBundle\Service\FileUploaderService;
@@ -31,15 +33,36 @@ class AdminController extends Controller
      */
     public function indexAction() {
 
+        return $this->render(':default/admin:index.html.twig', [
+            'bookings' => $this->getUnreadNotifications(
+               Booking::class, ['booked' => 0, 'status' => 0], ['dateReceived' => 'DESC'], 10
+            ),
+            'messages' => $this->getUnreadNotifications(
+                Feedback::class, ['status' => 0], ['dateReceived' => 'ASC'], 10
+            ),
+            'reviews' => $this->getUnreadNotifications(
+                Review::class, ['status' => 0], ['dateReceived' => 'ASC'], 10
+            )
+        ]);
+    }
+
+    /**
+     * @param string $className
+     * @param array $criteria
+     * @param array $orderBy
+     * @param int $limit
+     * @param int $offset
+     * @return array
+     */
+    public function getUnreadNotifications(string $className, array $criteria, array $orderBy, int $limit = null, int $offset = null) {
+
         $em = $this->getDoctrine()->getManager();
 
-        $bookings = $em->getRepository(Booking::class)->findBy(
-            ['booked' => 0, 'status' => 0], ['dateReceived' => 'DESC'], 10, null
-        );
+        $repository = $em->getRepository($className);
 
-        return $this->render(':default/admin:index.html.twig', [
-            'bookings' => $bookings,
-        ]);
+        $object = $repository->findBy($criteria, $orderBy, $limit, $offset);
+
+        return $object;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\File;
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\News;
+use AppBundle\Entity\Review;
 use AppBundle\Service\MailerService;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
@@ -52,6 +53,26 @@ class ApiController extends AdminController
         }
     }
 
+    /**
+     * @param $id
+     * @param $entity
+     * @return JsonResponse
+     * @Route("/confirm-action/{id}/{entity}", name="admin.api.confirm_action")
+     */
+    public function confirmAjaxAction($id, $entity) {
+
+        $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
+
+        if ($entityRepository instanceof Booking) {
+            return $this->confirmBooking($entityRepository);
+        }
+
+        if ($entityRepository instanceof Review) {
+            $entityRepository->setApproved(true);
+            $this->doctrineManager()->flush();
+            return JsonResponse::create(true);
+        }
+    }
     /**
      * @Route("/object_delete/{object}/{id}", name="admin.api.object_delete")
      */
@@ -108,10 +129,9 @@ class ApiController extends AdminController
 
     /**
      * @param Booking $booking
-     * @Route("/booking_confirm/{booking}", name="admin.api.booking_confirm")
      * @return JsonResponse
      */
-    public function confirmBookingAjaxAction(Booking $booking) {
+    protected function confirmBooking(Booking $booking) {
 
         $em = $this->getDoctrine()->getManager();
 
@@ -141,7 +161,6 @@ class ApiController extends AdminController
         } else {
             return JsonResponse::create(false);
         }
-
     }
 
     /**

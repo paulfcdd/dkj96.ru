@@ -5,8 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Feedback
- * @package AppBundle\Entity
  * @ORM\Entity()
  * @ORM\Table(name="feedback")
  * @ORM\HasLifecycleCallbacks()
@@ -14,38 +12,40 @@ use Doctrine\ORM\Mapping as ORM;
 class Feedback
 {
     /**
+     * @var integer
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(type="text", length=2000)
      */
-    private $message;
+    protected $message;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    protected $email;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      */
-    private $dateReceived;
+    protected $dateReceived;
 
     /**
      * @var boolean
      * @ORM\Column(type="boolean")
      */
-    private $status = 0;
+    protected $status = 0;
 
     /**
      * @return bool

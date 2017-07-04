@@ -5,10 +5,24 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Review
- * @package AppBundle\Entity
  * @ORM\Entity()
  * @ORM\Table(name="reviews")
+ * @ORM\AttributeOverrides({
+ *     @ORM\AttributeOverride(
+ *          name="status",
+ *          column=@ORM\Column(
+ *              name="status",
+ *              type="boolean"
+ *          )
+ *      ),
+ *     @ORM\AttributeOverride(
+ *          name="dateReceived",
+ *          column=@ORM\Column(
+ *              name="date_received",
+ *              type="datetime"
+ *          )
+ *      ),
+ * })
  */
 class Review extends Feedback
 {

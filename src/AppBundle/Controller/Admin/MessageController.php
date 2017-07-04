@@ -15,6 +15,7 @@ class MessageController extends AdminController
     const MESSAGES_ENTITY_NAMES_MAP = [
         'booking' => 'Бронирование',
         'feedback' => 'Обр. связь',
+        'review' => 'Отзывы'
     ];
 
     /**
@@ -63,8 +64,7 @@ class MessageController extends AdminController
 
         $enableBookBtn = false;
 
-
-        $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
+        $entityRepository = $this->getEntityRepository($entity)->findBy(['id' => $id]);
 
         if ($entityRepository instanceof Feedback) {
             $msgSubject = 'Обратная связь';

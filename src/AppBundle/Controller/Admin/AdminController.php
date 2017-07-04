@@ -8,6 +8,7 @@ use AppBundle\Entity\Feedback;
 use AppBundle\Entity\File;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
+use AppBundle\Entity\Review;
 use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
 use AppBundle\Service\FileUploaderService;
@@ -39,6 +40,9 @@ class AdminController extends Controller
             'messages' => $this->getUnreadNotifications(
                 Feedback::class, ['status' => 0], ['dateReceived' => 'ASC'], 10
             ),
+            'reviews' => $this->getUnreadNotifications(
+                Review::class, ['status' => 0], ['dateReceived' => 'ASC'], 10
+            )
         ]);
     }
 
@@ -58,7 +62,7 @@ class AdminController extends Controller
 
         $object = $repository->findBy($criteria, $orderBy, $limit, $offset);
 
-        return$object;
+        return $object;
     }
 
     /**

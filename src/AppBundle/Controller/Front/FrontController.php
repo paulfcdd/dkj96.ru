@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Front;
 use AppBundle\Entity\Artist;
 use AppBundle\Entity\Booking;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Feedback;
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
@@ -69,7 +70,7 @@ class FrontController extends Controller
             ),
             'news' => $this->getSortedList(
                 News::class,['dateCreated' => 'ASC'], new \DateTime(), 'dateCreated', 6
-            ),
+            )
         ]);
     }
 
@@ -170,7 +171,7 @@ class FrontController extends Controller
                 $formData->setEvent($event);
 
                 $em->persist($formData);
-                
+
                 $em->flush();
             }
 

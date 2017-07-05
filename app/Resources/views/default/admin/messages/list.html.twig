@@ -12,6 +12,10 @@
 
                <h2>
                    Входящие ({{ objects | length }})
+                   <br>
+                   {% if addReviewButton == true %}
+                       <a class="btn btn-sm btn-success no-border-radius" role="button" href="{{ path('admin.manage', {'entity': 'review'}) }}" target="_blank">Добавить ревью</a>
+                   {% endif %}
                </h2>
 
            </div>

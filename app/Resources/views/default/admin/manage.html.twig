@@ -29,6 +29,20 @@
     {%- endif -%}
 {%- endblock date_widget -%}
 
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    <div class="form-group">
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    </div>
+{%- endblock form_widget_simple -%}
+
+
+{%- block textarea_widget -%}
+    <div class="form-group">
+        <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+    </div>
+{%- endblock textarea_widget -%}
+
 
 
 {% block content %}

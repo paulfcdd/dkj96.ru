@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 
 use AppBundle\Entity\Booking;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\Feedback;
 use AppBundle\Entity\File;
 use AppBundle\Entity\History;
@@ -15,6 +16,7 @@ use AppBundle\Service\FileUploaderService;
 use AppBundle\Service\MailerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -110,19 +112,38 @@ class AdminController extends Controller
 
         $form = $this->entityFormBuilder($className, $object);
 
+        if (new $object instanceof Review) {
+            $form->add('event', EntityType::class, [
+                'class' => Event::class,
+                'choice_label' => 'title',
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ]);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $formData = $form
-                ->getData()
-                ->setAuthor($this->getUser());
+                ->getData();
+
+
+            if (!new $object instanceof Review) {
+                $formData->setAuthor($this->getUser());
+            }
 
             if ($formData instanceof History) {
                 $history = $em->getRepository(History::class)->findOneBy(['isEnabled' => 1]);
                 if ($history) {
                     $history->setEnabled(0);
                 }
+            }
+
+            if (new $object instanceof Review) {
+                $formData->setStatus(1);
+                $formData->setApproved(1);
             }
 
             $em->persist($formData);

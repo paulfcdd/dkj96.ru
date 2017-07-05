@@ -63,6 +63,20 @@ class FrontController extends Controller
 
     /**
      * @return Http\Response
+     * @Route("/reviews/list", name="front.review_list")
+     */
+    public function reviewListAction() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        return $this->render(':default/front/page/review:list.html.twig', [
+            'reviews' => $em->getRepository(Review::class)->findBy(['approved' => 1, 'status' => 1]),
+        ]);
+
+    }
+
+    /**
+     * @return Http\Response
      * @Route("/portfolio", name="front.portfolio")
      */
     public function portfolioAction() {

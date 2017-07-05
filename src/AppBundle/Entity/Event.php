@@ -35,9 +35,27 @@ class Event
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Review", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Review", mappedBy="event", cascade={"remove"})
      */
     private $reviews;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    /**
+     * @param ArrayCollection $reviews
+     */
+    public function setReviews(ArrayCollection $reviews)
+    {
+        $this->reviews = $reviews;
+    }
+
+
 
     /**
      * Set eventDate

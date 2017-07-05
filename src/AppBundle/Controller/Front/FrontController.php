@@ -42,6 +42,9 @@ class FrontController extends Controller
             'page' => $page,
             'events' => $this->getSortedList(
                 Event::class,['eventDate' => 'ASC'], new \DateTime(), 'eventDate', 3
+            ),
+            'reviews' => $this->getSortedList(
+                Review::class, ['dateReceived' => 'DESC'], new \DateTime(), null, 2
             )
         ]);
     }
@@ -64,13 +67,34 @@ class FrontController extends Controller
      */
     public function portfolioAction() {
 
+        /** @var EntityManager $eventRepo */
+        $eventRepo = $this->getDoctrine()->getRepository(Event::class);
+
+        /** @var EntityManager $newsRepo */
+        $newsRepo = $this->getDoctrine()->getRepository(News::class);
+
+        $eventQB = $eventRepo->createQueryBuilder('e')
+            ->where('e.eventDate > :filterdate')
+            ->setParameter('filterdate', new \DateTime())
+            ->setMaxResults(6)
+            ->orderBy('e.eventDate', 'ASC')
+            ->getQuery();
+
+        $newsQB = $newsRepo->createQueryBuilder('n')
+            ->where(':filterdate BETWEEN n.publishStartDate AND n.publishEndDate')
+            ->setParameter('filterdate', new \DateTime())
+            ->setMaxResults(6)
+            ->orderBy('n.dateCreated', 'DESC')
+            ->getQuery();
+
+
+
+
+
+
         return $this->render(':default/front/page:portfolio.html.twig', [
-            'events' => $this->getSortedList(
-                Event::class,['eventDate' => 'ASC'], new \DateTime(), 'eventDate', 6
-            ),
-            'news' => $this->getSortedList(
-                News::class,['dateCreated' => 'ASC'], new \DateTime(), 'dateCreated', 6
-            )
+            'events' => $eventQB->getResult(),
+            'news' => $newsQB->getResult(),
         ]);
     }
 
@@ -305,21 +329,26 @@ class FrontController extends Controller
      * @param int|null $limit
      * @return array
      */
-    private function getSortedList(string $class, array $orderBy, \DateTime $filterDate, string $selectField, int $limit = null) {
+    private function getSortedList(string $class, array $orderBy, \DateTime $filterDate = null, string $selectField = null, int $limit = null) {
 
         /** @var EntityManager $repository */
         $repository = $this->getDoctrine()->getRepository($class);
 
-        $qb = $repository->createQueryBuilder('a')
-            ->where('a.'.$selectField.' > :filterdate')
-            ->orderBy('a.'.key($orderBy), current($orderBy));
+        $qb = $repository->createQueryBuilder('a');
+
+
+        if ($selectField && $filterDate) {
+            $qb->where('a.' . $selectField . ' > :filterdate')
+                ->setParameter('filterdate', $filterDate);
+        }
 
         if ($limit) {
             $qb->setMaxResults($limit);
         }
 
-        $qb = $qb
-            ->setParameter('filterdate', $filterDate)
+
+        $qb =$qb
+            ->orderBy('a.'.key($orderBy), current($orderBy))
             ->getQuery();
 
         return $qb->getResult();

@@ -13,7 +13,7 @@ use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
 use AppBundle\Form\BookingType;
 use AppBundle\Form\FeedbackType;
-use AppBundle\Form\ReviewFormType;
+use AppBundle\Form\ReviewType;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -184,7 +184,7 @@ class FrontController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(ReviewFormType::class)->handleRequest($request);
+        $form = $this->createForm(ReviewType::class)->handleRequest($request);
 
         if ($request->isMethod('POST')) {
 

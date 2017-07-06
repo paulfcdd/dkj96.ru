@@ -6,6 +6,10 @@
     <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
 {% endblock %}
 
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
+
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
@@ -73,6 +77,8 @@
                             {{ form_label(form.message) }}
                             {{ form_widget(form.message) }}
                         </div>
+
+                        <div class="g-recaptcha" data-sitekey="6LeMHSgUAAAAAOAMpZmnlPxcjHHDwJPne0pBbedd"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success no-border-radius">Отправить</button>

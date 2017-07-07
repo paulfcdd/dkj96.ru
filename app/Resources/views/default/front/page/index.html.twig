@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Дом Культуры Железнодорожников | Главная {% endblock %}
+{% block title %} Главная | {{ parent() }} {% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/front/page/index.css') }}">

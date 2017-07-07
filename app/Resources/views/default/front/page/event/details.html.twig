@@ -24,23 +24,28 @@
 
         <div class="space-fix-container"></div>
 
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success flash-message">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <p>{{ message }}</p>
-            </div>
-        {% endfor %}
-
-        {% for message in app.flashes('error') %}
-            <div class="alert alert-danger flash-message">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <p>{{ message }}</p>
-            </div>
-        {% endfor %}
-
-        <div class="space-fix-container"></div>
-
         <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success flash-message">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <p>{{ message }}</p>
+                            </div>
+                        {% endfor %}
+
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-danger flash-message">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <p>{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-sm-12">

@@ -273,14 +273,6 @@ class FrontController extends Controller
      */
     public function bookHallAction(Hall $hall = null, Http\Request $request) {
 
-        /** @var Http\Session\Session $session */
-        $session = $request->getSession();
-
-        /** @var Http\Session\Flash\FlashBag $flashBag */
-        $flashBag = $session->getFlashBag();
-
-        $flashBagMessage = null;
-
         $doctrine = $this->getDoctrine();
 
         $form = $this->createForm(BookingType::class);
@@ -292,7 +284,9 @@ class FrontController extends Controller
                 'attr' => [
                     'class' => 'form-control no-border-radius'
                 ],
-                'choice_label' => 'title',
+                'choice_label' => function ($hall) {
+                return $hall->getTitle().' - '.$hall->getCapacity().' чел.';
+                },
                 'required' => false,
                 'placeholder' => null
             ]);
@@ -301,32 +295,38 @@ class FrontController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($request->isMethod('POST')) {
+            $response = $request->request->get('g-recaptcha-response');
 
-            $flashBag->add('success', 'Ваш запрос отправлен');
-            $flashBag->add('error', 'Не удалось отправить форму');
+            $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
 
-            /** @var Booking $formData */
-            $formData = $form->getData();
+            $resaptchaVerifyer = json_decode($resaptchaVerifyer);
 
-            if ($hall) {
-                $formData->setHall($hall);
-            }
+            if ($form->isSubmitted() && $form->isValid() && $resaptchaVerifyer->success) {
 
-            $doctrine->getManager()->persist($formData);
+                /** @var Booking $formData */
+                $formData = $form->getData();
 
-            try {
-                $doctrine->getManager()->flush();
-                $flashBagMessage = $flashBag->get('success');
-            } catch (\Exception $exception) {
-                $flashBagMessage = $flashBag->get('error');
+                if ($hall) {
+                    $formData->setHall($hall);
+                }
+
+                $doctrine->getManager()->persist($formData);
+
+                try {
+                    $doctrine->getManager()->flush();
+                    $this->addFlash('success', 'Заявка на бронь отправлена');
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', 'Во время отправления заявки произошла ошибка, попробуйте позже');
+                }
+            } else {
+                $this->addFlash('error', 'Подтвердите что Вы не робот');
             }
         }
 
         return $this->render(':default/front/page:booking.html.twig', [
             'hall' => $hall,
             'form' => $form->createView(),
-            'formMessage' => $flashBagMessage,
             'halls' => $doctrine->getRepository(Hall::class)->findAll(),
         ]);
     }

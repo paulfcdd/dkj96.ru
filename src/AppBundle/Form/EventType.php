@@ -7,6 +7,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Form\Type\FileUploadType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,6 +20,12 @@ class EventType extends AbstractFormType
         parent::buildForm($builder, $options);
 
         $builder
+            ->add('price', IntegerType::class, [
+                'label' => 'Цена билета (в руб.)',
+                'attr' => [
+                    'class' => 'form-control no-border-radius'
+                ]
+            ])
             ->add('eventTime', TimeType::class, [
                 'label' => 'Время события'
             ])

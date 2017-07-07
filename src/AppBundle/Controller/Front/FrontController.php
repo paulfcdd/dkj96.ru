@@ -202,7 +202,13 @@ class FrontController extends Controller
 
         if ($request->isMethod('POST')) {
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            $response = $request->request->get('g-recaptcha-response');
+
+            $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
+
+            $resaptchaVerifyer = json_decode($resaptchaVerifyer);
+
+            if ($form->isSubmitted() && $form->isValid() && $resaptchaVerifyer->success) {
 
                 $formData = $form->getData();
 
@@ -211,6 +217,11 @@ class FrontController extends Controller
                 $em->persist($formData);
 
                 $em->flush();
+
+                $this->addFlash('success', 'Отзыв отправлен');
+
+            } else {
+                $this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
             }
 
         }
@@ -366,5 +377,41 @@ class FrontController extends Controller
             ->getQuery();
 
         return $qb->getResult();
+    }
+
+    /**
+     * @param string $response
+     * @return mixed|string
+     */
+    private function googleRecaptchaVerifyer(string $response) {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $this->getParameter('recaptcha_verify_url'),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>
+                "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"secret\"\r\n\r\n".$this->getParameter('recaptcha_secret_key')."\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"response\"\r\n\r\n".$response."\r\n-----011000010111000001101001--\r\n",
+            CURLOPT_HTTPHEADER => array(
+                "content-type: multipart/form-data; boundary=---011000010111000001101001"
+            ),
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            return "cURL Error #:" . $err;
+        } else {
+            return $response;
+        }
+
     }
 }

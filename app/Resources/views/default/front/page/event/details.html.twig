@@ -60,7 +60,11 @@
                 </div>
             </div>
             <div class="col-xs-12">
-                <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }} | <i class="fa fa-clock-o"></i> {{ event.eventTime | date('H:i') }}
+                <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }} |
+                <i class="fa fa-clock-o"></i> {{ event.eventTime | date('H:i') }}
+                {% if event.price != 0 %}
+                    | <i class="fa fa-money"></i> {{ event.price~' руб.' }}
+                {% endif %}
             </div>
             <div class="col-xs-12">
                 {{ event.content | raw }}

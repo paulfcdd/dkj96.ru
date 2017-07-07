@@ -40,6 +40,32 @@ class Event
     private $reviews;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", length=10)
+     */
+    private $price;
+
+    /**
+     * @return int
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param int $price
+     * @return $this
+     */
+    public function setPrice(int $price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getReviews()

@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\Tests\Compiler\H;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation as Http;
@@ -156,13 +157,26 @@ class FrontController extends Controller
             ->createForm(FeedbackType::class)
             ->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($form->getData());
-            try {
-                $em->flush();
-                $this->addFlash('success', 'Ваше сообщение успешно выслано.');
-            } catch (DBALException $exception) {
-                $this->addFlash('error', 'Не удалось выслать сообщение, попробуйте позже');
+
+        if ($form->isSubmitted()) {
+
+            $response = $request->request->get('g-recaptcha-response');
+
+            $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
+
+            $resaptchaVerifyer = json_decode($resaptchaVerifyer);
+
+            if ($form->isValid() && $resaptchaVerifyer->success) {
+                $em->persist($form->getData());
+
+                try {
+                    $em->flush();
+                    $this->addFlash('success', 'Ваше сообщение успешно выслано.');
+                } catch (DBALException $exception) {
+                    $this->addFlash('error', 'Не удалось выслать сообщение, попробуйте позже');
+                }
+            } else {
+                $this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
             }
         }
 
@@ -200,9 +214,14 @@ class FrontController extends Controller
 
         $form = $this->createForm(ReviewType::class)->handleRequest($request);
 
-        if ($request->isMethod('POST')) {
+        if ($form->isSubmitted()) {
+            $response = $request->request->get('g-recaptcha-response');
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
+
+            $resaptchaVerifyer = json_decode($resaptchaVerifyer);
+
+            if ($form->isValid() && $resaptchaVerifyer->success) {
 
                 $formData = $form->getData();
 
@@ -211,8 +230,12 @@ class FrontController extends Controller
                 $em->persist($formData);
 
                 $em->flush();
-            }
 
+                $this->addFlash('success', 'Отзыв отправлен');
+
+            } else {
+                $this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
+            }
         }
 
         return $this->render(':default/front/page/event:details.html.twig', [
@@ -262,14 +285,6 @@ class FrontController extends Controller
      */
     public function bookHallAction(Hall $hall = null, Http\Request $request) {
 
-        /** @var Http\Session\Session $session */
-        $session = $request->getSession();
-
-        /** @var Http\Session\Flash\FlashBag $flashBag */
-        $flashBag = $session->getFlashBag();
-
-        $flashBagMessage = null;
-
         $doctrine = $this->getDoctrine();
 
         $form = $this->createForm(BookingType::class);
@@ -281,7 +296,9 @@ class FrontController extends Controller
                 'attr' => [
                     'class' => 'form-control no-border-radius'
                 ],
-                'choice_label' => 'title',
+                'choice_label' => function ($hall) {
+                return $hall->getTitle().' - '.$hall->getCapacity().' чел.';
+                },
                 'required' => false,
                 'placeholder' => null
             ]);
@@ -290,32 +307,38 @@ class FrontController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
 
-            $flashBag->add('success', 'Ваш запрос отправлен');
-            $flashBag->add('error', 'Не удалось отправить форму');
+            $response = $request->request->get('g-recaptcha-response');
 
-            /** @var Booking $formData */
-            $formData = $form->getData();
+            $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
 
-            if ($hall) {
-                $formData->setHall($hall);
-            }
+            $resaptchaVerifyer = json_decode($resaptchaVerifyer);
 
-            $doctrine->getManager()->persist($formData);
+            if ($form->isValid() && $resaptchaVerifyer->success) {
+                /** @var Booking $formData */
+                $formData = $form->getData();
 
-            try {
-                $doctrine->getManager()->flush();
-                $flashBagMessage = $flashBag->get('success');
-            } catch (\Exception $exception) {
-                $flashBagMessage = $flashBag->get('error');
+                if ($hall) {
+                    $formData->setHall($hall);
+                }
+
+                $doctrine->getManager()->persist($formData);
+
+                try {
+                    $doctrine->getManager()->flush();
+                    $this->addFlash('success', 'Заявка на бронь отправлена');
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', 'Во время отправления заявки произошла ошибка, попробуйте позже');
+                }
+            } else {
+                $this->addFlash('error', 'Подтвердите что Вы не робот');
             }
         }
 
         return $this->render(':default/front/page:booking.html.twig', [
             'hall' => $hall,
             'form' => $form->createView(),
-            'formMessage' => $flashBagMessage,
             'halls' => $doctrine->getRepository(Hall::class)->findAll(),
         ]);
     }
@@ -366,5 +389,41 @@ class FrontController extends Controller
             ->getQuery();
 
         return $qb->getResult();
+    }
+
+    /**
+     * @param string $response
+     * @return mixed|string
+     */
+    private function googleRecaptchaVerifyer(string $response) {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $this->getParameter('recaptcha_verify_url'),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>
+                "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"secret\"\r\n\r\n".$this->getParameter('recaptcha_secret_key')."\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"response\"\r\n\r\n".$response."\r\n-----011000010111000001101001--\r\n",
+            CURLOPT_HTTPHEADER => array(
+                "content-type: multipart/form-data; boundary=---011000010111000001101001"
+            ),
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            return "cURL Error #:" . $err;
+        } else {
+            return $response;
+        }
+
     }
 }

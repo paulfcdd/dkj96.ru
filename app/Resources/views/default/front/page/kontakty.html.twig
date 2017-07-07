@@ -69,6 +69,11 @@
             <div class="col-md-7 col-xs-12 pull-right xs-padding-0-10px">
                 <div id="map" style="width: 100%; height: 400px"></div>
             </div>
+
+            <div class="col-md-12 padding-top-20px">
+                <h4>Написать нам</h4>
+            </div>
+
             <div class="col-md-12 col-xs-12 padding-top-20px xs-padding-0-10px padding-left-0 contact-form">
 
                 {% for message in app.flashes('success') %}
@@ -86,15 +91,20 @@
                 {% endfor %}
 
                 {{ form_start(form, {'attr': {'class': 'padding-left-100px'}}) }}
-                <div class="form-group">
-                    {{ form_widget(form.email) }}
-                </div>
-                <div class="form-group">
-                    {{ form_widget(form.message) }}
-                </div>
-                <div class="form-group">
-                    <button class="btn-success btn pull-right no-border-radius" type="submit">Отправить</button>
-                </div>
+                    <div class="form-group">
+                        {{ form_widget(form.email) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.message) }}
+                    </div>
+
+                    <div class="form-group">
+                        <div class="g-recaptcha" data-sitekey="{{ recaptcha_key }}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn-success btn pull-right no-border-radius" type="submit">Отправить</button>
+                    </div>
                 {{ form_end(form) }}
 
             </div>

@@ -25,6 +25,27 @@
         <div class="space-fix-container"></div>
 
         <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success flash-message">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <p>{{ message }}</p>
+                            </div>
+                        {% endfor %}
+
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-danger flash-message">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <p>{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-sm-12">
@@ -56,6 +77,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Оставить отзыв о мероприятии</h4>
                     </div>
+
                     {{ form_start(form) }}
                     <div class="modal-body">
 
@@ -73,6 +95,8 @@
                             {{ form_label(form.message) }}
                             {{ form_widget(form.message) }}
                         </div>
+
+                        <div class="g-recaptcha" data-sitekey="{{ recaptcha_key }}"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success no-border-radius">Отправить</button>

@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Дом Культуры Железнодорожников | Главная {% endblock %}
+{% block title %} Главная | {{ parent() }} {% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/front/page/index.css') }}">
@@ -52,7 +52,7 @@
                     </a>
                 </div>
                 <div class="col-md-4 single-widget">
-                    <a href="{{ path('halls.list') }}">
+                    <a href="{{ path('halls.book_hall') }}">
                         <span class="fa fa-key fa-6x widget-panel-icon"></span>
                         <h4>Аренда залов</h4>
                         <p>

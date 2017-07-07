@@ -81,21 +81,32 @@
 
         <div class="col-xs-12 padding-0-100px">
 
+            {{ form_start(form) }}
+
             {% for message in app.flashes('success') %}
-                <div class="alert alert-success flash-message form-group col-sm-12 col-xs-12">
+            <div class="form-group col-sm-12 col-xs-12">
+                <div class="alert alert-success form-group">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <p>{{ message }}</p>
                 </div>
+            </div>
             {% endfor %}
 
             {% for message in app.flashes('error') %}
-                <div class="alert alert-danger flash-message form-group col-sm-12 col-xs-12">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <p>{{ message }}</p>
+                <div class="form-group col-sm-12 col-xs-12">
+                    <div class="alert alert-danger form-group">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <p>{{ message }}</p>
+                    </div>
                 </div>
             {% endfor %}
 
-            {{ form_start(form) }}
+            {% if hall is empty %}
+                <div class="form-group col-sm-12 col-xs-12">
+                    {{ form_label(form.hall) }}
+                    {{ form_widget(form.hall) }}
+                </div>
+            {% endif %}
 
             <div class="form-group col-sm-6 col-xs-12">
                 {{ form_widget(form.phone) }}
@@ -109,12 +120,6 @@
             <div class="form-group col-sm-6 col-xs-12">
                 {{ form_widget(form.guests) }}
             </div>
-            {% if hall is empty %}
-                <div class="form-group col-sm-12 col-xs-12">
-                    {{ form_label(form.hall) }}
-                    {{ form_widget(form.hall) }}
-                </div>
-            {% endif %}
             <div class="form-group col-sm-12 col-xs-12">
                 {{ form_widget(form.message) }}
             </div>

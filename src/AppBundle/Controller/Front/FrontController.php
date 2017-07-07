@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\Tests\Compiler\H;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation as Http;
@@ -156,13 +157,26 @@ class FrontController extends Controller
             ->createForm(FeedbackType::class)
             ->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($form->getData());
-            try {
-                $em->flush();
-                $this->addFlash('success', 'Ваше сообщение успешно выслано.');
-            } catch (DBALException $exception) {
-                $this->addFlash('error', 'Не удалось выслать сообщение, попробуйте позже');
+
+        if ($form->isSubmitted()) {
+
+            $response = $request->request->get('g-recaptcha-response');
+
+            $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
+
+            $resaptchaVerifyer = json_decode($resaptchaVerifyer);
+
+            if ($form->isValid() && $resaptchaVerifyer->success) {
+                $em->persist($form->getData());
+
+                try {
+                    $em->flush();
+                    $this->addFlash('success', 'Ваше сообщение успешно выслано.');
+                } catch (DBALException $exception) {
+                    $this->addFlash('error', 'Не удалось выслать сообщение, попробуйте позже');
+                }
+            } else {
+                $this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
             }
         }
 
@@ -200,15 +214,14 @@ class FrontController extends Controller
 
         $form = $this->createForm(ReviewType::class)->handleRequest($request);
 
-        if ($request->isMethod('POST')) {
-
+        if ($form->isSubmitted()) {
             $response = $request->request->get('g-recaptcha-response');
 
             $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
 
             $resaptchaVerifyer = json_decode($resaptchaVerifyer);
 
-            if ($form->isSubmitted() && $form->isValid() && $resaptchaVerifyer->success) {
+            if ($form->isValid() && $resaptchaVerifyer->success) {
 
                 $formData = $form->getData();
 
@@ -223,7 +236,6 @@ class FrontController extends Controller
             } else {
                 $this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
             }
-
         }
 
         return $this->render(':default/front/page/event:details.html.twig', [
@@ -295,15 +307,15 @@ class FrontController extends Controller
 
         $form->handleRequest($request);
 
-        if ($request->isMethod('POST')) {
+        if ($form->isSubmitted()) {
+
             $response = $request->request->get('g-recaptcha-response');
 
             $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
 
             $resaptchaVerifyer = json_decode($resaptchaVerifyer);
 
-            if ($form->isSubmitted() && $form->isValid() && $resaptchaVerifyer->success) {
-
+            if ($form->isValid() && $resaptchaVerifyer->success) {
                 /** @var Booking $formData */
                 $formData = $form->getData();
 

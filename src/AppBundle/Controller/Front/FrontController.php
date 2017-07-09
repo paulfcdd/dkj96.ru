@@ -210,10 +210,15 @@ class FrontController extends Controller
      */
     public function eventDetailAction(Event $event, Http\Request $request) {
 
+        $showBuyTicketBtn = false;
+
         $em = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(ReviewType::class)->handleRequest($request);
 
+        if ($event->getEventDate() > new \DateTime()) {
+            $showBuyTicketBtn = true;
+        }
         if ($form->isSubmitted()) {
             $response = $request->request->get('g-recaptcha-response');
 
@@ -241,6 +246,7 @@ class FrontController extends Controller
         return $this->render(':default/front/page/event:details.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
+            'showButton' => $showBuyTicketBtn,
         ]);
 
     }

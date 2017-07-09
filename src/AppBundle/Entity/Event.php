@@ -40,14 +40,38 @@ class Event
     private $reviews;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(type="integer", length=10)
+     * @ORM\Column()
      */
     private $price;
 
     /**
-     * @return int
+     * @var string
+     * @ORM\Column(nullable=true)
+     */
+    private $ticketUrl;
+
+    /**
+     * @return string
+     */
+    public function getTicketUrl()
+    {
+        return $this->ticketUrl;
+    }
+
+    /**
+     * @param string $ticketUrl
+     * @return Event
+     */
+    public function setTicketUrl(string $ticketUrl)
+    {
+        $this->ticketUrl = $ticketUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
      */
     public function getPrice()
     {
@@ -55,15 +79,14 @@ class Event
     }
 
     /**
-     * @param int $price
-     * @return $this
+     * @param string $price
      */
-    public function setPrice(int $price)
+    public function setPrice(string $price)
     {
         $this->price = $price;
-
-        return $this;
     }
+
+
 
     /**
      * @return ArrayCollection

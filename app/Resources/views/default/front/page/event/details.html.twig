@@ -52,10 +52,22 @@
                         <h4 class="underscored-label">
                             {{ event.title }}
                         </h4>
-                        <h5 class="pull-right">
-                            Были на мероприятии?
-                            <a href="#" class="pointer" type="button" data-toggle="modal" data-target="#myModal">Оставьте отзыв!</a>
-                        </h5>
+
+                        {% if showButton %}
+
+                            {% if event.ticketUrl is not null %}
+                                <a href="{{ event.ticketUrl }}" role="button" target="_blank" class="btn btn-success no-border-radius pull-right">
+                                    <i class="fa fa-ticket" aria-hidden="true"></i> Купить билет
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <h5 class="pull-right">
+                                Были на мероприятии?
+                                <a href="#" class="pointer" type="button" data-toggle="modal" data-target="#myModal">Оставьте
+                                    отзыв!</a>
+                            </h5>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>

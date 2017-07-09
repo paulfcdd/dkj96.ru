@@ -9,7 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,8 +22,14 @@ class EventType extends AbstractFormType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('price', IntegerType::class, [
+            ->add('price', TextType::class, [
                 'label' => 'Цена билета (в руб.)',
+                'attr' => [
+                    'class' => 'form-control no-border-radius'
+                ]
+            ])
+            ->add('ticketUrl', UrlType::class, [
+                'label' => 'Ссылка на покупку билета (не обязательно)',
                 'attr' => [
                     'class' => 'form-control no-border-radius'
                 ]

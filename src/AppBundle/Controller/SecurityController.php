@@ -15,7 +15,6 @@ class SecurityController extends BaseController {
     public function renderLogin(array $data) {
         if('admin.login' === $this->get('request_stack')->getCurrentRequest()->attributes->get('_route')) {
             $template = 'default\login.html.twig';
-//            $template = 'FOSUserBundle::Security::login.html.twig';
 
         } else {
             $template = 'FOSUserBundle::Security::login.html.twig';

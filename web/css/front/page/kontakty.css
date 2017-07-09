@@ -13,3 +13,6 @@
 .contact-block .contact-block-line {
   font-family: 'Century Gothic Regular';
 }
+.contact-block .contact-block-line-title {
+  text-decoration: underline;
+}

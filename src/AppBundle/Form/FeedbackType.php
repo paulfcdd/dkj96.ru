@@ -19,7 +19,7 @@ class FeedbackType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control no-border-radius',
-                    'placeholder' => 'Ваш email'
+                    'placeholder' => 'Ваш e-mail'
                 ],
                 'label' => false,
             ])

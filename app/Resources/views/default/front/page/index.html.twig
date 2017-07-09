@@ -17,11 +17,18 @@
 
             <div class="container padding-0-100px" id="main-text-under-banner">
                 <div class="text-center letter-spacing-1px banner-content-block col-xs-12">
-                    <p>Что такое Дворец Культуры Железнодорожников?</p>
-                    <p>С одной стороны, это одно из старейших культурных учреждений Екатеринбурга с уже вековой
-                        историей, а с другой:</p>
-                    <p>современная площадка для концертных выступлений, крупных бизнес-мероприятий
-                        или праздников любого масштаба.</p>
+                    <p>
+                        {{ '
+                        Свердловский Дворец культуры Железнодорожников – центр исторической и культурной жизни
+                        Екатеринбурга!
+                        Расположенный на пересечении важных логистических узлов Дворец Железнодорожников
+                        стал своеобразной визитной карточкой столицы Урала.
+                        Развитая инфраструктура и неограниченные технические возможности этого культурного пространства отвечают современным стандартам.
+                        Крупные бизнес мероприятия, торжественные встречи, семинары и концерты: Дворец культуры стал
+                        неотъемлемым участником важных городских и областных событий, а также территорией новых
+                        возможностей!
+' | nl2br }}
+                    </p>
                 </div>
             </div>
 
@@ -31,27 +38,27 @@
     <div class="container text-center col-xs-padding-right-0">
         {% block widget_panel_block %}
             <div class="row widget-panel">
-                <div class="col-md-4 single-widget padding-0-100px">
+                <div class="col-md-5 single-widget padding-0-100px">
                     <a href="{{ path('front.portfolio') }}">
                         <span class="fa fa-camera fa-6x widget-panel-icon"></span>
                         <h4>Портфолио</h4>
                         <p>
                             {{ ' Фото и видео материалы
-                с мероприятий дома культуры' | nl2br }}
+                с мероприятий Дворца культуры' | nl2br }}
                         </p>
                     </a>
                 </div>
-                <div class="col-md-4 single-widget">
-                    <a href="#">
-                        <span class="fa fa-search fa-6x widget-panel-icon"></span>
-                        <h4>Планы залов и информация</h4>
-                        <p>
-                            {{ '3D тур по залам и холам
-                Дворца культуры' | nl2br }}
-                        </p>
-                    </a>
-                </div>
-                <div class="col-md-4 single-widget">
+                {#<div class="col-md-4 single-widget">#}
+                    {#<a href="#">#}
+                        {#<span class="fa fa-search fa-6x widget-panel-icon"></span>#}
+                        {#<h4>Планы залов и информация</h4>#}
+                        {#<p>#}
+                            {#{{ '3D тур по залам и холам#}
+                {#Дворца культуры' | nl2br }}#}
+                        {#</p>#}
+                    {#</a>#}
+                {#</div>#}
+                <div class="col-md-5 col-md-offset-2 single-widget">
                     <a href="{{ path('halls.book_hall') }}">
                         <span class="fa fa-key fa-6x widget-panel-icon"></span>
                         <h4>Аренда залов</h4>

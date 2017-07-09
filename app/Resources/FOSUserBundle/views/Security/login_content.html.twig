@@ -9,22 +9,26 @@
     <div class="col-md-4">
         <section class="login-form">
 
-            <form action="{{ path("fos_user_security_check") }}" method="post" role="login">
+            <form class="no-border-radius" action="{{ path("fos_user_security_check") }}" method="post" role="login">
                 {% if csrf_token %}
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
                 {% endif %}
 
                 <img src="{{ asset('img/logo_dkj.jpg') }}" class="img-responsive" alt=""/>
 
-                <label for="username">{{ 'security.login.username'|trans }}</label>
-                <input type="text" class="form-control input-lg" id="username" name="_username"
+                <label for="username">
+                    <i class="fa fa-user" aria-hidden="true"></i> {{ 'security.login.username'|trans }}
+                </label>
+                <input type="text" class="form-control input-lg no-border-radius" id="username" name="_username"
                        value="{{ last_username }}" required="required"/>
 
-                <label for="password">{{ 'security.login.password'|trans }}</label>
-                <input type="password" id="password" class="form-control input-lg" name="_password"
+                <label for="password">
+                    <i class="fa fa-lock" aria-hidden="true"></i> {{ 'security.login.password'|trans }}
+                </label>
+                <input type="password" id="password" class="form-control input-lg no-border-radius" name="_password"
                        required="required"/>
 
-                <input type="submit" class="btn btn-lg btn-primary btn-block" id="_submit" name="_submit"
+                <input type="submit" class="btn btn-lg btn-primary btn-block no-border-radius" id="_submit" name="_submit"
                        value="{{ 'security.login.submit'|trans }}"/>
             </form>
 

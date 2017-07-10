@@ -32,7 +32,8 @@ class EventType extends AbstractFormType
                 'label' => 'Ссылка на покупку билета (не обязательно)',
                 'attr' => [
                     'class' => 'form-control no-border-radius'
-                ]
+                ],
+                'required' => false,
             ])
             ->add('eventTime', TimeType::class, [
                 'label' => 'Время события'

@@ -39,11 +39,30 @@ class FrontController extends Controller
      */
     public function indexAction(string $page = null) {
 
+        /** @var EntityManager $eventRepo */
+        $eventRepo = $this->getDoctrine()->getRepository(Event::class);
+
+        /** @var EntityManager $newsRepo */
+        $newsRepo = $this->getDoctrine()->getRepository(News::class);
+
+        $eventQB = $eventRepo->createQueryBuilder('e')
+            ->where('e.eventDate > :filterdate')
+            ->setParameter('filterdate', new \DateTime())
+            ->setMaxResults(6)
+            ->orderBy('e.eventDate', 'DESC')
+            ->getQuery();
+
+        $newsQB = $newsRepo->createQueryBuilder('n')
+            ->where(':filterdate BETWEEN n.publishStartDate AND n.publishEndDate')
+            ->setParameter('filterdate', new \DateTime())
+            ->setMaxResults(6)
+            ->orderBy('n.dateCreated', 'DESC')
+            ->getQuery();
+
         return $this->render(':default/front/page:index.html.twig', [
             'page' => $page,
-            'events' => $this->getSortedList(
-                Event::class,['eventDate' => 'ASC'], new \DateTime(), 'eventDate', 3
-            ),
+            'events' => $eventQB->getResult(),
+            'news' => $newsQB->getResult(),
             'reviews' => $this->getSortedList(
                 Review::class, ['dateReceived' => 'DESC'], new \DateTime(), null, 2
             )
@@ -101,11 +120,6 @@ class FrontController extends Controller
             ->setMaxResults(6)
             ->orderBy('n.dateCreated', 'DESC')
             ->getQuery();
-
-
-
-
-
 
         return $this->render(':default/front/page:portfolio.html.twig', [
             'events' => $eventQB->getResult(),

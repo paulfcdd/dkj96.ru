@@ -3,6 +3,43 @@
 
 .portfolio {
 
+  .photos {
+    flex: 1 0 auto;
+    margin-top: 60px;
+
+    .thumbnail {
+      border: 0 none;
+      box-shadow: none;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      width: 100%;
+
+      .caption {
+        width:100%;
+        //width: inherit;
+        bottom: 0;
+        position: absolute;
+        background: #000;
+        background: -webkit-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+        background: -moz-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+        background: -o-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+        background: linear-gradient(to top, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+
+        h3 {
+          color: white;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        p {
+          color: white;
+          -webkit-font-smoothing: antialiased;
+
+        }
+      }
+    }
+  }
+
   .single-news {
     @media @phone {
       padding: 15px;

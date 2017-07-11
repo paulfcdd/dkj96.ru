@@ -254,7 +254,7 @@ body {
   flex: 1 0 auto;
 }
 .wrapper .content #main-banner-index {
-  height: 450px;
+  height: 390px;
 }
 @media only screen and (max-width: 479px) {
   .wrapper .content #main-banner-index {

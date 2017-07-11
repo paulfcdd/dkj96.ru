@@ -40,10 +40,10 @@ class AdminController extends Controller
                Booking::class, ['booked' => 0, 'status' => 0], ['dateReceived' => 'DESC'], 10
             ),
             'messages' => $this->getUnreadNotifications(
-                Feedback::class, ['status' => 0], ['dateReceived' => 'ASC'], 10
+                Feedback::class, ['status' => 0], ['dateReceived' => 'DESC'], 10
             ),
             'reviews' => $this->getUnreadNotifications(
-                Review::class, ['status' => 0], ['dateReceived' => 'ASC'], 10
+                Review::class, ['status' => 0], ['dateReceived' => 'DESC'], 10
             )
         ]);
     }

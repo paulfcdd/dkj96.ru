@@ -104,20 +104,26 @@
                 {% endfor %}
 
                 {{ form_start(form, {'attr': {'class': 'padding-left-100px'}}) }}
-                    <div class="form-group">
-                        {{ form_widget(form.email) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_widget(form.message) }}
-                    </div>
 
-                    <div class="form-group">
-                        <div class="g-recaptcha" data-sitekey="{{ recaptcha_key }}"></div>
-                    </div>
+                <div class="form-group">
+                    {{ form_widget(form.email) }}
+                </div>
 
-                    <div class="form-group">
-                        <button class="btn-success btn pull-right no-border-radius" type="submit">Отправить</button>
-                    </div>
+                <div class="form-group">
+                    {{ form_widget(form.name) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_widget(form.message) }}
+                </div>
+
+                <div class="form-group">
+                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_key }}"></div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn-success btn pull-right no-border-radius" type="submit">Отправить</button>
+                </div>
                 {{ form_end(form) }}
 
             </div>

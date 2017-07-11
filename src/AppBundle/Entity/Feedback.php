@@ -21,6 +21,32 @@ class Feedback extends NotificationClass
     protected $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column()
+     */
+    protected $name;
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return Feedback
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer

@@ -35,7 +35,12 @@
                         <th>Статус</th>
                     {% endif %}
                     <th>Дата создания</th>
-                    <th>Дата изменения</th>
+                    {% if routeParams.entity == 'portfolio' %}
+                        <th>Дата события</th>
+                        <th>Название события</th>
+                        {% else %}
+                            <th>Дата изменения</th>
+                    {% endif %}
                     <th class="text-center">Автор</th>
                     <th class="text-right">Управление</th>
                     </thead>
@@ -44,6 +49,7 @@
                     {% for object in objects %}
                         <tr id="{{ routeParams.entity~'_'~object.id }}">
                             <td>{{ object.title }}</td>
+
                             {% if routeParams.entity == 'history' %}
 
                                 {% if object.enabled == 1 %}
@@ -55,12 +61,22 @@
 
                                 <td>{{ status }}</td>
                             {% endif %}
+
                             <td>{{ object.dateCreated | date('d.m.Y') }}</td>
                             <td>
-                                {% if object.dateUpdated is not null %}
-                                    {{ object.dateUpdated | date('d.m.Y') }}
+                                {% if routeParams.entity == 'portfolio' %}
+                                    {{ object.event.eventDate | date('d.m.Y') }}
+                                {% else %}
+                                    {% if object.dateUpdated is not null %}
+                                        {{ object.dateUpdated | date('d.m.Y') }}
+                                    {% endif %}
                                 {% endif %}
                             </td>
+                            {% if routeParams.entity == 'portfolio' %}
+                                <td>
+                                    {{ object.event.title }}
+                                </td>
+                            {% endif %}
                             <td class="text-center">
                                 {{ object.author.username }}
                             </td>

@@ -53,6 +53,27 @@ class Event
     private $ticketUrl;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Portfolio", mappedBy="event")
+     */
+    private $portfolio;
+
+    /**
+     * @return Portfolio
+     */
+    public function getPortfolio()
+    {
+        return $this->portfolio;
+    }
+
+    /**
+     * @param Portfolio $portfolio
+     */
+    public function setPortfolio(Portfolio $portfolio)
+    {
+        $this->portfolio = $portfolio;
+    }
+
+    /**
      * @return string
      */
     public function getTicketUrl()
@@ -86,8 +107,6 @@ class Event
         $this->price = $price;
     }
 
-
-
     /**
      * @return ArrayCollection
      */
@@ -103,8 +122,6 @@ class Event
     {
         $this->reviews = $reviews;
     }
-
-
 
     /**
      * Set eventDate

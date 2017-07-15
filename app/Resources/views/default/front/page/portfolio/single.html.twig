@@ -92,35 +92,36 @@
 
         <div class="space-fix-container"></div>
 
-        <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
-            <div id="links" class="links col-xs-12">
-                <h4>Фотоматериалы</h4>
-                {% for image in images %}
-                    <a href="{{ asset('upload/portfolio/'~image.name) }}">
-                        <img src="{{ asset('upload/portfolio/'~image.name) }}" width="100px" height="100px">
-                    </a>
-                {% endfor %}
+        {% if images is not empty %}
+            <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+                <div id="links" class="links col-xs-12">
+                    <h4>Фотоматериалы</h4>
+                    {% for image in images %}
+                        <a href="{{ asset('upload/portfolio/'~image.name) }}">
+                            <img src="{{ asset('upload/portfolio/'~image.name) }}" width="100px" height="100px">
+                        </a>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
+        {% endif %}
 
         <div class="space-fix-container"></div>
 
         {% if videos is not empty %}
-
-        <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
-            <div class="col-xs-12">
-                <h4>Видеоматериалы</h4>
-            </div>
-            {% for video in videos %}
-                {% set path = asset('upload/portfolio/'~video.name) %}
-                <div class="col-xs-4">
-                    <video class="single-video-block" controls>
-                        <source src="{{ path }}" type="video/{{ video.mimeType }}">
-                        Your browser does not support the video tag.
-                    </video>
+            <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+                <div class="col-xs-12">
+                    <h4>Видеоматериалы</h4>
                 </div>
-            {% endfor %}
-        </div>
+                {% for video in videos %}
+                    {% set path = asset('upload/portfolio/'~video.name) %}
+                    <div class="col-xs-4">
+                        <video class="single-video-block" controls>
+                            <source src="{{ path }}" type="video/{{ video.mimeType }}">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
 
 

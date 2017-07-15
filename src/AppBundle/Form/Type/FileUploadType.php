@@ -16,6 +16,9 @@ class FileUploadType extends AbstractType
             'required' => false,
             'mapped' => false,
             'multiple' => true,
+            'attr' => [
+                'enctype' => "multipart/form-data"
+            ]
         ]);
     }
 

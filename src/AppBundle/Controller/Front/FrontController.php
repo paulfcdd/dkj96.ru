@@ -10,6 +10,7 @@ use AppBundle\Entity\Feedback;
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
+use AppBundle\Entity\Portfolio;
 use AppBundle\Entity\Review;
 use AppBundle\Form\BookingType;
 use AppBundle\Form\FeedbackType;
@@ -93,38 +94,6 @@ class FrontController extends Controller
             'reviews' => $em->getRepository(Review::class)->findBy(['approved' => 1, 'status' => 1]),
         ]);
 
-    }
-
-    /**
-     * @return Http\Response
-     * @Route("/portfolio", name="front.portfolio")
-     */
-    public function portfolioAction() {
-
-        /** @var EntityManager $eventRepo */
-        $eventRepo = $this->getDoctrine()->getRepository(Event::class);
-
-        /** @var EntityManager $newsRepo */
-        $newsRepo = $this->getDoctrine()->getRepository(News::class);
-
-        $eventQB = $eventRepo->createQueryBuilder('e')
-            ->where('e.eventDate > :filterdate')
-            ->setParameter('filterdate', new \DateTime())
-            ->setMaxResults(6)
-            ->orderBy('e.eventDate', 'ASC')
-            ->getQuery();
-
-        $newsQB = $newsRepo->createQueryBuilder('n')
-            ->where(':filterdate BETWEEN n.publishStartDate AND n.publishEndDate')
-            ->setParameter('filterdate', new \DateTime())
-            ->setMaxResults(6)
-            ->orderBy('n.dateCreated', 'DESC')
-            ->getQuery();
-
-        return $this->render(':default/front/page:portfolio.html.twig', [
-            'events' => $eventQB->getResult(),
-            'news' => $newsQB->getResult(),
-        ]);
     }
 
     /**

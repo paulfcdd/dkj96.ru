@@ -26,7 +26,7 @@ class PortfolioType extends AbstractType
             ])
             ->add('description', CKeditorType::class)
             ->add('files', FileUploadType::class, [
-                'multiple' => false,
+                'label' => 'Допустимые форматы - JPG/PNG/MP4/MPEG. Для обложки альбома необходимо загружать квадратные изображения'
             ]);
     }
 

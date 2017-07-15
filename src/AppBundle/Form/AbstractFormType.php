@@ -16,17 +16,9 @@ class AbstractFormType extends AbstractType
     {
        $builder
            ->add('title', TextType::class, [
-               'attr' => [
-                   'class' => 'form-control'
-               ],
                'label' => 'Название'
            ])
            ->add('description', TextareaType::class, [
-               'attr' => [
-                   'class' => 'form-control no-resize',
-                   'cols' => 3,
-                   'rows' => 3
-               ],
                'label' => 'Краткое описание'
            ])
            ->add('content', CKeditorType::class, [

@@ -24,15 +24,9 @@ class EventType extends AbstractFormType
         $builder
             ->add('price', TextType::class, [
                 'label' => 'Цена билета (в руб.)',
-                'attr' => [
-                    'class' => 'form-control no-border-radius'
-                ]
             ])
             ->add('ticketUrl', UrlType::class, [
                 'label' => 'Ссылка на покупку билета (не обязательно)',
-                'attr' => [
-                    'class' => 'form-control no-border-radius'
-                ],
                 'required' => false,
             ])
             ->add('eventTime', TimeType::class, [

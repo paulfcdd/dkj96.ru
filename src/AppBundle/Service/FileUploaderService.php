@@ -8,6 +8,26 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploaderService
 {
+
+    const AVAILABLE_EXT = [
+        'jpg',
+        'jpeg',
+        'png',
+        'mp4',
+        'mpeg'
+    ];
+
+    const IMAGES = [
+        'jpg',
+        'jpeg',
+        'png',
+    ];
+
+    const VIDEOS = [
+        'mp4',
+        'mpeg'
+    ];
+
     /** @var EntityManager $em */
     protected $em;
 
@@ -78,8 +98,15 @@ class FileUploaderService
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function upload() {
+
+        $fileExt = $this->getFile()->getClientOriginalExtension();
+
+        if (!in_array($fileExt, self::AVAILABLE_EXT)) {
+            throw new \Exception('Файлы с расширением \'.'.$fileExt.'\' не поддерживаются');
+        }
 
         $uploadDir = $this->checkUploadDir($this->getDir());
 
@@ -88,7 +115,7 @@ class FileUploaderService
         if (!$uploadDir) {
             die($uploadDir);
         } else {
-            $fileName = $fileNameHash.'.'.$this->getFile()->getClientOriginalExtension();
+            $fileName = $fileNameHash.'.'.$fileExt;
 
             $this->getFile()->move($uploadDir, $fileName);
 

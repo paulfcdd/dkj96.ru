@@ -1,4 +1,5 @@
 {% extends ':default/admin:base.html.twig' %}
+{% form_theme form ':default/admin/form:manage_fields.html.twig' %}
 
 {% block styles %}
 {% endblock %}
@@ -12,38 +13,6 @@
         })
     </script>
 {% endblock %}
-
-{% form_theme form _self %}
-
-{%- block date_widget -%}
-    {%- if widget == 'single_text' -%}
-        {{ block('form_widget_simple') }}
-    {%- else -%}
-        <div {{ block('widget_container_attributes') }}>
-            {{- date_pattern|replace({
-                '{{ day }}':   form_widget(form.day),
-                '{{ month }}': form_widget(form.month),
-                '{{ year }}':  form_widget(form.year),
-            })|raw -}}
-        </div>
-    {%- endif -%}
-{%- endblock date_widget -%}
-
-{%- block form_widget_simple -%}
-    {%- set type = type|default('text') -%}
-    <div class="form-group">
-        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
-    </div>
-{%- endblock form_widget_simple -%}
-
-
-{%- block textarea_widget -%}
-    <div class="form-group">
-        <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
-    </div>
-{%- endblock textarea_widget -%}
-
-
 
 {% block content %}
     <div class="col-md-12">

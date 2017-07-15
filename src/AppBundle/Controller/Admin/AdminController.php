@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -129,7 +130,6 @@ class AdminController extends Controller
             $formData = $form
                 ->getData();
 
-
             if (!new $object instanceof Review) {
                 $formData->setAuthor($this->getUser());
             }
@@ -151,6 +151,13 @@ class AdminController extends Controller
 
             if (isset($form['files'])) {
                 $attachedFiles = $form['files']->getData();
+
+                if ($attachedFiles instanceof UploadedFile) {
+
+                    $em->persist(
+                        $this->photoUploader($uploader, $entity, $attachedFiles, $formData, $class)
+                    );
+                }
 
                 if (!empty($attachedFiles)) {
 
@@ -189,12 +196,42 @@ class AdminController extends Controller
     }
 
     /**
+     * @param FileUploaderService $uploader
+     * @param string $entity
+     * @param UploadedFile $uploadedFile
+     * @param $formData
+     * @param string $class
+     * @return File
+     */
+    private function photoUploader(FileUploaderService $uploader, string $entity, UploadedFile $uploadedFile, $formData, string $class) {
+        $file = new File();
+
+        $uploader
+            ->setDir($entity)
+            ->setFile($uploadedFile);
+
+        $file
+            ->setForeignKey($formData->getId())
+            ->setMimeType($uploader->getMimeType())
+            ->setEntity($class)
+            ->setName($uploader->upload());
+
+        return $file;
+    }
+
+    /**
+     * @param $entity
+     * @param $id
+     * @return Response
      * @Route("/admin/{entity}/manage/{id}/files", name="admin.manage.files")
      */
     public function fileManagerAction(string $entity, int $id) {
 
+
         return $this->render(':default/admin:files.html.twig', [
             'files' => $this->fileLoader($this->getClassName($entity), $id),
+            'imagesExt' => FileUploaderService::IMAGES,
+            'videosExt' => FileUploaderService::VIDEOS,
         ]);
     }
 

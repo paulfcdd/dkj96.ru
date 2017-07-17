@@ -156,7 +156,7 @@
 
         <!-- Modal -->
         <div class="modal fade" id="gallery" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal-dialog" style="width: 75%">
 
                 <!-- Modal content-->
                 <div class="modal-content no-border-radius">
@@ -165,12 +165,13 @@
                         <h4 class="modal-title">Галерея {{ hall.title }}</h4>
                     </div>
                     <div class="modal-body">
-                        <div id="links" class="links">
-                            <h4>Фотоматериалы</h4>
+                        <div id="links" class="links row">
                             {% for image in images %}
-                                <a href="{{ asset('upload/hall/'~image.name) }}">
-                                    <img src="{{ asset('upload/hall/'~image.name) }}" width="75px" height="75px">
-                                </a>
+                                <div class="col-sm-4 text-center" style="padding: 20px 0">
+                                    <a href="{{ asset('upload/hall/'~image.name) }}">
+                                        <img src="{{ asset('upload/hall/'~image.name) }}" width="50%">
+                                    </a>
+                                </div>
                             {% endfor %}
                         </div>
 

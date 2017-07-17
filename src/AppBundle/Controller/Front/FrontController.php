@@ -51,14 +51,14 @@ class FrontController extends Controller
             ->where('e.eventDate > :filterdate')
             ->setParameter('filterdate', new \DateTime())
             ->setMaxResults(6)
-            ->orderBy('e.eventDate', 'DESC')
+            ->orderBy('e.eventDate', 'ASC')
             ->getQuery();
 
         $newsQB = $newsRepo->createQueryBuilder('n')
             ->where(':filterdate BETWEEN n.publishStartDate AND n.publishEndDate')
             ->setParameter('filterdate', new \DateTime())
             ->setMaxResults(6)
-            ->orderBy('n.dateCreated', 'DESC')
+            ->orderBy('n.dateCreated', 'ASC')
             ->getQuery();
 
         return $this->render(':default/front/page:index.html.twig', [

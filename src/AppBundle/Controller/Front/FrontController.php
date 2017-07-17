@@ -27,6 +27,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation as Http;
+use AppBundle\Service\FileUploaderService;
 
 class FrontController extends Controller
 {
@@ -263,6 +264,8 @@ class FrontController extends Controller
         return $this->render('default/front/page/halls/default.html.twig', [
             'hall' => $hall,
             'bookings' => $bookings,
+            'imagesExt' => FileUploaderService::IMAGES,
+            'videosExt' => FileUploaderService::VIDEOS,
         ]);
     }
 

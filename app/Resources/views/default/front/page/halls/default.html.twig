@@ -112,19 +112,21 @@
                            <i class="fa fa-calendar-o" aria-hidden="true"></i> <label class="hidden-sm hidden-lg hidden-md">Занятость зала</label>
                        </button>
 
-                       <button
-                               type="button"
-                               id="init-photoswipe"
-                               class="btn btn-default xs-width-100 no-border-radius"
-                               data-dir="hall"
-                               data-toggle="modal"
-                               data-target="#gallery"
-                               data-tooltip="tooltip"
-                               data-placement="top"
-                               title="Галерея"
-                       >
-                           <i class="fa fa-camera" aria-hidden="true"></i> <label class="hidden-sm hidden-lg hidden-md">Галерея</label>
-                       </button>
+                       {% if images is not empty %}
+                           <button
+                                   type="button"
+                                   id="init-photoswipe"
+                                   class="btn btn-default xs-width-100 no-border-radius"
+                                   data-dir="hall"
+                                   data-toggle="modal"
+                                   data-target="#gallery"
+                                   data-tooltip="tooltip"
+                                   data-placement="top"
+                                   title="Галерея">
+                               <i class="fa fa-camera" aria-hidden="true"></i> <label
+                                       class="hidden-sm hidden-lg hidden-md">Галерея</label>
+                           </button>
+                       {% endif %}
                    </div>
                </div>
                 <div class="row">
@@ -157,24 +159,26 @@
             <div class="modal-dialog">
 
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content no-border-radius">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <h4 class="modal-title">Галерея {{ hall.title }}</h4>
                     </div>
                     <div class="modal-body">
                         <div id="links" class="links">
                             <h4>Фотоматериалы</h4>
                             {% for image in images %}
                                 <a href="{{ asset('upload/hall/'~image.name) }}">
-                                    <img src="{{ asset('upload/hall/'~image.name) }}" width="100px" height="100px">
+                                    <img src="{{ asset('upload/hall/'~image.name) }}" width="75px" height="75px">
                                 </a>
                             {% endfor %}
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger no-border-radius pull-right" data-dismiss="modal">
+                            <span class="fa fa-times"></span> Закрыть
+                        </button>
                     </div>
                 </div>
 

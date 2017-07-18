@@ -27,7 +27,7 @@
             $("#calendar").fullCalendar('render');
         });
 
-        $('#gallery').on('shown.bs.modal', function(event) {
+        $('#gallery').on('shown.bs.modal', function() {
             $('#links').on('click', function (event) {
                 event = event || window.event;
                 var target = event.target || event.srcElement,
@@ -154,9 +154,8 @@
             </div>
         </div>
 
-        <!-- Modal -->
         <div class="modal fade" id="gallery" role="dialog">
-            <div class="modal-dialog hall-modal-gallery">
+            <div class="modal-dialog modal-gallery">
 
                 <!-- Modal content-->
                 <div class="modal-content no-border-radius">
@@ -167,7 +166,7 @@
                     <div class="modal-body">
                         <div id="links" class="links row">
                             {% for image in images %}
-                                <div class="col-sm-4 col-xs-12 text-center hall-image-thumbnail">
+                                <div class="col-sm-4 col-xs-12 text-center modal-gallery-image-thumbnail">
                                     <a href="{{ asset('upload/hall/'~image.name) }}">
                                         <img src="{{ asset('upload/hall/'~image.name) }}">
                                     </a>

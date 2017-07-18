@@ -115,13 +115,15 @@ class FrontController extends Controller
 
         return $this->render(':default/front/page/artists:single.html.twig', [
             'artist' => $artist,
+            'imagesExt' => FileUploaderService::IMAGES,
+            'videosExt' => FileUploaderService::VIDEOS,
         ]);
     }
 
     /**
      * @Route("/history", name="front.history")
      */
-    public function listHistoryPageActio() {
+    public function listHistoryPageAction() {
 
         return $this->render(':default/front/page:istoriya.html.twig', [
             'history' => $this->getDoctrine()->getRepository(History::class)->findOneBy(['isEnabled' => true]),

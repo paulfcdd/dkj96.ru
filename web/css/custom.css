@@ -34,6 +34,22 @@ body {
   /* End custom classes*/
   /* Responsive classes*/
 }
+@media only screen and (min-width: 960px) and (max-width: 1199px) {
+  .wrapper .modal-gallery {
+    width: 75%;
+  }
+}
+.wrapper .modal-gallery-image-thumbnail {
+  padding: 20px 0;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .modal-gallery-image-thumbnail {
+    padding: 10px 0;
+  }
+}
+.wrapper .modal-gallery-image-thumbnail img {
+  width: 50%;
+}
 .wrapper .pointer {
   cursor: pointer;
 }

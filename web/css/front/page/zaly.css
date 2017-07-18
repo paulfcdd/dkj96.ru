@@ -28,22 +28,6 @@
   line-height: 26px;
   color: #333333;
 }
-@media only screen and (min-width: 960px) and (max-width: 1199px) {
-  .single-hall-page .hall-modal-gallery {
-    width: 75%;
-  }
-}
-.single-hall-page .hall-image-thumbnail {
-  padding: 20px 0;
-}
-@media only screen and (max-width: 479px) {
-  .single-hall-page .hall-image-thumbnail {
-    padding: 10px 0;
-  }
-}
-.single-hall-page .hall-image-thumbnail img {
-  width: 50%;
-}
 .single-hall-page .single-hall-page-breadcrumbs {
   background: none;
   border: none;

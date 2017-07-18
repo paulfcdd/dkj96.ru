@@ -42,6 +42,24 @@ body {
   margin: 0 auto;
   font: 14px/20px Arial, sans-serif;
 
+  .modal-gallery {
+    @media @desktop {
+      width: 75%;
+    }
+  }
+
+  .modal-gallery-image-thumbnail {
+    padding: 20px 0;
+
+    @media @phone {
+      padding: 10px 0;
+    }
+
+    img {
+      width: 50%;
+    }
+  }
+
   .pointer {
     cursor: pointer;
 

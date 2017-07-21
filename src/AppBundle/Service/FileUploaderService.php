@@ -10,11 +10,10 @@ class FileUploaderService
 {
 
     const AVAILABLE_EXT = [
-        'jpg',
-        'jpeg',
-        'png',
-        'mp4',
-        'mpeg'
+        'image/jpeg',
+        'image/png',
+        'video/mp4',
+        'video/mpeg'
     ];
 
     const IMAGES = [
@@ -102,7 +101,7 @@ class FileUploaderService
      */
     public function upload() {
 
-        $fileExt = $this->getFile()->getClientOriginalExtension();
+        $fileExt = $this->getFile()->getMimeType();
 
         if (!in_array($fileExt, self::AVAILABLE_EXT)) {
             throw new \Exception('Файлы с расширением \'.'.$fileExt.'\' не поддерживаются');
@@ -115,7 +114,7 @@ class FileUploaderService
         if (!$uploadDir) {
             die($uploadDir);
         } else {
-            $fileName = $fileNameHash.'.'.$fileExt;
+            $fileName = $fileNameHash.'.'.strtolower($this->getFile()->getClientOriginalExtension());
 
             $this->getFile()->move($uploadDir, $fileName);
 

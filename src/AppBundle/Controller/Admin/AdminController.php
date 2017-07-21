@@ -171,7 +171,7 @@ class AdminController extends Controller
 
                         $file
                             ->setForeignKey($formData->getId())
-                            ->setMimeType($uploader->getMimeType())
+                            ->setMimeType(strtolower($uploader->getMimeType()))
                             ->setEntity($class)
                             ->setName($uploader->upload());
 

@@ -40,11 +40,11 @@ class Event
     private $reviews;
 
     /**
-     * @var string
+     * @var string | null
      *
-     * @ORM\Column()
+     * @ORM\Column(nullable=true)
      */
-    private $price;
+    private $price = null;
 
     /**
      * @var string

@@ -24,6 +24,7 @@ class EventType extends AbstractFormType
         $builder
             ->add('price', TextType::class, [
                 'label' => 'Цена билета (в руб.)',
+                'required' => false,
             ])
             ->add('ticketUrl', UrlType::class, [
                 'label' => 'Ссылка на покупку билета (не обязательно)',

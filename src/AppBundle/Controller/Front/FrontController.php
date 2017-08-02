@@ -58,7 +58,7 @@ class FrontController extends Controller
             ->where(':filterdate BETWEEN n.publishStartDate AND n.publishEndDate')
             ->setParameter('filterdate', new \DateTime())
             ->setMaxResults(6)
-            ->orderBy('n.dateCreated', 'DESC')
+            ->orderBy('n.publishStartDate', 'DESC')
             ->getQuery();
 
         return $this->render(':default/front/page:index.html.twig', [

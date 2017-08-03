@@ -15,6 +15,7 @@ use AppBundle\Entity\Review;
 use AppBundle\Form\BookingType;
 use AppBundle\Form\FeedbackType;
 use AppBundle\Form\ReviewType;
+use AppBundle\Service\Utilities;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -73,14 +74,52 @@ class FrontController extends Controller
 
     /**
      * @param News $news
+     * @param Utilities $utilities
      * @return Http\Response
-     * @Route("/news/{news}", name="front.news.single")
+     * @Route("/news/{news}", name="front.news")
+     * @Method({"POST", "GET"})
      */
-    public function singleNewsPageAction(News $news) {
+    public function showNewsAction(News $news = null, Utilities $utilities, Http\Request $request) {
 
-        return $this->render(':default/front/page/news:single.html.twig', [
+        $view = ':default/front/page/news:single.html.twig';
+        $parameters = [
             'news' => $news
-        ]);
+        ];
+
+        if (!$news) {
+
+            $paginator = $utilities
+                ->setObjectName(News::class)
+                ->setCriteria([])
+                ->setOrderBy(['publishStartDate' => 'DESC'])
+                ->setLimit(5)
+                ->setOffset(0);
+
+            $repository = $this->getDoctrine()->getRepository(News::class);
+
+
+            if ($request->isMethod('POST')) {
+
+                $paginator
+                    ->setLimit($request->get('limit'))
+                    ->setOffset($request->get('offset'));
+
+                return $this->render(':default/front/utility:paginator.html.twig', [
+                    'news' => $paginator->paginationAction(),
+                ]);
+            }
+
+            $view = ':default/front/page/news:list.html.twig';
+
+            $parameters = [
+                'news' => $repository->findBy([], ['publishStartDate' => 'DESC'], 5, 0),
+                'paginator' => $paginator->getPages(),
+                'offset' => $paginator->getOffset(),
+                'limit' => $paginator->getLimit(),
+            ];
+        }
+
+        return $this->render($view, $parameters);
     }
 
     /**

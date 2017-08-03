@@ -90,7 +90,9 @@
                                         <div class="row event-heading">
                                             <div class="col-sm-10 col-xs-12 event-label">
                                                 <h4>
-                                                    <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }} | <i class="fa fa-clock-o"></i> {{ event.eventTime | date('H:i') }} |&nbsp;
+                                                    <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }}
+                                                    | <i class="fa fa-clock-o"></i> {{ event.eventTime | date('H:i') }}
+                                                    |&nbsp;
                                                     <a href="{{ path('event.details_page', {
                                                         'event': event.id
                                                     }) }}">
@@ -116,43 +118,45 @@
                 </div>
 
                 <div class="col-xs-12 col-lg-6 padding-0-100px text-left">
-                    <h4 class="label-underscored">Новости</h4>
+
+                    <a href="{{ path('front.news') }}">
+                        <h4 class="label-underscored">Новости</h4>
+                    </a>
 
                     <div class="upcoming-event">
 
 
-                    <ul class="media-list main-list">
-                        <!--SINGLE EVENT START-->
+                        <ul class="media-list main-list">
+                            {% for item in news %}
+                                <li class="media">
+                                    <div class="media-body">
+                                        <div class="row event-heading">
+                                            <div class="col-sm-10 col-xs-12 event-label">
+                                                <h4>
+                                                    <a href="{{ path('front.news', {'news': item.id}) }}"
+                                                       class="event-header">
+                                                        <h3>{{ item.title }}</h3>
+                                                    </a>
+                                                    <h6>
+                                                        <i class="fa fa-calendar"></i> {{ item.publishStartDate | date('d.m.Y') }}
+                                                        | <i class="fa fa-user"></i> {{ item.author }}
+                                                    </h6>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div class="media-content">
+                                            {% set description = item.description %}
 
-                        {% for item in news %}
-
-                            <li class="media">
-                                <div class="media-body">
-                                    <div class="row event-heading">
-                                        <div class="col-sm-10 col-xs-12 event-label">
-                                            <h4>
-                                                <a href="{{ path('front.news.single', {'news': item.id}) }}" class="event-header">
-                                                    <h3>{{ item.title }}</h3>
-                                                </a>
-                                                <h6>
-                                                    <i class="fa fa-calendar"></i> {{ item.publishStartDate | date('d.m.Y') }} | <i class="fa fa-user"></i> {{ item.author }}
-                                                </h6>
-                                            </h4>
+                                            {% if item.description | length > 100 %}
+                                                {% set description = item.description | slice (0,100) %}
+                                                {% set description = description~'...' %}
+                                            {% endif %}
+                                            {{ description }}
                                         </div>
                                     </div>
-                                    <div class="media-content">
-                                        {% set description = item.description %}
-
-                                        {% if item.description | length > 100 %}
-                                            {% set description = item.description | slice (0,100) %}
-                                            {% set description = description~'...' %}
-                                        {% endif %}
-                                        {{ description }}
-                                    </div>
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
 

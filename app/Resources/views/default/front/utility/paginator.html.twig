@@ -1,0 +1,21 @@
+<div class="container padding-left-0 padding-right-0 halls-list-block">
+
+    {% for single_news in news %}
+
+        <div class="col-xs-12 padding-0-100px single-hall xs-padding-0-10px">
+            <div class="media">
+
+                <div class="media-body">
+                    <h3 class="media-heading hall-label">
+                        <a href="{{ path('front.news', {'news': single_news.id}) }}">{{ single_news.title }}</a>
+                    </h3>
+                    <div class="by-author hall-description">
+                        {{ single_news.description }}
+                    </div>
+                    <a href="{{ path('front.news', {'news': single_news.id}) }}" class="read-more-link pull-right">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+</div>

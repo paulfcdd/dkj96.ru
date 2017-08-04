@@ -66,6 +66,10 @@
                         <h3 class="media-heading hall-label">
                             <a href="{{ path('front.news', {'news': single_news.id}) }}">{{ single_news.title }}</a>
                         </h3>
+                        <h6 style="font-size: 14px;">
+                            <i class="fa fa-calendar"></i> {{ single_news.publishStartDate | date('d.m.Y') }}
+                            | <i class="fa fa-user"></i> {{ single_news.author }}
+                        </h6>
                         <div class="by-author hall-description">
                             {{ single_news.description }}
                         </div>

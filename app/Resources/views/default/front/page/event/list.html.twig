@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title %} Залы {% endblock %}
+{% block title %} Календарь событий во Дворце Культуры Железнодорожников {% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet">
@@ -22,7 +22,6 @@
             title: '{{ event.title }}',
             date: '{{ event.eventDate | date('d.m.Y') }}',
             time: '{{ event.eventTime | date('H:i') }}',
-            rendering: 'background',
             url: '{{ path('event.details_page', {
                 'event': event.id
             }) }}'

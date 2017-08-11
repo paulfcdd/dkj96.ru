@@ -33,15 +33,15 @@
         $('#calendar').fullCalendar({
             defaultDate: $(this).fullCalendar('today'),
             events: events,
-            eventBackgroundColor: '#0AD26E',
+            eventBackgroundColor: '#F0DEBA',
             locale: 'ru',
             eventRender: function(event, element) {
                 $(element)
                     .html(
                         '<div class="event-info-block">' +
-                        '<p class="text-center"><a href="'+event.url+'" target="_blank" style="color: white; font-size: 16px; text-decoration: underline">'+event.title+'</a></p>' +
-                        '<p style="color: white; font-size: 16px;"><span class="fa fa-calendar"></span> '+event.date+'</p>' +
-                        '<p style="color: white; font-size: 16px;"><span class="fa fa-clock-o"></span> '+event.time+'</p>' +
+                        '<p class="text-center"><a href="'+event.url+'" target="_blank" style="color: #D22630; font-size: 16px; text-decoration: underline">'+event.title+'</a></p>' +
+                        '<p style="color: #D22630; font-size: 16px;"><span class="fa fa-calendar"></span> '+event.date+'</p>' +
+                        '<p style="color: #D22630; font-size: 16px;"><span class="fa fa-clock-o"></span> '+event.time+'</p>' +
                         '</div>'
                 );
             }

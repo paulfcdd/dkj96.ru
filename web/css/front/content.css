@@ -25,6 +25,11 @@
   line-height: 20pt;
   font-family: 'Bebas Bold';
 }
+.content .banner-btn {
+  position: absolute;
+  bottom: 30%;
+  right: 20%;
+}
 .content #main-text-under-banner .banner-content-block {
   font-family: 'Century Gothic Regular';
   font-size: 15px;

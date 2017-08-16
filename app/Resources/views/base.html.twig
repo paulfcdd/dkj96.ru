@@ -82,7 +82,7 @@
                         </div>
 
                         <div class="item">
-                            <button class="test-btn">More</button>
+                            <a role="button" class="banner-btn btn btn-primary no-border-radius btn-lg" href="{{ path('front.news', {'news': 14}) }}">Подробнее</a>
                             <img src="{{ asset('img/carousel/serdca9_w.jpg') }}" alt="Chicago" style="width:100%;">
                         </div>
                     </div>
@@ -164,7 +164,13 @@
 <script>
     $(document).ready(function(){
         $('[data-tooltip="tooltip"]').tooltip();
+
+        $('.carousel').carousel({
+            interval: false
+        });
     });
+
+
 </script>
 {% block javascripts %}{% endblock %}
 </body>

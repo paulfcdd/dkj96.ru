@@ -25,6 +25,37 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
     <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    {% block yandex_metrika_counter %}
+        <script type="text/javascript" >
+            (function (d, w, c) {
+                (w[c] = w[c] || []).push(function() {
+                    try {
+                        w.yaCounter45684630 = new Ya.Metrika({
+                            id:45684630,
+                            clickmap:true,
+                            trackLinks:true,
+                            accurateTrackBounce:true,
+                            webvisor:true,
+                            trackHash:true,
+                            ecommerce:"dataLayer"
+                        });
+                    } catch(e) { }
+                });
+
+                var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () { n.parentNode.insertBefore(s, n); };
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = "https://cdn.jsdelivr.net/npm/yandex-metrica-watch/watch.js";
+
+                if (w.opera == "[object Opera]") {
+                    d.addEventListener("DOMContentLoaded", f, false);
+                } else { f(); }
+            })(document, window, "yandex_metrika_callbacks");
+        </script>
+    {% endblock %}
 </head>
 <body>
 
@@ -181,5 +212,6 @@
 
 </script>
 {% block javascripts %}{% endblock %}
+
 </body>
 </html>

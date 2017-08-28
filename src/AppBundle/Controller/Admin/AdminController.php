@@ -30,7 +30,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
-
     /**
      * @Route("/admin/dashboard", name="admin.index")
      */
@@ -250,7 +249,6 @@ class AdminController extends Controller
 
     }
 
-
     /**
      * @param string $class
      * @param int $id
@@ -268,6 +266,10 @@ class AdminController extends Controller
 
     }
 
+    /**
+     * @param string $entity
+     * @return string
+     */
     protected function getClassName(string $entity) {
 
         $className = ucfirst($entity);

@@ -22,6 +22,7 @@
 html,
 body {
   height: 100%;
+  background-color: #F0DEBA;
 }
 .wrapper {
   display: flex;
@@ -34,10 +35,18 @@ body {
   /* End custom classes*/
   /* Responsive classes*/
 }
+.wrapper .banner-btn {
+  position: absolute;
+  bottom: 30%;
+  right: 20%;
+}
 @media only screen and (min-width: 960px) and (max-width: 1199px) {
   .wrapper .modal-gallery {
     width: 75%;
   }
+}
+.wrapper .custom-carousel-control {
+  background-image: none;
 }
 .wrapper .modal-gallery-image-thumbnail {
   padding: 20px 0;
@@ -256,8 +265,7 @@ body {
   border-bottom: 10px solid #6B3E21;
 }
 .wrapper .header .main-header .main-menu ul li a {
-  font-size: 16px;
-  background: #fff;
+  font-size: 18px;
   color: #6B3E21;
   padding-top: 50px;
   padding-bottom: 3px;
@@ -350,7 +358,7 @@ body {
 }
 .wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link:hover {
   background-color: #F0DEBA;
-  color: #717171;
+  color: #333333;
 }
 .wrapper .footer .footer-widget .footer-widget-data-list a {
   color: #F0DEBA;

@@ -33,6 +33,7 @@
 html,
 body {
   height: 100%;
+  background-color: @main-color-light;
 }
 .wrapper {
   display: flex;
@@ -42,10 +43,20 @@ body {
   margin: 0 auto;
   font: 14px/20px Arial, sans-serif;
 
+  .banner-btn {
+    position: absolute;
+    bottom: 30%;
+    right: 20%;
+  }
+
   .modal-gallery {
     @media @desktop {
       width: 75%;
     }
+  }
+
+  .custom-carousel-control {
+    background-image: none;
   }
 
   .modal-gallery-image-thumbnail {

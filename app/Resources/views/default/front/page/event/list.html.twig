@@ -13,6 +13,30 @@
 
     <script>
 
+        $(document).ready(function () {
+
+            var date = new Date(),
+                month = date.getMonth(),
+                year = date.getFullYear(),
+                limit = 5,
+                monthFirstDay = new Date(year, month, 1),
+                monthLastDay = new Date(year, month + 1, 0),
+                apiUrl = '{{ path('api.load-events-by-month') }}';
+
+            $.ajax({
+                url: apiUrl,
+                method: 'post',
+                data: {
+                    'firstDay': $.datepicker.formatDate('yy-mm-dd', monthFirstDay),
+                    'lastDay': $.datepicker.formatDate('yy-mm-dd', monthLastDay)
+                },
+                success: function (data) {
+                    console.log(data);
+                }
+            })
+        });
+
+
         var events = [];
 
         {% for event in events %}

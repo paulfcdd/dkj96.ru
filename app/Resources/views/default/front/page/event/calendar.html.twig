@@ -1,0 +1,51 @@
+{% for event in events %}
+
+<div class="col-lg-3 col-xs-12">
+    <div class="panel panel-default">
+            <div class="panel-heading text-center"> 
+            <h3 style="word-wrap: break-word;">  {{ event.date }}  </h3>
+            <small>{{ event.day }}</small>
+            </div>
+
+        {% for subevent in event.events %}
+            <div class="panel-body text-center no-border-radius">
+                <label>  {{ subevent.name }} </label>
+                {% set description = subevent.description %}
+
+                {% if subevent.description | length > 100 %}
+                    {% set description = subevent.description | slice (0,100) %}
+                    {% set description = description~'...' %}
+                {% endif %}
+
+                <p>{{ description }}</p>
+
+                <label style="width: 100%">
+                    <span class="fa fa-clock-o"></span>&nbsp;{{ subevent.time }}
+                </label>
+
+                <div class="btn-group">
+                    <a role="button"
+                       type="button"
+                       class="btn btn-primary no-border-radius"
+                       href="{{ path('event.details_page', {'event': subevent.id}) }}"
+                       target="_blank">
+                        Подробнее
+                    </a>
+                    <a role="button"
+                       type="button"
+                       class="btn btn-success no-border-radius"
+                       {% if subevent.ticketUrl is null %}
+                           disabled="disabled"
+                       {% endif %}
+                       href="{{ subevent.ticketUrl }}"
+                       target="_blank">
+                        Купить билет
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endfor %}

@@ -178,12 +178,10 @@ class ApiController extends AdminController
             'status' => null
         ];
 
-
         $objectFiles = $doctrine->getRepository(File::class)->findBy([
             'entity' => $file->getEntity(),
             'foreignKey' => $file->getForeignKey()
         ]);
-
 
         foreach ($objectFiles as $objectFile) {
             if ($objectFile->isIsDefault() == 1) {
@@ -201,7 +199,6 @@ class ApiController extends AdminController
             $resp['data'] = 'not ok';
             $resp['status'] = 500;
         }
-
 
         return JsonResponse::create($resp['data'], $resp['status']);
     }

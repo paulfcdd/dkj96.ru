@@ -2,22 +2,40 @@
   font-family: 'Century Gothic Regular';
   src: url(../../../fonts/CenturyGothicRegular.ttf);
 }
-.flex-container {
+.loader {
+  border: 16px solid #f3f3f3;
+  /* Light grey */
+  border-top: 16px solid #3498db;
+  /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.single-event-container {
   min-height: 350px;
 }
-.flex-container .single-event-panel {
+.single-event-container .single-event-panel {
   font-family: 'Century Gothic Regular';
 }
-.flex-container .single-event-panel .panel-heading {
+.single-event-container .single-event-panel .panel-heading {
   background-color: #da0000;
   color: #F0DEBA;
 }
-.flex-container .single-event-panel .event-buttons .btn {
+.single-event-container .single-event-panel .event-buttons .btn {
   background-color: transparent;
   color: #333333;
   border: 2px dotted #333333;
   font-weight: 600;
 }
-.flex-container .single-event-panel .event-buttons .btn:hover {
+.single-event-container .single-event-panel .event-buttons .btn:hover {
   background-color: #F0DEBA;
 }

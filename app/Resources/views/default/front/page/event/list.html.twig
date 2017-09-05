@@ -29,7 +29,11 @@
                     'firstDay': $.datepicker.formatDate('yy-mm-dd', monthFirstDay),
                     'lastDay': $.datepicker.formatDate('yy-mm-dd', monthLastDay)
                 },
+                beforeSend: function () {
+                    $('.loader-row').show();
+                },
                 success: function (data) {
+                    $('.loader-row').hide();
                     $('.event-list-row').append(data);
                 }
             })
@@ -63,6 +67,13 @@
     <div class="space-fix-container"></div>
 
     <div class="container padding-left-0 padding-right-0 halls-list-block event-list">
+
+        <div class="row loader-row" hidden>
+            <div class="loader-container col-md-2 col-md-offset-5">
+                <div class="loader"></div>
+            </div>
+        </div>
+
         <div class="row event-list-row">
 
         </div>

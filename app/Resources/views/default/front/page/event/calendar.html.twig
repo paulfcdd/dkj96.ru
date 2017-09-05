@@ -1,6 +1,6 @@
     {% for event in events %}
 
-        <div class="col-lg-3 col-xs-12 flex-container">
+        <div class="col-lg-3 col-xs-12 single-event-container">
             <div class="panel panel-default single-event-panel d-inline-block">
                 <div class="panel-heading text-center">
                     <h3 style="word-wrap: break-word;">  {{ event.date }}  </h3>
@@ -22,6 +22,12 @@
                         <label style="width: 100%">
                             <span class="fa fa-clock-o"></span>&nbsp;{{ subevent.time }}
                         </label>
+
+                        {% if subevent.price is not empty %}
+                        <label style="width: 100%">
+                            Цена:&nbsp;{{ subevent.price }} <span class="fa fa-rouble"></span>
+                        </label>
+                        {% endif %}
 
                         <div class="btn-group event-buttons">
                             <a role="button"

@@ -2,6 +2,21 @@
   font-family: 'Century Gothic Regular';
   src: url(../../../fonts/CenturyGothicRegular.ttf);
 }
+.filter-event-btn {
+  background-color: #da0000;
+  border-color: #da0000;
+  color: white;
+  width: 100%;
+  font-family: 'Century Gothic Regular';
+  color: #F0DEBA;
+}
+.filter-event-btn:hover,
+.filter-event-btn:focus,
+.filter-event-btn:active {
+  background-color: #d93c3d;
+  border-color: #d93c3d;
+  color: #F0DEBA;
+}
 .loader {
   border: 16px solid #f3f3f3;
   /* Light grey */
@@ -19,22 +34,25 @@
     transform: rotate(360deg);
   }
 }
-.single-event-container {
-  min-height: 350px;
+.event-list-row {
+  flex: 1 0 auto;
 }
-.single-event-container .single-event-panel {
+.event-list-row .single-event-container {
+  min-height: 400px;
+}
+.event-list-row .single-event-container .single-event-panel {
   font-family: 'Century Gothic Regular';
 }
-.single-event-container .single-event-panel .panel-heading {
+.event-list-row .single-event-container .single-event-panel .panel-heading {
   background-color: #da0000;
   color: #F0DEBA;
 }
-.single-event-container .single-event-panel .event-buttons .btn {
+.event-list-row .single-event-container .single-event-panel .event-buttons .btn {
   background-color: transparent;
   color: #333333;
   border: 2px dotted #333333;
   font-weight: 600;
 }
-.single-event-container .single-event-panel .event-buttons .btn:hover {
+.event-list-row .single-event-container .single-event-panel .event-buttons .btn:hover {
   background-color: #F0DEBA;
 }

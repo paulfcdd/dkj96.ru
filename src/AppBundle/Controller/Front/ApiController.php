@@ -32,6 +32,8 @@ class ApiController extends FrontController
 
         $translator = $this->get('translator');
 
+        $serializer = $this->get('serializer');
+
         $firstDay = \DateTime::createFromFormat(self::DATE_FORMAT,$requestParams->get('firstDay'));
 
         $lastDay = \DateTime::createFromFormat(self::DATE_FORMAT, $requestParams->get('lastDay'));
@@ -80,6 +82,8 @@ class ApiController extends FrontController
             array_push($groupByDays[$key]['events'], $event);
 
         }
+
+//        return new HTTP\Response($serializer->serialize($groupByDays, 'json'));
 
         return $this->render(':default/front/page/event:calendar.html.twig', [
             'events' => $groupByDays,

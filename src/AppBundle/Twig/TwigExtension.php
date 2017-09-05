@@ -18,6 +18,7 @@ class TwigExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFunction('strtotime', [$this, 'strtotime']),
             new \Twig_SimpleFunction('in_array',  [$this, 'in_array']),
+            new \Twig_SimpleFunction('array_values', [$this, 'array_values'])
         ];
     }
 
@@ -62,5 +63,11 @@ class TwigExtension extends \Twig_Extension
         }
 
         return false;
+    }
+
+    public function array_values(array $array) {
+
+        return array_values($array);
+
     }
 }

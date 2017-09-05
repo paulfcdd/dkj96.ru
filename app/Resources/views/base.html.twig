@@ -1,16 +1,14 @@
-{% set page = app.request.get('page') %}
-{% set _route_params = app.request.attributes.get('_route_params') %}
-
-
-{% if page is null %}
-    {% set page = 'index' %}
-{% endif %}
-
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    {% set page = app.request.get('page') %}
+    {% set _route_params = app.request.attributes.get('_route_params') %}
+    {% if page is null %}
+        {% set page = 'index' %}
+    {% endif %}
+
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>{% block title %}Дворец Культуры Железнодорожников{% endblock %}</title>
 
@@ -20,7 +18,7 @@
     <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
     <link href="{{ asset('node_modules/photoswipe/dist/photoswipe.css') }}" rel="stylesheet">
     <link href="{{ asset('node_modules/photoswipe/dist/default-skin/default-skin.css') }}" rel="stylesheet">
-    {#<link href="{{ asset('node_modules/clndr/demo/css/clndr.css') }}" rel="stylesheet" type="text/css">#}
+
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
@@ -174,6 +172,7 @@
 
 
 <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>#}
 <script src="{{ asset('node_modules/lodash/lodash.min.js') }}"></script>
 <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -183,6 +182,7 @@
 <script src="{{ asset('node_modules/photoswipe/dist/photoswipe.min.js') }}"></script>
 <script src="{{ asset('node_modules/photoswipe/dist/photoswipe-ui-default.min.js') }}"></script>
 <script src="{{ asset('node_modules/clndr/clndr.min.js') }}"></script>
+
 <script>
     $(document).ready(function(){
         $('[data-tooltip="tooltip"]').tooltip();

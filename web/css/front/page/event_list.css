@@ -37,15 +37,15 @@
 .event-list-row {
   flex: 1 0 auto;
 }
-.event-list-row .single-event-container {
-  min-height: 260px;
-}
 .event-list-row .single-event-container .single-event-panel {
   font-family: 'Century Gothic Regular';
 }
 .event-list-row .single-event-container .single-event-panel .panel-heading {
   background-color: #da0000;
   color: #F0DEBA;
+}
+.event-list-row .single-event-container .single-event-panel .subevent-name {
+  min-height: 90px;
 }
 .event-list-row .single-event-container .single-event-panel .event-buttons .btn {
   background-color: transparent;

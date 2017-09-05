@@ -76,7 +76,6 @@ class ApiController extends FrontController
             $event['price'] = $item->getPrice();
             $event['name'] = $item->getTitle();
             $event['time'] = $item->getEventTime()->format('H:i');
-            $event['description'] = $item->getDescription();
             $event['ticketUrl'] = $item->getTicketUrl();
 
             array_push($groupByDays[$key]['events'], $event);

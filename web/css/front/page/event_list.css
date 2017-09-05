@@ -37,9 +37,6 @@
 .event-list-row {
   flex: 1 0 auto;
 }
-.event-list-row .single-event-container {
-  min-height: 400px;
-}
 .event-list-row .single-event-container .single-event-panel {
   font-family: 'Century Gothic Regular';
 }

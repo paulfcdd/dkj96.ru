@@ -10,14 +10,6 @@
             {% for subevent in event.events %}
                 <div class="panel-body text-center no-border-radius">
                     <label>  {{ subevent.name }} </label>
-                    {% set description = subevent.description %}
-
-                    {% if subevent.description | length > 100 %}
-                        {% set description = subevent.description | slice (0,100) %}
-                        {% set description = description~'...' %}
-                    {% endif %}
-
-                    <p>{{ description }}</p>
 
                     <label style="width: 100%">
                         <span class="fa fa-clock-o"></span>&nbsp;{{ subevent.time }}

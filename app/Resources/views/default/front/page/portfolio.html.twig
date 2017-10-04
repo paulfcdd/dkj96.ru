@@ -28,34 +28,31 @@
     {% endblock %}
 
     <div class="container xs-padding-0-10px portfolio">
-        <div class="row padding-0-50px xs-margin-right-0 xs-padding-0-10px">
-            <div class="col-md-12 col-xs-12 single-widget photos">
+        <div class="row padding-0-50px xs-margin-right-0 xs-padding-0-10px single-widget photos">
 
-                {% for portfolio in objects %}
+            {% for portfolio in objects %}
 
-                    {% set defaultImage = asset('img/logo_red.png') %}
+                {% set defaultImage = asset('img/logo_red.png') %}
 
-                    {% for image in portfolio.files %}
-                        {% if image.isDefault == true %}
-                            {% set defaultImage = asset('upload/portfolio/'~image.name) %}
-                        {% endif %}
-                    {% endfor %}
+                {% for image in portfolio.files %}
+                    {% if image.isDefault == true %}
+                        {% set defaultImage = asset('upload/portfolio/'~image.name) %}
+                    {% endif %}
+                {% endfor %}
 
-                    <div class="col-lg-3">
-                        <div class="thumbnail">
-                            <a href="{{ path('front.portfolio.single', {'portfolio': portfolio.id}) }}">
-                                <img src="{{ defaultImage }}">
-                                <div class="caption">
-                                    <h3>{{ portfolio.event.title }}</h3>
-                                    <p>Дата мероприятия: {{ portfolio.event.eventDate | date('d.m.Y') }}</p>
-                                </div>
-                            </a>
-                        </div>
+                    <div class="gallery_product col-lg-6 col-md-6 col-sm-4 col-xs-12 filter">
+                    <div class="thumbnail">
+                        <a href="{{ path('front.portfolio.single', {'portfolio': portfolio.id}) }}">
+                            <img src="{{ defaultImage }}">
+                            <div class="caption">
+                                <h3>{{ portfolio.event.title }}</h3>
+                                <p>Дата мероприятия: {{ portfolio.event.eventDate | date('d.m.Y') }}</p>
+                            </div>
+                        </a>
                     </div>
+                </div>
 
-                {% endfor%}
-
-            </div>
+            {% endfor%}
         </div>
     </div>
 

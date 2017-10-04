@@ -4,3 +4,4 @@
 /app/config/parameters.yml
 /var/
 /web/upload/**
+/.project

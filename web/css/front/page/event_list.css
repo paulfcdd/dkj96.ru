@@ -1,0 +1,58 @@
+@font-face {
+  font-family: 'Century Gothic Regular';
+  src: url(../../../fonts/CenturyGothicRegular.ttf);
+}
+.filter-event-btn {
+  background-color: #da0000;
+  border-color: #da0000;
+  color: white;
+  width: 100%;
+  font-family: 'Century Gothic Regular';
+  color: #F0DEBA;
+}
+.filter-event-btn:hover,
+.filter-event-btn:focus,
+.filter-event-btn:active {
+  background-color: #d93c3d;
+  border-color: #d93c3d;
+  color: #F0DEBA;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  /* Light grey */
+  border-top: 16px solid #da0000;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.event-list-row {
+  flex: 1 0 auto;
+}
+.event-list-row .single-event-container .single-event-panel {
+  font-family: 'Century Gothic Regular';
+}
+.event-list-row .single-event-container .single-event-panel .panel-heading {
+  background-color: #da0000;
+  color: #F0DEBA;
+}
+.event-list-row .single-event-container .single-event-panel .subevent-name {
+  min-height: 90px;
+}
+.event-list-row .single-event-container .single-event-panel .event-buttons .btn {
+  background-color: transparent;
+  color: #333333;
+  border: 2px dotted #333333;
+  font-weight: 600;
+}
+.event-list-row .single-event-container .single-event-panel .event-buttons .btn:hover {
+  background-color: #F0DEBA;
+}

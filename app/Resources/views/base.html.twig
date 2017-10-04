@@ -1,16 +1,14 @@
-{% set page = app.request.get('page') %}
-{% set _route_params = app.request.attributes.get('_route_params') %}
-
-
-{% if page is null %}
-    {% set page = 'index' %}
-{% endif %}
-
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    {% set page = app.request.get('page') %}
+    {% set _route_params = app.request.attributes.get('_route_params') %}
+    {% if page is null %}
+        {% set page = 'index' %}
+    {% endif %}
+
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>{% block title %}Дворец Культуры Железнодорожников{% endblock %}</title>
 
@@ -67,10 +65,11 @@
 
             {% set mainMenu = {
             'front.index' : 'Главная',
+            'event.list': 'Афиша',
             'halls.list' : 'Залы',
             'front.artists' : 'Артисты',
             'front.history' : 'История',
-            'front.contact' : 'Контакты',
+            'front.contact' : 'Контакты'
             } %}
 
             {#
@@ -91,15 +90,10 @@
     <div class="content">
         {% block content %}
             {% block main_banner_widget %}
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <div id="myCarousel" class="carousel slide hidden-xs" data-ride="carousel">
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" id="main-banner-index">
                         <div class="item active">
-                            <a role="button" class="banner-btn btn btn-primary no-border-radius btn-lg" href="{{ path('front.news', {'news': 14}) }}">Подробнее</a>
-                             <img src="{{ asset('img/carousel/serdca9_w.jpg') }}" alt="Chicago" style="width:100%;">
-                        </div>
-
-                        <div class="item">
                             <img src="{{ asset('img/carousel/dkj_2.jpg') }}" alt="Chicago" style="width:100%;">
                         </div>
 
@@ -174,6 +168,8 @@
 
 
 <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>#}
+<script src="{{ asset('node_modules/lodash/lodash.min.js') }}"></script>
 <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -181,6 +177,7 @@
 <script src="{{ asset('js/utils.js') }}"></script>
 <script src="{{ asset('node_modules/photoswipe/dist/photoswipe.min.js') }}"></script>
 <script src="{{ asset('node_modules/photoswipe/dist/photoswipe-ui-default.min.js') }}"></script>
+<script src="{{ asset('node_modules/clndr/clndr.min.js') }}"></script>
 
 <script>
     $(document).ready(function(){

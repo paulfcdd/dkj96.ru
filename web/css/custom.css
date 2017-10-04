@@ -157,6 +157,12 @@ body {
 .wrapper .margin-right-0 {
   margin-right: 0;
 }
+.wrapper .margin-left-15px {
+  margin-left: 15px;
+}
+.wrapper .margin-rigth-15px {
+  margin-rigth: 15px;
+}
 .wrapper .padding-left-15px {
   padding-left: 15px;
 }
@@ -357,7 +363,7 @@ body {
 }
 .wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link:hover {
   background-color: #F0DEBA;
-  color: #333333;
+  color: #717171;
 }
 .wrapper .footer .footer-widget .footer-widget-data-list a {
   color: #F0DEBA;

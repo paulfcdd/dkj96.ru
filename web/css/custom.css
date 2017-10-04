@@ -96,7 +96,6 @@ body {
 }
 .wrapper .no-border-radius {
   border-radius: 0;
-  -webkit-appearance: none;
 }
 .wrapper .label-underscored {
   color: #6B3E21;

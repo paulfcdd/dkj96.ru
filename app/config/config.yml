@@ -7,6 +7,8 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: ru
+    google_calendar_client_secret: "%kernel.root_dir%/config/google_api/client_secret.json"
+    google_calendar_credentials: "%kernel.root_dir%/config/google_api/credentials/calendar-php-quickstart.json"
     mail_from: 'dkj96@ya.ru'
     upload_directory: "%kernel.root_dir%/../web/upload"
     recaptcha_key: '6LeMHSgUAAAAAOAMpZmnlPxcjHHDwJPne0pBbedd'

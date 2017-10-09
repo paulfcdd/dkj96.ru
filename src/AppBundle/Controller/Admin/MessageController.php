@@ -5,7 +5,9 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Feedback;
 use AppBundle\Entity\Booking;
 use AppBundle\Entity\Review;
+use AppBundle\Service\GoogleCalendar;
 use AppBundle\Service\MailerService;
+use function GuzzleHttp\default_user_agent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +48,29 @@ class MessageController extends AdminController
         ]);
 
     }
+
+	/**
+	 * @param string $entity
+	 * @return Response
+	 * @Route("/admin/messages/{entity}/calendar", name="admin.message.booking_calendar")
+	 */
+    public function renderCalendarAction(string $entity) {
+
+    	$googleCalendar = $this->get(GoogleCalendar::class);
+
+    	$googleCalendar
+				->setCalendarId('primary')
+				->setOptParams([
+					'maxResults' => 10,
+					'orderBy' => 'startTime',
+					'singleEvents' => TRUE,
+					'timeMin' => date('c'),
+				]);
+
+    	dump($googleCalendar->run());
+
+    	return $this->render(':default/admin/messages:calendar.html.twig', []);
+		}
 
     /**
      * @param $entity

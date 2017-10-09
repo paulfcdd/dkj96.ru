@@ -2,12 +2,12 @@
 
 {% block content %}
     <div class="col-lg-3">
-        {% block booking_left_menu %}
+        {% block left_menu %}
             {{ render(controller('AppBundle:Admin/Message:renderMessageMenu', {'entity': routeParams.entity})) }}
         {% endblock %}
     </div>
     <div class="col-lg-9 animated fadeInRight">
-       {% block message_content_block %}
+       {% block subcontent_block %}
            <div class="mail-box-header">
 
                <h2>

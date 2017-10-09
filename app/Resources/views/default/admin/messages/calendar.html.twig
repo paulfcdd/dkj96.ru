@@ -1,0 +1,14 @@
+{% extends ':default/admin/messages:list.html.twig' %}
+
+{% block content %}
+	<div class="col-lg-3">
+		{% block left_menu %}
+			{{ render(controller('AppBundle:Admin/Message:renderMessageMenu', {'entity': routeParams.entity})) }}
+		{% endblock %}
+	</div>
+	<div class="col-lg-9 animated fadeInRight">
+	{% block subcontent_block %}
+		calendar
+	{% endblock %}
+	</div>
+{% endblock %}

@@ -1,14 +1,16 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-{% endif %}
 <div class="row" id="pwd-container">
     <div class="col-md-4"></div>
 
     <div class="col-md-4">
         <section class="login-form">
-
+            {% if error %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{ error.messageKey|trans(error.messageData, 'security') }}</strong>
+                </div>
+            {% endif %}
             <form class="no-border-radius" action="{{ path("fos_user_security_check") }}" method="post" role="login">
                 {% if csrf_token %}
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>

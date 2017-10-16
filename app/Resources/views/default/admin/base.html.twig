@@ -23,17 +23,74 @@
 {% set routeName = app.request.attributes.get('_route') %}
 {% set activeTabId = '' %}
 
-{#{% if entity is empty %}#}
-    {#{% set activeTabId = 'dashboard' %}#}
-{#{% else %}#}
-    {#{% set activeTabId = entity.entity %}#}
-{#{% endif %}#}
-
-{#{% if routeName == 'admin.index' %}#}
-    {#{% set entity = 'dashboard' %}#}
-{#{% endif %}#}
-
-{#{{ dump(app.request.attributes.get('_route')) }}#}
+{% set sidebarItems = [
+    {
+        id: 'dashboard',
+        href: path('admin.index'),
+        icon: 'fa-th-large',
+        name: 'Главная'
+    },
+    {
+        id: 'banner',
+        href: path('admin.list', {'entity': 'banner'}),
+        icon: 'fa-picture-o',
+        name: 'Баннеры'
+    },
+    {
+        id: 'hall',
+        href: path('admin.list', {'entity': 'hall'}),
+        icon: 'fa-university',
+        name: 'Залы'
+    },
+    {
+        id: 'event',
+        href: path('admin.list', {'entity': 'event'}),
+        icon: 'fa-calendar',
+        name: 'События'
+    },
+    {
+        id: 'portfolio',
+        href: path('admin.list', {'entity': 'portfolio'}),
+        icon: 'fa-camera',
+        name: 'Портфолио'
+    },
+    {
+        id: 'news',
+        href: path('admin.list', {'entity': 'news'}),
+        icon: 'fa-newspaper-o',
+        name: 'Новости'
+    },
+    {
+        id: 'artist',
+        href: path('admin.list', {'entity': 'artist'}),
+        icon: 'fa-pied-piper-alt',
+        name: 'Артисты'
+    },
+    {
+        id: 'history',
+        href: path('admin.list', {'entity': 'history'}),
+        icon: 'fa-hourglass',
+        name: 'История'
+    },
+    {
+        id: 'booking',
+        href: path('admin.list', {'entity': 'booking'}),
+        icon: 'fa-lock',
+        name: 'Бронирования'
+    },
+    {
+        id: 'feedback',
+        href: path('admin.message.listing', {'entity': 'feedback'}),
+        icon: 'fa-envelope',
+        name: 'Обратная связь'
+    },
+    {
+        id: 'review',
+        href: path('admin.message.listing', {'entity': 'review'}),
+        icon: 'fa-commenting-o',
+        name: 'Отзывы'
+    }
+] %}
 
 <body>
 <div id="wrapper">
@@ -44,94 +101,24 @@
                     <li class="nav-header">
                         <div class="dropdown profile-element">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="{{ path('admin.index') }}">
-                            <span class="clear">
-                                <span class="block m-t-xs">
-                                    <h3 class="font-bold">{{ app.user.username }}</h3>
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                        <h3 class="font-bold">{{ app.user.username }}</h3>
+                                    </span>
                                 </span>
-                            </span>
                             </a>
                         </div>
                         <div class="logo-element">
                             ДКЖ
                         </div>
                     </li>
-                    <li id="dashboard">
-                        <a href="{{ path('admin.index') }}"><i class="fa fa-th-large"></i>
-                            <span class="nav-label">Главная</span>
-                        </a>
-                    </li>
-
-                    <li id="hall">
-                        <a href="{{ path('admin.list', {
-                            'entity': 'hall'
-                        }) }}"><i class="fa fa-university" aria-hidden="true"></i> <span class="nav-label">Залы</span>
-                        </a>
-                    </li>
-
-                    <li id="banners">
-                        <a href="{{ path('admin.list', {
-                            'entity': 'banner'
-                        }) }}"><i class="fa fa-picture-o" aria-hidden="true"></i> <span class="nav-label">Баннеры</span>
-                        </a>
-                    </li>
-
-                    <li id="event">
-                        <a href="{{ path('admin.list', {
-                            'entity': 'event'
-                        }) }}"><i class="fa fa-calendar"></i> <span class="nav-label">События</span>
-                        </a>
-                    </li>
-
-                    <li id="portfolio">
-                        <a href="{{ path('admin.list', {
-                            'entity': 'portfolio'
-                        }) }}"><i class="fa fa-camera" aria-hidden="true"></i> <span class="nav-label">Портфолио</span>
-                        </a>
-                    </li>
-
-                    <li id="news">
-                        <a href="{{ path('admin.list', {
-                            'entity': 'news'
-                        }) }}"><i class="fa  fa-newspaper-o"></i> <span class="nav-label">Новости</span>
-                        </a>
-                    </li>
-
-                    <li id="hall">
-                        <a href="{{ path('admin.list', {
-                            'entity': 'artist'
-                        }) }}"><i class="fa fa-pied-piper-alt" aria-hidden="true"></i> <span class="nav-label">Артисты</span>
-                        </a>
-                    </li>
-
-                    <li id="history">
-                        <a href="{{ path('admin.list', {
-                            'entity': 'history'
-                        }) }}">
-                            <i class="fa fa-hourglass" aria-hidden="true"></i>
-                            <span class="nav-label">История</span>
-                        </a>
-                    </li>
-
-                    <li id="bookings">
-                        <a href="{{ path('admin.message.listing', {'entity': 'booking'}) }}">
-                            <i class="fa fa-lock"></i>
-                            <span class="nav-label">Бронирования</span>
-                        </a>
-                    </li>
-
-                    <li id="feedback">
-                        <a href="{{ path('admin.message.listing', {'entity': 'feedback'}) }}">
-                            <i class="fa fa-envelope"></i>
-                            <span class="nav-label">Обратная связь</span>
-                        </a>
-                    </li>
-
-                    <li id="feedback">
-                        <a href="{{ path('admin.message.listing', {'entity': 'review'}) }}">
-                            <i class="fa fa-commenting-o" aria-hidden="true"></i>
-                            <span class="nav-label">Отзывы</span>
-                        </a>
-                    </li>
+                    {% for item in sidebarItems %}
+                        <li id="{{ item.id }}" {% if item.id == app.request.get('entity') %}class="active"{% endif %}>
+                            <a href="{{ item.href }}"><i class="fa {{ item.icon }}"></i>
+                                <span class="nav-label">{{ item.name }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
 
                 </ul>
 
@@ -149,103 +136,6 @@
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-messages">
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="img/a7.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <small class="pull-right">46h ago</small>
-                                            <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-                                            <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="img/a4.jpg">
-                                        </a>
-                                        <div class="media-body ">
-                                            <small class="pull-right text-navy">5h ago</small>
-                                            <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                            <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="img/profile.jpg">
-                                        </a>
-                                        <div class="media-body ">
-                                            <small class="pull-right">23h ago</small>
-                                            <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-                                            <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="mailbox.html">
-                                            <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-alerts">
-                                <li>
-                                    <a href="mailbox.html">
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="profile.html">
-                                        <div>
-                                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                            <span class="pull-right text-muted small">12 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="grid_options.html">
-                                        <div>
-                                            <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="notifications.html">
-                                            <strong>See All Alerts</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-
-
                         <li>
                             <a href="{{ path('fos_user_security_logout') }}">
                                 <i class="fa fa-sign-out"></i> Выход

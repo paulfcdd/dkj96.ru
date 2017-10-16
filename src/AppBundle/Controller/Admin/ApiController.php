@@ -15,6 +15,8 @@ use AppBundle\Entity\Booking;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ApiController
@@ -210,40 +212,26 @@ class ApiController extends AdminController
      */
     public function deleteFileAjaxAction(File $file) {
 
-        $finder = new Finder();
+       parent::deleteFile($file);
 
-        $fileDir = $this->getParameter('upload_directory');
+       return JsonResponse::create();
+		}
 
-        $finder->name($file->getName());
+	/**
+	 * @param Request $request
+	 * @return Response
+	 * @Route("/render_object_selector", name="admin.api.render_object_selector")
+	 */
+		public function renderObjectSelectorAction(Request $request) {
 
-        foreach ($finder->in($fileDir) as $item) {
-            unlink($item);
-        }
+			$object = $request->request->get('category');
 
-        $this->doctrineManager()->remove($file);
+			$classFQN = $this->getClassName($object);
 
-        $this->doctrineManager()->flush();
+			$objects = $this->doctrineManager()->getRepository($classFQN)->findAll();
 
-        return JsonResponse::create('ok');
-    }
-
-    /**
-     * @param string $objectClass
-     * @param int $objectId
-     * @return bool
-     */
-    private function deleteObjectRelatedFiles(string $objectClass, int $objectId) {
-
-        $objectFiles = $this->doctrineManager()->getRepository(File::class)->findBy([
-            'entity' => $objectClass,
-            'foreignKey' => $objectId,
-        ]);
-
-        foreach ($objectFiles as $objectFile) {
-            $this->deleteFileAjaxAction($objectFile);
-        }
-
-        return true;
-
-    }
+			return $this->render(':default/admin/parts:object_selector.html.twig', [
+				'objects' => $objects
+			]);
+		}
 }

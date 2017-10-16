@@ -10,6 +10,7 @@ use AppBundle\Entity\File;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
+use AppBundle\Entity\Banner;
 use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
 use AppBundle\Service\FileUploaderService;
@@ -25,8 +26,8 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
-
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AdminController extends Controller
 {
@@ -102,7 +103,7 @@ class AdminController extends Controller
 
         $className = ucfirst($entity);
 
-        $class = 'AppBundle\\Entity\\'.$className;
+        $class = $this->getClassName($entity);
 
         $object = new $class();
 
@@ -145,20 +146,37 @@ class AdminController extends Controller
                 $formData->setApproved(1);
             }
 
-            $em->persist($formData);
-            $em->flush();
+            if ($formData instanceof Banner) {
+            	if ($formData->isLink()) {
+            		if (isset($request->request->get('banner')['object'])) {
+									$formData->setObject($request->request->get('banner')['object']);
+								}
+							}
+						}
+
+
+
+					$em->persist($formData);
+					$em->flush();
 
             if (isset($form['files'])) {
                 $attachedFiles = $form['files']->getData();
 
                 if ($attachedFiles instanceof UploadedFile) {
-
                     $em->persist(
                         $this->photoUploader($uploader, $entity, $attachedFiles, $formData, $class)
                     );
                 }
 
                 if (!empty($attachedFiles)) {
+
+
+									if ($object instanceof Banner) {
+										if (!empty($form['files'])) {
+											$this->deleteObjectRelatedFiles($class, $object->getId());
+										}
+
+									}
 
                     foreach ($attachedFiles as $attachedFile) {
 
@@ -288,5 +306,51 @@ class AdminController extends Controller
         return $this->getDoctrine()->getRepository($this->getClassName($entity));
 
     }
+
+	/**
+	 * @param string $objectClass
+	 * @param int $objectId
+	 * @return bool
+	 */
+	protected function deleteObjectRelatedFiles(string $objectClass, int $objectId) {
+
+		$em = $this->getDoctrine()->getManager();
+
+		$objectFiles = $em->getRepository(File::class)->findBy([
+			'entity' => $objectClass,
+			'foreignKey' => $objectId,
+		]);
+
+		foreach ($objectFiles as $objectFile) {
+			$this->deleteFile($objectFile);
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param File $file
+	 * @return Response
+	 */
+	protected function deleteFile(File $file) {
+
+		$em = $this->getDoctrine()->getManager();
+
+		$finder = new Finder();
+
+		$fileDir = $this->getParameter('upload_directory');
+
+		$finder->name($file->getName());
+
+		foreach ($finder->in($fileDir) as $item) {
+			unlink($item);
+		}
+
+		$em->remove($file);
+
+		$em->flush();
+
+		return JsonResponse::create('ok');
+	}
 
 }

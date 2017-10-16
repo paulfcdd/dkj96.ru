@@ -1,8 +1,5 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-{% endif %}
 <div class="row" id="pwd-container">
     <div class="col-md-4"></div>
 
@@ -15,6 +12,11 @@
                 {% endif %}
 
                 <img src="{{ asset('img/logo_dkj.jpg') }}" class="img-responsive" alt=""/>
+
+
+							{% if error %}
+                  <div class="alert alert-warning">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+							{% endif %}
 
                 <label for="username">
                     <i class="fa fa-user" aria-hidden="true"></i> {{ 'security.login.username'|trans }}

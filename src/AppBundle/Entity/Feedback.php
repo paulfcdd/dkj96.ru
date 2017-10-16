@@ -11,6 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Feedback extends NotificationClass
 {
+
+	const TO_WHOM = [
+		'director' => 'Директор',
+		'client' => 'Вопросы от клиентов',
+		'administrator' => 'Администрация'
+	];
+
     /**
      * @var integer
      *
@@ -26,6 +33,13 @@ class Feedback extends NotificationClass
      * @ORM\Column()
      */
     protected $name;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=255)
+	 */
+    protected $toWhom;
 
     /**
      * @return string
@@ -55,4 +69,25 @@ class Feedback extends NotificationClass
     {
         return $this->id;
     }
+
+	/**
+	 * @return string
+	 */
+	public function getToWhom()
+	{
+		return $this->toWhom;
+	}
+
+	/**
+	 * @param string $toWhom
+	 * @return Feedback
+	 */
+	public function setToWhom(string $toWhom)
+	{
+		$this->toWhom = $toWhom;
+
+		return $this;
+	}
+
+
 }

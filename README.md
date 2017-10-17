@@ -22,7 +22,9 @@ dkj
 необходимо ввести URL следующего вида:
 - `localhost/dkj96.ru/web/app_dev.php` (если не настроен VirtualHost)
 - `dkj96.dev/app_dev.php` (если VirtualHost сконфигурирован)
-Для пежима продукции:
+
+
+Для режима продукции:
 - `localhost/dkj96.ru/web` (если не настроен VirtualHost)
 - `dkj96.dev` (если VirtualHost сконфигурирован)
 

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Front;
 
+use AppBundle\Entity\Event;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation as HTTP;
@@ -31,11 +32,10 @@ class ApiController extends FrontController
         $requestParams = $request->request;
 
         $currentMonth = new \DateTime();
+
         $currentMonth = $currentMonth->format('m');
 
         $translator = $this->get('translator');
-
-        $serializer = $this->get('serializer');
 
         $firstDay = \DateTime::createFromFormat(self::DATE_FORMAT,$requestParams->get('firstDay'));
 
@@ -63,6 +63,7 @@ class ApiController extends FrontController
 
         $groupByDays = [];
 
+        /** @var Event $item */
         foreach ($result as $item) {
 
             $key = $item->getEventDate()->format('j');
@@ -88,8 +89,6 @@ class ApiController extends FrontController
             array_push($groupByDays[$key]['events'], $event);
 
         }
-
-//        return new HTTP\Response($serializer->serialize($groupByDays, 'json'));
 
         return $this->render(':default/front/page/event:calendar.html.twig', [
             'events' => $groupByDays,

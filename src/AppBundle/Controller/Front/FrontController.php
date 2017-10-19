@@ -7,6 +7,7 @@ use AppBundle\Entity\Artist;
 use AppBundle\Entity\Banner;
 use AppBundle\Entity\Booking;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Feedback;
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
@@ -27,7 +28,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends Controller
 {
-
 	/**
 	 * @param string | null $page
 	 * @return Http\Response
@@ -203,17 +203,23 @@ class FrontController extends Controller
 			$recaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
 
 			$recaptchaVerifyer = json_decode($recaptchaVerifyer);
-
+			
 			if ($form->isValid() && $recaptchaVerifyer->success) {
 
 				$formData = $form->getData();
+
+				/** @var MailerService $mailer */
 				$mailer = $this->get(MailerService::class);
 
 				$mailer
 					->setTo($this->getParameter($formData->getToWhom()))
 					->setBody($formData->getMessage())
 					->setFrom($formData->getEmail())
-					->setSubject('Новое сообщение');
+                    ->setSubject('Новое сообщение');
+
+				if (strpos($formData->getToWhom(), 'client_')) {
+				    $mailer->setSubject(Feedback::TO_WHOM[$formData->getToWhom()]);
+                }
 
 				$em->persist($formData);
 

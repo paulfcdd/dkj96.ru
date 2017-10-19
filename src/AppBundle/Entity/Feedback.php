@@ -14,7 +14,9 @@ class Feedback extends NotificationClass
 
 	const TO_WHOM = [
 		'director' => 'Директор',
-		'client' => 'Вопросы от клиентов',
+		'client_review' => 'Оставить отзыв',
+		'client_question' => 'Задать вопрос ',
+		'client_comm_propsal' => 'Коммерческое предложение',
 		'administrator' => 'Администрация'
 	];
 

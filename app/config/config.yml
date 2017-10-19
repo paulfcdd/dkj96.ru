@@ -12,7 +12,9 @@ parameters:
     recaptcha_key: '6LeMHSgUAAAAAOAMpZmnlPxcjHHDwJPne0pBbedd'
     recaptcha_secret_key: '6LeMHSgUAAAAAPN_On3djO3qfLLPgFhmuy_sUmda'
     recaptcha_verify_url: 'https://www.google.com/recaptcha/api/siteverify'
-    client: 'client@dkj96.ru'
+    client_review: 'client@dkj96.ru'
+    client_question: 'client@dkj96.ru'
+    client_comm_propsal: 'client@dkj96.ru'
     director: 'director@dkj96.ru'
     administrator: 'dkj96@yandex.ru'
 

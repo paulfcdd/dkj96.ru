@@ -31,15 +31,17 @@ class ApiController extends FrontController
 
         $requestParams = $request->request;
 
-        $currentMonth = new \DateTime();
+        $currentDate = new \DateTime();
 
-        $currentMonth = $currentMonth->format('m');
+        $currentMonth = $currentDate->format('m');
+
+        $currentYear = $currentDate->format('Y');
 
         $translator = $this->get('translator');
 
         $firstDay = \DateTime::createFromFormat(self::DATE_FORMAT,$requestParams->get('firstDay'));
 
-        if ($currentMonth == $firstDay->format('m')) {
+        if ($currentMonth == $firstDay->format('m') && $currentYear == $firstDay->format('Y')) {
             $firstDay = new \DateTime();
         }
 

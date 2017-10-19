@@ -86,10 +86,12 @@ class FrontController extends Controller
 	 */
 	public function showNewsAction(News $news = null, Utilities $utilities, Http\Request $request)
 	{
-
 		$view = ':default/front/page/news:single.html.twig';
+
 		$parameters = [
-			'news' => $news
+			'news' => $news,
+            'imagesExt' => FileUploaderService::IMAGES,
+            'videosExt' => FileUploaderService::VIDEOS,
 		];
 
 		if (!$news) {

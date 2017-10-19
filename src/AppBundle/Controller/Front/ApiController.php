@@ -30,11 +30,18 @@ class ApiController extends FrontController
 
         $requestParams = $request->request;
 
+        $currentMonth = new \DateTime();
+        $currentMonth = $currentMonth->format('m');
+
         $translator = $this->get('translator');
 
         $serializer = $this->get('serializer');
 
         $firstDay = \DateTime::createFromFormat(self::DATE_FORMAT,$requestParams->get('firstDay'));
+
+        if ($currentMonth == $firstDay->format('m')) {
+            $firstDay = new \DateTime();
+        }
 
         $lastDay = \DateTime::createFromFormat(self::DATE_FORMAT, $requestParams->get('lastDay'));
 

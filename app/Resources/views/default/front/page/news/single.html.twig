@@ -88,8 +88,8 @@
             <div id="links" class="links col-xs-12">
                 <h4>Фотоматериалы</h4>
                 {% for image in images %}
-                    <a href="{{ asset('upload/portfolio/'~image.name) }}">
-                        <img src="{{ asset('upload/portfolio/'~image.name) }}" width="100px" height="100px">
+                    <a href="{{ asset('upload/news/'~image.name) }}">
+                        <img src="{{ asset('upload/news/'~image.name) }}" width="100px" height="100px">
                     </a>
                 {% endfor %}
             </div>
@@ -104,7 +104,7 @@
                 <h4>Видеоматериалы</h4>
             </div>
             {% for video in videos %}
-                {% set path = asset('upload/portfolio/'~video.name) %}
+                {% set path = asset('upload/news/'~video.name) %}
                 <div class="col-xs-4">
                     <video class="single-video-block" controls>
                         <source src="{{ path }}" type="video/{{ video.mimeType }}">

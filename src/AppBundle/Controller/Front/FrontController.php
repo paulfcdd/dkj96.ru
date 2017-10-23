@@ -203,7 +203,7 @@ class FrontController extends Controller
 			$recaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
 
 			$recaptchaVerifyer = json_decode($recaptchaVerifyer);
-			
+
 			if ($form->isValid() && $recaptchaVerifyer->success) {
 
 				$formData = $form->getData();
@@ -215,7 +215,7 @@ class FrontController extends Controller
 					->setTo($this->getParameter($formData->getToWhom()))
 					->setBody($formData->getMessage())
 					->setFrom($formData->getEmail())
-                    ->setSubject('Новое сообщение');
+          ->setSubject('Новое сообщение');
 
 				if (strpos($formData->getToWhom(), 'client_')) {
 				    $mailer->setSubject(Feedback::TO_WHOM[$formData->getToWhom()]);

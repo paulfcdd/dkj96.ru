@@ -9,9 +9,11 @@
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="{% block seoDescription %}{% endblock %}">
+    <meta name="keywords" content="{% block seoKeywords %}{% endblock %}">
 
     <title>{% block title %}Дворец Культуры Железнодорожников{% endblock %}</title>
-
+    
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css">
     <script src="https://use.fontawesome.com/dd34fe19f7.js"></script>
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">

@@ -53,7 +53,24 @@ trait AbstractEntityTrait {
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateUpdated;
-
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=80)
+     */
+    private $seoTitle;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=250)
+     */
+    private $seoKeywords;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=200)
+     */
+    private $seoDescription;
     /**
      * @return int
      */
@@ -164,5 +181,58 @@ trait AbstractEntityTrait {
         $this->description = $description;
         return $this;
     }
+    
+    /**
+     * @return string
+     */
+    public function getSeoTitle()
+    {
+        return $this->seoTitle;
+    }
 
+    /**
+     * @param string $seoTitle
+     * @return $this
+     */
+    public function setSeoTitle(string $seoTitle)
+    {
+        $this->seoTitle = $seoTitle;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSeoKeywords()
+    {
+        return $this->seoKeywords;
+    }
+
+    /**
+     * @param string $seoKeywords
+     * @return $this
+     */
+    public function setSeoKeywords(string $seoKeywords)
+    {
+        $this->seoKeywords = $seoKeywords;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSeoDescription()
+    {
+        return $this->seoDescription;
+    }
+
+    /**
+     * @param string $seoDescription
+     * @return $this
+     */
+    public function setSeoDescription(string $seoDescription)
+    {
+        $this->seoDescription = $seoDescription;
+        return $this;
+    }
 }

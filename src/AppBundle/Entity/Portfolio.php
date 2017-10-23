@@ -60,6 +60,24 @@ class Portfolio
      * @ORM\Column(type="datetime")
      */
     private $eventDate;
+       
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=80)
+     */
+    private $seoTitle;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=250)
+     */
+    private $seoKeywords;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=200)
+     */
+    private $seoDescription;
 
     /**
      * @return string
@@ -185,5 +203,59 @@ class Portfolio
     public function getEvent()
     {
         return $this->event;
+    }
+    
+        /**
+     * @return string
+     */
+    public function getSeoTitle()
+    {
+        return $this->seoTitle;
+    }
+
+    /**
+     * @param string $seoTitle
+     * @return $this
+     */
+    public function setSeoTitle(string $seoTitle)
+    {
+        $this->seoTitle = $seoTitle;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSeoKeywords()
+    {
+        return $this->seoKeywords;
+    }
+
+    /**
+     * @param string $seoKeywords
+     * @return $this
+     */
+    public function setSeoKeywords(string $seoKeywords)
+    {
+        $this->seoKeywords = $seoKeywords;
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSeoDescription()
+    {
+        return $this->seoDescription;
+    }
+
+    /**
+     * @param string $seoDescription
+     * @return $this
+     */
+    public function setSeoDescription(string $seoDescription)
+    {
+        $this->seoDescription = $seoDescription;
+        return $this;
     }
 }

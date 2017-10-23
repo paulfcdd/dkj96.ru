@@ -1,6 +1,8 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ hall.title }}{% endblock %}
+{% block title %}{{ hall.seoTitle }}{% endblock %}
+{% block seoDescription %}{{ hall.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ hall.seoKeywords }}{% endblock %}
 
     {% block stylesheets %}
         <link href="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet">

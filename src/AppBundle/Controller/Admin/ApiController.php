@@ -26,9 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ApiController extends AdminController
 {
-
-    const ENTITY_NAMESPACE_PATTERN = 'AppBundle\\Entity\\';
-
+	
     /**
      * @param string|null $name
      * @return \Doctrine\Common\Persistence\ObjectManager|object
@@ -233,5 +231,28 @@ class ApiController extends AdminController
 			return $this->render(':default/admin/parts:object_selector.html.twig', [
 				'objects' => $objects
 			]);
+		}
+		
+		/**
+		* @param Request $request
+		* @Route("/save_main_page_seo_to_yml", name="admin.api.save_main_page_seo_to_yml")
+		*/
+		public function saveMainPageSeoToYml(Request $request) 
+		{
+			$requestParams = $request->request;
+				
+			$config = $this->configFile;
+			$pageName = $requestParams->get('pageName');
+			
+			$config[$pageName]['seoTitle'] = $requestParams->get('seoTitle');
+			$config[$pageName]['seoKeywords'] = $requestParams->get('seoKeywords');
+			$config[$pageName]['seoDescription'] = $requestParams->get('seoDescription');
+				
+			$writeFile = $this->yamlDump($pageName, $config[$pageName]);
+			
+			if ($writeFile) {
+				return $this->redirectToRoute('admin.settings');	
+			}
+			
 		}
 }

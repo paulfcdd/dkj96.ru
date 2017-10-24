@@ -28,9 +28,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Yaml\Yaml;
+
+
 
 class AdminController extends Controller
 {
+	const CONFIG_FILE = __DIR__.('/../../../../app/config/static_page.yml');
+	
+	const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
+	
+	protected $configFile;
+    
+    public function __construct(){
+		$this->configFile = Yaml::parse(file_get_contents(self::CONFIG_FILE));
+		}
+    
     /**
      * @Route("/admin/dashboard", name="admin.index")
      */
@@ -84,6 +97,7 @@ class AdminController extends Controller
 
         return $this->render(':default/admin:list.html.twig', [
             'objects' => $repository->findAll(),
+            'pageSeo' => $this->getStaticPageSeo($entity),
         ]);
     }
 
@@ -251,7 +265,7 @@ class AdminController extends Controller
             'videosExt' => FileUploaderService::VIDEOS,
         ]);
     }
-
+    
     /**
      * @param $className
      * @param $object
@@ -351,6 +365,26 @@ class AdminController extends Controller
 		$em->flush();
 
 		return JsonResponse::create('ok');
+	}
+	
+	protected function getStaticPageSeo($pageName = 'index')  
+	{
+		$config = $this->configFile;
+		
+		$staticPageSeo = $config[''.$pageName.''];
+		
+		return $staticPageSeo;
+			
+	}
+	
+	protected function yamlDump($pageName, $pageData) {
+		
+		$blockToSave[$pageName] = $pageData;
+		$yaml = Yaml::dump($blockToSave);	
+		
+		$dump = file_put_contents(self::CONFIG_FILE, $yaml);
+		
+		return $dump;
 	}
 
 }

@@ -1,0 +1,29 @@
+<form action="{{ path('admin.api.save_main_page_seo_to_yml') }}" method="post">
+					
+		<div class="form-group">
+			<label for="seoTitle">Тэг Title</label>
+			<input type="text" id="seoTitle" name="seoTitle" class="form-control" value="{{ pageSeo.seoTitle }}">
+		</div>
+						
+		<div class="form-group">
+			<label for="seoKeywords">Тэг Keywords</label>
+			<textarea class="form-control" rows="3" 
+					  id="seoKeywords" name="seoKeywords">{{ pageSeo.seoKeywords }}</textarea>
+		</div>
+						
+		<div class="form-group">
+			<label for="seoDescription">Тэг Description</label>
+			<textarea class="form-control" rows="3" 
+					  id="seoDescription" name="seoDescription">{{ pageSeo.seoDescription }}</textarea>
+		</div>
+						
+		<input type="text" id="pageName" name="pageName" value="{{ pageName }}" hidden>
+						
+		<div class="form-group">
+		   <button type="submit" class="btn btn-primary">
+				Сохранить
+			</button>
+		</div>
+					
+	</div>
+</form>

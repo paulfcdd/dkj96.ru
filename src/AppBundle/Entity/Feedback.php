@@ -17,7 +17,7 @@ class Feedback extends NotificationClass
 		'client_review' => 'Оставить отзыв',
 		'client_question' => 'Задать вопрос ',
 		'client_comm_propsal' => 'Коммерческое предложение',
-		'administrator' => 'Администрация'
+		'administrator' => 'Забронировать зал'
 	];
 
     /**

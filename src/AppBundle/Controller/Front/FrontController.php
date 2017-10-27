@@ -25,9 +25,13 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation as Http;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Yaml\Yaml;
+
 
 class FrontController extends Controller
 {
+	const CONFIG_FILE_PATH = __DIR__.('/../../../../app/config/page/');
+
 	/**
 	 * @param string | null $page
 	 * @return Http\Response
@@ -57,14 +61,17 @@ class FrontController extends Controller
 			->setMaxResults(6)
 			->orderBy('n.publishStartDate', 'DESC')
 			->getQuery();
-
+		
+		$metaTags = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH . 'index.yml'));
+				
 		return $this->render(':default/front/page:index.html.twig', [
 			'page' => $page,
 			'events' => $eventQB->getResult(),
 			'news' => $newsQB->getResult(),
 			'reviews' => $this->getSortedList(
 				Review::class, ['dateReceived' => 'DESC'], new \DateTime(), null, 2
-			)
+			),
+			'metaTags' => $this->getMetaTags('index'),
 		]);
 	}
 
@@ -152,6 +159,7 @@ class FrontController extends Controller
 	{
 		return $this->render(':default/front/page:artisty.html.twig', [
 			'artists' => $this->getDoctrine()->getRepository(Artist::class)->findAll(),
+			'metaTags' => $this->getMetaTags('artist'),
 		]);
 	}
 
@@ -178,6 +186,7 @@ class FrontController extends Controller
 
 		return $this->render(':default/front/page:istoriya.html.twig', [
 			'history' => $this->getDoctrine()->getRepository(History::class)->findOneBy(['isEnabled' => true]),
+			'metaTags' => $this->getMetaTags('history'),
 		]);
 	}
 
@@ -250,6 +259,7 @@ class FrontController extends Controller
 
 		return $this->render(':default/front/page/event:list.html.twig', [
 			'events' => $em->getRepository(Event::class)->findAll(),
+			'metaTags' => $this->getMetaTags('event'),
 		]);
 
 	}
@@ -330,6 +340,7 @@ class FrontController extends Controller
 
 		return $this->render(':default/front/page:halls.html.twig', [
 			'halls' => $doctrine->getRepository(Hall::class)->findAll(),
+			'metaTags' => $this->getMetaTags('hall'),
 		]);
 	}
 
@@ -523,6 +534,13 @@ class FrontController extends Controller
 		} else {
 			return $response;
 		}
-
+	}
+	
+	private function getMetaTags(string $pageName) {
+		
+		$metaTags = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH . $pageName . '.yml'));
+		
+		return $metaTags;
+		
 	}
 }

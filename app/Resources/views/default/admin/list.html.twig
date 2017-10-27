@@ -4,7 +4,7 @@
 
     {% set entity = app.request.get('entity') %}
 
-    <div class="col-md-12">
+    <div class="{% if entity != 'booking'%}col-md-8{% else %}col-md-12{% endif %}">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 {% set sectionName = 'admin.'~app.request.attributes.get('_route_params')['entity']  %}
@@ -42,21 +42,34 @@
                         <th>Статус</th>
                     {% endif %}
                     <th>Дата создания</th>
+                    {% if entity != 'booking' %}
                     {% if routeParams.entity == 'portfolio' %}
                         <th>Дата события</th>
                         <th>Название события</th>
                         {% else %}
                             <th>Дата изменения</th>
                     {% endif %}
-                    <th class="text-center">Автор</th>
+                    {%endif%}
+                    {% if entity != 'booking' %}
+                        <th class="text-center">Автор</th>
+                    {% endif %}
                     <th class="text-right">Управление</th>
                     </thead>
                     <tbody>
-
+						
                     {% for object in objects %}
+                        
                         <tr id="{{ routeParams.entity~'_'~object.id }}">
-
-                            <td>{{ object.title }}</td>
+							
+							{% set objectTitle = null %} 
+							
+							{% if entity == 'booking' %}
+								{% set objectTitle = object.email %}
+								{% else %}
+								{% set objectTitle = object.title %}
+							{% endif %}
+							
+                            <td>{{ objectTitle }}</td>
 
                             {% if routeParams.entity == 'history' %}
 
@@ -70,7 +83,21 @@
                                 <td>{{ status }}</td>
                             {% endif %}
 
-                            <td>{{ object.dateCreated | date('d.m.Y') }}</td>
+                            <td>
+								
+							{% set objectDate = null %} 
+							
+							{% if entity == 'booking' %}
+								{% set objectDate = object.dateReceived %}
+								{% else %}
+								{% set objectDate = object.dateCreated %}
+							{% endif %}
+							
+								{{ objectDate | date('d.m.Y') }}
+							</td>
+							
+							{% if entity != 'booking' %}
+							
                             <td>
                                 {% if routeParams.entity == 'portfolio' %}
                                     {{ object.event.eventDate | date('d.m.Y') }}
@@ -80,14 +107,17 @@
                                     {% endif %}
                                 {% endif %}
                             </td>
+                            {% endif %}
                             {% if routeParams.entity == 'portfolio' %}
                                 <td>
                                     {{ object.event.title }}
                                 </td>
                             {% endif %}
-                            <td class="text-center">
+                            {% if entity != 'booking' %}
+                            <td class="text-center">			
                                 {{ object.author.username }}
                             </td>
+                            {% endif %}
                             <td class="text-right">
 
                                 <div class="btn-group">
@@ -121,6 +151,27 @@
                 }) }}" role="button" class="btn btn-primary">
                     Добавить
                 </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="{% if entity != 'booking'%}col-md-4{% else %}hidden{% endif %}">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>
+					<span class="fa fa-cog"></span>
+					SEO</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="ibox-content">		
+				
+				{% include 'default/admin/parts/seo_form.html.twig' with{'pageName': pageName} %}
+																			                
             </div>
         </div>
     </div>

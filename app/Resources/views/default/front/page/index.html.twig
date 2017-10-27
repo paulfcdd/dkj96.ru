@@ -1,13 +1,16 @@
 {% extends '::base.html.twig' %}
 
-{% block title %} Главная | {{ parent() }} {% endblock %}
+{% block title %} {{ metaTags.seoTitle }} {% endblock %}
+
+{% block seoDescription %}{{ metaTags.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ metaTags.seoKeywords }}{% endblock %}
+
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/front/page/index.css') }}">
 {% endblock %}
 
 {% block content %}
-
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
     <div class="space-fix-container"></div>

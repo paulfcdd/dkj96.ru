@@ -34,14 +34,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class AdminController extends Controller
 {
-	const CONFIG_FILE = __DIR__.('/../../../../app/config/static_page.yml');
+	const CONFIG_FILE_PATH = __DIR__.('/../../../../app/config/page/');
 	
 	const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
 	
-	protected $configFile;
+	protected $configFilePath;
     
     public function __construct(){
-		$this->configFile = Yaml::parse(file_get_contents(self::CONFIG_FILE));
+		$this->configFilePath = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH));
 		}
     
     /**
@@ -98,6 +98,7 @@ class AdminController extends Controller
         return $this->render(':default/admin:list.html.twig', [
             'objects' => $repository->findAll(),
             'pageSeo' => $this->getStaticPageSeo($entity),
+            'pageName' => $entity,
         ]);
     }
 
@@ -369,20 +370,40 @@ class AdminController extends Controller
 	
 	protected function getStaticPageSeo($pageName = 'index')  
 	{
-		$config = $this->configFile;
+		$fileName = $pageName . '.yml';
 		
-		$staticPageSeo = $config[''.$pageName.''];
+		$configPath = self::CONFIG_FILE_PATH . $fileName;
 		
-		return $staticPageSeo;
+		$config = $this->yamlParse($configPath);
+		
+		return $config;
 			
+	}
+	
+	protected function yamlParse($configPath) {
+		
+		//$yaml = Yaml::parse(file_get_contents($configPath));
+		
+		if (!file_exists($configPath)) {
+			//fopen($configPath, "r+");
+			copy(self::CONFIG_FILE_PATH.'default.yml', $configPath);	
+		}
+		
+		$yaml = Yaml::parse(file_get_contents($configPath));
+		
+		return $yaml;
+		
 	}
 	
 	protected function yamlDump($pageName, $pageData) {
 		
-		$blockToSave[$pageName] = $pageData;
+		$blockToSave = $pageData;
+		$pathToFile = self::CONFIG_FILE_PATH . $pageName . '.yml'; 
 		$yaml = Yaml::dump($blockToSave);	
 		
-		$dump = file_put_contents(self::CONFIG_FILE, $yaml);
+		
+		
+		$dump = file_put_contents($pathToFile, $yaml);
 		
 		return $dump;
 	}

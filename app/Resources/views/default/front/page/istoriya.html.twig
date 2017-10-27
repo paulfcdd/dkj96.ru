@@ -1,6 +1,8 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}История{% endblock %}
+{% block title %} {{ metaTags.seoTitle }} {% endblock %}
+{% block seoDescription %}{{ metaTags.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ metaTags.seoKeywords }}{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/front/page/istoriya.css') }}">

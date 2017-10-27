@@ -239,19 +239,28 @@ class ApiController extends AdminController
 		*/
 		public function saveMainPageSeoToYml(Request $request) 
 		{
-			$requestParams = $request->request;
+			$requestParams = $request->request;	
 				
-			$config = $this->configFile;
+			//$config = $this->configFile;
 			$pageName = $requestParams->get('pageName');
+			$configPath = self::CONFIG_FILE_PATH . $pageName . '.yml';
+			$config = $this->yamlParse($configPath);
 			
-			$config[$pageName]['seoTitle'] = $requestParams->get('seoTitle');
-			$config[$pageName]['seoKeywords'] = $requestParams->get('seoKeywords');
-			$config[$pageName]['seoDescription'] = $requestParams->get('seoDescription');
+			$config['seoTitle'] = $requestParams->get('seoTitle');
+			$config['seoKeywords'] = $requestParams->get('seoKeywords');
+			$config['seoDescription'] = $requestParams->get('seoDescription');
 				
-			$writeFile = $this->yamlDump($pageName, $config[$pageName]);
+			$writeFile = $this->yamlDump($pageName, $config);
 			
 			if ($writeFile) {
-				return $this->redirectToRoute('admin.settings');	
+				
+				if ($pageName == 'index') {
+					return $this->redirectToRoute('admin.settings');	
+				}
+				
+				return $this->redirectToRoute('admin.list', ['entity' => $pageName]);	
+
+				
 			}
 			
 		}

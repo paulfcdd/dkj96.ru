@@ -38,9 +38,7 @@ class FrontController extends Controller
 	/**
 	 * @param string | null $page
 	 * @return Http\Response
-	 * @Route("/",
-	 *     name="front.index"
-	 * )
+	 * @Route("/", name="front.index")
 	 */
 	public function indexAction(string $page = null)
 	{
@@ -96,8 +94,16 @@ class FrontController extends Controller
 	 */
 	public function showNewsAction(News $news = null, Utilities $utilities, Http\Request $request)
 	{
+		if ($news) 
+		{
+			if ($news->isRedirect())
+			{
+				return $this->redirect($news->getRedirectUrl());
+			}
+		}
+		
 		$view = ':default/front/page/news:single.html.twig';
-
+		
 		$parameters = [
 			'news' => $news,
             'imagesExt' => FileUploaderService::IMAGES,
@@ -142,7 +148,7 @@ class FrontController extends Controller
 
 	/**
 	 * @return Http\Response
-	 * @Route("/reviews/list", name="front.review_list")
+	 * @Route("/reviews", name="front.review_list")
 	 */
 	public function reviewListAction()
 	{
@@ -169,10 +175,17 @@ class FrontController extends Controller
 	/**
 	 * @param $artist
 	 * @return Http\Response
-	 * @Route("/artists/detail/{artist}", name="front.artists.detail")
+	 * @Route("/artists/{artist}", name="front.artists.detail")
 	 */
 	public function singleArtistAction(Artist $artist)
 	{
+		if ($artist) 
+		{
+			if ($artist->isRedirect())
+			{
+				return $this->redirect($artist->getRedirectUrl());
+			}
+		}
 
 		return $this->render(':default/front/page/artists:single.html.twig', [
 			'artist' => $artist,
@@ -253,7 +266,7 @@ class FrontController extends Controller
 	}
 
 	/**
-	 * @Route("/event/list", name="event.list")
+	 * @Route("/event", name="event.list")
 	 */
 	public function eventListAction()
 	{
@@ -272,13 +285,20 @@ class FrontController extends Controller
 	 * @param $request
 	 * @return Http\Response
 	 * @Route(
-	 *     "/event/details/id{event}",
+	 *     "/event/{event}",
 	 *     name="event.details_page"
 	 * )
 	 * @Method({"POST", "GET"})
 	 */
 	public function eventDetailAction(Event $event, Http\Request $request)
 	{
+		if ($event) 
+		{
+			if ($event->isRedirect())
+			{
+				return $this->redirect($event->getRedirectUrl());
+			}
+		}
 
 		$showBuyTicketBtn = false;
 
@@ -334,7 +354,7 @@ class FrontController extends Controller
 	}
 
 	/**
-	 * @Route("/halls/list", name="halls.list")
+	 * @Route("/halls", name="halls.list")
 	 */
 	public function listHallsAction()
 	{
@@ -350,13 +370,20 @@ class FrontController extends Controller
 	/**
 	 * @param Hall $hall
 	 * @return Http\Response
-	 * @Route("/halls/info/hall/{hall}", name="halls.detail")
+	 * @Route("/halls/{hall}", name="halls.detail")
 	 */
 	public function hallInfoAction(Hall $hall)
 	{
-
+		if ($hall) 
+		{
+			if ($hall->isRedirect())
+			{
+				return $this->redirect($hall->getRedirectUrl());
+			}
+		}
+		
+		
 		$em = $this->getDoctrine()->getManager();
-
 		$bookings = $em->getRepository(Booking::class)->findBy([
 			'hall' => $hall,
 			'booked' => true,

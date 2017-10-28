@@ -56,21 +56,36 @@ trait AbstractEntityTrait {
     
     /**
      * @var string
-     * @ORM\Column(type="string", length=80)
+     * @ORM\Column(type="string", length=80, nullable=true)
      */
     private $seoTitle;
     
     /**
      * @var string
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(type="string", length=250, nullable=true)
      */
     private $seoKeywords;
     
     /**
      * @var string
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=200, nullable=true)
      */
     private $seoDescription;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $redirect = false;
+    
+    /**
+     * @var string
+     * 
+     * @ORM\Column(nullable=true)
+     */ 
+    private $redirectUrl;
+    
     /**
      * @return int
      */
@@ -191,10 +206,10 @@ trait AbstractEntityTrait {
     }
 
     /**
-     * @param string $seoTitle
+     * @param string | null $seoTitle
      * @return $this
      */
-    public function setSeoTitle(string $seoTitle)
+    public function setSeoTitle(string $seoTitle = null)
     {
         $this->seoTitle = $seoTitle;
         return $this;
@@ -209,10 +224,10 @@ trait AbstractEntityTrait {
     }
 
     /**
-     * @param string $seoKeywords
+     * @param string | null $seoKeywords
      * @return $this
      */
-    public function setSeoKeywords(string $seoKeywords)
+    public function setSeoKeywords(string $seoKeywords =  null)
     {
         $this->seoKeywords = $seoKeywords;
         return $this;
@@ -227,12 +242,47 @@ trait AbstractEntityTrait {
     }
 
     /**
-     * @param string $seoDescription
+     * @param string | null $seoDescription
      * @return $this
      */
-    public function setSeoDescription(string $seoDescription)
+    public function setSeoDescription(string $seoDescription = null)
     {
         $this->seoDescription = $seoDescription;
         return $this;
     }
+ 
+	/**
+     * @return bool
+     */
+    public function isRedirect()
+    {
+        return $this->redirect;
+    }
+
+    /**
+     * @param bool $redirect
+     */
+    public function setRedirect(bool $redirect)
+    {
+        $this->redirect = $redirect;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getRedirectUrl()
+    {
+        return $this->redirectUrl;
+    }
+
+    /**
+     * @param string $title
+     * @return $this
+     */
+    public function setRedirectUrl(string $redirectUrl)
+    {
+        $this->redirectUrl = $redirectUrl;
+        
+        return $this;
+	}   
 }

@@ -72,8 +72,6 @@ class Review extends NotificationClass
         $this->approved = $approved;
     }
 
-
-
     /**
      * @return mixed
      */

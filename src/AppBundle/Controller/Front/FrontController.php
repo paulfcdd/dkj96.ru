@@ -31,6 +31,9 @@ use Symfony\Component\Yaml\Yaml;
 class FrontController extends Controller
 {
 	const CONFIG_FILE_PATH = __DIR__.('/../../../../app/config/page/');
+	
+	const METRICS_FILE_PATH = __DIR__.('/../../../../app/config/metrics/');
+
 
 	/**
 	 * @param string | null $page
@@ -464,6 +467,15 @@ class FrontController extends Controller
 			'bookings' => $hall->getBookings()
 
 		]);
+	}
+	
+	public function getMetricsCodeAction($metricsName) 
+	{
+		$metricsFile = self::METRICS_FILE_PATH . $metricsName . '.yml';
+		
+		$metricsContent = Yaml::parse(file_get_contents($metricsFile));
+		
+		return Http\Response::create($metricsContent);
 	}
 
 	/**

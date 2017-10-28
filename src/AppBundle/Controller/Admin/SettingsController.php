@@ -16,9 +16,10 @@ class SettingsController extends AdminController
      */
 	public function mainScreenAction() {
 		
-
 		return $this->render(':default/admin:settings.html.twig', [
 			'pageSeo' => $this->getStaticPageSeo(),
+			'yandex_code' => $this->getMetricsCode('yandex'),
+			'google_code' => $this->getMetricsCode('google'),
 		]);
 	}	
 }

@@ -36,6 +36,8 @@ class AdminController extends Controller
 {
 	const CONFIG_FILE_PATH = __DIR__.('/../../../../app/config/page/');
 	
+	const METRICS_FILE_PATH = __DIR__.('/../../../../app/config/metrics/');
+	
 	const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
 	
 	protected $configFilePath;
@@ -371,22 +373,29 @@ class AdminController extends Controller
 	protected function getStaticPageSeo($pageName = 'index')  
 	{
 		$fileName = $pageName . '.yml';
-		
-		$configPath = self::CONFIG_FILE_PATH . $fileName;
-		
-		$config = $this->yamlParse($configPath);
+				
+		$config = $this->yamlParse($fileName, self::CONFIG_FILE_PATH);
 		
 		return $config;
 			
 	}
-	
-	protected function yamlParse($configPath) {
+
+	protected function getMetricsCode($metricsType) {
 		
-		//$yaml = Yaml::parse(file_get_contents($configPath));
+		$fileName = $metricsType . '.yml';
+		
+		$metrics = $this->yamlParse($fileName, self::METRICS_FILE_PATH);
+		
+		return $metrics;
+				
+	}
+	
+	protected function yamlParse($fileName, $filePath) {
+		
+		$configPath = $filePath . $fileName;
 		
 		if (!file_exists($configPath)) {
-			//fopen($configPath, "r+");
-			copy(self::CONFIG_FILE_PATH.'default.yml', $configPath);	
+			copy($filePath.'default.yml', $configPath);	
 		}
 		
 		$yaml = Yaml::parse(file_get_contents($configPath));
@@ -395,16 +404,14 @@ class AdminController extends Controller
 		
 	}
 	
-	protected function yamlDump($pageName, $pageData) {
+	protected function yamlDump($pageName, $pageData, $filePath) {
 		
-		$blockToSave = $pageData;
-		$pathToFile = self::CONFIG_FILE_PATH . $pageName . '.yml'; 
-		$yaml = Yaml::dump($blockToSave);	
+		$pathToFile = $filePath . $pageName; 
 		
-		
+		$yaml = Yaml::dump($pageData);	
 		
 		$dump = file_put_contents($pathToFile, $yaml);
-		
+				
 		return $dump;
 	}
 

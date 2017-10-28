@@ -27,35 +27,11 @@
     <script src='https://www.google.com/recaptcha/api.js'></script>
 
     {% block yandex_metrika_counter %}
-        <script type="text/javascript">
-            (function (d, w, c) {
-                (w[c] = w[c] || []).push(function () {
-
-                    try {
-                        w.yaCounter46308474 = new Ya.Metrika({
-                            id: 46308474,
-                            clickmap: true,
-                            trackLinks: true,
-                            accurateTrackBounce: true,
-                            webvisor: true,
-                            trackHash: true
-                        });
-                    } catch (e) {
-                    }
-                });
-                var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () {
-                    n.parentNode.insertBefore(s, n);
-                };
-                s.type = "text/javascript";
-                s.async = true;
-                s.src = "https://mc.yandex.ru/metrika/watch.js";
-                if (w.opera == "[object Opera]") {
-                    d.addEventListener("DOMContentLoaded", f, false);
-                } else {
-                    f();
-                }
-            })(document, window, "yandex_metrika_callbacks");
-        </script>
+		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'yandex'})) }}
+    {% endblock %}
+    
+    {% block google_analytics %}
+		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'google'})) }}
     {% endblock %}
 </head>
 <body>
@@ -64,6 +40,7 @@
 <div class="wrapper">
 
     <div class="header row">
+
         {% block header %}
 
             {% set mainMenu = {
@@ -92,6 +69,7 @@
 
     <div class="content">
         {% block content %}
+        
             {% block main_banner_widget %}
                 {{ render(controller('AppBundle:Front\\Front:renderBanner')) }}
             {% endblock %}

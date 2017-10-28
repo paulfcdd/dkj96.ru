@@ -237,31 +237,50 @@ class ApiController extends AdminController
 		* @param Request $request
 		* @Route("/save_main_page_seo_to_yml", name="admin.api.save_main_page_seo_to_yml")
 		*/
-		public function saveMainPageSeoToYml(Request $request) 
+		public function saveMainPageSeoToYmlAction(Request $request) 
 		{
 			$requestParams = $request->request;	
-				
-			//$config = $this->configFile;
-			$pageName = $requestParams->get('pageName');
-			$configPath = self::CONFIG_FILE_PATH . $pageName . '.yml';
-			$config = $this->yamlParse($configPath);
+			
+			$pageName = $requestParams->get('pageName') . '.yml';
+			$config = $this->yamlParse($pageName, self::CONFIG_FILE_PATH);
 			
 			$config['seoTitle'] = $requestParams->get('seoTitle');
 			$config['seoKeywords'] = $requestParams->get('seoKeywords');
 			$config['seoDescription'] = $requestParams->get('seoDescription');
 				
-			$writeFile = $this->yamlDump($pageName, $config);
+			$writeFile = $this->yamlDump($pageName, $config, self::CONFIG_FILE_PATH);
 			
 			if ($writeFile) {
-				
-				if ($pageName == 'index') {
+					
+				if ($requestParams->get('pageName') == 'index') {
 					return $this->redirectToRoute('admin.settings');	
 				}
 				
-				return $this->redirectToRoute('admin.list', ['entity' => $pageName]);	
+				return $this->redirectToRoute('admin.list', ['entity' => $requestParams->get('pageName')]);	
 
 				
 			}
 			
+		}
+		
+		/**
+		* @param Request $request
+		* @Route("/save-metrics-code", name="admin.api.save_metrics_code")
+		*/
+		public function saveMetricsCodeAction(Request $request) 
+		{
+			$requestParams = $request->request;	
+			
+			$metricsFileName = $requestParams->get('metricsType') . '.yml';
+			
+			$metricsFile = $this->yamlParse($metricsFileName, self::METRICS_FILE_PATH);
+			
+			$metricsFile = $requestParams->get('metricsCode');
+			
+			$writeFile = $this->yamlDump($metricsFileName, $metricsFile, self::METRICS_FILE_PATH);
+
+			if ($writeFile) {
+				return $this->redirectToRoute('admin.settings');	
+			}
 		}
 }

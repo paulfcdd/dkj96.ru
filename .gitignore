@@ -6,3 +6,5 @@
 /web/upload/**
 /.project
 /web/robots.txt
+/public_html/**
+/web/.htaccess

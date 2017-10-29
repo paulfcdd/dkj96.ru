@@ -18,7 +18,7 @@ select yn in "Yes" "No"; do
 done
 
 echo "4. Install Node packages"
-cd web/ && npm install && cd../
+cd web/ && npm install
 
 echo "5. Clear cache"
-php bin/console cache:clear --no-warmup && bin/console cache:clear --env=prod
+cd ../ && php bin/console cache:clear --no-warmup && php bin/console cache:clear --env=prod

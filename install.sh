@@ -13,7 +13,7 @@ select yn in "Yes" "No"; do
         No ) echo 'Creating database schema' && 
 			 php bin/console doctrine:schema:update --force &&
 			 echo 'Creating an admin user'
-			 php bin/console fos:user:create admin --super-admin; break;;
+			 php bin/console fos:user:create --super-admin; break;;
     esac
 done
 

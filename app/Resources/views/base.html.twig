@@ -43,14 +43,40 @@
 
         {% block header %}
 
-            {% set mainMenu = {
-            'front.index' : 'Главная',
-            'event.list': 'Афиша',
-            'halls.list' : 'Залы',
-            'front.artists' : 'Артисты',
-            'front.history' : 'История',
-            'front.contact' : 'Контакты'
-            } %}
+            {% set mainMenu = 
+				[
+					{
+						title: 'Главная',
+						id: 'index',
+						path: path('front.index')
+					},
+					{
+						title: 'Афиша',
+						id: 'event',
+						path: path('front.load_page', {'entity':'event'})
+					},
+					{
+						title: 'Залы',
+						id: 'hall',
+						path: path('front.load_page', {'entity':'hall'})
+					},
+					{
+						title: 'Артисты',
+						id: 'artist',
+						path: path('front.load_page', {'entity':'artist'})
+					},
+					{
+						title: 'История',
+						id: 'history',
+						path: path('front.load_page', {'entity':'history'})
+					},
+					{
+						title: 'Контакты',
+						id: 'contact',
+						path: path('front.contact')
+					}
+				] 
+            %}
 
             {#
             'front.index' : 'Отзывы',
@@ -61,7 +87,7 @@
             </div>
 
             <div>
-                {% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}
+                {#{% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}#}
             </div>
 
         {% endblock %}

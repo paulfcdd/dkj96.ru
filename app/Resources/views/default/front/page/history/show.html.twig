@@ -1,0 +1,42 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ metaTags.seoTitle }} {% endblock %}
+{% block seoDescription %}{{ metaTags.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ metaTags.seoKeywords }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/front/page/istoriya.css') }}">
+{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% if history is null %}
+        <div class="container padding-left-0 padding-right-0 history-block">
+            <div class="col-sm-12 history-block-content text-center">
+                <h3>Эта страница еще не готова, попробуйте зайти позже</h3>
+            </div>
+        </div>
+        {% else %}
+            {% block under_banner_text_widget %}
+                <div class="container padding-0-100px" id="main-text-under-banner">
+                    <div class="text-center letter-spacing-1px banner-content-block">
+                        <p class="padding-0-100px">
+                            {{ history.description }}
+                        </p>
+                    </div>
+                </div>
+            {% endblock %}
+
+            <div class="space-fix-container"></div>
+
+            <div class="container padding-left-0 padding-right-0 history-block">
+                <div class="col-sm-12 history-block-content">
+                    {{ history.content | raw }}
+                </div>
+            </div>
+    {% endif %}
+
+{% endblock %}

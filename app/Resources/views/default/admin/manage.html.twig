@@ -88,6 +88,9 @@
                 {% endif %}
 
                 {{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}
+					{% for key, val in form.children %}
+						
+					{% endfor %}
                 {{ form_end(form) }}
             </div>
         </div>

@@ -87,6 +87,13 @@ trait AbstractEntityTrait {
     private $redirectUrl;
     
     /**
+     * @var string
+     * 
+     * @ORM\Column(nullable=true)
+     */ 
+    private $slug;
+    
+    /**
      * @return int
      */
     public function getId() {
@@ -261,10 +268,14 @@ trait AbstractEntityTrait {
 
     /**
      * @param bool $redirect
+     * 
+     * @return $this
      */
     public function setRedirect(bool $redirect)
     {
         $this->redirect = $redirect;
+        
+        return $this;
     }
     
     /**
@@ -276,12 +287,31 @@ trait AbstractEntityTrait {
     }
 
     /**
-     * @param string $title
+     * @param string $redirectUrl
      * @return $this
      */
     public function setRedirectUrl(string $redirectUrl)
     {
         $this->redirectUrl = $redirectUrl;
+        
+        return $this;
+	} 
+	
+	/**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug(string $slug)
+    {
+        $this->slug = $slug;
         
         return $this;
 	}   

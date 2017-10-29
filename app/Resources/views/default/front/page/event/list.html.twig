@@ -100,8 +100,8 @@
         </div>
     {% endblock %}
 
-    {% for event in events %}
-        {% for file in event.files %}
+    {% for object in objects %}
+        {% for file in object.files %}
             {% if file.isDefault == true %}
                 {% set bgimg = file.name %}
             {% endif %}

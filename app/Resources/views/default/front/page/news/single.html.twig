@@ -1,6 +1,9 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ news.title }}{% endblock %}
+{% block title %}{{ object.seoTitle }}{% endblock %}
+
+{% block seoDescription %}{{ object.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ object.seoKeywords }}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('node_modules/blueimp-gallery/css/blueimp-gallery.min.css') }}" rel="stylesheet">
@@ -29,8 +32,8 @@
 {% endblock %}
 
 {% block content %}
-    {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
     <div class="container col-xs-padding-right-0 single-hall-page">
         <div class="space-fix-container"></div>
@@ -38,8 +41,13 @@
         <div class="row xs-padding-0-10px">
             <div class="col-xs-12 text-left padding-0-100px">
                 <ol class="breadcrumb single-hall-page-breadcrumbs">
-                    <li class="breadcrumb-item"><a href="{{ path('front.news') }}">Новости</a></li>
-                    <li class="breadcrumb-item active">{{ news.title }}</li>
+                    <li class="breadcrumb-item">
+						<a href="{{ path('front.load_page', {
+								'entity': app.request.get('entity')}) }}">
+								Новости
+						</a>
+					</li>
+                    <li class="breadcrumb-item active">{{ object.title }}</li>
                 </ol>
 
             </div>
@@ -51,18 +59,18 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h4 class="underscored-label">
-                            {{ news.title }}
+                            {{ object.title }}
                         </h4>
                     </div>
                 </div>
             </div>
             <div class="col-xs-12">
                 <p>
-                    {{ news.description }}
+                    {{ object.description }}
                 </p>
             </div>
             <div class="col-xs-12 padding-top-20px">
-                {{ news.content | raw }}
+                {{ object.content | raw }}
             </div>
         </div>
 
@@ -71,7 +79,7 @@
     {% set images = [] %}
     {% set videos = [] %}
 
-    {% for file in news.files %}
+    {% for file in object.files %}
         {% if in_array(file.mimeType, imagesExt) %}
             {% set images = images | merge ([file]) %}
         {% endif %}

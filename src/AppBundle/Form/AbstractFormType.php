@@ -38,6 +38,10 @@ class AbstractFormType extends AbstractType
 					'placeholder' => 'Не более 200 знаков'
 				],
            ])
+           ->add('slug', TextType::class, [
+				'label' => 'Задайте URL записи',
+				'required' => false,
+           ])
            ->add('redirect', ChoiceType::class, [
 				'multiple' => false,
 				'expanded' => true,

@@ -75,6 +75,211 @@ class FrontController extends Controller
 			'metaTags' => $this->getMetaTags('index'),
 		]);
 	}
+	
+	/**
+	 * @param Http\Request $request
+	 * @return Http\Response
+	 * @Route("/contact", name="front.contact")
+	 */
+	public function contactPageAction(Http\Request $request)
+	{
+
+		$em = $this->getDoctrine()->getManager();
+
+		$form = $this
+			->createForm(FeedbackType::class)
+			->handleRequest($request);
+
+
+		if ($form->isSubmitted()) {
+
+			$response = $request->request->get('g-recaptcha-response');
+
+			$recaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
+
+			$recaptchaVerifyer = json_decode($recaptchaVerifyer);
+
+			if ($form->isValid() && $recaptchaVerifyer->success) {
+
+				$formData = $form->getData();
+
+				/** @var MailerService $mailer */
+				$mailer = $this->get(MailerService::class);
+
+				$mailer
+					->setTo($this->getParameter($formData->getToWhom()))
+					->setBody($formData->getMessage())
+					->setFrom($formData->getEmail())
+					->setSubject('Новое сообщение');
+
+				if (strpos($formData->getToWhom(), 'client_')) {
+				    $mailer->setSubject(Feedback::TO_WHOM[$formData->getToWhom()]);
+                }
+
+				$em->persist($formData);
+
+				try {
+					$em->flush();
+					$mailer->sendMessage();
+					$this->addFlash('success', 'Ваше сообщение успешно выслано.');
+				} catch (DBALException $exception) {
+					$this->addFlash('error', 'Не удалось выслать сообщение, попробуйте позже');
+				}
+			} else {
+				$this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
+			}
+		}
+
+		return $this->render(':default/front/page:kontakty.html.twig', [
+			'form' => $form->createView(),
+		]);
+	}
+	
+	/**
+	 * @param string | integer | null $slug
+	 * @Route("/{entity}/{slug}", name="front.load_page")
+	 * @Method({"POST", "GET"})
+	 */ 
+	public function loadPageAction(string $entity = null, $slug = null, Utilities $utilities, Http\Request $request)
+	{				
+		$repository = $this->getEntityRepository($entity);
+		
+		if ($entity == 'history') 
+		{
+			$view = ':default/front/page/'.$entity.':show.html.twig';
+			$parameters = [
+				'history' => $this->getDoctrine()->getRepository(History::class)->findOneBy(['isEnabled' => true]),
+				'metaTags' => $this->getMetaTags('history'),
+			];
+			return $this->render($view, $parameters);
+		}
+		
+		if (!$slug) 
+		{
+			return $this->loadListAction($repository, $entity, $utilities, $request);	
+		}
+				
+		$object = null;
+		
+		if (intval($slug)) {
+			$object = $repository->findOneById($slug);
+		} else {
+			$object = $repository->findOneBySlug($slug);
+		}
+		
+		if ($object) 
+		{		
+			if ($object->isRedirect())
+			{
+				return $this->redirect($object->getRedirectUrl());
+			}
+			
+			$view = ':default/front/page/'.$entity.':single.html.twig';
+			
+			$parameters = [
+				'object' => $object,
+				'imagesExt' => FileUploaderService::IMAGES,
+				'videosExt' => FileUploaderService::VIDEOS,
+			];
+			
+			if ($object instanceof Event) {
+					
+				$showBuyTicketBtn = false;
+				
+				$form = $this->createForm(ReviewType::class)->handleRequest($request);
+				
+				if ($form->isSubmitted()) {
+				$response = $request->request->get('g-recaptcha-response');
+
+				$resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
+
+				$resaptchaVerifyer = json_decode($resaptchaVerifyer);
+
+				if ($form->isValid() && $resaptchaVerifyer->success) {
+
+						/** @var Review $formData */
+						$formData = $form->getData();
+
+						/** @var MailerService $mailer */
+						$mailer = $this->get(MailerService::class);
+
+						$mailer
+							->setTo($this->getParameter('client'))
+							->setFrom($formData->getEmail())
+							->setSubject('Новый отзыв о событии '.$event->getTitle())
+							->setBody($formData->getMessage());
+
+						$formData->setEvent($event);
+
+						$em->persist($formData);
+
+						$em->flush();
+
+						$mailer->sendMessage();
+
+						$this->addFlash('success', 'Отзыв отправлен');
+
+					} else {
+						$this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
+					}
+				}
+		
+				if ($object->getEventDate() > new \DateTime()) {
+					$showBuyTicketBtn = true;
+				}
+				
+				
+				$parameters['showBuyTicketBtn'] = $showBuyTicketBtn;
+				$parameters['form'] = $form->createView();
+			}
+			
+			return $this->render($view, $parameters);
+
+		}		
+	}
+	
+	/**
+	 * @Method({"POST", "GET"})
+	 */ 
+	public function loadListAction($repository, $entityName, $utilities, $request) {
+			
+		
+		$view = ':default/front/page/'.$entityName.':list.html.twig';
+		
+		$parameters = [
+			'objects' => $repository->findAll(),
+			'metaTags' => $this->getMetaTags($entityName),
+			'entity' => $entityName,
+		];
+		
+		if ($entityName == 'news') {
+				
+				$paginator = $utilities
+					->setObjectName(News::class)
+					->setCriteria([])
+					->setOrderBy(['publishStartDate' => 'DESC'])
+					->setLimit(5)
+					->setOffset(0);
+				if ($request->isMethod('POST')) {
+
+					$paginator
+						->setLimit($request->get('limit'))
+						->setOffset($request->get('offset'));
+
+					return $this->render(':default/front/utility:paginator.html.twig', [
+						'news' => $paginator->paginationAction(),
+					]);
+				}
+					
+				$parameters['objects'] = $repository->findBy([], ['publishStartDate' => 'DESC'], 5, 0);
+				$parameters['paginator'] = $paginator->getPages();
+				$parameters['offset'] = $paginator->getOffset();
+				$parameters['limit'] = $paginator->getLimit();
+	
+			}
+		
+		return $this->render($view, $parameters);
+	}
 
 	public function renderBannerAction() {
 
@@ -203,65 +408,6 @@ class FrontController extends Controller
 		return $this->render(':default/front/page:istoriya.html.twig', [
 			'history' => $this->getDoctrine()->getRepository(History::class)->findOneBy(['isEnabled' => true]),
 			'metaTags' => $this->getMetaTags('history'),
-		]);
-	}
-
-	/**
-	 * @param Http\Request $request
-	 * @return Http\Response
-	 * @Route("/contact", name="front.contact")
-	 */
-	public function contactPageAction(Http\Request $request)
-	{
-
-		$em = $this->getDoctrine()->getManager();
-
-		$form = $this
-			->createForm(FeedbackType::class)
-			->handleRequest($request);
-
-
-		if ($form->isSubmitted()) {
-
-			$response = $request->request->get('g-recaptcha-response');
-
-			$recaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
-
-			$recaptchaVerifyer = json_decode($recaptchaVerifyer);
-
-			if ($form->isValid() && $recaptchaVerifyer->success) {
-
-				$formData = $form->getData();
-
-				/** @var MailerService $mailer */
-				$mailer = $this->get(MailerService::class);
-
-				$mailer
-					->setTo($this->getParameter($formData->getToWhom()))
-					->setBody($formData->getMessage())
-					->setFrom($formData->getEmail())
-          ->setSubject('Новое сообщение');
-
-				if (strpos($formData->getToWhom(), 'client_')) {
-				    $mailer->setSubject(Feedback::TO_WHOM[$formData->getToWhom()]);
-                }
-
-				$em->persist($formData);
-
-				try {
-					$em->flush();
-					$mailer->sendMessage();
-					$this->addFlash('success', 'Ваше сообщение успешно выслано.');
-				} catch (DBALException $exception) {
-					$this->addFlash('error', 'Не удалось выслать сообщение, попробуйте позже');
-				}
-			} else {
-				$this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
-			}
-		}
-
-		return $this->render(':default/front/page:kontakty.html.twig', [
-			'form' => $form->createView(),
 		]);
 	}
 
@@ -580,6 +726,28 @@ class FrontController extends Controller
 		$metaTags = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH . $pageName . '.yml'));
 		
 		return $metaTags;
-		
 	}
+	
+	/**
+     * @param string $entity
+     * @return string
+     */
+    protected function getClassName(string $entity) {
+
+        $className = ucfirst($entity);
+
+        $class = 'AppBundle\\Entity\\'.$className;
+
+        return $class;
+    }
+
+    /**
+     * @param string $entity
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getEntityRepository(string $entity) {
+
+        return $this->getDoctrine()->getRepository($this->getClassName($entity));
+
+    }
 }

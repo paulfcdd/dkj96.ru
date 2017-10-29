@@ -2,15 +2,14 @@
 /.project/
 /tests/
 /vendor/*
-/web/robots.txt
-app/config/metrics/**
-app/config/page/**
-/var/
+/public_html/*
 
 ### Symfony ###
 # Cache and logs (Symfony2)
 /app/cache/*
 /app/logs/*
+/app/config/metrics/*
+/app/config/page/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 
@@ -18,6 +17,7 @@ app/config/page/**
 /app/spool/*
 
 # Cache, session files and logs (Symfony3)
+/var/
 !var/cache/.gitkeep
 !var/logs/.gitkeep
 !var/sessions/.gitkeep
@@ -34,6 +34,8 @@ app/config/page/**
 
 # Assets and user uploads
 /web/upload
+/web/robots.txt
+/web/.htaccess
 
 # PHPUnit
 /app/phpunit.xml

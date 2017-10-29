@@ -3,6 +3,7 @@
 /tests/
 /vendor/*
 /public_html/*
+/bin/dkj-dump.sql
 
 ### Symfony ###
 # Cache and logs (Symfony2)

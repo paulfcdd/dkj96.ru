@@ -283,4 +283,27 @@ class ApiController extends AdminController
 				return $this->redirectToRoute('admin.settings');	
 			}
 		}
+		
+		/**
+		* @param Request $request
+		* @Route("/save-robots-txt", name="admin.api.save_robots_txt")
+		*/		
+		public function saveRobotsTxtAction(Request $request) 
+		{
+			$robotsTxt = self::ROBOTS_TXT;
+			
+			$content = $request->request->get('robotsForm');
+			
+			try {
+				
+				file_put_contents($robotsTxt, $content);
+				return $this->redirectToRoute('admin.settings');	
+			} catch(\Exception $e) {
+				return Response::create('Cannot wrote to file '.$robotsTxt.'. Reason: <strong>'.$e->getMessage().'</strong>');
+			}
+			
+			dump($content);
+			die;
+			
+		}
 }

@@ -38,6 +38,8 @@ class AdminController extends Controller
 	
 	const METRICS_FILE_PATH = __DIR__.('/../../../../app/config/metrics/');
 	
+	const ROBOTS_TXT = __DIR__.('/../../../../web/robots.txt');
+	
 	const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
 	
 	protected $configFilePath;
@@ -413,6 +415,25 @@ class AdminController extends Controller
 		$dump = file_put_contents($pathToFile, $yaml);
 				
 		return $dump;
+	}
+	
+	public function getRobotsTxtAction() {
+		
+		$robotsFile = self::ROBOTS_TXT;
+		
+		
+		if (file_exists($robotsFile)) {
+			$handle = fopen($robotsFile, 'r');
+	
+			$robotsContent = fread($handle, filesize($robotsFile));
+			
+			fclose($handle);
+			
+			return Response::create($robotsContent);
+		} else {
+			return 'File ' . $robotsFile . ' not found!';
+		} 
+		
 	}
 
 }

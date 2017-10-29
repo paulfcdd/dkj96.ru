@@ -5,3 +5,4 @@
 /var/
 /web/upload/**
 /.project
+/web/robots.txt

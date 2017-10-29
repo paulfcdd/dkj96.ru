@@ -1,4 +1,7 @@
 {% extends ':default/admin:base.html.twig' %}
+{% set sectionName = 'admin.'~app.request.attributes.get('_route_params')['entity']  %}
+
+{% block title %}{{ sectionName | trans }} | {{ parent() }}  {% endblock %}
 
 {% block content %}
 
@@ -7,7 +10,6 @@
     <div class="{% if entity != 'booking'%}col-md-8{% else %}col-md-12{% endif %}">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                {% set sectionName = 'admin.'~app.request.attributes.get('_route_params')['entity']  %}
                 <h5>{{ sectionName | trans }}: список объектов</h5>
                 <div class="ibox-tools">
                     <a class="collapse-link">

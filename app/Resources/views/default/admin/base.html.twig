@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Админ панель ДКЖ{% endblock %}</title>
 
     <link href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('node_modules/sweetalert/dist/sweetalert.css') }}" rel="stylesheet">
@@ -101,6 +101,8 @@
 <body>
 <div id="wrapper">
     {% block navigation_bar %}
+		{% set requestUri = app.request.requestUri %}
+
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav metismenu" id="side-menu">
@@ -119,7 +121,25 @@
                         </div>
                     </li>
                     {% for item in sidebarItems %}
-                        <li id="{{ item.id }}" {% if item.id == app.request.get('entity') %}class="active"{% endif %}>
+                  		
+                  		{% set active = null %}
+                  		
+                  		{% set splitRequestUri =  requestUri | split('/') %}
+                  		
+                  		{% set currentUri = splitRequestUri[2] %}
+						
+						{% if item.id == app.request.get('entity') %}
+							{% set active = 'active' %}
+						{% endif %}
+						
+						{% if app.request.get('entity') == null %}
+							{% if item.id == currentUri %}
+								{% set active = 'active' %}
+							{% endif %}						
+						{% endif %}
+						
+                  							                    
+                        <li id="{{ item.id }}" {% if active != null %} class="{{ active }}" {% endif %}}>
                             <a href="{{ item.href }}"><i class="fa {{ item.icon }}"></i>
                                 <span class="nav-label">{{ item.name }}</span>
                             </a>

@@ -1,5 +1,8 @@
 {% extends ':default/admin:base.html.twig' %}
 
+{% block title %}Настройки сайта | {{ parent() }}  {% endblock %}
+
+
 {% block content %}
 
 	<div class="col-md-4">
@@ -21,9 +24,11 @@
 			 </div>   
 		</div>
 	</div>
-	
-	<!-- Google analitycs block start -->
-	<div class="col-md-4">
+</div>
+
+<div class="row">
+		<!-- Google analitycs block start -->
+	<div class="col-md-6">
 		<div class="ibox float-e-margins">
 			
 			<!-- Box-title start -->
@@ -51,7 +56,7 @@
 	<!-- Google analitycs block end -->
 	
 	<!-- Yandex metrica block start -->
-	<div class="col-md-4">
+	<div class="col-md-6">
 		<div class="ibox float-e-margins">
 			
 			<!-- Box-title start -->
@@ -77,9 +82,6 @@
 	</div>
 	<!-- Yandex metrica block end -->
 	
-</div>
-
-<div class="row">
 	<div class="col-md-6">
 		<div class="ibox float-e-margins">
 			

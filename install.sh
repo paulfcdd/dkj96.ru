@@ -9,11 +9,12 @@ php bin/console doctrine:database:create
 echo "3. Do you wish to import database?"
 select yn in "Yes" "No"; do
     case $yn in
-        Yes ) echo 'Importing database' && mysql -u root -h localhost dkj<bin/db_dump.sql; break;;
-        No ) echo 'Creating database schema' && 
-			 php bin/console doctrine:schema:update --force &&
-			 echo 'Creating an admin user'
-			 php bin/console fos:user:create --super-admin; break;;
+        Yes ) 	echo 'Importing database' && 
+				php bin/console doctrine:database:import bin/db_dump.sql; break;;
+        No ) 	echo 'Creating database schema' && 
+				php bin/console doctrine:schema:update --force &&
+				echo 'Creating an admin user'
+				php bin/console fos:user:create --super-admin; break;;
     esac
 done
 

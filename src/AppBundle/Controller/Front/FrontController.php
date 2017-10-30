@@ -62,9 +62,7 @@ class FrontController extends Controller
 			->setMaxResults(6)
 			->orderBy('n.publishStartDate', 'DESC')
 			->getQuery();
-		
-		$metaTags = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH . 'index.yml'));
-				
+						
 		return $this->render(':default/front/page:index.html.twig', [
 			'page' => $page,
 			'events' => $eventQB->getResult(),
@@ -646,6 +644,10 @@ class FrontController extends Controller
 	{
 		$metricsFile = self::METRICS_FILE_PATH . $metricsName . '.yml';
 		
+		if (!file_exists($metricsFile)) {
+			copy(self::METRICS_FILE_PATH.'default.yml', $metricsFile);	
+		}
+		
 		$metricsContent = Yaml::parse(file_get_contents($metricsFile));
 		
 		return Http\Response::create($metricsContent);
@@ -723,7 +725,13 @@ class FrontController extends Controller
 	
 	private function getMetaTags(string $pageName) {
 		
-		$metaTags = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH . $pageName . '.yml'));
+		$file = self::CONFIG_FILE_PATH . $pageName . '.yml';
+		
+		if (!file_exists($file)) {
+			copy(self::CONFIG_FILE_PATH.'default.yml', $file);	
+		}
+		
+		$metaTags = Yaml::parse(file_get_contents($file));
 		
 		return $metaTags;
 	}

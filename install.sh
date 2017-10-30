@@ -30,7 +30,7 @@ echo "5. INSTALLING NODE PAKAGES"
 cd web/ && npm install
 
 echo " 5. CLEARING THE CACHE"
-cd ../ && php bin/console cache:clear --no-warmup && php bin/console cache:clear --env=prod
+cd ../ && php bin/console cache:clear --no-warmup && php bin/console cache:clear --no-warmup --env=prod
 
 echo '
  _____________________________________

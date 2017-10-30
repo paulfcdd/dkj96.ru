@@ -4,6 +4,7 @@ echo '
 | Welcome to the DKJ.96 installation! |
 |_____________________________________|
 '
+
 echo '1. CHECKING FOR THE NEWEST VERSION OF COMPOSER'
 php bin/composer.phar self-update
 
@@ -30,3 +31,11 @@ cd web/ && npm install
 
 echo " 5. CLEARING THE CACHE"
 cd ../ && php bin/console cache:clear --no-warmup && php bin/console cache:clear --env=prod
+
+echo '
+ _____________________________________
+|                                     |	
+|        Installation complete!       |
+|_____________________________________|
+'
+exit 0;

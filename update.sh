@@ -8,4 +8,4 @@ echo '========= Clear cache ==========='
 bin/console cache:clear --no-warmup
 bin/console cache:clear --env=prod
 
-echo '========= Deploy finished! ==========='
+echo '========= Update finished! ==========='

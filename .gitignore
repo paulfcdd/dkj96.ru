@@ -18,11 +18,11 @@
 /app/spool/*
 
 # Cache, session files and logs (Symfony3)
-/var/
 !var/.gitkeep
 !var/cache/.gitkeep
 !var/logs/.gitkeep
 !var/sessions/.gitkeep
+/var/
 
 # Parameters
 /app/config/parameters.yml

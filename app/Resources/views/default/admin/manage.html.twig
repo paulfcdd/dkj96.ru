@@ -3,6 +3,7 @@
 
 {% block styles %}
 {% endblock %}
+{% set entity = app.request.get('entity') %}
 
 {% block scripts %}
     <script>
@@ -51,12 +52,18 @@
           });
           {% endif %}
         });
+        
+                
+        $('#{{ entity }}_seoTitle').liTranslit({
+			elAlias: $('#{{ entity }}_slug')
+		});
     </script>
 
 
 {% endblock %}
 
 {% block content %}
+
     <div class="col-md-12">
 
         <div class="ibox float-e-margins">

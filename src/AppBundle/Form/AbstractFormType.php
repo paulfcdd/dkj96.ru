@@ -21,7 +21,7 @@ class AbstractFormType extends AbstractType
 				'label' => 'Мета-таг Title',
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'Не более 80 знаков'
+					'placeholder' => 'Не более 80 знаков',
 				],
            ])
            ->add('seoKeywords', TextareaType::class, [

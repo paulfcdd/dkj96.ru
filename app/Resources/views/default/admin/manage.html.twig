@@ -4,6 +4,13 @@
 {% block styles %}
 {% endblock %}
 {% set entity = app.request.get('entity') %}
+{% block page_heading %}
+	{% if object.id == null %}
+		Добавить новый объект
+		{% else %}
+		{{ object.title }}
+	{% endif %}
+{% endblock %}
 
 {% block scripts %}
     <script>
@@ -63,13 +70,12 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="col-md-12">
 
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 {% set sectionName = 'admin.'~form.vars.name  %}
-                <h5>Управление разделом {{ sectionName | trans }}</h5>
+                <h5>Управление объектом</h5>
             </div>
             <div class="ibox-content">
                 {% if app.request.get('entity') == 'banner'%}

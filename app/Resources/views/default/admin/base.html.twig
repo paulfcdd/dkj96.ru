@@ -22,6 +22,9 @@
 {% set routeParams = app.request.attributes.get('_route_params') %}
 {% set routeName = app.request.attributes.get('_route') %}
 {% set activeTabId = '' %}
+{% set activePageName = [] %}
+{% set requestUri = app.request.requestUri %}
+
 
 {% set sidebarItems = [
     {
@@ -98,10 +101,30 @@
     }
 ] %}
 
+{% for item in sidebarItems %}
+                  		
+                  		{% set active = null %}
+                  		
+                  		{% set splitRequestUri =  requestUri | split('/') %}
+                  		
+                  		{% set currentUri = splitRequestUri[2] %}
+						
+						{% if item.id == app.request.get('entity') %}
+							{% set activePageName = activePageName | merge([item.name]) %}
+						{% endif %}
+						
+						{% if app.request.get('entity') == null %}
+							{% if item.id == currentUri %}
+								{% set activePageName = activePageName | merge([item.name]) %}
+							{% endif %}						
+
+						{% endif %}
+										                    
+ {% endfor %}
+ 
 <body>
 <div id="wrapper">
     {% block navigation_bar %}
-		{% set requestUri = app.request.requestUri %}
 
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
@@ -130,22 +153,25 @@
 						
 						{% if item.id == app.request.get('entity') %}
 							{% set active = 'active' %}
+							{% set activePageName = activePageName | merge([item.name]) %}
 						{% endif %}
 						
 						{% if app.request.get('entity') == null %}
 							{% if item.id == currentUri %}
 								{% set active = 'active' %}
+								{% set activePageName = activePageName | merge([item.name]) %}
+
 							{% endif %}						
+
 						{% endif %}
-						
-                  							                    
+										                    
                         <li id="{{ item.id }}" {% if active != null %} class="{{ active }}" {% endif %}}>
                             <a href="{{ item.href }}"><i class="fa {{ item.icon }}"></i>
                                 <span class="nav-label">{{ item.name }}</span>
                             </a>
                         </li>
-                    {% endfor %}
 
+                    {% endfor %}
                 </ul>
 
             </div>
@@ -162,6 +188,7 @@
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
+                        {% block add_object_btn %}{% endblock %}
                         <li>
                             <a href="{{ path('fos_user_security_logout') }}">
                                 <i class="fa fa-sign-out"></i> Выход
@@ -175,24 +202,16 @@
         {% endblock %}
 
 	<div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-10">
-                    <h2>Data Tables</h2>
-                    <ol class="breadcrumb">
-                        <li>
-                            <a href="index.html">Home</a>
-                        </li>
-                        <li>
-                            <a>Tables</a>
-                        </li>
-                        <li class="active">
-                            <strong>Data Tables</strong>
-                        </li>
-                    </ol>
-                </div>
-                <div class="col-lg-2">
+        <div class="col-lg-10">
+			<h2>
+				{% block page_heading %}{{ activePageName | first }}{% endblock %}
+			</h2>
+		</div>
+        
+         <div class="col-lg-2">
 
-                </div>
-            </div>
+		</div>
+     </div>
             
         <div class="row">
             <div class="col-lg-12">

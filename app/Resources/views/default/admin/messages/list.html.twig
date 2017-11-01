@@ -9,7 +9,6 @@
     <div class="col-lg-9 animated fadeInRight">
        {% block message_content_block %}
            <div class="mail-box-header">
-
                <h2>
                    Входящие ({{ objects | length }})
                    <br>
@@ -17,7 +16,6 @@
                        <a class="btn btn-sm btn-success no-border-radius" role="button" href="{{ path('admin.manage', {'entity': 'review'}) }}" target="_blank">Добавить ревью</a>
                    {% endif %}
                </h2>
-
            </div>
            <div class="mail-box">
 
@@ -25,6 +23,9 @@
                    <thead>
                    <th>Email</th>
                    <th>Тема</th>
+                   {% if entity != 'booking' and entity != 'review' %}
+                       <th>Для кого</th>
+                   {% endif %}
                    <th colspan="2" class="text-center">Дата получения</th>
                    </thead>
                    <tbody>
@@ -52,6 +53,15 @@
                                    {{ theme }}
                                </a>
                            </td>
+                           <td>
+														 {% if entity != 'booking' and entity != 'review' %}
+															 {% if  toWhomMap[object.toWhom] is not defined %}
+                                   Не указано
+															 {% else %}
+																 {{ toWhomMap[object.toWhom] }}
+                               {% endif %}
+                             {% endif %}
+                           </td>
                            <td class="text-right mail-date">
                                <span class="fa fa-calendar"></span> {{ object.dateReceived | date('d.m.Y') }}
                            </td>
@@ -61,8 +71,6 @@
                        </tr>
 
                    {% endfor %}
-
-
                    </tbody>
                </table>
 

@@ -28,13 +28,25 @@ class BannerType extends AbstractType
                     'Yes' => 1,
                     'No' => 0,
                 ]
-            ]);
+            ])
+					->add('category', ChoiceType::class, [
+						'expanded' => false,
+						'multiple' => false,
+						'required' => false,
+						'label' => false,
+						'placeholder' => 'Если баннер будет ссылкой, выберите категорию',
+						'choices' => [
+							'Новости' => 'news',
+							'События' => 'event',
+						]
+					]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Banner::class,
+					'data_class' => Banner::class,
+					'allow_extra_fields' => true,
         ]);
     }
 }

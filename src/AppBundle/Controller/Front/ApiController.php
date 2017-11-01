@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller\Front;
 
+use AppBundle\Entity\Event;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation as HTTP;
 use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Service\Utilities;
 
 
 /**
@@ -30,11 +32,19 @@ class ApiController extends FrontController
 
         $requestParams = $request->request;
 
+        $currentDate = new \DateTime();
+
+        $currentMonth = $currentDate->format('m');
+
+        $currentYear = $currentDate->format('Y');
+
         $translator = $this->get('translator');
 
-        $serializer = $this->get('serializer');
-
         $firstDay = \DateTime::createFromFormat(self::DATE_FORMAT,$requestParams->get('firstDay'));
+
+        if ($currentMonth == $firstDay->format('m') && $currentYear == $firstDay->format('Y')) {
+            $firstDay = new \DateTime();
+        }
 
         $lastDay = \DateTime::createFromFormat(self::DATE_FORMAT, $requestParams->get('lastDay'));
 
@@ -56,6 +66,7 @@ class ApiController extends FrontController
 
         $groupByDays = [];
 
+        /** @var Event $item */
         foreach ($result as $item) {
 
             $key = $item->getEventDate()->format('j');
@@ -77,15 +88,33 @@ class ApiController extends FrontController
             $event['name'] = $item->getTitle();
             $event['time'] = $item->getEventTime()->format('H:i');
             $event['ticketUrl'] = $item->getTicketUrl();
+            $event['slug'] = $item->getSlug();
 
             array_push($groupByDays[$key]['events'], $event);
 
         }
 
-//        return new HTTP\Response($serializer->serialize($groupByDays, 'json'));
-
         return $this->render(':default/front/page/event:calendar.html.twig', [
             'events' => $groupByDays,
+            'entity' => 'event'
         ]);
     }
+    
+     /**
+     * @param HTTP\Request $request
+     * @Route("/api/switch-page", name="api.switch-page")
+     */
+    public function switchPageAction(HTTP\Request $request, Utilities $utilities) 
+    {
+		$paginator = $utilities
+				->setObjectName($this->getClassName($request->request->get('entity')))
+				->setCriteria([])
+				->setOrderBy(['publishStartDate' => 'DESC'])
+				->setLimit($request->request->get('limit'))
+				->setOffset($request->request->get('offset'));
+				
+		return $this->render(':default/front/utility:paginator.html.twig', [
+					'objects' => $paginator->paginationAction(),
+				]);
+	}
 }

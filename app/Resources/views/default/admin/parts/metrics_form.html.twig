@@ -1,0 +1,15 @@
+<form action="{{ path('admin.api.save_metrics_code') }}" method="post">				
+	<div class="form-group">
+		<label for="metricsCode">Вставьте код в окно ниже</label>
+		<textarea class="form-control no-resize" rows="12" 
+				  id="metricsCode" name="metricsCode">{{ content }}</textarea>
+	</div>
+						
+	<input type="text" id="metricsType" name="metricsType" value="{{ metricsType }}" hidden>
+						
+	<div class="form-group">
+		 <button type="submit" class="btn btn-primary">
+			Сохранить
+		</button>
+	</div>
+</form>

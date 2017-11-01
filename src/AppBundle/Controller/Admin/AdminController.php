@@ -10,6 +10,7 @@ use AppBundle\Entity\File;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
+use AppBundle\Entity\Banner;
 use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
 use AppBundle\Service\FileUploaderService;
@@ -25,11 +26,28 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Yaml\Yaml;
 
 
 
 class AdminController extends Controller
 {
+	const CONFIG_FILE_PATH = __DIR__.('/../../../../app/config/page/');
+	
+	const METRICS_FILE_PATH = __DIR__.('/../../../../app/config/metrics/');
+	
+	const ROBOTS_TXT = __DIR__.('/../../../../web/robots.txt');
+	
+	const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
+	
+	protected $configFilePath;
+    
+    public function __construct(){
+		$this->configFilePath = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH));
+		}
+    
     /**
      * @Route("/admin/dashboard", name="admin.index")
      */
@@ -83,6 +101,8 @@ class AdminController extends Controller
 
         return $this->render(':default/admin:list.html.twig', [
             'objects' => $repository->findAll(),
+            'pageSeo' => $this->getStaticPageSeo($entity),
+            'pageName' => $entity,
         ]);
     }
 
@@ -102,7 +122,7 @@ class AdminController extends Controller
 
         $className = ucfirst($entity);
 
-        $class = 'AppBundle\\Entity\\'.$className;
+        $class = $this->getClassName($entity);
 
         $object = new $class();
 
@@ -145,20 +165,37 @@ class AdminController extends Controller
                 $formData->setApproved(1);
             }
 
-            $em->persist($formData);
-            $em->flush();
+            if ($formData instanceof Banner) {
+            	if ($formData->isLink()) {
+            		if (isset($request->request->get('banner')['object'])) {
+									$formData->setObject($request->request->get('banner')['object']);
+								}
+							}
+						}
+
+
+
+					$em->persist($formData);
+					$em->flush();
 
             if (isset($form['files'])) {
                 $attachedFiles = $form['files']->getData();
 
                 if ($attachedFiles instanceof UploadedFile) {
-
                     $em->persist(
                         $this->photoUploader($uploader, $entity, $attachedFiles, $formData, $class)
                     );
                 }
 
                 if (!empty($attachedFiles)) {
+
+
+									if ($object instanceof Banner) {
+										if (!empty($form['files'])) {
+											$this->deleteObjectRelatedFiles($class, $object->getId());
+										}
+
+									}
 
                     foreach ($attachedFiles as $attachedFile) {
 
@@ -233,7 +270,7 @@ class AdminController extends Controller
             'videosExt' => FileUploaderService::VIDEOS,
         ]);
     }
-
+    
     /**
      * @param $className
      * @param $object
@@ -288,5 +325,115 @@ class AdminController extends Controller
         return $this->getDoctrine()->getRepository($this->getClassName($entity));
 
     }
+
+	/**
+	 * @param string $objectClass
+	 * @param int $objectId
+	 * @return bool
+	 */
+	protected function deleteObjectRelatedFiles(string $objectClass, int $objectId) {
+
+		$em = $this->getDoctrine()->getManager();
+
+		$objectFiles = $em->getRepository(File::class)->findBy([
+			'entity' => $objectClass,
+			'foreignKey' => $objectId,
+		]);
+
+		foreach ($objectFiles as $objectFile) {
+			$this->deleteFile($objectFile);
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param File $file
+	 * @return Response
+	 */
+	protected function deleteFile(File $file) {
+
+		$em = $this->getDoctrine()->getManager();
+
+		$finder = new Finder();
+
+		$fileDir = $this->getParameter('upload_directory');
+
+		$finder->name($file->getName());
+
+		foreach ($finder->in($fileDir) as $item) {
+			unlink($item);
+		}
+
+		$em->remove($file);
+
+		$em->flush();
+
+		return JsonResponse::create('ok');
+	}
+	
+	protected function getStaticPageSeo($pageName = 'index')  
+	{
+		$fileName = $pageName . '.yml';
+				
+		$config = $this->yamlParse($fileName, self::CONFIG_FILE_PATH);
+		
+		return $config;
+			
+	}
+
+	protected function getMetricsCode($metricsType) {
+		
+		$fileName = $metricsType . '.yml';
+		
+		$metrics = $this->yamlParse($fileName, self::METRICS_FILE_PATH);
+		
+		return $metrics;
+				
+	}
+	
+	protected function yamlParse($fileName, $filePath) {
+		
+		$configPath = $filePath . $fileName;
+		
+		if (!file_exists($configPath)) {
+			copy($filePath.'default.yml', $configPath);	
+		}
+		
+		$yaml = Yaml::parse(file_get_contents($configPath));
+		
+		return $yaml;
+		
+	}
+	
+	protected function yamlDump($pageName, $pageData, $filePath) {
+		
+		$pathToFile = $filePath . $pageName; 
+		
+		$yaml = Yaml::dump($pageData);	
+		
+		$dump = file_put_contents($pathToFile, $yaml);
+				
+		return $dump;
+	}
+	
+	public function getRobotsTxtAction() {
+		
+		$robotsFile = self::ROBOTS_TXT;
+		
+		
+		if (file_exists($robotsFile)) {
+			$handle = fopen($robotsFile, 'r');
+	
+			$robotsContent = fread($handle, filesize($robotsFile));
+			
+			fclose($handle);
+			
+			return Response::create($robotsContent);
+		} else {
+			return 'File ' . $robotsFile . ' not found!';
+		} 
+		
+	}
 
 }

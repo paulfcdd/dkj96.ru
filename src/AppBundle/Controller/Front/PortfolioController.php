@@ -27,7 +27,12 @@ class PortfolioController extends FrontController
      * @Route("/portfolio/{portfolio}", name="front.portfolio.single")
      */
     public function singlePortfolioAction(Portfolio $portfolio) {
-
+		
+		if ($portfolio->isRedirect())
+		{
+			return $this->redirect($portfolio->getRedirectUrl());
+		}
+		
         return $this->render(':default/front/page/portfolio:single.html.twig', [
             'portfolio' => $portfolio,
             'imagesExt' => FileUploaderService::IMAGES,

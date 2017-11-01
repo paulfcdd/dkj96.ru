@@ -37,7 +37,7 @@ class Banner
     private $category;
 
     /**
-     * @var string
+     * @var string | News | Event
      *
      * @ORM\Column(nullable=true)
      */

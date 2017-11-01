@@ -18,6 +18,11 @@
 
                 <img src="{{ asset('img/logo_dkj.jpg') }}" class="img-responsive" alt=""/>
 
+
+							{% if error %}
+                  <div class="alert alert-warning">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+							{% endif %}
+
                 <label for="username">
                     <i class="fa fa-user" aria-hidden="true"></i> {{ 'security.login.username'|trans }}
                 </label>

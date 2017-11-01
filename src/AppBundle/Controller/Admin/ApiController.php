@@ -15,6 +15,8 @@ use AppBundle\Entity\Booking;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ApiController
@@ -24,9 +26,7 @@ use Symfony\Component\HttpFoundation\Request as HttpRequest;
  */
 class ApiController extends AdminController
 {
-
-    const ENTITY_NAMESPACE_PATTERN = 'AppBundle\\Entity\\';
-
+	
     /**
      * @param string|null $name
      * @return \Doctrine\Common\Persistence\ObjectManager|object
@@ -210,40 +210,100 @@ class ApiController extends AdminController
      */
     public function deleteFileAjaxAction(File $file) {
 
-        $finder = new Finder();
+       parent::deleteFile($file);
 
-        $fileDir = $this->getParameter('upload_directory');
+       return JsonResponse::create();
+		}
 
-        $finder->name($file->getName());
+	/**
+	 * @param Request $request
+	 * @return Response
+	 * @Route("/render_object_selector", name="admin.api.render_object_selector")
+	 */
+		public function renderObjectSelectorAction(Request $request) {
 
-        foreach ($finder->in($fileDir) as $item) {
-            unlink($item);
-        }
+			$object = $request->request->get('category');
 
-        $this->doctrineManager()->remove($file);
+			$classFQN = $this->getClassName($object);
 
-        $this->doctrineManager()->flush();
+			$objects = $this->doctrineManager()->getRepository($classFQN)->findAll();
 
-        return JsonResponse::create('ok');
-    }
+			return $this->render(':default/admin/parts:object_selector.html.twig', [
+				'objects' => $objects
+			]);
+		}
+		
+		/**
+		* @param Request $request
+		* @Route("/save_main_page_seo_to_yml", name="admin.api.save_main_page_seo_to_yml")
+		*/
+		public function saveMainPageSeoToYmlAction(Request $request) 
+		{
+			$requestParams = $request->request;	
+			
+			$pageName = $requestParams->get('pageName') . '.yml';
+			$config = $this->yamlParse($pageName, self::CONFIG_FILE_PATH);
+			
+			$config['seoTitle'] = $requestParams->get('seoTitle');
+			$config['seoKeywords'] = $requestParams->get('seoKeywords');
+			$config['seoDescription'] = $requestParams->get('seoDescription');
+				
+			$writeFile = $this->yamlDump($pageName, $config, self::CONFIG_FILE_PATH);
+			
+			if ($writeFile) {
+					
+				if ($requestParams->get('pageName') == 'index') {
+					return $this->redirectToRoute('admin.settings');	
+				}
+				
+				return $this->redirectToRoute('admin.list', ['entity' => $requestParams->get('pageName')]);	
 
-    /**
-     * @param string $objectClass
-     * @param int $objectId
-     * @return bool
-     */
-    private function deleteObjectRelatedFiles(string $objectClass, int $objectId) {
+				
+			}
+			
+		}
+		
+		/**
+		* @param Request $request
+		* @Route("/save-metrics-code", name="admin.api.save_metrics_code")
+		*/
+		public function saveMetricsCodeAction(Request $request) 
+		{
+			$requestParams = $request->request;	
+			
+			$metricsFileName = $requestParams->get('metricsType') . '.yml';
+			
+			$metricsFile = $this->yamlParse($metricsFileName, self::METRICS_FILE_PATH);
+			
+			$metricsFile = $requestParams->get('metricsCode');
+			
+			$writeFile = $this->yamlDump($metricsFileName, $metricsFile, self::METRICS_FILE_PATH);
 
-        $objectFiles = $this->doctrineManager()->getRepository(File::class)->findBy([
-            'entity' => $objectClass,
-            'foreignKey' => $objectId,
-        ]);
-
-        foreach ($objectFiles as $objectFile) {
-            $this->deleteFileAjaxAction($objectFile);
-        }
-
-        return true;
-
-    }
+			if ($writeFile) {
+				return $this->redirectToRoute('admin.settings');	
+			}
+		}
+		
+		/**
+		* @param Request $request
+		* @Route("/save-robots-txt", name="admin.api.save_robots_txt")
+		*/		
+		public function saveRobotsTxtAction(Request $request) 
+		{
+			$robotsTxt = self::ROBOTS_TXT;
+			
+			$content = $request->request->get('robotsForm');
+			
+			try {
+				
+				file_put_contents($robotsTxt, $content);
+				return $this->redirectToRoute('admin.settings');	
+			} catch(\Exception $e) {
+				return Response::create('Cannot wrote to file '.$robotsTxt.'. Reason: <strong>'.$e->getMessage().'</strong>');
+			}
+			
+			dump($content);
+			die;
+			
+		}
 }

@@ -4,122 +4,83 @@
 
 
 {% block content %}
+<div class="col-lg-12">
+		<div class="tabs-container">
 
-	<div class="col-md-4">
-		<div class="ibox float-e-margins">
-			<div class="ibox-title">
-				<h5>
-					<span class="fa fa-cog"></span>
-						SEO
-				</h5>
-				<div class="ibox-tools">
-					<a class="collapse-link">
-						<i class="fa fa-chevron-up"></i>
-					 </a>
-				</div>
-			 </div>
-			 
-			 <div class="ibox-content">		
-				{% include 'default/admin/parts/seo_form.html.twig' with{'pageName': 'index'} %}															                
-			 </div>   
-		</div>
-	</div>
-</div>
+            <div class="tabs-left">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a data-toggle="tab" href="#seo-settings" aria-expanded="true">
+							<span class="fa fa-cog"></span> Настройки SEO
+						</a>
+					</li>
+                    <li class="">
+						<a data-toggle="tab" href="#robots" aria-expanded="false">
+							<span class="fa fa-wrench"></span> Robots.txt
+						</a>
+					</li>
+					<li class="">
+						<a data-toggle="tab" href="#google-analytics" aria-expanded="false">
+							<span class="fa fa-google"></span> Код Google Analytics
+						</a>
+					</li>
+					
+					<li class="">
+						<a data-toggle="tab" href="#yandex-metrika" aria-expanded="false">
+						<span class="fa fa-line-chart"></span> Код Яндекс.Метрика
+						</a>
+					</li>
+                </ul>
+				<div class="tab-content ">
+					
+					<div id="seo-settings" class="tab-pane active">
+                    
+						<div class="panel-body">
+							{% include 'default/admin/parts/seo_form.html.twig' with{'pageName': 'index'} %}															                
+						</div>
+					</div>
+					
+                    <div id="robots" class="tab-pane">
+                    
+						<div class="panel-body">
+							<!--Robots.txt edit form start-->
+							<form action="{{ path('admin.api.save_robots_txt') }}" method="post">				
+								<div class="form-group">
+									<textarea class="form-control no-resize" rows="12" id="robotsForm" name="robotsForm">{{ render(controller('AppBundle:Admin\\Admin:getRobotsTxt')) }}</textarea>
+								</div>
+													
+								<div class="form-group">
+									 <button type="submit" class="btn btn-primary">
+										Сохранить
+									</button>
+								</div>
+							</form>
+							<!--Robots.txt edit form end -->							
+                        </div>
+                 
+                    </div>
 
-<div class="row">
-		<!-- Google analitycs block start -->
-	<div class="col-md-6">
-		<div class="ibox float-e-margins">
-			
-			<!-- Box-title start -->
-			<div class="ibox-title">
-				<h5>
-					<span class="fa fa-google"></span>
-						Код Google Analytics
-				</h5>
-				<div class="ibox-tools">
-					<a class="collapse-link">
-						<i class="fa fa-chevron-up"></i>
-					</a>
-				</div>
-			</div>
-			<!-- Box-title end -->
-			
-			<!-- Box-content start --> 
-			 <div class="ibox-content">
-				 {% include 'default/admin/parts/metrics_form.html.twig' with{'metricsType': 'google', 'content': google_code} %}
-			 </div>
-			 <!-- Box-content end -->
-			 
-		</div>
-	</div>
-	<!-- Google analitycs block end -->
-	
-	<!-- Yandex metrica block start -->
-	<div class="col-md-6">
-		<div class="ibox float-e-margins">
-			
-			<!-- Box-title start -->
-			<div class="ibox-title">
-				<h5>
-					<span class="fa fa-line-chart"></span>
-						Код Яндекс.Метрика
-				</h5>
-				<div class="ibox-tools">
-					<a class="collapse-link">
-						<i class="fa fa-chevron-up"></i>
-					 </a>
-				</div>
-			 </div>
-			<!-- Box-title end -->
-			
-			<!-- Box-content start -->
-			<div class="ibox-content">
-				{% include 'default/admin/parts/metrics_form.html.twig' with{'metricsType': 'yandex', 'content': yandex_code} %}
-			</div>
-			 <!-- Box-content end -->
-		</div>
-	</div>
-	<!-- Yandex metrica block end -->
-	
-	<div class="col-md-6">
-		<div class="ibox float-e-margins">
-			
-			<!-- Box-title start -->
-			<div class="ibox-title">
-				<h5>
-					<span class="fa fa-wrench"></span>
-						Правка Robots.txt
-				</h5>
-				<div class="ibox-tools">
-					<a class="collapse-link">
-						<i class="fa fa-chevron-up"></i>
-					 </a>
-				</div>
-			 </div>
-			<!-- Box-title end -->
-			
-			<!-- Box-content start -->
-			<div class="ibox-content">
-				
-				<!--Robots.txt edit form start-->
-				<form action="{{ path('admin.api.save_robots_txt') }}" method="post">				
-					<div class="form-group">
-						<textarea class="form-control no-resize" rows="12" id="robotsForm" name="robotsForm">{{ render(controller('AppBundle:Admin\\Admin:getRobotsTxt')) }}</textarea>
+					<div id="google-analytics" class="tab-pane">
+                    
+						<div class="panel-body">
+							{% include 'default/admin/parts/metrics_form.html.twig' with{'metricsType': 'google', 'content': google_code} %}
+						</div>
+					
 					</div>
-										
-					<div class="form-group">
-						 <button type="submit" class="btn btn-primary">
-							Сохранить
-						</button>
+					
+					<div id="yandex-metrika" class="tab-pane">
+                    
+						<div class="panel-body">
+							{% include 'default/admin/parts/metrics_form.html.twig' with{'metricsType': 'yandex', 'content': yandex_code} %}
+						</div>
+					
 					</div>
-				</form>
-				<!--Robots.txt edit form end -->
-			
+					
+                </div>
 			</div>
-			 <!-- Box-content end -->
-		</div>
-	</div>
+        </div>
+   </div>
+
 </div>
 {% endblock %}
 

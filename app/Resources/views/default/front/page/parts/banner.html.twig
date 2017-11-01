@@ -11,11 +11,11 @@
 					{% if activeBanner.link == 1 %}
 
 						{% if activeBanner.category == 'news' %}
-							{% set path = path('front.news', {'news': activeBanner.object}) %}
+							{% set path = path('front.load_page', {'entity': activeBanner.category, 'slug': activeBanner.object }) %}
 						{% endif %}
 
 						{% if activeBanner.category == 'event' %}
-							{% set path = path('event.details_page', {'event': activeBanner.object}) %}
+							{% set path = path('event.details_page', {'entity': activeBanner.category, 'slug': activeBanner.object }) %}
 						{% endif %}
 
 							<a href="{{ path }}">

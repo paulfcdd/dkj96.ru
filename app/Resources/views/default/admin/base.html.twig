@@ -190,6 +190,11 @@
                     <ul class="nav navbar-top-links navbar-right">
                         {% block add_object_btn %}{% endblock %}
                         <li>
+                            <a href="{{ path('front.index') }}" target="_blank">
+                                <i class="fa fa-home"></i> На главную
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ path('fos_user_security_logout') }}">
                                 <i class="fa fa-sign-out"></i> Выход
                             </a>

@@ -9,9 +9,11 @@
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="{% block seoDescription %}{% endblock %}">
+    <meta name="keywords" content="{% block seoKeywords %}{% endblock %}">
 
     <title>{% block title %}Дворец Культуры Железнодорожников{% endblock %}</title>
-
+    
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css">
     <script src="https://use.fontawesome.com/dd34fe19f7.js"></script>
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
@@ -25,35 +27,11 @@
     <script src='https://www.google.com/recaptcha/api.js'></script>
 
     {% block yandex_metrika_counter %}
-        <script type="text/javascript">
-            (function (d, w, c) {
-                (w[c] = w[c] || []).push(function () {
-
-                    try {
-                        w.yaCounter46308474 = new Ya.Metrika({
-                            id: 46308474,
-                            clickmap: true,
-                            trackLinks: true,
-                            accurateTrackBounce: true,
-                            webvisor: true,
-                            trackHash: true
-                        });
-                    } catch (e) {
-                    }
-                });
-                var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () {
-                    n.parentNode.insertBefore(s, n);
-                };
-                s.type = "text/javascript";
-                s.async = true;
-                s.src = "https://mc.yandex.ru/metrika/watch.js";
-                if (w.opera == "[object Opera]") {
-                    d.addEventListener("DOMContentLoaded", f, false);
-                } else {
-                    f();
-                }
-            })(document, window, "yandex_metrika_callbacks");
-        </script>
+		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'yandex'})) }}
+    {% endblock %}
+    
+    {% block google_analytics %}
+		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'google'})) }}
     {% endblock %}
 </head>
 <body>
@@ -62,16 +40,43 @@
 <div class="wrapper">
 
     <div class="header row">
+
         {% block header %}
 
-            {% set mainMenu = {
-            'front.index' : 'Главная',
-            'event.list': 'Афиша',
-            'halls.list' : 'Залы',
-            'front.artists' : 'Артисты',
-            'front.history' : 'История',
-            'front.contact' : 'Контакты'
-            } %}
+            {% set mainMenu = 
+				[
+					{
+						title: 'Главная',
+						id: 'index',
+						path: path('front.index')
+					},
+					{
+						title: 'Афиша',
+						id: 'event',
+						path: path('front.load_page', {'entity':'event'})
+					},
+					{
+						title: 'Залы',
+						id: 'hall',
+						path: path('front.load_page', {'entity':'hall'})
+					},
+					{
+						title: 'Артисты',
+						id: 'artist',
+						path: path('front.load_page', {'entity':'artist'})
+					},
+					{
+						title: 'История',
+						id: 'history',
+						path: path('front.load_page', {'entity':'history'})
+					},
+					{
+						title: 'Контакты',
+						id: 'contact',
+						path: path('front.contact')
+					}
+				] 
+            %}
 
             {#
             'front.index' : 'Отзывы',
@@ -82,7 +87,7 @@
             </div>
 
             <div>
-                {% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}
+                {#{% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}#}
             </div>
 
         {% endblock %}
@@ -90,6 +95,7 @@
 
     <div class="content">
         {% block content %}
+        
             {% block main_banner_widget %}
                 {{ render(controller('AppBundle:Front\\Front:renderBanner')) }}
             {% endblock %}

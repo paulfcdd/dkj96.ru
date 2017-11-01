@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation as HTTP;
 use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Service\Utilities;
 
 
 /**
@@ -87,6 +88,7 @@ class ApiController extends FrontController
             $event['name'] = $item->getTitle();
             $event['time'] = $item->getEventTime()->format('H:i');
             $event['ticketUrl'] = $item->getTicketUrl();
+            $event['slug'] = $item->getSlug();
 
             array_push($groupByDays[$key]['events'], $event);
 
@@ -94,6 +96,25 @@ class ApiController extends FrontController
 
         return $this->render(':default/front/page/event:calendar.html.twig', [
             'events' => $groupByDays,
+            'entity' => 'event'
         ]);
     }
+    
+     /**
+     * @param HTTP\Request $request
+     * @Route("/api/switch-page", name="api.switch-page")
+     */
+    public function switchPageAction(HTTP\Request $request, Utilities $utilities) 
+    {
+		$paginator = $utilities
+				->setObjectName($this->getClassName($request->request->get('entity')))
+				->setCriteria([])
+				->setOrderBy(['publishStartDate' => 'DESC'])
+				->setLimit($request->request->get('limit'))
+				->setOffset($request->request->get('offset'));
+				
+		return $this->render(':default/front/utility:paginator.html.twig', [
+					'objects' => $paginator->paginationAction(),
+				]);
+	}
 }

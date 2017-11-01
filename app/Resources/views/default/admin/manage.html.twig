@@ -3,6 +3,14 @@
 
 {% block styles %}
 {% endblock %}
+{% set entity = app.request.get('entity') %}
+{% block page_heading %}
+	{% if object.id == null %}
+		Добавить новый объект
+		{% else %}
+		{{ object.title }}
+	{% endif %}
+{% endblock %}
 
 {% block scripts %}
     <script>
@@ -51,6 +59,11 @@
           });
           {% endif %}
         });
+        
+                
+        $('#{{ entity }}_seoTitle').liTranslit({
+			elAlias: $('#{{ entity }}_slug')
+		});
     </script>
 
 
@@ -62,7 +75,7 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 {% set sectionName = 'admin.'~form.vars.name  %}
-                <h5>Управление разделом {{ sectionName | trans }}</h5>
+                <h5>Управление объектом</h5>
             </div>
             <div class="ibox-content">
                 {% if app.request.get('entity') == 'banner'%}
@@ -88,6 +101,9 @@
                 {% endif %}
 
                 {{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}
+					{% for key, val in form.children %}
+						
+					{% endfor %}
                 {{ form_end(form) }}
             </div>
         </div>

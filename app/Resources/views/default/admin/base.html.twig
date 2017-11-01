@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Админ панель ДКЖ{% endblock %}</title>
 
     <link href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('node_modules/sweetalert/dist/sweetalert.css') }}" rel="stylesheet">
@@ -22,6 +22,9 @@
 {% set routeParams = app.request.attributes.get('_route_params') %}
 {% set routeName = app.request.attributes.get('_route') %}
 {% set activeTabId = '' %}
+{% set activePageName = [] %}
+{% set requestUri = app.request.requestUri %}
+
 
 {% set sidebarItems = [
     {
@@ -29,6 +32,12 @@
         href: path('admin.index'),
         icon: 'fa-th-large',
         name: 'Главная'
+    },
+    {
+        id: 'settings',
+        href: path('admin.settings'),
+        icon: 'fa-cog',
+        name: 'Настройки'
     },
     {
         id: 'banner',
@@ -92,9 +101,31 @@
     }
 ] %}
 
+{% for item in sidebarItems %}
+                  		
+                  		{% set active = null %}
+                  		
+                  		{% set splitRequestUri =  requestUri | split('/') %}
+                  		
+                  		{% set currentUri = splitRequestUri[2] %}
+						
+						{% if item.id == app.request.get('entity') %}
+							{% set activePageName = activePageName | merge([item.name]) %}
+						{% endif %}
+						
+						{% if app.request.get('entity') == null %}
+							{% if item.id == currentUri %}
+								{% set activePageName = activePageName | merge([item.name]) %}
+							{% endif %}						
+
+						{% endif %}
+										                    
+ {% endfor %}
+ 
 <body>
 <div id="wrapper">
     {% block navigation_bar %}
+
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav metismenu" id="side-menu">
@@ -113,13 +144,34 @@
                         </div>
                     </li>
                     {% for item in sidebarItems %}
-                        <li id="{{ item.id }}" {% if item.id == app.request.get('entity') %}class="active"{% endif %}>
+                  		
+                  		{% set active = null %}
+                  		
+                  		{% set splitRequestUri =  requestUri | split('/') %}
+                  		
+                  		{% set currentUri = splitRequestUri[2] %}
+						
+						{% if item.id == app.request.get('entity') %}
+							{% set active = 'active' %}
+							{% set activePageName = activePageName | merge([item.name]) %}
+						{% endif %}
+						
+						{% if app.request.get('entity') == null %}
+							{% if item.id == currentUri %}
+								{% set active = 'active' %}
+								{% set activePageName = activePageName | merge([item.name]) %}
+
+							{% endif %}						
+
+						{% endif %}
+										                    
+                        <li id="{{ item.id }}" {% if active != null %} class="{{ active }}" {% endif %}}>
                             <a href="{{ item.href }}"><i class="fa {{ item.icon }}"></i>
                                 <span class="nav-label">{{ item.name }}</span>
                             </a>
                         </li>
-                    {% endfor %}
 
+                    {% endfor %}
                 </ul>
 
             </div>
@@ -136,6 +188,12 @@
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
+                        {% block add_object_btn %}{% endblock %}
+                        <li>
+                            <a href="{{ path('front.index') }}" target="_blank">
+                                <i class="fa fa-home"></i> На главную
+                            </a>
+                        </li>
                         <li>
                             <a href="{{ path('fos_user_security_logout') }}">
                                 <i class="fa fa-sign-out"></i> Выход
@@ -148,6 +206,18 @@
 
         {% endblock %}
 
+	<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+			<h2>
+				{% block page_heading %}{{ activePageName | first }}{% endblock %}
+			</h2>
+		</div>
+        
+         <div class="col-lg-2">
+
+		</div>
+     </div>
+            
         <div class="row">
             <div class="col-lg-12">
                 <div class="wrapper wrapper-content">
@@ -206,6 +276,9 @@
 
 <!-- Toastr -->
 <script src="{{ asset('admin/js/plugins/toastr/toastr.min.js') }}"></script>
+
+<!-- Translit ru-to-en -->
+<script src="{{ asset('js/plugins/translitRuEn/translit.js') }}"></script>
 
 <script>
 

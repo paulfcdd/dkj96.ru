@@ -1,13 +1,16 @@
 {% extends '::base.html.twig' %}
 
-{% block title %} Главная | {{ parent() }} {% endblock %}
+{% block title %} {{ metaTags.seoTitle }} {% endblock %}
+
+{% block seoDescription %}{{ metaTags.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ metaTags.seoKeywords }}{% endblock %}
+
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/front/page/index.css') }}">
 {% endblock %}
 
 {% block content %}
-
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
     <div class="space-fix-container"></div>
@@ -133,7 +136,19 @@
                                         <div class="row event-heading">
                                             <div class="col-sm-10 col-xs-12 event-label">
                                                 <h4>
-                                                    <a href="{{ path('front.news', {'news': item.id}) }}"
+													
+													{% set slug = null %}
+													
+													{% if item.slug != null %}
+															{% set slug = item.slug %}
+														{% else %}
+															{% set slug = item.id %}
+													{% endif %}
+													
+								                    <a href="{{ path('front.load_page', {
+														'entity': 'news',
+														'slug': slug
+														}) }}"
                                                        class="event-header">
                                                         <h3>{{ item.title }}</h3>
                                                     </a>

@@ -28,9 +28,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Yaml\Yaml;
+
+
 
 class AdminController extends Controller
 {
+	const CONFIG_FILE_PATH = __DIR__.('/../../../../app/config/page/');
+	
+	const METRICS_FILE_PATH = __DIR__.('/../../../../app/config/metrics/');
+	
+	const ROBOTS_TXT = __DIR__.('/../../../../web/robots.txt');
+	
+	const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
+	
+	protected $configFilePath;
+    
+    public function __construct(){
+		$this->configFilePath = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH));
+		}
+    
     /**
      * @Route("/admin/dashboard", name="admin.index")
      */
@@ -84,6 +101,8 @@ class AdminController extends Controller
 
         return $this->render(':default/admin:list.html.twig', [
             'objects' => $repository->findAll(),
+            'pageSeo' => $this->getStaticPageSeo($entity),
+            'pageName' => $entity,
         ]);
     }
 
@@ -251,7 +270,7 @@ class AdminController extends Controller
             'videosExt' => FileUploaderService::VIDEOS,
         ]);
     }
-
+    
     /**
      * @param $className
      * @param $object
@@ -351,6 +370,70 @@ class AdminController extends Controller
 		$em->flush();
 
 		return JsonResponse::create('ok');
+	}
+	
+	protected function getStaticPageSeo($pageName = 'index')  
+	{
+		$fileName = $pageName . '.yml';
+				
+		$config = $this->yamlParse($fileName, self::CONFIG_FILE_PATH);
+		
+		return $config;
+			
+	}
+
+	protected function getMetricsCode($metricsType) {
+		
+		$fileName = $metricsType . '.yml';
+		
+		$metrics = $this->yamlParse($fileName, self::METRICS_FILE_PATH);
+		
+		return $metrics;
+				
+	}
+	
+	protected function yamlParse($fileName, $filePath) {
+		
+		$configPath = $filePath . $fileName;
+		
+		if (!file_exists($configPath)) {
+			copy($filePath.'default.yml', $configPath);	
+		}
+		
+		$yaml = Yaml::parse(file_get_contents($configPath));
+		
+		return $yaml;
+		
+	}
+	
+	protected function yamlDump($pageName, $pageData, $filePath) {
+		
+		$pathToFile = $filePath . $pageName; 
+		
+		$yaml = Yaml::dump($pageData);	
+		
+		$dump = file_put_contents($pathToFile, $yaml);
+				
+		return $dump;
+	}
+	
+	public function getRobotsTxtAction() {
+		
+		$robotsFile = self::ROBOTS_TXT;
+		
+		
+		if (file_exists($robotsFile)) {
+			$handle = fopen($robotsFile, 'r');
+	
+			$robotsContent = fread($handle, filesize($robotsFile));
+			
+			fclose($handle);
+			
+			return Response::create($robotsContent);
+		} else {
+			return 'File ' . $robotsFile . ' not found!';
+		} 
+		
 	}
 
 }

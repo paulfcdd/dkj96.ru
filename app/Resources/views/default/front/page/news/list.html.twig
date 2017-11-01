@@ -17,19 +17,19 @@
                 btnId = btn.attr('id');
 
             $.ajax({
-                url: '{{ path('front.news') }}',
+                url: '{{ path('api.switch-page') }}',
                 method: 'post',
                 data: {
                     'offset': offset,
-                    'limit': limit
+                    'limit': limit,
+                    'entity': '{{ app.request.get('entity') }}'
                 },
                 success: function (data) {
-
-                    $('.pagination').find('li').removeClass('active');
+					$('.pagination').find('li').removeClass('active');
 
                     $('#li_'+btnId).addClass('active');
 
-                    $('.halls-list-block').html(data);
+                    $('.halls-list-block').html(data); 
                 }
             });
 
@@ -57,29 +57,43 @@
 
     <div class="container padding-left-0 padding-right-0 halls-list-block">
 
-        {% for single_news in news %}
+        {% for object in objects %}
+        
+			{% set slug = object.id %}
 
+			{% if object.slug != null %}
+					{% set slug = object.slug %}
+				{% else %}
+					{% set slug = object.id %}
+			{% endif %}
+						
             <div class="col-xs-12 padding-0-100px single-hall xs-padding-0-10px">
                 <div class="media">
 
                     <div class="media-body">
                         <h3 class="media-heading hall-label">
-                            <a href="{{ path('front.news', {'news': single_news.id}) }}">{{ single_news.title }}</a>
+                            <a href="{{ path('front.load_page', {
+                            'entity': app.request.get('entity'),
+                            'slug': slug
+                            }) }}">{{ object.title }}</a>
                         </h3>
                         <h6 style="font-size: 14px;">
-                            <i class="fa fa-calendar"></i> {{ single_news.publishStartDate | date('d.m.Y') }}
-                            | <i class="fa fa-user"></i> {{ single_news.author }}
+                            <i class="fa fa-calendar"></i> {{ object.publishStartDate | date('d.m.Y') }}
+                            | <i class="fa fa-user"></i> {{ object.author }}
                         </h6>
                         <div class="by-author hall-description">
-                            {{ single_news.description }}
+                            {{ object.description }}
                         </div>
-                        <a href="{{ path('front.news', {'news': single_news.id}) }}" class="read-more-link pull-right">Подробнее</a>
+                        <a href="{{ path('front.load_page', {
+                            'entity': app.request.get('entity'),
+                            'slug': slug
+                            }) }}" class="read-more-link pull-right">Подробнее</a>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
-
+    
     {% if paginator > 1 %}
 
         <div class="col-xs-12 padding-0-100px single-hall xs-padding-0-10px text-center">
@@ -92,7 +106,7 @@
                     {% if i == 1 %}
                         {% set dataOffset = offset %}
                     {% else %}
-                        {% set dataOffset = news | length * (i-1) %}
+                        {% set dataOffset = objects | length * (i-1) %}
                     {% endif %}
 
                     <li id="li_page_{{ i }}">
@@ -106,6 +120,6 @@
             </ul>
         </div>
 
-    {% endif %}
+		{% endif %}
 
 {% endblock %}

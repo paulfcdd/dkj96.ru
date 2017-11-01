@@ -1,6 +1,8 @@
 {% extends '::base.html.twig' %}
 
-{% block title %} Календарь событий во Дворце Культуры Железнодорожников {% endblock %}
+{% block title %} {{ metaTags.seoTitle }} {% endblock %}
+{% block seoDescription %}{{ metaTags.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ metaTags.seoKeywords }}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
@@ -98,8 +100,8 @@
         </div>
     {% endblock %}
 
-    {% for event in events %}
-        {% for file in event.files %}
+    {% for object in objects %}
+        {% for file in object.files %}
             {% if file.isDefault == true %}
                 {% set bgimg = file.name %}
             {% endif %}

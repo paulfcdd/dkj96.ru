@@ -2,5 +2,9 @@
 /tests/
 /vendor/
 /app/config/parameters.yml
+/app/config/page/*
+/app/config/metrics/*
 /var/
 /web/upload/**
+/logs/*
+/stats/*

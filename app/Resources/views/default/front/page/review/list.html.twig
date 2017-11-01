@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Артисты{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/front/page/artisty.css') }}">
+{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <p class="padding-0-100px">
+                    В структуре ДКЖ успешно работают творческие коллективы различных направлениях искусств,
+                    многочисленных Коллективы ДКЖ лауреаты эстрадных конкурсов, фестивалей и Чемпионатов.Подробнее о
+                    коллективах и дополнительных услугах Вы можете узнать ниже.
+                </p>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container padding-left-0 padding-right-0 halls-list-block">
+
+        {% for review in reviews %}
+
+            <div class="col-xs-12 padding-0-100px single-hall xs-padding-0-10px">
+                <div class="media">
+
+                    <div class="media-body">
+                        <h3 class="media-heading hall-label">
+                            <a href="#">{{ review.event.title }}</a>
+                        </h3>
+                        <div class="by-author hall-description">
+                            {{ review.message }}
+                        </div>
+                        <a href="#" class="read-more-link pull-right">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

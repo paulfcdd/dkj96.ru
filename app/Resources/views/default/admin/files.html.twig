@@ -1,5 +1,14 @@
 {% extends ':default/admin:base.html.twig' %}
 
+{% block styles %}
+<style>
+    .single-video-block {
+        width: 320px !important;
+        height: 240px !important;
+    }
+</style>
+{% endblock %}
+
 {% block scripts %}
     <script>
         $('.set-as-default').on('click', function () {
@@ -58,33 +67,65 @@
             </div>
             <div class="ibox-content">
 
+                {% set images = [] %}
+                {% set videos = [] %}
+
+                {% for file in files %}
+                    {% if in_array(file.mimeType, imagesExt) %}
+                        {% set images = images | merge ([file]) %}
+                    {% endif %}
+
+                    {% if in_array(file.mimeType, videosExt) %}
+                        {% set videos = videos | merge ([file]) %}
+                    {% endif %}
+                {% endfor %}
 
                 <div class="row">
-                    {% for file in files %}
+                    <div class="col-xs-12">
+                        <h4>Фото</h4>
+                    </div>
+                    {% for image in images %}
 
                         {% set disabled = null %}
                         {% set buttonText = 'Установить по умолчанию' %}
 
-                        <div class="col-md-4" id="file_{{ file.id }}">
+                        <div class="col-md-4" id="file_{{ image.id }}">
                             <div class="thumbnail single-file text-center">
                                 <a href="#" class="single-file-wrapper">
-                                    <img src="{{ asset(files_dir~'/'~routeParams.entity~'/'~file.name) }}">
+                                    <img src="{{ asset(files_dir~'/'~routeParams.entity~'/'~image.name) }}">
                                     <div class="caption btn-group">
-                                        {% if file.isDefault == 1 %}
+                                        {% if image.isDefault == 1 %}
                                             {% set disabled = 'disabled' %}
                                             {% set buttonText = 'Выбрано по умолчанию' %}
                                         {% endif %}
 
 
                                         <button type="button"
-                                                class="btn btn-primary btn-sm set-as-default" data-fileid="{{ file.id }}"
+                                                class="btn btn-primary btn-sm set-as-default" data-fileid="{{ image.id }}"
                                                 {{ disabled }}>
                                             {{ buttonText }}
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-sm delete-file" data-fileid="{{ file.id }}">Удалить</button>
+                                        <button type="button" class="btn btn-danger btn-sm delete-file" data-fileid="{{ image.id }}">Удалить</button>
                                     </div>
                                 </a>
                             </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4>Видео</h4>
+                    </div>
+                    {% for video in videos %}
+
+                        {% set path = asset('upload/'~app.request.get('entity')~'/'~video.name) %}
+                        <div class="col-md-4" id="file_{{ video.id }}">
+                            <video class="single-video-block" controls>
+                                <source src="{{ path }}" type="video/{{ video.mimeType }}">
+                                Your browser does not support the video tag.
+                            </video>
+                            <button type="button" class="btn btn-danger btn-sm delete-file" data-fileid="{{ video.id }}">Удалить</button>
                         </div>
                     {% endfor %}
                 </div>

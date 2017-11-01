@@ -1,3 +1,78 @@
+.portfolio .gallery-title {
+  font-size: 36px;
+  color: #42B32F;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 70px;
+}
+.portfolio .gallery-title:after {
+  content: "";
+  position: absolute;
+  width: 7.5%;
+  left: 46.5%;
+  height: 45px;
+  border-bottom: 1px solid #5e5e5e;
+}
+.portfolio .filter-button {
+  font-size: 18px;
+  border: 1px solid #42B32F;
+  border-radius: 5px;
+  text-align: center;
+  color: #42B32F;
+  margin-bottom: 30px;
+}
+.portfolio .filter-button:hover {
+  font-size: 18px;
+  border: 1px solid #42B32F;
+  border-radius: 5px;
+  text-align: center;
+  color: #ffffff;
+  background-color: #42B32F;
+}
+.portfolio .btn-default:active .filter-button:active {
+  background-color: #42B32F;
+  color: white;
+}
+.portfolio .port-image {
+  width: 100%;
+}
+.portfolio .gallery_product {
+  margin-bottom: 30px;
+}
+.portfolio .photos {
+  flex: 1 0 auto;
+  margin-top: 60px;
+}
+.portfolio .photos .thumbnail {
+  border: 0 none;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+.portfolio .photos .thumbnail img {
+  width: 100%;
+  display: block;
+}
+.portfolio .photos .thumbnail .caption {
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+  background: #000;
+  background: -webkit-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: -moz-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: -o-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: linear-gradient(to top, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.portfolio .photos .thumbnail .caption h3 {
+  color: white;
+  -webkit-font-smoothing: antialiased;
+}
+.portfolio .photos .thumbnail .caption p {
+  color: white;
+  -webkit-font-smoothing: antialiased;
+}
 @media only screen and (max-width: 479px) {
   .portfolio .single-news {
     padding: 15px;

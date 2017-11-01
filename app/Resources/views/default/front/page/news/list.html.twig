@@ -1,0 +1,111 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Новости{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/front/page/artisty.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('.paginator-button').on('click', function (e) {
+
+            var btn = $(this);
+
+            var offset = btn.data('offset'),
+                limit = btn.data('limit'),
+                btnId = btn.attr('id');
+
+            $.ajax({
+                url: '{{ path('front.news') }}',
+                method: 'post',
+                data: {
+                    'offset': offset,
+                    'limit': limit
+                },
+                success: function (data) {
+
+                    $('.pagination').find('li').removeClass('active');
+
+                    $('#li_'+btnId).addClass('active');
+
+                    $('.halls-list-block').html(data);
+                }
+            });
+
+            e.preventDefault();
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <p class="padding-0-100px">
+                    Все новости Дворца Культуры Железнодорожников
+                </p>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container padding-left-0 padding-right-0 halls-list-block">
+
+        {% for single_news in news %}
+
+            <div class="col-xs-12 padding-0-100px single-hall xs-padding-0-10px">
+                <div class="media">
+
+                    <div class="media-body">
+                        <h3 class="media-heading hall-label">
+                            <a href="{{ path('front.news', {'news': single_news.id}) }}">{{ single_news.title }}</a>
+                        </h3>
+                        <h6 style="font-size: 14px;">
+                            <i class="fa fa-calendar"></i> {{ single_news.publishStartDate | date('d.m.Y') }}
+                            | <i class="fa fa-user"></i> {{ single_news.author }}
+                        </h6>
+                        <div class="by-author hall-description">
+                            {{ single_news.description }}
+                        </div>
+                        <a href="{{ path('front.news', {'news': single_news.id}) }}" class="read-more-link pull-right">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if paginator > 1 %}
+
+        <div class="col-xs-12 padding-0-100px single-hall xs-padding-0-10px text-center">
+            <ul class="pagination">
+                {% for i in 1..paginator %}
+
+                    {% set dataLimit = limit %}
+
+
+                    {% if i == 1 %}
+                        {% set dataOffset = offset %}
+                    {% else %}
+                        {% set dataOffset = news | length * (i-1) %}
+                    {% endif %}
+
+                    <li id="li_page_{{ i }}">
+                        <a href="#" class="paginator-button"
+                           id="page_{{ i }}"
+                           data-offset="{{ dataOffset }}"
+                           data-limit="{{ dataLimit }}"
+                        >{{ i }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

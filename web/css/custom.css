@@ -22,6 +22,7 @@
 html,
 body {
   height: 100%;
+  background-color: #F0DEBA;
 }
 .wrapper {
   display: flex;
@@ -33,6 +34,36 @@ body {
   /* Custom classes*/
   /* End custom classes*/
   /* Responsive classes*/
+}
+.wrapper .banner-btn {
+  position: absolute;
+  bottom: 30%;
+  right: 20%;
+}
+@media only screen and (min-width: 960px) and (max-width: 1199px) {
+  .wrapper .modal-gallery {
+    width: 75%;
+  }
+}
+.wrapper .custom-carousel-control {
+  background-image: none;
+}
+.wrapper .modal-gallery-image-thumbnail {
+  padding: 20px 0;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .modal-gallery-image-thumbnail {
+    padding: 10px 0;
+  }
+}
+.wrapper .modal-gallery-image-thumbnail img {
+  width: 50%;
+}
+.wrapper .pointer {
+  cursor: pointer;
+}
+.wrapper .pointer:hover {
+  cursor: pointer;
 }
 .wrapper .event-info-block {
   padding-left: 10px;
@@ -65,7 +96,6 @@ body {
 }
 .wrapper .no-border-radius {
   border-radius: 0;
-  -webkit-appearance: none;
 }
 .wrapper .label-underscored {
   color: #6B3E21;
@@ -78,7 +108,7 @@ body {
   font-family: 'Bebas Book';
 }
 .wrapper .read-more-link {
-  color: #F0DEBA;
+  color: #D22630;
   text-decoration: none;
   font-size: 18px;
   line-height: 26px;
@@ -126,6 +156,12 @@ body {
 }
 .wrapper .margin-right-0 {
   margin-right: 0;
+}
+.wrapper .margin-left-15px {
+  margin-left: 15px;
+}
+.wrapper .margin-rigth-15px {
+  margin-rigth: 15px;
 }
 .wrapper .padding-left-15px {
   padding-left: 15px;
@@ -234,8 +270,7 @@ body {
   border-bottom: 10px solid #6B3E21;
 }
 .wrapper .header .main-header .main-menu ul li a {
-  font-size: 16px;
-  background: #fff;
+  font-size: 18px;
   color: #6B3E21;
   padding-top: 50px;
   padding-bottom: 3px;
@@ -248,13 +283,12 @@ body {
   flex: 1 0 auto;
 }
 .wrapper .content #main-banner-index {
-  background: url("../img/banner_2.jpg");
-  height: 350px;
-  position: relative;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  height: 410px;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .content #main-banner-index {
+    height: 100px;
+  }
 }
 .wrapper .content .banner-text {
   background: grey;
@@ -271,6 +305,11 @@ body {
   font-size: 24pt;
   line-height: 20pt;
   font-family: 'Bebas Bold';
+}
+.wrapper .content .banner-btn {
+  position: absolute;
+  bottom: 30%;
+  right: 20%;
 }
 .wrapper .content #main-text-under-banner .banner-content-block {
   font-family: 'Century Gothic Regular';

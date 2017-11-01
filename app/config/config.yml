@@ -9,6 +9,14 @@ parameters:
     locale: ru
     mail_from: 'dkj96@ya.ru'
     upload_directory: "%kernel.root_dir%/../web/upload"
+    recaptcha_key: '6LeMHSgUAAAAAOAMpZmnlPxcjHHDwJPne0pBbedd'
+    recaptcha_secret_key: '6LeMHSgUAAAAAPN_On3djO3qfLLPgFhmuy_sUmda'
+    recaptcha_verify_url: 'https://www.google.com/recaptcha/api/siteverify'
+    client_review: 'client@dkj96.ru'
+    client_question: 'client@dkj96.ru'
+    client_comm_propsal: 'client@dkj96.ru'
+    director: 'director@dkj96.ru'
+    administrator: 'dkj96@yandex.ru'
 
 framework:
     #esi: ~
@@ -20,7 +28,7 @@ framework:
     form: ~
     csrf_protection: ~
     validation: { enable_annotations: true }
-    #serializer: { enable_annotations: true }
+    serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale: '%locale%'
@@ -41,6 +49,8 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         files_dir: 'upload'
+        recaptcha_key: '%recaptcha_key%'
+        recaptcha_secret_key: '%recaptcha_secret_key%'
 
 # Doctrine Configuration
 doctrine:

@@ -1,0 +1,139 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ portfolio.title }}{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('node_modules/blueimp-gallery/css/blueimp-gallery.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+    <style>
+        .single-video-block {
+            width: 320px !important;
+            height: 240px !important;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('node_modules/blueimp-gallery/js/blueimp-gallery.min.js') }}"></script>
+
+    <script>
+        document.getElementById('links').onclick = function (event) {
+            event = event || window.event;
+            var target = event.target || event.srcElement,
+                link = target.src ? target.parentNode : target,
+                options = {index: link, event: event},
+                links = this.getElementsByTagName('a');
+            blueimp.Gallery(links, options);
+        };
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    {% set files = [] %}
+
+    {% for file in portfolio.files %}
+
+        {% if file.isDefault == false %}
+            {% set files = files | merge([file]) %}
+        {% endif %}
+
+    {% endfor %}
+
+    <div class="container col-xs-padding-right-0 single-hall-page">
+
+        <div class="space-fix-container"></div>
+
+        <div class="row xs-padding-0-10px">
+            <div class="col-xs-12 text-left padding-0-100px">
+                <ol class="breadcrumb single-hall-page-breadcrumbs">
+                    <li class="breadcrumb-item"><a href="{{ path('front.portfolio') }}">Портфолио</a></li>
+                    <li class="breadcrumb-item active">{{ portfolio.title }}</li>
+                </ol>
+
+            </div>
+        </div>
+
+        <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <h4 class="underscored-label">
+                            {{ portfolio.title }}
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h5>Отчет о мероприятии "{{ portfolio.event.title }}"</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <p>
+                    {{ portfolio.description | raw }}
+                </p>
+            </div>
+        </div>
+
+        {% set images = [] %}
+        {% set videos = [] %}
+
+        {% for file in files %}
+            {% if in_array(file.mimeType, imagesExt) %}
+                {% set images = images | merge ([file]) %}
+            {% endif %}
+
+            {% if in_array(file.mimeType, videosExt) %}
+                {% set videos = videos | merge ([file]) %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="space-fix-container"></div>
+
+        {% if images is not empty %}
+            <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+                <div id="links" class="links col-xs-12">
+                    <h4>Фотоматериалы</h4>
+                    {% for image in images %}
+                        <a href="{{ asset('upload/portfolio/'~image.name) }}">
+                            <img src="{{ asset('upload/portfolio/'~image.name) }}" width="100px" height="100px">
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="space-fix-container"></div>
+
+        {% if videos is not empty %}
+            <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+                <div class="col-xs-12">
+                    <h4>Видеоматериалы</h4>
+                </div>
+                {% for video in videos %}
+                    {% set path = asset('upload/portfolio/'~video.name) %}
+                    <div class="col-xs-4">
+                        <video class="single-video-block" controls>
+                            <source src="{{ path }}" type="video/{{ video.mimeType }}">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+        <div id="blueimp-gallery" class="blueimp-gallery">
+            <div class="slides"></div>
+            <h3 class="title"></h3>
+            <a class="prev">‹</a>
+            <a class="next">›</a>
+            <a class="close">×</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+
+{% endblock %}

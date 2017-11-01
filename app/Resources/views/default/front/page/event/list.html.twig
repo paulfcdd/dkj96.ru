@@ -1,49 +1,85 @@
 {% extends '::base.html.twig' %}
 
-{% block title %} Залы {% endblock %}
+{% block title %} Календарь событий во Дворце Культуры Железнодорожников {% endblock %}
 
 {% block stylesheets %}
-    <link href="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/front/page/event_list.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('node_modules/fullcalendar/dist/locale/ru.js') }}"></script>
-
     <script>
+        $(document).ready(function () {
 
-        var events = [];
+            var date = new Date(),
+                month = date.getMonth(),
+                year = date.getFullYear(),
+                limit = 5,
+                monthFirstDay = new Date(year, month, 1),
+                monthLastDay = new Date(year, month + 1, 0),
+                apiUrl = '{{ path('api.load-events-by-month') }}';
 
-        {% for event in events %}
-        var event = {
-            start: '{{ event.eventDate | date('Y-m-d') }}',
-            title: '{{ event.title }}',
-            date: '{{ event.eventDate | date('d.m.Y') }}',
-            time: '{{ event.eventTime | date('H:i') }}',
-            rendering: 'background'
-        };
-        events.push(event);
-        {% endfor %}
+            monthDisabler(month);
 
+            getEvents(apiUrl, monthFirstDay, monthLastDay);
 
-        $('#calendar').fullCalendar({
-            defaultDate: $(this).fullCalendar('today'),
-            events: events,
-            eventBackgroundColor: '#0AD26E',
-            locale: 'ru',
-            eventRender: function(event, element) {
-                $(element).html(
-                    '<div class="event-info-block"">' +
-                    '<h4>'+event.title+'</h4>' +
-                    '<h5>'+event.date+'<h5>' +
-                    '<h5>'+event.time+'<h5>' +
-                    '</div>'
+            $('#year').change(function () {
+                var selectedYear = $(this).val();
+                if (selectedYear == year) {
+                    monthDisabler(month);
+                } else {
+                    $('#month option').each(function (key, val) {
+                        $(val).attr('disabled', false);
+                    })
+                }
+            });
+
+            $('#month option[value="' + month + '"]').prop("selected", true);
+            for (var i = 0; i < limit; ++i) {
+                var nextYear = year + i;
+                $('#year').append(
+                    '<option value="' + nextYear + '">' + nextYear + '</option>'
                 );
-
-//                element.find('.fc-bgevent').text("<p>"+event.title+"</p>");
             }
+
+            $('.filter-event-btn').on('click', function () {
+                $('.event-list-row').empty();
+                $('.loader-row').show();
+
+                var targetMonth = parseInt($('#month').val()),
+                    targetYear = parseInt($('#year').val()),
+                    monthFirstDay = new Date(targetYear, targetMonth, 1),
+                    monthLastDay = new Date(targetYear, targetMonth + 1, 0);
+
+                getEvents(apiUrl, monthFirstDay, monthLastDay);
+            })
         });
+
+        function getEvents(apiUrl, monthFirstDay, monthLastDay) {
+            $.ajax({
+                url: apiUrl,
+                method: 'post',
+                data: {
+                    'firstDay': $.datepicker.formatDate('yy-mm-dd', monthFirstDay),
+                    'lastDay': $.datepicker.formatDate('yy-mm-dd', monthLastDay)
+                },
+                beforeSend: function () {
+                    $('.loader-row').show();
+                },
+                success: function (data) {
+                    $('.loader-row').hide();
+                    $('.event-filter').show();
+                    $('.event-list-row').append(data);
+                }
+            });
+        }
+
+        function monthDisabler(month) {
+            for (var j = 0; j < month; j++) {
+                $('#month option[value="' + j + '"]').attr('disabled', 'disabled');
+            }
+            $('#month option[value="' + month + '"]').prop("selected", true);
+        }
     </script>
 {% endblock %}
 
@@ -56,16 +92,65 @@
         <div class="container padding-0-100px" id="main-text-under-banner">
             <div class="text-center letter-spacing-1px banner-content-block">
                 <p class="padding-0-100px">
-                   Анонс мероприятий в Доме Культуры Железнодорожников
+                    Анонс мероприятий в Дворце Культуры Железнодорожников
                 </p>
             </div>
         </div>
     {% endblock %}
 
+    {% for event in events %}
+        {% for file in event.files %}
+            {% if file.isDefault == true %}
+                {% set bgimg = file.name %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
     <div class="space-fix-container"></div>
 
-    <div class="container padding-left-0 padding-right-0 halls-list-block">
-        <div id="calendar"></div>
+    <div class="container halls-list-block event-list">
+
+        <div class="row">
+            <div class="container-fluid event-filter" hidden>
+                <div class="row inline">
+                    <div class="form-group col-lg-6 col-xs-12">
+                        <select class="form-control no-border-radius" id="month" style="width: 100%">
+                            <option value="0">Январь</option>
+                            <option value="1">Февраль</option>
+                            <option value="2">Март</option>
+                            <option value="3">Апрель</option>
+                            <option value="4">Май</option>
+                            <option value="5">Июнь</option>
+                            <option value="6">Июль</option>
+                            <option value="7">Август</option>
+                            <option value="8">Сентябрь</option>
+                            <option value="9">Октябрь</option>
+                            <option value="10">Ноябрь</option>
+                            <option value="11">Декабрь</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-4 col-xs-12">
+                        <select class="form-control no-border-radius" id="year" style="width: 100%">
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-2 col-xs-12">
+                        <button class="btn btn-default filter-event-btn no-border-radius">Показать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row loader-row" hidden>
+            <div class="loader-container col-md-4 col-md-offset-5">
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <div class="row event-list-row">
+
+        </div>
     </div>
 
 {% endblock %}

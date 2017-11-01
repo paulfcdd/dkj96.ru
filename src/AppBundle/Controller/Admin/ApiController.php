@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\File;
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\News;
+use AppBundle\Entity\Review;
 use AppBundle\Service\MailerService;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
@@ -14,6 +15,8 @@ use AppBundle\Entity\Booking;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ApiController
@@ -52,6 +55,26 @@ class ApiController extends AdminController
         }
     }
 
+    /**
+     * @param $id
+     * @param $entity
+     * @return JsonResponse
+     * @Route("/confirm-action/{id}/{entity}", name="admin.api.confirm_action")
+     */
+    public function confirmAjaxAction($id, $entity) {
+
+        $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
+
+        if ($entityRepository instanceof Booking) {
+            return $this->confirmBooking($entityRepository);
+        }
+
+        if ($entityRepository instanceof Review) {
+            $entityRepository->setApproved(true);
+            $this->doctrineManager()->flush();
+            return JsonResponse::create(true);
+        }
+    }
     /**
      * @Route("/object_delete/{object}/{id}", name="admin.api.object_delete")
      */
@@ -108,10 +131,9 @@ class ApiController extends AdminController
 
     /**
      * @param Booking $booking
-     * @Route("/booking_confirm/{booking}", name="admin.api.booking_confirm")
      * @return JsonResponse
      */
-    public function confirmBookingAjaxAction(Booking $booking) {
+    protected function confirmBooking(Booking $booking) {
 
         $em = $this->getDoctrine()->getManager();
 
@@ -141,7 +163,6 @@ class ApiController extends AdminController
         } else {
             return JsonResponse::create(false);
         }
-
     }
 
     /**
@@ -159,12 +180,10 @@ class ApiController extends AdminController
             'status' => null
         ];
 
-
         $objectFiles = $doctrine->getRepository(File::class)->findBy([
             'entity' => $file->getEntity(),
             'foreignKey' => $file->getForeignKey()
         ]);
-
 
         foreach ($objectFiles as $objectFile) {
             if ($objectFile->isIsDefault() == 1) {
@@ -183,7 +202,6 @@ class ApiController extends AdminController
             $resp['status'] = 500;
         }
 
-
         return JsonResponse::create($resp['data'], $resp['status']);
     }
 
@@ -194,40 +212,26 @@ class ApiController extends AdminController
      */
     public function deleteFileAjaxAction(File $file) {
 
-        $finder = new Finder();
+       parent::deleteFile($file);
 
-        $fileDir = $this->getParameter('upload_directory');
+       return JsonResponse::create();
+		}
 
-        $finder->name($file->getName());
+	/**
+	 * @param Request $request
+	 * @return Response
+	 * @Route("/render_object_selector", name="admin.api.render_object_selector")
+	 */
+		public function renderObjectSelectorAction(Request $request) {
 
-        foreach ($finder->in($fileDir) as $item) {
-            unlink($item);
-        }
+			$object = $request->request->get('category');
 
-        $this->doctrineManager()->remove($file);
+			$classFQN = $this->getClassName($object);
 
-        $this->doctrineManager()->flush();
+			$objects = $this->doctrineManager()->getRepository($classFQN)->findAll();
 
-        return JsonResponse::create('ok');
-    }
-
-    /**
-     * @param string $objectClass
-     * @param int $objectId
-     * @return bool
-     */
-    private function deleteObjectRelatedFiles(string $objectClass, int $objectId) {
-
-        $objectFiles = $this->doctrineManager()->getRepository(File::class)->findBy([
-            'entity' => $objectClass,
-            'foreignKey' => $objectId,
-        ]);
-
-        foreach ($objectFiles as $objectFile) {
-            $this->deleteFileAjaxAction($objectFile);
-        }
-
-        return true;
-
-    }
+			return $this->render(':default/admin/parts:object_selector.html.twig', [
+				'objects' => $objects
+			]);
+		}
 }

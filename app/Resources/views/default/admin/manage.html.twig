@@ -1,35 +1,60 @@
 {% extends ':default/admin:base.html.twig' %}
+{% form_theme form ':default/admin/form:manage_fields.html.twig' %}
 
 {% block styles %}
 {% endblock %}
 
 {% block scripts %}
     <script>
+			{#{% if app.request.get('entity') == 'banner' %}#}
+			{#{% if object.id is defined and object.id is not empty and object.link == 1 %}#}
+
+      {#$("#banner_object select").val("{{ object.object }}");#}
+			{#{% endif %}#}
+			{#{% endif %}#}
+
         $(document).ready(function () {
-            var form = $('#form_{{ form.vars.name }}');
+          var form = $('#form_{{ form.vars.name }}');
+          form.append('<div style="margin-top: 20px;"><button class="btn btn-success" type="submit"><span class="fa fa-floppy-o"></span> Сохранить</button></div>')
 
-            form.append('<div style="margin-top: 20px;"><button class="btn btn-success" type="submit"><span class="fa fa-floppy-o"></span> Сохранить</button></div>')
-        })
+          $('#banner_category').change(function () {
+
+            var value = $(this).val(),
+              parent = $('#banner_category').parent();
+
+            $('.banner-object-container').remove();
+
+            if (value.length > 0) {
+              $.ajax({
+                url: '{{ path('admin.api.render_object_selector') }}',
+                method: 'post',
+                data: {
+                  'category': value
+                },
+                success: function (data) {
+                  $(parent).append(data);
+                }
+              })
+            }
+          });
+          {% if object.object is defined and object.object is not empty %}
+          $.ajax({
+            url: '{{ path('admin.api.render_object_selector') }}',
+            method: 'post',
+            data: {
+              'category': '{{ object.category }}'
+            },
+            success: function (data) {
+              $('#banner_category').parent().append(data);
+              $('#banner_object').val('{{ object.object }}');
+            }
+          });
+          {% endif %}
+        });
     </script>
+
+
 {% endblock %}
-
-{% form_theme form _self %}
-
-{%- block date_widget -%}
-    {%- if widget == 'single_text' -%}
-        {{ block('form_widget_simple') }}
-    {%- else -%}
-        <div {{ block('widget_container_attributes') }}>
-            {{- date_pattern|replace({
-                '{{ day }}':   form_widget(form.day),
-                '{{ month }}': form_widget(form.month),
-                '{{ year }}':  form_widget(form.year),
-            })|raw -}}
-        </div>
-    {%- endif -%}
-{%- endblock date_widget -%}
-
-
 
 {% block content %}
     <div class="col-md-12">
@@ -40,20 +65,29 @@
                 <h5>Управление разделом {{ sectionName | trans }}</h5>
             </div>
             <div class="ibox-content">
+                {% if app.request.get('entity') == 'banner'%}
 
-                {% if object.files is defined %}
-                    {% if object.files is not empty %}
-                        <a href="{{ path('admin.manage.files', {
-                            'entity': routeParams.entity,
-                            'id': routeParams.id
-                        }) }}" class="btn btn-success">
-                            <i class="fa fa-files-o" aria-hidden="true"></i> Медиафайлы
-                        </a>
-                    {% endif %}
+                  {% if object.files is not empty %}
+                    {% set banner = object.files | first %}
+                    <img src="{{ asset('upload/banner/'~banner.name) }}" width="100%">
+                    {% else %}
+                    <p>Файл еще не загружен</p>
+                  {% endif %}
+
+                {% else %}
+										{% if object.files is defined %}
+											{% if object.files is not empty %}
+                          <a href="{{ path('admin.manage.files', {
+														'entity': routeParams.entity,
+														'id': routeParams.id
+													}) }}" class="btn btn-success">
+                              <i class="fa fa-files-o" aria-hidden="true"></i> Медиафайлы
+                          </a>
+											{% endif %}
+										{% endif %}
                 {% endif %}
 
                 {{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}
-
                 {{ form_end(form) }}
             </div>
         </div>

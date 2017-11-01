@@ -2,13 +2,12 @@
   flex: 1 0 auto;
 }
 .content #main-banner-index {
-  background: url("../img/banner_2.jpg");
-  height: 350px;
-  position: relative;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  height: 410px;
+}
+@media only screen and (max-width: 479px) {
+  .content #main-banner-index {
+    height: 100px;
+  }
 }
 .content .banner-text {
   background: grey;
@@ -25,6 +24,11 @@
   font-size: 24pt;
   line-height: 20pt;
   font-family: 'Bebas Bold';
+}
+.content .banner-btn {
+  position: absolute;
+  bottom: 30%;
+  right: 20%;
 }
 .content #main-text-under-banner .banner-content-block {
   font-family: 'Century Gothic Regular';

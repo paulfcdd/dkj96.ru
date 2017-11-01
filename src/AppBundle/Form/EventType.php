@@ -7,8 +7,11 @@ use AppBundle\Entity\Event;
 use AppBundle\Form\Type\FileUploadType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,6 +22,14 @@ class EventType extends AbstractFormType
         parent::buildForm($builder, $options);
 
         $builder
+            ->add('price', TextType::class, [
+                'label' => 'Цена билета (в руб.)',
+                'required' => false,
+            ])
+            ->add('ticketUrl', UrlType::class, [
+                'label' => 'Ссылка на покупку билета (не обязательно)',
+                'required' => false,
+            ])
             ->add('eventTime', TimeType::class, [
                 'label' => 'Время события'
             ])

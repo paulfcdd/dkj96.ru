@@ -7,19 +7,30 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand site-logo" href="{{ path('front.index') }}">
-                <img src="{{ asset('img/logo_dkj.jpg') }}">
+                <img src="{{ asset('img/logo.svg') }}">
             </a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
 
                 {% for link, name in mainMenu %}
-                    <li><a href="{{ path('front.index', {
-                            'page': link
-                        }) }}">{{ name }}</a></li>
-                {% endfor %}
 
-                {#<li class="active"><a href="#">Home</a></li>#}
+                    {% set active = null %}
+
+                    {% if page == 'front.index' %}
+                        {% if link == '' %}
+                            {% set active = 'active' %}
+                        {% endif %}
+                    {% endif %}
+
+                    {% if page == link %}
+                        {% set active = 'active' %}
+                    {% endif %}
+
+
+                    <li class="{{ active }} "><a href="{{ path(link) }}">{{ name }}</a></li>
+
+                {% endfor %}
             </ul>
         </div>
     </div>

@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Feedback;
 use AppBundle\Entity\Booking;
+use AppBundle\Entity\Review;
 use AppBundle\Service\MailerService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -15,6 +16,7 @@ class MessageController extends AdminController
     const MESSAGES_ENTITY_NAMES_MAP = [
         'booking' => 'Бронирование',
         'feedback' => 'Обр. связь',
+        'review' => 'Отзывы'
     ];
 
     /**
@@ -26,13 +28,21 @@ class MessageController extends AdminController
 
         $em = $this->getDoctrine()->getManager();
 
+        $addReviewButton = false;
+
         $entityClass = $this->getClassName($entity);
 
+        if (new $entityClass instanceof Review) {
+            $addReviewButton = true;
+        }
+
         return $this->render(':default/admin/messages:list.html.twig',[
-            'objects' => $em->getRepository($entityClass)
-                ->findBy([], ['dateReceived' => 'DESC'], null, null),
-            'theme' => self::MESSAGES_ENTITY_NAMES_MAP[$entity],
-            'entity' => $entity,
+					'objects' => $em->getRepository($entityClass)
+						->findBy([], ['dateReceived' => 'DESC'], null, null),
+					'theme' => self::MESSAGES_ENTITY_NAMES_MAP[$entity],
+					'entity' => $entity,
+					'addReviewButton' => $addReviewButton,
+					'toWhomMap' => Feedback::TO_WHOM,
         ]);
 
     }
@@ -61,7 +71,9 @@ class MessageController extends AdminController
 
         $msgSubject = null;
 
-        $enableBookBtn = false;
+        $bookHallButton = false;
+
+        $approveButton = false;
 
 
         $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
@@ -72,10 +84,15 @@ class MessageController extends AdminController
 
         if ($entityRepository instanceof Booking) {
             $msgSubject = 'Запрос на бронирование';
-            $enableBookBtn = true;
+            $bookHallButton = true;
         }
 
-        if (!$entityRepository->isStatus()) {
+        if ($entityRepository instanceof Review) {
+            $msgSubject = 'Отзыв о мероприятии '.$entityRepository->getEvent()->getTitle();
+            $approveButton = true;
+        }
+
+        if ($entityRepository && !$entityRepository->isStatus()) {
             $entityRepository->setStatus(1);
             $this->getDoctrine()->getManager()->flush();
         }
@@ -83,7 +100,8 @@ class MessageController extends AdminController
         return $this->render(':default/admin/messages:detail.html.twig', [
             'object' => $entityRepository,
             'msgSubject' => $msgSubject,
-            'enableBookBtn' => $enableBookBtn,
+            'enableBookBtn' => $bookHallButton,
+            'approveButton' => $approveButton,
         ]);
     }
 

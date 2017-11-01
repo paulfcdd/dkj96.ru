@@ -3,6 +3,7 @@
 {% block title %}Портфолио{% endblock %}
 
 {% block stylesheets %}
+    <link href="{{ asset('node_modules/blueimp-gallery/css/blueimp-gallery.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/front/page/portfolio.css') }}" rel="stylesheet">
 {% endblock %}
 
@@ -17,101 +18,41 @@
 
             <div class="container padding-0-100px" id="main-text-under-banner">
                 <div class="text-center letter-spacing-1px banner-content-block col-xs-12">
-                    <p>Здест Вы можете найти новости из жизни ДКЖ, отчеты о прошедших мероприятиях и узнать о том, какие еще планируются</p>
-
+                    <p>
+                        {{ 'Фото- и видеоматериалы с мероприятий Дворца культуры железнодорожников' | nl2br }}
+                    </p>
                 </div>
             </div>
 
         </div>
     {% endblock %}
 
-    <div class="container padding-0-100px xs-padding-0-10px portfolio">
-        <div class="row padding-0-50px xs-margin-right-0 xs-padding-0-10px">
+    <div class="container xs-padding-0-10px portfolio">
+        <div class="row padding-0-50px xs-margin-right-0 xs-padding-0-10px single-widget photos">
 
-            <div class="col-md-5 col-xs-12 single-widget padding-left-0">
-                <h4 class="label-underscored">Ближайшие мероприятия</h4>
+            {% for portfolio in objects %}
 
+                {% set defaultImage = asset('img/logo_red.png') %}
 
-                <ul class="media-list main-list">
-                    <!--SINGLE EVENT START-->
+                {% for image in portfolio.files %}
+                    {% if image.isDefault == true %}
+                        {% set defaultImage = asset('upload/portfolio/'~image.name) %}
+                    {% endif %}
+                {% endfor %}
 
-                    {% for event in events %}
-
-                        <li class="media">
-                            <div class="media-body">
-                                <div class="row event-heading">
-                                    <div class="col-sm-10 col-xs-12 event-label">
-                                        <a href="{{ path('event.details_page', {'event': event.id}) }}"
-                                           class="event-header">
-                                            <h4>
-                                                <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }} |
-                                                <i class="fa fa-clock-o"></i>
-                                                {{ event.eventTime | date('H:i') }}
-                                            </h4>
-                                            <p>
-                                                {{ event.title }}
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="media-content">
-                                    {% set description = event.description %}
-
-                                    {% if event.description | length > 100 %}
-                                        {% set description = event.description | slice (0,100) %}
-                                        {% set description = description~'...' %}
-                                    {% endif %}
-
-                                    {{ description }}
-                                </div>
+                    <div class="gallery_product col-lg-6 col-md-6 col-sm-4 col-xs-12 filter">
+                    <div class="thumbnail">
+                        <a href="{{ path('front.portfolio.single', {'portfolio': portfolio.id}) }}">
+                            <img src="{{ defaultImage }}">
+                            <div class="caption">
+                                <h3>{{ portfolio.event.title }}</h3>
+                                <p>Дата мероприятия: {{ portfolio.event.eventDate | date('d.m.Y') }}</p>
                             </div>
-                        </li>
-                    {% endfor %}
-                </ul>
+                        </a>
+                    </div>
+                </div>
 
-
-            </div>
-
-            <div class="col-md-5 col-md-offset-2 col-xs-12 single-widget padding-left-0">
-                <h4 class="label-underscored">Новости</h4>
-
-                <ul class="media-list main-list">
-                    <!--SINGLE EVENT START-->
-
-                    {% for item in news %}
-
-                        <li class="media single-news">
-                            <div class="media-body">
-                                <div class="row news-heading">
-                                    <div class="col-sm-10 col-xs-12 event-label">
-                                        <h4>
-                                            <p>
-                                                <a href="{{ path('front.news.single', {'news': item.id}) }}" class="event-header">
-                                                    {{ item.title }}
-                                                </a>
-                                            </p>
-                                            <p class="event-subheader">
-                                                <i class="fa fa-calendar"></i> {{ item.dateCreated | date('d.m.Y') }} | <i class="fa fa-user"></i>
-                                                {{ item.author }}
-                                            </p>
-                                        </h4>
-                                    </div>
-                                </div>
-                                <div class="media-content">
-                                    {% set description = item.description %}
-
-                                    {% if item.description | length > 100 %}
-                                        {% set description = item.description | slice (0,100) %}
-                                        {% set description = description~'...' %}
-                                    {% endif %}
-                                    {{ description }}
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-
+            {% endfor%}
         </div>
     </div>
 

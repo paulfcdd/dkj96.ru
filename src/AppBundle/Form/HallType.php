@@ -19,9 +19,6 @@ class HallType extends AbstractFormType
         $builder
             ->add('capacity', IntegerType::class, [
                 'label' => 'Вместимость зала',
-                'attr' => [
-                    'class' => 'form-control'
-                ]
             ])
             ->add('specification', CKeditorType::class, [
                 'label' => 'Спецификация'

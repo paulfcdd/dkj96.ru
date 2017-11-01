@@ -4,6 +4,9 @@ namespace AppBundle\Entity\Traits;
 
 use AppBundle\Entity\File;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints\All as AllAsserts;
+use Symfony\Component\Validator\Constraints\File as ValidateFile;
+
 
 trait FileTrait
 {
@@ -11,6 +14,11 @@ trait FileTrait
      * @var ArrayCollection
      */
     private $files;
+
+    public function __construct()
+    {
+        $this->files = new ArrayCollection();
+    }
 
     /**
      * @param File $file

@@ -3,50 +3,34 @@
 {% block title %}{{ news.title }}{% endblock %}
 
 {% block stylesheets %}
+    <link href="{{ asset('node_modules/blueimp-gallery/css/blueimp-gallery.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+    <style>
+        .single-video-block {
+            width: 320px !important;
+            height: 240px !important;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('node_modules/blueimp-gallery/js/blueimp-gallery.min.js') }}"></script>
+
     <script>
-
-        $('#init-photoswipe').click(function () {
-            var pswpElement = document.querySelectorAll('.pswp')[0],
-                dir = $(this).data('dir'),
-                imgPath = '{{ asset('upload/_dir_/_file_name_') }}';
-
-            // build items array
-            var items = [
-                {% for image in news.files %}
-                {
-                    src: imgPath.replace('_dir_', dir).replace('_file_name_', '{{ image.name }}'),
-                    w: 1239,
-                    h: 953
-                },
-                {% endfor %}
-            ];
-
-            // define options (if needed)
-            var options = {
-                // history & focus options are disabled on CodePen
-                history: false,
-                focus: false,
-                showAnimationDuration: 0,
-                hideAnimationDuration: 0,
-                shareButtons: [
-                    {id:'facebook', label:'{{ 'interface.fb_share'|trans }}', url:'https://www.facebook.com/sharer/sharer.php?u=#'},
-                    {id:'twitter', label:'{{ 'interface.twitter_share'|trans }}', url:'https://twitter.com/intent/tweet?url=#'},
-                ],
-
-            };
-
-            var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-            gallery.init();
-        })
+        document.getElementById('links').onclick = function (event) {
+            event = event || window.event;
+            var target = event.target || event.srcElement,
+                link = target.src ? target.parentNode : target,
+                options = {index: link, event: event},
+                links = this.getElementsByTagName('a');
+            blueimp.Gallery(links, options);
+        };
     </script>
 {% endblock %}
 
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
 
     <div class="container col-xs-padding-right-0 single-hall-page">
         <div class="space-fix-container"></div>
@@ -54,7 +38,7 @@
         <div class="row xs-padding-0-10px">
             <div class="col-xs-12 text-left padding-0-100px">
                 <ol class="breadcrumb single-hall-page-breadcrumbs">
-                    <li class="breadcrumb-item"><a href="{{ path('front.portfolio') }}">Новости</a></li>
+                    <li class="breadcrumb-item"><a href="{{ path('front.news') }}">Новости</a></li>
                     <li class="breadcrumb-item active">{{ news.title }}</li>
                 </ol>
 
@@ -65,17 +49,10 @@
         <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
             <div class="col-xs-12">
                 <div class="row">
-                    <div class="col-sm-10">
+                    <div class="col-sm-12">
                         <h4 class="underscored-label">
                             {{ news.title }}
                         </h4>
-                    </div>
-
-                    <div class="col-sm-2">
-                        <button type="button" id="init-photoswipe" data-dir="news"
-                                class="btn btn-default xs-width-100 no-border-radius pull-right">
-                            <i class="fa fa-camera" aria-hidden="true"></i> Галерея
-                        </button>
                     </div>
                 </div>
             </div>
@@ -89,72 +66,63 @@
             </div>
         </div>
 
-        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    </div>
 
-            <!-- Background of PhotoSwipe.
-                 It's a separate element as animating opacity is faster than rgba(). -->
-            <div class="pswp__bg"></div>
+    {% set images = [] %}
+    {% set videos = [] %}
 
-            <!-- Slides wrapper with overflow:hidden. -->
-            <div class="pswp__scroll-wrap">
+    {% for file in news.files %}
+        {% if in_array(file.mimeType, imagesExt) %}
+            {% set images = images | merge ([file]) %}
+        {% endif %}
 
-                <!-- Container that holds slides.
-                    PhotoSwipe keeps only 3 of them in the DOM to save memory.
-                    Don't modify these 3 pswp__item elements, data is added later on. -->
-                <div class="pswp__container">
-                    <div class="pswp__item"></div>
-                    <div class="pswp__item"></div>
-                    <div class="pswp__item"></div>
-                </div>
+        {% if in_array(file.mimeType, videosExt) %}
+            {% set videos = videos | merge ([file]) %}
+        {% endif %}
+    {% endfor %}
 
-                <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-                <div class="pswp__ui pswp__ui--hidden">
+    <div class="space-fix-container"></div>
 
-                    <div class="pswp__top-bar">
-
-                        <!--  Controls are self-explanatory. Order can be changed. -->
-
-                        <div class="pswp__counter"></div>
-
-                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                        <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                        <!-- element will get class pswp__preloader--active when preloader is running -->
-                        <div class="pswp__preloader">
-                            <div class="pswp__preloader__icn">
-                                <div class="pswp__preloader__cut">
-                                    <div class="pswp__preloader__donut"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                        <div class="pswp__share-tooltip"></div>
-                    </div>
-
-                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-                    </button>
-
-                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-                    </button>
-
-                    <div class="pswp__caption">
-                        <div class="pswp__caption__center"></div>
-                    </div>
-
-                </div>
-
+    {% if images is not empty %}
+        <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+            <div id="links" class="links col-xs-12">
+                <h4>Фотоматериалы</h4>
+                {% for image in images %}
+                    <a href="{{ asset('upload/news/'~image.name) }}">
+                        <img src="{{ asset('upload/news/'~image.name) }}" width="100px" height="100px">
+                    </a>
+                {% endfor %}
             </div>
-
         </div>
+    {% endif %}
 
+    <div class="space-fix-container"></div>
+
+    {% if videos is not empty %}
+        <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
+            <div class="col-xs-12">
+                <h4>Видеоматериалы</h4>
+            </div>
+            {% for video in videos %}
+                {% set path = asset('upload/news/'~video.name) %}
+                <div class="col-xs-4">
+                    <video class="single-video-block" controls>
+                        <source src="{{ path }}" type="video/{{ video.mimeType }}">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
     </div>
 
 {% endblock %}

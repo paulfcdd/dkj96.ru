@@ -1,6 +1,12 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Бронирование зала {{ hall.title }}{% endblock %}
+{% set title = null %}
+
+{% if hall is not null %}
+    {% set title = hall.title %}
+{% endif %}
+
+{% block title %}Бронирование зала {{ title }} {% endblock %}
 
 {% set form_prefix = form.vars.name~'_' %}
 
@@ -55,12 +61,16 @@
     {% block under_banner_text_widget %}
         <div class="container padding-0-100px" id="main-text-under-banner">
             <div class="text-center letter-spacing-1px banner-content-block">
+
+            {% if hall is not empty %}
                 <p class="padding-0-100px">
                     {{ hall.title }} - бронирование зала
                 </p>
                 <p class="padding-0-100px">
                     Вместимость: до {{ hall.capacity }} чел.
                 </p>
+            {% endif %}
+
             </div>
         </div>
     {% endblock %}
@@ -73,12 +83,28 @@
 
             {{ form_start(form) }}
 
-            {% if formMessage is not null %}
-                <div class="form-group col-xs-12 col-sm-12">
-                    <div class="alert alert-info no-border-radius">
+            {% for message in app.flashes('success') %}
+            <div class="form-group col-sm-12 col-xs-12">
+                <div class="alert alert-success form-group">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <p>{{ message }}</p>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="form-group col-sm-12 col-xs-12">
+                    <div class="alert alert-danger form-group">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        {{ formMessage | first }}
+                        <p>{{ message }}</p>
                     </div>
+                </div>
+            {% endfor %}
+
+            {% if hall is empty %}
+                <div class="form-group col-sm-12 col-xs-12">
+                    {{ form_label(form.hall) }}
+                    {{ form_widget(form.hall) }}
                 </div>
             {% endif %}
 
@@ -94,18 +120,16 @@
             <div class="form-group col-sm-6 col-xs-12">
                 {{ form_widget(form.guests) }}
             </div>
-            {% if hall is empty %}
-                <div class="form-group col-sm-12 col-xs-12">
-                    {{ form_label(form.hall) }}
-                    {{ form_widget(form.hall) }}
-                </div>
-            {% endif %}
             <div class="form-group col-sm-12 col-xs-12">
                 {{ form_widget(form.message) }}
             </div>
+
+            <div class="g-recaptcha form-group col-sm-12 col-xs-12" data-sitekey="{{ recaptcha_key }}"></div>
+
             <div class="form-group col-sm-12 col-xs-12">
                 {{ form_widget(form.send) }}
             </div>
+
             {{ form_end(form) }}
 
         </div>

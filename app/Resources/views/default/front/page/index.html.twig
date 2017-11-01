@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}title{% endblock %}
+{% block title %} Главная | {{ parent() }} {% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/front/page/index.css') }}">
@@ -17,11 +17,18 @@
 
             <div class="container padding-0-100px" id="main-text-under-banner">
                 <div class="text-center letter-spacing-1px banner-content-block col-xs-12">
-                    <p>Что такое Дворец Культуры Железнодорожников?</p>
-                    <p>С одной стороны, это одно из старейших культурных учреждений Екатеринбурга с уже вековой
-                        историей, а с другой:</p>
-                    <p>современная площадка для концертных выступлений, крупных бизнес-мероприятий
-                        или праздников любого масштаба.</p>
+                    <p>
+                        {{ '
+                        Свердловский Дворец культуры Железнодорожников – центр исторической и культурной жизни
+                        Екатеринбурга!
+                        Расположенный на пересечении важных логистических узлов Дворец Железнодорожников
+                        стал своеобразной визитной карточкой столицы Урала.
+                        Развитая инфраструктура и неограниченные технические возможности этого культурного пространства отвечают современным стандартам.
+                        Крупные бизнес мероприятия, торжественные встречи, семинары и концерты: Дворец культуры стал
+                        неотъемлемым участником важных городских и областных событий, а также территорией новых
+                        возможностей!
+' | nl2br }}
+                    </p>
                 </div>
             </div>
 
@@ -31,28 +38,27 @@
     <div class="container text-center col-xs-padding-right-0">
         {% block widget_panel_block %}
             <div class="row widget-panel">
-                <div class="col-md-4 single-widget padding-0-100px">
+                <div class="col-md-5 single-widget padding-0-100px">
                     <a href="{{ path('front.portfolio') }}">
                         <span class="fa fa-camera fa-6x widget-panel-icon"></span>
                         <h4>Портфолио</h4>
                         <p>
                             {{ ' Фото и видео материалы
-                с мероприятий дома культуры' | nl2br }}
+                с мероприятий Дворца культуры' | nl2br }}
                         </p>
                     </a>
                 </div>
-                <div class="col-md-4 single-widget">
-                    <a href="#">
-                        <span class="fa fa-search fa-6x widget-panel-icon"></span>
-                        <h4>Планы залов и информация</h4>
-                        <p>
-                            {{ '3D тур по залам и холам
-                Дворца культуры' | nl2br }}
-                        </p>
-                    </a>
-                </div>
-                <div class="col-md-4 single-widget">
-                    <a href="{{ path('halls.list') }}">
+                {#<div class="col-md-4 single-widget">#}
+                    {#<a href="#">#}
+                        {#<span class="fa fa-search fa-6x widget-panel-icon"></span>#}
+                        {#<h4>Планы залов и информация</h4>#}
+                        {#<p>#}
+                            {#{{ 'Виртуальный  тур по Дворцу культуры железнодорожников' | nl2br }}#}
+                        {#</p>#}
+                    {#</a>#}
+                {#</div>#}
+                <div class="col-md-5 col-md-offset-2 single-widget">
+                    <a href="{{ path('halls.book_hall') }}">
                         <span class="fa fa-key fa-6x widget-panel-icon"></span>
                         <h4>Аренда залов</h4>
                         <p>
@@ -69,15 +75,13 @@
         {% block upcoming_events_block %}
 
             <div class="row upcoming-events xs-padding-0-10px">
-                <div class="col-xs-12 text-left padding-0-100px">
+
+                <div class="col-xs-12 col-lg-6 padding-0-100px text-left">
                     <a href="{{ path('event.list') }}">
                         <h4 id="upcoming-events-label">
-                            Ближайшие мероприятия
+                            Предстоящие мероприятия
                         </h4>
                     </a>
-                </div>
-
-                <div class="col-xs-12 padding-0-100px text-left">
                     <div class="upcoming-event">
                         <ul class="media-list main-list">
                             {% for event in events %}
@@ -86,7 +90,9 @@
                                         <div class="row event-heading">
                                             <div class="col-sm-10 col-xs-12 event-label">
                                                 <h4>
-                                                    <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }} | <i class="fa fa-clock-o"></i> {{ event.eventTime | date('H:i') }} |&nbsp;
+                                                    <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }}
+                                                    | <i class="fa fa-clock-o"></i> {{ event.eventTime | date('H:i') }}
+                                                    |&nbsp;
                                                     <a href="{{ path('event.details_page', {
                                                         'event': event.id
                                                     }) }}">
@@ -96,7 +102,13 @@
                                             </div>
                                         </div>
                                         <div class="media-content">
-                                            {{ event.description }}
+                                            {% set description = event.description %}
+
+                                            {% if event.description | length > 100 %}
+                                                {% set description = event.description | slice (0,100) %}
+                                                {% set description = description~'...' %}
+                                            {% endif %}
+                                            {{ description }}
                                         </div>
                                     </div>
                                 </li>
@@ -104,6 +116,50 @@
                         </ul>
                     </div>
                 </div>
+
+                <div class="col-xs-12 col-lg-6 padding-0-100px text-left">
+
+                    <a href="{{ path('front.news') }}">
+                        <h4 class="label-underscored">Новости</h4>
+                    </a>
+
+                    <div class="upcoming-event">
+
+
+                        <ul class="media-list main-list">
+                            {% for item in news %}
+                                <li class="media">
+                                    <div class="media-body">
+                                        <div class="row event-heading">
+                                            <div class="col-sm-10 col-xs-12 event-label">
+                                                <h4>
+                                                    <a href="{{ path('front.news', {'news': item.id}) }}"
+                                                       class="event-header">
+                                                        <h3>{{ item.title }}</h3>
+                                                    </a>
+                                                    <h6>
+                                                        <i class="fa fa-calendar"></i> {{ item.publishStartDate | date('d.m.Y') }}
+                                                        | <i class="fa fa-user"></i> {{ item.author }}
+                                                    </h6>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div class="media-content">
+                                            {% set description = item.description %}
+
+                                            {% if item.description | length > 100 %}
+                                                {% set description = item.description | slice (0,100) %}
+                                                {% set description = description~'...' %}
+                                            {% endif %}
+                                            {{ description }}
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
             </div>
         {% endblock %}
     </div>
@@ -111,49 +167,46 @@
 
     {% block review_panel_block %}
         <div class="container-fluid padding-0-100px xs-padding-0-10px review-block">
+
             <div class="container padding-0-100px">
                 <div class="row margin-right-0">
                     <div class="col-xs-12">
-                        <h4 id="reviews-block-label">Отзывы</h4>
+                        <a href="{{ path('front.review_list') }}">
+                            <h4 id="reviews-block-label">Отзывы</h4>
+                        </a>
                     </div>
 
-                    <div class="col-md-5 single-review">
-                        <h4 class="single-review-label">
-                            <a href="#">Прошлое мероприятие</a>
-                        </h4>
-                        <p class="review-add-time text-right">
-                            05/25/2017 - 04:13
-                        </p>
-                        <p class="review-text padding-right-0 padding-left-0">
-                            Каждая книга Дины Ильиничны Рубиной – яркое и долгожданное событие для многомиллионной
-                            аудитории ее
-                            читателей. Все отлично прошло, зал просто замечательный.
-                        </p>
-                        <p class="review-add-time text-right">
-                            <a href="#" class="read-more-link">
-                                Подробнее ...
-                            </a>
-                        </p>
-                    </div>
+                    {% set lastReview = reviews | last %}
 
-                    <div class="col-md-5 col-md-offset-2 single-review">
-                        <h4 class="single-review-label">
-                            <a href="#">Прошлое мероприятие</a>
-                        </h4>
-                        <p class="review-add-time text-right">
-                            05/25/2017 - 04:13
-                        </p>
-                        <p class="review-text padding-right-0 padding-left-0">
-                            Каждая книга Дины Ильиничны Рубиной – яркое и долгожданное событие для многомиллионной
-                            аудитории ее
-                            читателей. Все отлично прошло, зал просто замечательный.
-                        </p>
-                        <p class="review-add-time text-right">
-                            <a href="#" class="read-more-link">
-                                Подробнее ...
-                            </a>
-                        </p>
-                    </div>
+                    {% for review in reviews %}
+
+                        {% set col_md_offset = null %}
+
+                        {% if review.id == lastReview.id %}
+                            {% set col_md_offset = 'col-md-offset-2' %}
+                        {% endif %}
+
+                        <div class="col-md-5 single-review {{ col_md_offset }}">
+                            <h4 class="single-review-label">
+                                <a href="#">{{ review.event.title }}</a>
+                            </h4>
+                            <p class="review-add-time text-right">
+
+                                {% set reviewDate = review.dateReceived | date('d.m.Y') %}
+                                {% set reviewTime = review.dateReceived | date('H:i') %}
+
+                                {{ reviewDate~' - '~reviewTime }}
+                            </p>
+                            <p class="review-text padding-right-0 padding-left-0">
+                               {{ review.message | nl2br }}
+                            </p>
+                            <p class="review-add-time text-right">
+                                <a href="#" class="read-more-link">
+                                    Подробнее ...
+                                </a>
+                            </p>
+                        </div>
+                    {% endfor %}
 
                 </div>
             </div>

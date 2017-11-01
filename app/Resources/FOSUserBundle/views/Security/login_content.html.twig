@@ -1,0 +1,46 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="row" id="pwd-container">
+    <div class="col-md-4"></div>
+
+    <div class="col-md-4">
+        <section class="login-form">
+
+            <form class="no-border-radius" action="{{ path("fos_user_security_check") }}" method="post" role="login">
+                {% if csrf_token %}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+                {% endif %}
+
+                <img src="{{ asset('img/logo_dkj.jpg') }}" class="img-responsive" alt=""/>
+
+
+							{% if error %}
+                  <div class="alert alert-warning">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+							{% endif %}
+
+                <label for="username">
+                    <i class="fa fa-user" aria-hidden="true"></i> {{ 'security.login.username'|trans }}
+                </label>
+                <input type="text" class="form-control input-lg no-border-radius" id="username" name="_username"
+                       value="{{ last_username }}" required="required"/>
+
+                <label for="password">
+                    <i class="fa fa-lock" aria-hidden="true"></i> {{ 'security.login.password'|trans }}
+                </label>
+                <input type="password" id="password" class="form-control input-lg no-border-radius" name="_password"
+                       required="required"/>
+
+                <input type="submit" class="btn btn-lg btn-primary btn-block no-border-radius" id="_submit" name="_submit"
+                       value="{{ 'security.login.submit'|trans }}"/>
+            </form>
+
+            <div class="form-links">
+                <a href="{{ path('front.index') }}">На главную</a>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-4"></div>
+</div>
+
+

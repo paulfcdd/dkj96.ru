@@ -27,7 +27,14 @@
                     </a>
                 </div>
             </div>
+
             <div class="ibox-content">
+
+                {% if entity == 'banner' %}
+                    {% include ':default/admin/views:banner_list.html.twig' with {
+                        'banners': objects
+                    } %}
+                    {% else %}
                 <table class="table table-responsive">
                     <thead>
                     <th>Название</th>
@@ -35,14 +42,22 @@
                         <th>Статус</th>
                     {% endif %}
                     <th>Дата создания</th>
-                    <th>Дата изменения</th>
+                    {% if routeParams.entity == 'portfolio' %}
+                        <th>Дата события</th>
+                        <th>Название события</th>
+                        {% else %}
+                            <th>Дата изменения</th>
+                    {% endif %}
                     <th class="text-center">Автор</th>
                     <th class="text-right">Управление</th>
                     </thead>
                     <tbody>
+
                     {% for object in objects %}
                         <tr id="{{ routeParams.entity~'_'~object.id }}">
+
                             <td>{{ object.title }}</td>
+
                             {% if routeParams.entity == 'history' %}
 
                                 {% if object.enabled == 1 %}
@@ -54,12 +69,22 @@
 
                                 <td>{{ status }}</td>
                             {% endif %}
+
                             <td>{{ object.dateCreated | date('d.m.Y') }}</td>
                             <td>
-                                {% if object.dateUpdated is not null %}
-                                    {{ object.dateUpdated | date('d.m.Y') }}
+                                {% if routeParams.entity == 'portfolio' %}
+                                    {{ object.event.eventDate | date('d.m.Y') }}
+                                {% else %}
+                                    {% if object.dateUpdated is not null %}
+                                        {{ object.dateUpdated | date('d.m.Y') }}
+                                    {% endif %}
                                 {% endif %}
                             </td>
+                            {% if routeParams.entity == 'portfolio' %}
+                                <td>
+                                    {{ object.event.title }}
+                                </td>
+                            {% endif %}
                             <td class="text-center">
                                 {{ object.author.username }}
                             </td>
@@ -85,8 +110,10 @@
                             </td>
                         </tr>
                     {% endfor %}
+
                     </tbody>
                 </table>
+                {% endif %}
             </div>
             <div class="ibox-footer">
                 <a href="{{ path('admin.manage', {

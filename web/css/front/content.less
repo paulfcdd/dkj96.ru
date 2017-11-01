@@ -5,14 +5,11 @@
   flex: 1 0 auto;
 
   #main-banner-index {
-    background: url("../img/banner_2.jpg");
-    background-size: cover;
-    height: 350px;
-    position: relative;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    height: 410px;
+
+    @media @phone {
+      height: 100px;
+    }
   }
 
   .banner-text {
@@ -32,6 +29,12 @@
       line-height: 20pt;
       font-family: 'Bebas Bold';
     }
+  }
+
+  .banner-btn {
+    position: absolute;
+    bottom: 30%;
+    right: 20%;
   }
 
   #main-text-under-banner {

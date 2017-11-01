@@ -1,6 +1,43 @@
 {% extends ':default/admin/messages:list.html.twig' %}
 
+{% set entity = app.request.get('_route_params')['entity'] %}
+
+{% set hidden = 'hidden' %}
+
+{% if entity == 'booking' %}
+    {% set bookings = object.hall.bookings %}
+    {% set hidden = null %}
+{% endif %}
+
+{% set afterAjaxText = '' %}
+
+{% block styles %}
+    <link href="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block message_content_block %}
+
+    {% if bookings is defined %}
+        {% set bookedDates = [] %}
+
+        {% for booking in bookings %}
+
+            {% if booking.booked == 1 %}
+                {% set bookedDates = bookedDates|merge([booking.date]) %}
+            {% endif %}
+
+        {% endfor %}
+
+        {% if in_array(object.date, bookedDates) == 1 %}
+            {% set modalHeaderIcon = 'fa-times' %}
+            {% set modalHeaderContent = 'На дату %date% зал занят' %}
+            {% set color = '#DD6B55' %}
+        {% else %}
+            {% set modalHeaderIcon = 'fa-check' %}
+            {% set modalHeaderContent = 'На дату %date% зал свободен' %}
+            {% set color = '#82DD82' %}
+        {% endif %}
+    {% endif %}
 
     <div class="mail-box-header">
         <h2>
@@ -11,17 +48,55 @@
                 <span class="font-normal">Тема: </span> {{ msgSubject }}
             </h4>
             <h5>
-                {#<span class="font-normal">Зал: </span> {{ object.hall.title }}#}
+                {% if hidden is empty %}
+                    <span class="font-normal">Зал: </span> {{ object.hall.title }}
+                {% endif %}
             </h5>
             <h5>
                 <span class="font-normal">От: </span> {{ object.email }}
             </h5>
             <h5>
-                {#<span class="font-normal">Дата мероприятия: </span> {{ strtotime(object.date) | date('d.m.Y') }}#}
+                {% if hidden is empty %}
+                    <span class="font-normal" {{ hidden }}>Дата мероприятия: </span> {{ strtotime(object.date) | date('d.m.Y') }}
+                {% endif %}
             </h5>
             <h5>
-                {#<span class="font-normal">Кол-во человек: </span> {{ object.guests }}#}
+                {% if hidden is empty %}
+                    <span class="font-normal" {{ hidden }}>Кол-во человек: </span> {{ object.guests }}
+                {% endif %}
             </h5>
+            {% if entity == 'booking' %}
+
+            <a type="button" data-toggle="modal" data-target="#calendarModal">
+                Календарь бронирований
+            </a>
+
+            <div id="calendarModal" class="modal fade" role="dialog">
+
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                            {% if entity == 'booking' %}
+                                <h4 class="modal-title" style="color: {{ color }}">
+                                    <span class="fa {{ modalHeaderIcon }}"></span>&nbsp;
+                                    {{ modalHeaderContent | replace({'%date%': strtotime(object.date) | date('d.m.Y')}) }}
+                                </h4>
+                            {% endif %}
+
+                        </div>
+                        <div class="modal-body" id="calendar"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
     <div class="mail-box">
@@ -34,12 +109,40 @@
         </div>
 
         <div class="mail-body text-right tooltip-demo">
-            <a class="btn btn-sm btn-primary" href="{{ path('admin.message.compose', {
+
+
+            {% set hideSendBtn = null %}
+            {% set showApproveBtn = 'hidden' %}
+
+            {% if approveButton == true %}
+                {% set hideSendBtn = 'hidden' %}
+                {% set showApproveBtn = null %}
+            {% endif %}
+
+            <a class="btn btn-sm btn-primary {{ hideSendBtn }}" href="{{ path('admin.message.compose', {
                 'entity': routeParams.entity,
                 'id': object.id
             }) }}">
                 <i class="fa fa-reply"></i> Ответить
             </a>
+
+            {% if approveButton == true %}
+                {% set fa_class = 'fa-star' %}
+                {% set confirm_btn_text = 'Одобрить' %}
+                {% set disabled = '' %}
+
+                {% if object.approved == 1 %}
+                    {% set fa_class = 'fa-check' %}
+                    {% set confirm_btn_text = 'Одобрено' %}
+                    {% set disabled = 'disabled' %}
+                {% endif %}
+
+                <button class="btn btn-sm btn-success {{ disabled }} confirm-action" data-id="{{ object.id }}" data-entity="{{ entity }}">
+                    <i class="fa {{ fa_class }}"></i> {{ confirm_btn_text }}
+                </button>
+
+                {% set afterAjaxText = confirm_btn_text %}
+            {% endif %}
 
             {% if enableBookBtn == true %}
                 {% set fa_class = 'fa-star' %}
@@ -52,9 +155,12 @@
                     {% set disabled = 'disabled' %}
                 {% endif %}
 
-                <button class="btn btn-sm btn-success confirm-booking" {{ disabled }} data-bookingid="{{ object.id }}">
+                <button class="btn btn-sm btn-success confirm-action" {{ disabled }} data-id="{{ object.id }}" data-entity="{{ entity }}">
                     <i class="fa {{ fa_class }}"></i> {{ confirm_btn_text }}
                 </button>
+
+                {% set afterAjaxText = confirm_btn_text %}
+
             {% endif %}
 
             <button class="btn btn-sm btn-warning set-as-unread"
@@ -73,7 +179,52 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('node_modules/fullcalendar/dist/locale/ru.js') }}"></script>
+
     <script>
+
+        {% if entity == 'booking' %}
+            var events = [];
+
+            {% for event in bookings %}
+
+                    {% if event.booked == 1 %}
+                        {% set bgcolor = '#DD6B55' %}
+                        {% set title = 'Занято' %}
+                    {% endif %}
+
+                    {% set bgcolor = 'none' %}
+                    {% set title = null %}
+
+                    var event = {
+                        start: '{{ event.date }}',
+                        title: '{{ title }}',
+                        rendering: 'background',
+                        backgroundColor: '{{ bgcolor }}'
+                    };
+                    events.push(event);
+            {% endfor %}
+
+            $('#calendar').fullCalendar({
+                defaultDate: $(this).fullCalendar('today'),
+                events: events,
+                locale: 'ru',
+                eventRender: function(event, element) {
+                    $(element).html(
+                        '<div class="event-info-block">' +
+                        '<label style="color: black">'+event.title+'</label>' +
+                        '</div>'
+                    );
+                }
+            });
+
+            $('#calendarModal').on('shown.bs.modal', function () {
+                $("#calendar").fullCalendar('render');
+            });
+        {% endif %}
+
         $(document).ready(function () {
             $('.set-as-unread').on('click', function () {
                 var id = $(this).data('objectid'),
@@ -125,17 +276,17 @@
                         }
                     });
                 });
-            })
+            });
 
-            {% if enableBookBtn == true %}
-
-            $('.confirm-booking').on('click', function () {
-                var id = $(this).data('bookingid'),
-                    url = '{{ path('admin.api.booking_confirm', {'booking': '_booking'}) }}';
+            $('.confirm-action').on('click', function () {
+                var id = $(this).data('id'),
+                    entity = $(this).data('entity'),
+                    url = '{{ path('admin.api.confirm_action', {'id': '_id', 'entity': '_entity' }) }}',
+                    btn = $(this);
 
                 swal({
-                    title: "Подтверждение бронирования",
-                    text: "Вы уверенны, что хотите подтвердить бронирование зала",
+                    title: "Подтвердить действие",
+                    text: "Вы уверенны, что хотите одобрить?",
                     type: "info",
                     showCancelButton: true,
                     cancelButtonText: 'Закрыть',
@@ -144,20 +295,18 @@
                     closeOnConfirm: false
                 }, function () {
                     $.ajax({
-                        url: url.replace('_booking', id),
+                        url: url.replace('_id', id).replace('_entity', entity),
                         method: 'POST',
                         success: function (data) {
-
                             if (data === true) {
                                 swal({
                                     title: 'Успешно',
                                     text: 'Бронь зала подтверждена. Клиенту выслано письмо на указанный email',
                                     type: 'success'
                                 }, function () {
-                                    var confirmBtn = $('.confirm-booking');
 
-                                    confirmBtn
-                                        .html('<i class="fa fa-check"></i> Забронировано')
+                                    btn
+                                        .html('<i class="fa fa-check"></i> {{ afterAjaxText }}')
                                         .attr('disabled', true);
                                 });
                             } else {
@@ -175,9 +324,7 @@
                         }
                     });
                 });
-            })
-
-            {% endif %}
+            });
         })
     </script>
 {% endblock %}

@@ -2,9 +2,12 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Feedback;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,16 +22,33 @@ class FeedbackType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control no-border-radius',
-                    'placeholder' => 'Ваш email'
-                ]
+                    'placeholder' => 'Ваш e-mail'
+                ],
+                'label' => false,
             ])
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control no-border-radius',
+                    'placeholder' => 'Ваше имя и фамилия'
+                ],
+                'label' => false,
+
+            ])
+					->add('toWhom', ChoiceType::class, [
+						'label' => 'Кому отправить письмо',
+						'choices' => array_flip(Feedback::TO_WHOM),
+						'attr' => [
+							'class' => 'form-control no-border-radius'
+						]
+					])
             ->add('message', TextareaType::class, [
                 'attr' => [
                     'class' => 'form-control no-resize no-border-radius',
                     'placeholder' => 'Ваше сообщение',
                     'cols' => 3,
                     'rows' => 3
-                ]
+                ],
+                'label' => false,
             ]);
     }
     

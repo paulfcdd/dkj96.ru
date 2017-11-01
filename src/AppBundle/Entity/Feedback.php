@@ -5,78 +5,61 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Feedback
- * @package AppBundle\Entity
  * @ORM\Entity()
  * @ORM\Table(name="feedback")
  * @ORM\HasLifecycleCallbacks()
  */
-class Feedback
+class Feedback extends NotificationClass
 {
+
+	const TO_WHOM = [
+		'director' => 'Директор',
+		'client_review' => 'Оставить отзыв',
+		'client_question' => 'Задать вопрос ',
+		'client_comm_propsal' => 'Коммерческое предложение',
+		'administrator' => 'Администрация'
+	];
+
     /**
+     * @var integer
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text", length=2000)
+     * @ORM\Column()
      */
-    private $message;
+    protected $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $email;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $dateReceived;
-
-    /**
-     * @var boolean
-     * @ORM\Column(type="boolean")
-     */
-    private $status = 0;
-
-    /**
-     * @return bool
-     */
-    public function isStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param bool $status
-     */
-    public function setStatus(bool $status)
-    {
-        $this->status = $status;
-    }
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(type="string", length=255)
+	 */
+    protected $toWhom;
 
     /**
      * @return string
      */
-    public function getEmail()
+    public function getName()
     {
-        return $this->email;
+        return $this->name;
     }
 
     /**
-     * @param string $email
+     * @param string $name
+     * @return Feedback
      */
-    public function setEmail(string $email)
+    public function setName(string $name)
     {
-        $this->email = $email;
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -89,45 +72,24 @@ class Feedback
         return $this->id;
     }
 
-    /**
-     * Set message
-     *
-     * @param string $message
-     *
-     * @return Feedback
-     */
-    public function setMessage($message)
-    {
-        $this->message = $message;
+	/**
+	 * @return string
+	 */
+	public function getToWhom()
+	{
+		return $this->toWhom;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param string $toWhom
+	 * @return Feedback
+	 */
+	public function setToWhom(string $toWhom)
+	{
+		$this->toWhom = $toWhom;
 
-    /**
-     * Get message
-     *
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
+		return $this;
+	}
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function setDateReceived()
-    {
-        $this->dateReceived = new \DateTime();
-    }
 
-    /**
-     * Get dateReceived
-     *
-     * @return \DateTime
-     */
-    public function getDateReceived()
-    {
-        return $this->dateReceived;
-    }
 }

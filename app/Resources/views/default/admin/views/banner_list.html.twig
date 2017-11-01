@@ -1,0 +1,37 @@
+<table class="table table-responsive">
+    <thead>
+    <th>ID</th>
+    <th>Alt-тэг</th>
+    <th>Категория</th>
+    <th>Объект</th>
+    <th class="text-center">Автор</th>
+    <th class="text-right">Управление</th>
+    </thead>
+    <tbody>
+
+    {% for banner in banners %}
+        <tr id="{{ routeParams.entity~'_'~banner.id }}">
+            <td>{{ banner.id }}</td>
+            <td>{{ banner.alt }}</td>
+            <td>{{ banner.category }}</td>
+            <td>{{ banner.object }}</td>
+            <td class="text-center">{{ banner.author }}</td>
+            <td class="text-right">
+
+                <div class="btn-group">
+                    <a href="{{ path('admin.manage', {
+                        'entity': entity,
+                        'id': banner.id
+                    }) }}" role="button" class="btn btn-success"><span class="fa fa-edit"></span></a>
+                    <a href="#" role="button" class="btn btn-danger delete-object"
+                       data-objectname="{{ routeParams.entity }}"
+                       data-objectid="{{ banner.id }}">
+                        <span class="fa fa-trash"></span>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>

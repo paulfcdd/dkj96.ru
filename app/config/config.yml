@@ -17,6 +17,8 @@ parameters:
     client_comm_propsal: 'client@dkj96.ru'
     director: 'director@dkj96.ru'
     administrator: 'dkj96@yandex.ru'
+    google_calendar_client_secret: "%kernel.root_dir%/config/client_secret.json"
+    google_calendar_credentials_path: "%kernel.root_dir%/../bin/google_calendar.json"
 
 framework:
     #esi: ~

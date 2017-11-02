@@ -241,7 +241,7 @@ class FrontController extends Controller
 	/**
 	 * @Method({"POST", "GET"})
 	 */ 
-	public function loadListAction($repository, $entityName, $utilities, $request) {
+	public function loadListAction($repository, $entityName, Utilities $utilities, $request) {
 			
 		
 		$view = ':default/front/page/'.$entityName.':list.html.twig';
@@ -253,6 +253,20 @@ class FrontController extends Controller
 		];
 		
 		if ($entityName == 'news') {
+
+		        /** @var Utilities $calendar */
+		        $calendar = $utilities							
+						->setGoogleCalendarId('Концертный зал')
+						->setGoogleCalendarOptParameters([
+							'maxResults' => 10,
+							'orderBy' => 'startTime',
+							'singleEvents' => TRUE,
+							'timeMin' => date('c'),
+                    ]);
+
+				dump($utilities->getGoogleClient());
+				//dump($calendar->getListEvents());
+				die;
 				
 				$paginator = $utilities
 					->setObjectName(News::class)

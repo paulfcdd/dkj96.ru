@@ -4,9 +4,18 @@ namespace AppBundle\Service;
 
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Google_Service_Calendar;
+
+
+define('SCOPES', implode(' ', array(
+        Google_Service_Calendar::CALENDAR_READONLY)
+));
+define('STDIN',fopen("php://stdin","r"));
 
 class Utilities
 {
+
     /** @var EntityManager $em */
     protected $em;
 
@@ -24,12 +33,34 @@ class Utilities
 
     /** @var  integer | null $offset */
     protected $offset;
+    
+    /** @var string */
+    protected $googleCalendarAppName;
+    
+    /** @var string */
+    protected $googleCalendarCredentialsPath;
+    
+    /** @var string */
+    protected $googleCalendarClientSecretPath;
+    
+    /** @var ContainerInterface $container */
+    protected $container;
 
-    public function __construct(EntityManager $em)
+    /** @var  string $googleCalendarId */
+    protected $googleCalendarId;
+
+    /** @var  array $googleCalendarOptParameters */
+    protected $googleCalendarOptParameters;
+
+    public function __construct(EntityManager $em, ContainerInterface $container)
     {
         $this->em = $em;
         $this->limit = null;
         $this->offset = null;
+        $this->container = $container;
+        $this->googleCalendarAppName = 'DKJ Google Calendar API';
+        $this->googleCalendarCredentialsPath = $this->container->getParameter('google_calendar_credentials_path');
+        $this->googleCalendarClientSecretPath = $this->container->getParameter('google_calendar_client_secret');
     }
 
     /**
@@ -127,6 +158,44 @@ class Utilities
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getGoogleCalendarId()
+    {
+        return $this->googleCalendarId;
+    }
+
+    /**
+     * @param string $googleCalendarId
+     * @return Utilities
+     */
+    public function setGoogleCalendarId($googleCalendarId)
+    {
+        $this->googleCalendarId = $googleCalendarId;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGoogleCalendarOptParameters()
+    {
+        return $this->googleCalendarOptParameters;
+    }
+
+    /**
+     * @param array $googleCalendarOptParameters
+     * @return Utilities
+     */
+    public function setGoogleCalendarOptParameters($googleCalendarOptParameters)
+    {
+        $this->googleCalendarOptParameters = $googleCalendarOptParameters;
+        return $this;
+    }
+
+
+
     public function getPages() {
 
         $pages = 1;
@@ -161,6 +230,74 @@ class Utilities
 
     }
 
+    /**
+     * @return string
+     */
+    public function getGoogleClient() {
+		  $client = new \Google_Client();
+		  $client->setApplicationName($this->googleCalendarAppName);
+		  $client->setScopes([Google_Service_Calendar::CALENDAR_READONLY]);
+		  $client->setAuthConfig($this->googleCalendarClientSecretPath);
+		  $client->setAccessType('offline');
+
+		  // Load previously authorized credentials from a file.
+		  $credentialsPath = $this->expandHomeDirectory($this->googleCalendarCredentialsPath);
+		  dump($credentialsPath);
+		  die;
+		  if (file_exists($credentialsPath)) {
+			$accessToken = json_decode(file_get_contents($credentialsPath), true);
+		  } else {
+			// Request authorization from the user.
+			$authUrl = $client->createAuthUrl();
+			$authCode = trim(fgets(STDIN));
+			
+			dump($authUrl);
+			die;
+			
+			// Exchange authorization code for an access token.
+			$accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
+
+			// Store the credentials to disk.
+			if(!file_exists(dirname($credentialsPath))) {
+			  mkdir(dirname($credentialsPath), 0700, true);
+			}
+			file_put_contents($credentialsPath, json_encode($accessToken));
+			printf("Credentials saved to %s\n", $credentialsPath);
+		  }
+		  $client->setAccessToken($accessToken);
+
+		  // Refresh the token if it's expired.
+		  if ($client->isAccessTokenExpired()) {
+			$client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+			file_put_contents($credentialsPath, json_encode($client->getAccessToken()));
+		  }
+		  return $client;
+	}
+
+	public function getListEvents() {
+
+        /** @var \Google_Client $client */
+        $client = $this->getGoogleClient();
+        $service = new Google_Service_Calendar($client);
+        $result = $service->events->listEvents($this->getGoogleCalendarId(), $this->getGoogleCalendarOptParameters());
+
+        return $result;
+    }
+
+    /**
+     * Expands the home directory alias '~' to the full path.
+     * @param string $path the path to expand.
+     * @return string the expanded path.
+     */
+    public function expandHomeDirectory($path) {
+        $homeDirectory = getenv('HOME');
+        if (empty($homeDirectory)) {
+            $homeDirectory = getenv('HOMEDRIVE') . getenv('HOMEPATH');
+        }
+        return str_replace('~', realpath($homeDirectory), $path);
+    }
+    
+    
     /**
      * @return \Doctrine\ORM\EntityRepository
      */

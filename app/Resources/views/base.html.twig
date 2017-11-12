@@ -13,7 +13,7 @@
     <meta name="keywords" content="{% block seoKeywords %}{% endblock %}">
 
     <title>{% block title %}Дворец Культуры Железнодорожников{% endblock %}</title>
-    
+
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css">
     <script src="https://use.fontawesome.com/dd34fe19f7.js"></script>
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
@@ -29,7 +29,7 @@
     {% block yandex_metrika_counter %}
 		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'yandex'})) }}
     {% endblock %}
-    
+
     {% block google_analytics %}
 		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'google'})) }}
     {% endblock %}
@@ -43,7 +43,7 @@
 
         {% block header %}
 
-            {% set mainMenu = 
+            {% set mainMenu =
 				[
 					{
 						title: 'Главная',
@@ -60,6 +60,11 @@
 						id: 'hall',
 						path: path('front.load_page', {'entity':'hall'})
 					},
+          {
+						title: 'Новости',
+						id: 'news',
+						path: path('front.load_page', {'entity':'news'})
+					},
 					{
 						title: 'Артисты',
 						id: 'artist',
@@ -75,7 +80,7 @@
 						id: 'contact',
 						path: path('front.contact')
 					}
-				] 
+				]
             %}
 
             {#
@@ -87,7 +92,7 @@
             </div>
 
             <div>
-                {#{% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}#}
+                {% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}
             </div>
 
         {% endblock %}
@@ -95,7 +100,7 @@
 
     <div class="content">
         {% block content %}
-        
+
             {% block main_banner_widget %}
                 {{ render(controller('AppBundle:Front\\Front:renderBanner')) }}
             {% endblock %}

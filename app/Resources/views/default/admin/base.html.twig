@@ -316,16 +316,55 @@
             });
         });
     });
+    
+    $( ".save-category-description" ).on('click',function( e ) {
+		var description = CKEDITOR.instances['category-description'].getData(),
+			entity = $(this).data('entity');
 
-
-    function getRandomHexColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
+		$.ajax({
+                url: '{{ path('admin.api.save_category_data') }}',
+                method: 'post',
+                data: {
+					description: description,
+					entity: entity
+				},
+                success: function () {
+					swal({
+                        title: 'Сохранено!',
+                        text: 'Данные успешно записаны',
+                        type: 'success'
+                    });
+                }
+            });	
+        });
+        
+     $('.save-category-seo').on('click', function(e) {
+		
+		var entity = $(this).data('entity'),
+			data = {};
+		
+		$.each( $('.seo-form'), function(key, element ) {
+			console.log($(element).val());
+			data[$(element).attr('name')] = $(element).val();
+		});	
+		
+		data['entity'] = entity;	
+		
+		data['description'] = CKEDITOR.instances['category-description'].getData();
+			
+		$.ajax({
+                url: '{{ path('admin.api.save_category_data') }}',
+                method: 'post',
+                data: data,	
+                success: function () {
+					swal({
+                        title: 'Сохранено!',
+                        text: 'Данные успешно записаны',
+                        type: 'success'
+                    });
+                }
+            });		            
+	});
 
 </script>
 

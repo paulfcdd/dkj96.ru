@@ -1,8 +1,24 @@
 {% extends '::base.html.twig' %}
 
-{% block title %} {{ metaTags.seoTitle }} {% endblock %}
-{% block seoDescription %}{{ metaTags.seoDescription }}{% endblock %}
-{% block seoKeywords %}{{ metaTags.seoKeywords }}{% endblock %}
+{% set seoTitle = '' %}
+{% set seoDescription = '' %}
+{% set seoKeywords = '' %}
+{% set categoryTitle = '' %}
+{% set categoryDescription = '' %}
+
+{% if categoryData is not null and categoryData is not empty %}
+  {% set seoTitle = categoryData.seoTitle %}
+  {% set seoDescription = categoryData.seoDescription %}
+  {% set seoKeywords = categoryData.seoKeywords %}
+  {% set categoryDescription = categoryData.description %}
+  {% set categoryTitle = categoryData.title %}
+{% endif %}
+
+
+
+{% block title %} {{ seoTitle }} {% endblock %}
+{% block seoDescription %}{{ seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ seoKeywords }}{% endblock %}
 
     {% block stylesheets %}
         <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
@@ -16,12 +32,10 @@
     {% block under_banner_text_widget %}
         <div class="container padding-0-100px" id="main-text-under-banner">
             <div class="text-center letter-spacing-1px banner-content-block">
-                <p class="padding-0-100px">
-                    {{ '
-                    Дворец культуры железнодорожников располагает разнообразными многофункциональными залами для мероприятий любого формата.
-                    Развязка всех видов транспорта, а так же расположение Дворца вблизи железнодорожного и автовокзалов позволяет добраться до него из любой точки города, области и страны.'
-                    | nl2br }}
-                </p>
+              <h1>{{ categoryTitle }}</h1>
+              <div class="text-center letter-spacing-1px banner-content-block">
+                   {{ categoryDescription | raw }}
+              </div>
             </div>
         </div>
     {% endblock %}
@@ -32,15 +46,15 @@
 
 
         {% for object in objects %}
-			
+
 			{% set slug = null %}
-		
+
 			{% if object.slug != null %}
 				{% set slug = object.slug %}
 			{% else %}
 				{% set slug = object.id %}
 			{% endif %}
-        
+
             {% set hallDetailPath =  path('front.load_page', {'entity': app.request.get('entity'), 'slug': slug}) %}
 
             {% set defaultImage = null %}

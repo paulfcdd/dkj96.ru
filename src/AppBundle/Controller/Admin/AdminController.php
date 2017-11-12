@@ -10,6 +10,7 @@ use AppBundle\Entity\File;
 use AppBundle\Entity\History;
 use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Banner;
 use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
@@ -35,24 +36,22 @@ use Symfony\Component\Yaml\Yaml;
 class AdminController extends Controller
 {
 	const CONFIG_FILE_PATH = __DIR__.('/../../../../app/config/page/');
-	
 	const METRICS_FILE_PATH = __DIR__.('/../../../../app/config/metrics/');
-	
-	const ROBOTS_TXT = __DIR__.('/../../../../web/robots.txt');
-	
+	const ROBOTS = __DIR__.('/../../../../web/robots.txt');
+	const HTACCESS = __DIR__.('/../../../../web/.htaccess');
 	const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
-	
+
 	protected $configFilePath;
-    
+
     public function __construct(){
-		$this->configFilePath = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH));
+			$this->configFilePath = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH));
 		}
-    
+
     /**
      * @Route("/admin/dashboard", name="admin.index")
      */
     public function indexAction() {
-
+		
         return $this->render(':default/admin:index.html.twig', [
             'bookings' => $this->getUnreadNotifications(
                Booking::class, ['booked' => 0, 'status' => 0], ['dateReceived' => 'DESC'], 10
@@ -99,10 +98,13 @@ class AdminController extends Controller
 
         $repository = $em->getRepository('AppBundle\\Entity\\'.$class);
 
+        $categoryData = $em->getRepository(Category::class)->findOneByEntity($entity);
+
         return $this->render(':default/admin:list.html.twig', [
             'objects' => $repository->findAll(),
             'pageSeo' => $this->getStaticPageSeo($entity),
             'pageName' => $entity,
+            'categoryData' => $categoryData
         ]);
     }
 
@@ -270,7 +272,7 @@ class AdminController extends Controller
             'videosExt' => FileUploaderService::VIDEOS,
         ]);
     }
-    
+
     /**
      * @param $className
      * @param $object
@@ -371,69 +373,75 @@ class AdminController extends Controller
 
 		return JsonResponse::create('ok');
 	}
-	
-	protected function getStaticPageSeo($pageName = 'index')  
+
+	protected function getStaticPageSeo($pageName = 'index')
 	{
 		$fileName = $pageName . '.yml';
-				
+
 		$config = $this->yamlParse($fileName, self::CONFIG_FILE_PATH);
-		
+
 		return $config;
-			
+
 	}
 
 	protected function getMetricsCode($metricsType) {
-		
+
 		$fileName = $metricsType . '.yml';
-		
+
 		$metrics = $this->yamlParse($fileName, self::METRICS_FILE_PATH);
-		
+
 		return $metrics;
-				
+
 	}
-	
+
 	protected function yamlParse($fileName, $filePath) {
-		
+
 		$configPath = $filePath . $fileName;
-		
+
 		if (!file_exists($configPath)) {
-			copy($filePath.'default.yml', $configPath);	
+			copy($filePath.'default.yml', $configPath);
 		}
-		
+
 		$yaml = Yaml::parse(file_get_contents($configPath));
-		
+
 		return $yaml;
-		
+
 	}
-	
+
 	protected function yamlDump($pageName, $pageData, $filePath) {
-		
-		$pathToFile = $filePath . $pageName; 
-		
-		$yaml = Yaml::dump($pageData);	
-		
+
+		$pathToFile = $filePath . $pageName;
+
+		$yaml = Yaml::dump($pageData);
+
 		$dump = file_put_contents($pathToFile, $yaml);
-				
+
 		return $dump;
 	}
-	
-	public function getRobotsTxtAction() {
+
+	public function getFileContentAction(string $fileName) {
 		
-		$robotsFile = self::ROBOTS_TXT;
+		$robotsFile = self::ROBOTS;
 		
-		
-		if (file_exists($robotsFile)) {
-			$handle = fopen($robotsFile, 'r');
-	
-			$robotsContent = fread($handle, filesize($robotsFile));
-			
+		$file = self::getConstants()[strtoupper($fileName)];
+
+		if (file_exists($file)) {
+			$handle = fopen($file, 'r');
+
+			$fileContent = fread($handle, filesize($file));
+
 			fclose($handle);
-			
-			return Response::create($robotsContent);
+
+			return Response::create($fileContent);
 		} else {
-			return 'File ' . $robotsFile . ' not found!';
-		} 
-		
+			return 'File ' . $file . ' not found!';
+		}
+
 	}
+	
+	public static function getConstants() {
+        $oClass = new \ReflectionClass(__CLASS__);
+        return $oClass->getConstants();
+    }
 
 }

@@ -5,6 +5,12 @@
 
 {% block content %}
 <div class="col-lg-12">
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-success alert-dismissable">
+			 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				{{ message | raw }}
+		</div>
+{% endfor %}
 		<div class="tabs-container">
 
             <div class="tabs-left">
@@ -14,9 +20,14 @@
 							<span class="fa fa-cog"></span> Настройки SEO
 						</a>
 					</li>
-                    <li class="">
+          <li class="">
 						<a data-toggle="tab" href="#robots" aria-expanded="false">
 							<span class="fa fa-wrench"></span> Robots.txt
+						</a>
+					</li>
+					<li class="">
+						<a data-toggle="tab" href="#htaccess" aria-expanded="false">
+							<span class="fa fa-file"></span> .htaccess
 						</a>
 					</li>
 					<li class="">
@@ -24,7 +35,7 @@
 							<span class="fa fa-google"></span> Код Google Analytics
 						</a>
 					</li>
-					
+
 					<li class="">
 						<a data-toggle="tab" href="#yandex-metrika" aria-expanded="false">
 						<span class="fa fa-line-chart"></span> Код Яндекс.Метрика
@@ -32,50 +43,49 @@
 					</li>
                 </ul>
 				<div class="tab-content ">
-					
+
 					<div id="seo-settings" class="tab-pane active">
-                    
+
 						<div class="panel-body">
-							{% include 'default/admin/parts/seo_form.html.twig' with{'pageName': 'index'} %}															                
+							{% include 'default/admin/parts/seo_form.html.twig' with{
+								'categoryData': categoryData,
+								'entity': entity
+							} %}
 						</div>
 					</div>
-					
-                    <div id="robots" class="tab-pane">
-                    
+
+				  <div id="robots" class="tab-pane">
+					<div class="panel-body">
+						{% include 'default/admin/parts/edit_file_form.html.twig' with{
+							'file': 'robots'
+						} %}
+					</div>
+				  </div>
+
+					<div id="htaccess" class="tab-pane">
 						<div class="panel-body">
-							<!--Robots.txt edit form start-->
-							<form action="{{ path('admin.api.save_robots_txt') }}" method="post">				
-								<div class="form-group">
-									<textarea class="form-control no-resize" rows="12" id="robotsForm" name="robotsForm">{{ render(controller('AppBundle:Admin\\Admin:getRobotsTxt')) }}</textarea>
-								</div>
-													
-								<div class="form-group">
-									 <button type="submit" class="btn btn-primary">
-										Сохранить
-									</button>
-								</div>
-							</form>
-							<!--Robots.txt edit form end -->							
-                        </div>
-                 
-                    </div>
+							{% include 'default/admin/parts/edit_file_form.html.twig' with{
+								'file': 'htaccess'
+							} %}
+						</div>
+					</div>
 
 					<div id="google-analytics" class="tab-pane">
-                    
+
 						<div class="panel-body">
 							{% include 'default/admin/parts/metrics_form.html.twig' with{'metricsType': 'google', 'content': google_code} %}
 						</div>
-					
+
 					</div>
-					
+
 					<div id="yandex-metrika" class="tab-pane">
-                    
+
 						<div class="panel-body">
 							{% include 'default/admin/parts/metrics_form.html.twig' with{'metricsType': 'yandex', 'content': yandex_code} %}
 						</div>
-					
+
 					</div>
-					
+
                 </div>
 			</div>
         </div>
@@ -83,4 +93,3 @@
 
 </div>
 {% endblock %}
-

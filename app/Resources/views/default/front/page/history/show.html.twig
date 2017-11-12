@@ -1,8 +1,22 @@
 {% extends '::base.html.twig' %}
 
-{% block title %} {{ metaTags.seoTitle }} {% endblock %}
-{% block seoDescription %}{{ metaTags.seoDescription }}{% endblock %}
-{% block seoKeywords %}{{ metaTags.seoKeywords }}{% endblock %}
+{% set seoTitle = '' %}
+{% set seoDescription = '' %}
+{% set seoKeywords = '' %}
+{% set categoryTitle = '' %}
+{% set categoryDescription = '' %}
+
+{% if categoryData is defined and categoryData is not empty %}
+  {% set seoTitle = categoryData.seoTitle %}
+  {% set seoDescription = categoryData.seoDescription %}
+  {% set seoKeywords = categoryData.seoKeywords %}
+  {% set categoryDescription = categoryData.description %}
+  {% set categoryTitle = categoryData.title %}
+{% endif %}
+
+{% block title %} {{ seoTitle }} {% endblock %}
+{% block seoDescription %}{{ seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ seoKeywords }}{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/front/page/istoriya.css') }}">
@@ -19,16 +33,17 @@
                 <h3>Эта страница еще не готова, попробуйте зайти позже</h3>
             </div>
         </div>
-        {% else %}
-            {% block under_banner_text_widget %}
-                <div class="container padding-0-100px" id="main-text-under-banner">
-                    <div class="text-center letter-spacing-1px banner-content-block">
-                        <p class="padding-0-100px">
-                            {{ history.description }}
-                        </p>
-                    </div>
-                </div>
-            {% endblock %}
+    {% else %}
+      {% block under_banner_text_widget %}
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+              <h1>{{ categoryTitle }}</h1>
+              <div class="text-center letter-spacing-1px banner-content-block">
+                   {{ categoryDescription | raw }}
+              </div>
+            </div>
+        </div>
+      {% endblock %}
 
             <div class="space-fix-container"></div>
 

@@ -1,22 +1,8 @@
 {% extends '::base.html.twig' %}
 
-{% set seoTitle = '' %}
-{% set seoDescription = '' %}
-{% set seoKeywords = '' %}
-{% set categoryTitle = '' %}
-{% set categoryDescription = '' %}
-
-{% if categoryData is not null and categoryData is not empty %}
-  {% set seoTitle = categoryData.seoTitle %}
-  {% set seoDescription = categoryData.seoDescription %}
-  {% set seoKeywords = categoryData.seoKeywords %}
-  {% set categoryDescription = categoryData.description %}
-  {% set categoryTitle = categoryData.title %}
-{% endif %}
-
-{% block title %} {{ seoTitle }} {% endblock %}
-{% block seoDescription %}{{ seoDescription }}{% endblock %}
-{% block seoKeywords %}{{ seoKeywords }}{% endblock %}
+{% block title %} {{ metaTags.seoTitle }} {% endblock %}
+{% block seoDescription %}{{ metaTags.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ metaTags.seoKeywords }}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
@@ -100,20 +86,18 @@
 {% endblock %}
 
 {% block content %}
-
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
     <div class="space-fix-container"></div>
 
     {% block under_banner_text_widget %}
-    <div class="container padding-0-100px" id="main-text-under-banner">
-        <div class="text-center letter-spacing-1px banner-content-block">
-          <h1>{{ categoryTitle }}</h1>
-          <div class="text-center letter-spacing-1px banner-content-block">
-               {{ categoryDescription | raw }}
-          </div>
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <p class="padding-0-100px">
+                    Анонс мероприятий в Дворце Культуры Железнодорожников
+                </p>
+            </div>
         </div>
-    </div>
     {% endblock %}
 
     {% for object in objects %}

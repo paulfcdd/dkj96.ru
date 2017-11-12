@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\File;
 use AppBundle\Entity\Hall;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
 use AppBundle\Service\MailerService;
@@ -26,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ApiController extends AdminController
 {
-	
+
     /**
      * @param string|null $name
      * @return \Doctrine\Common\Persistence\ObjectManager|object
@@ -232,78 +233,100 @@ class ApiController extends AdminController
 				'objects' => $objects
 			]);
 		}
-		
+
 		/**
 		* @param Request $request
 		* @Route("/save_main_page_seo_to_yml", name="admin.api.save_main_page_seo_to_yml")
 		*/
-		public function saveMainPageSeoToYmlAction(Request $request) 
+		public function saveMainPageSeoToYmlAction(Request $request)
 		{
-			$requestParams = $request->request;	
-			
+			$requestParams = $request->request;
+
 			$pageName = $requestParams->get('pageName') . '.yml';
 			$config = $this->yamlParse($pageName, self::CONFIG_FILE_PATH);
-			
+
 			$config['seoTitle'] = $requestParams->get('seoTitle');
 			$config['seoKeywords'] = $requestParams->get('seoKeywords');
 			$config['seoDescription'] = $requestParams->get('seoDescription');
-				
-			$writeFile = $this->yamlDump($pageName, $config, self::CONFIG_FILE_PATH);
-			
-			if ($writeFile) {
-					
-				if ($requestParams->get('pageName') == 'index') {
-					return $this->redirectToRoute('admin.settings');	
-				}
-				
-				return $this->redirectToRoute('admin.list', ['entity' => $requestParams->get('pageName')]);	
 
-				
+			$writeFile = $this->yamlDump($pageName, $config, self::CONFIG_FILE_PATH);
+
+			if ($writeFile) {
+
+				if ($requestParams->get('pageName') == 'index') {
+					return $this->redirectToRoute('admin.settings');
+				}
+
+				return $this->redirectToRoute('admin.list', ['entity' => $requestParams->get('pageName')]);
+
+
 			}
-			
+
 		}
-		
+
 		/**
 		* @param Request $request
 		* @Route("/save-metrics-code", name="admin.api.save_metrics_code")
 		*/
-		public function saveMetricsCodeAction(Request $request) 
+		public function saveMetricsCodeAction(Request $request)
 		{
-			$requestParams = $request->request;	
-			
+			$requestParams = $request->request;
+
 			$metricsFileName = $requestParams->get('metricsType') . '.yml';
-			
+
 			$metricsFile = $this->yamlParse($metricsFileName, self::METRICS_FILE_PATH);
-			
+
 			$metricsFile = $requestParams->get('metricsCode');
-			
+
 			$writeFile = $this->yamlDump($metricsFileName, $metricsFile, self::METRICS_FILE_PATH);
 
 			if ($writeFile) {
-				return $this->redirectToRoute('admin.settings');	
+				return $this->redirectToRoute('admin.settings');
 			}
 		}
-		
+
 		/**
 		* @param Request $request
-		* @Route("/save-robots-txt", name="admin.api.save_robots_txt")
-		*/		
-		public function saveRobotsTxtAction(Request $request) 
+		* @Route("/save-robots-txt", name="admin.api.save_serivice_file")
+		*/
+		public function saveRobotsTxtAction(Request $request)
 		{
-			$robotsTxt = self::ROBOTS_TXT;
-			
-			$content = $request->request->get('robotsForm');
-			
+      $fileName = strtoupper($request->request->get('file'));
+      $content = $request->request->get('content');
+      $file = self::getConstants()[$fileName];
+      $fileArr = explode('/', $file);
 			try {
-				
-				file_put_contents($robotsTxt, $content);
-				return $this->redirectToRoute('admin.settings');	
+				file_put_contents($file, $content);
+        $this->addFlash('success', 'Файл <b>'. end($fileArr) . '</b> сохранен!');
+				return $this->redirectToRoute('admin.settings');
 			} catch(\Exception $e) {
-				return Response::create('Cannot wrote to file '.$robotsTxt.'. Reason: <strong>'.$e->getMessage().'</strong>');
+				return Response::create('Cannot write to file '.$file.'. Reason: <strong>'.$e->getMessage().'</strong>');
 			}
-			
-			dump($content);
-			die;
-			
+		}
+
+		/**
+		* @param Request $request
+		* @Route("/save-category-data", name="admin.api.save_category_data")
+		*/
+		public function saveCategoryDataAction(Request $request) {
+
+			$entity = $request->request->get('entity');
+
+			$object = $this->getEntityRepository('category')->findOneByEntity($entity);
+
+			if (!$object) {
+				$object = new Category();
+			}
+
+			foreach($request->request->all() as $key=>$val) {
+				$object->{'set'.ucfirst($key)}($val);
+			}
+
+			$this->doctrineManager()->persist($object);
+			$this->doctrineManager()->flush();
+
+			return JsonResponse::create();
+
+
 		}
 }

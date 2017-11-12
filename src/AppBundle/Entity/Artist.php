@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Artist
 {
-    use AbstractEntityTrait;
-
-    use FileTrait;
+    use AbstractEntityTrait,
+		FileTrait;
 }

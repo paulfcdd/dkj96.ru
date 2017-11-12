@@ -1,0 +1,16 @@
+<form action="{{ path('admin.api.save_serivice_file') }}" method="post">
+  <div class="form-group">
+    <textarea class="form-control no-resize"
+              rows="12" id="content"
+              name="content">{{ render(controller('AppBundle:Admin\\Admin:getFileContent', {
+                'fileName': file
+              })) }}</textarea>
+  </div>
+
+  <input type="texy" hidden="hidden" value="{{file}}" name="file">
+  <div class="form-group">
+     <button type="submit" class="btn btn-primary">
+      Сохранить
+    </button>
+  </div>
+</form>

@@ -3,6 +3,14 @@
 
 {% block title %}{{ sectionName | trans }} | {{ parent() }}  {% endblock %}
 
+{% set categoryTitle = '' %}
+{% set categoryDescription = '' %}
+
+{% if categoryData is not null and categoryData is not empty %}
+  {% set categoryDescription = categoryData.description %}
+  {% set categoryTitle = categoryData.title %}
+{% endif %}
+
 {% block styles %}
 <link href="{{ asset('css/admin/dataTables.min.css') }}" rel="stylesheet">
 {% endblock %}
@@ -56,29 +64,34 @@
 {% block content %}
 
     {% set entity = app.request.get('entity') %}
-                
+
     <div class="col-lg-12">
 		<div class="tabs-container">
 
             <div class="tabs-left">
 				<ul class="nav nav-tabs">
 					<li class="active">
-						<a data-toggle="tab" href="#tab-6" aria-expanded="true">
+						<a data-toggle="tab" href="#list-tab" aria-expanded="true">
 							<span class="fa fa-list"></span> Список объектов
 						</a>
 					</li>
                     <li class="{% if pageName == 'banner' %}hidden{% endif %}">
-						<a data-toggle="tab" href="#tab-7" aria-expanded="false">
+						<a data-toggle="tab" href="#seo-tab" aria-expanded="false">
 							<span class="fa fa-cog"></span> Настройки SEO
+						</a>
+					</li>
+                    <li class="{% if pageName == 'banner' %}hidden{% endif %}">
+						<a data-toggle="tab" href="#page-text-tab" aria-expanded="false">
+							<span class="fa fa-file-text"></span> Информация о категории
 						</a>
 					</li>
                 </ul>
 				<div class="tab-content ">
-					
-					<div id="tab-6" class="tab-pane active">
-                    
+
+					<div id="list-tab" class="tab-pane active">
+
 						<div class="panel-body">
-							
+
 							{% if entity == 'banner' %}
 								{% include ':default/admin/views:banner_list.html.twig' with {
 									'banners': objects
@@ -106,22 +119,22 @@
 									<th class="text-right">Управление</th>
 									</thead>
 									<tbody>
-										
+
 									{% for object in objects %}
-										
+
 										<tr id="{{ routeParams.entity~'_'~object.id }}">
-											
+
 											<td>{{ object.id }}</td>
 
 
-											{% set objectTitle = null %} 
-											
+											{% set objectTitle = null %}
+
 											{% if entity == 'booking' %}
 												{% set objectTitle = object.email %}
 												{% else %}
 												{% set objectTitle = object.title %}
 											{% endif %}
-											
+
 											<td>{{ objectTitle }}</td>
 
 											{% if routeParams.entity == 'history' %}
@@ -137,20 +150,20 @@
 											{% endif %}
 
 											<td>
-												
-											{% set objectDate = null %} 
-											
+
+											{% set objectDate = null %}
+
 											{% if entity == 'booking' %}
 												{% set objectDate = object.dateReceived %}
 												{% else %}
 												{% set objectDate = object.dateCreated %}
 											{% endif %}
-											
+
 												{{ objectDate | date('d.m.Y') }}
 											</td>
-											
+
 											{% if entity != 'booking' %}
-											
+
 											<td>
 												{% if routeParams.entity == 'portfolio' %}
 													{{ object.event.eventDate | date('d.m.Y') }}
@@ -167,7 +180,7 @@
 												</td>
 											{% endif %}
 											{% if entity != 'booking' %}
-											<td class="text-center">			
+											<td class="text-center">
 												{{ object.author.username }}
 											</td>
 											{% endif %}
@@ -199,17 +212,45 @@
 							{% endif %}
 						</div>
 					</div>
-					
-                    <div id="tab-7" class="tab-pane">
-                    
+
+                    <div id="seo-tab" class="tab-pane">
+
 						<div class="panel-body">
-							{% include 'default/admin/parts/seo_form.html.twig' with{'pageName': pageName} %}
+							{% include 'default/admin/parts/seo_form.html.twig' with{
+								'categoryData': categoryData,
+								'entity': entity
+							} %}
                         </div>
-                 
+
                     </div>
-                </div>
+
+                    <div id="page-text-tab" class="tab-pane">
+
+						<div class="panel-body">
+
+							<div class="form-group">
+								<input type="texy" class="seo-form form-control"
+											id="category-title"
+											name="title"
+											value="{{ categoryTitle }}"
+											>
+							</div>
+
+								<div class="form-group">
+									<textarea class="ckeditor seo-form"
+											  id="category-description"
+											  name="description">{{ categoryDescription }}</textarea>
+								</div>
+								<button type="button"
+										class="btn btn-primary save-category-seo"
+										data-entity="{{ entity }}">
+									<span class="fa fa-floppy-o"></span> Сохранить
+								</button>
+						</div>
+	      </div>
 			</div>
-        </div>
-   </div>
-    
+		</div>
+	</div>
+</div>
+
 {% endblock %}

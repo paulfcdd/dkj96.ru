@@ -1,5 +1,5 @@
 echo '========= Pull new changes from repository ==========='
-git pull
+git pull && php bin/composer.phar self-update && php bin/composer.phar install
 
 echo '========= Updating database structure ==========='
 bin/console doctrine:schema:update --force

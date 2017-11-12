@@ -1,0 +1,40 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ categoryData.seoTitle }} {% endblock %}
+{% block seoDescription %}{{ categoryData.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ categoryData.seoKeywords }}{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block javascripts %}{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+	{% block under_banner_text_widget %}
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <div class="padding-0-100px">
+                    {{ categoryData.description | raw}}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    
+    {% for object in objects %}
+        {% for file in object.files %}
+            {% if file.isDefault == true %}
+                {% set bgimg = file.name %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <div class="space-fix-container"></div>
+    
+    here
+
+    {% block entity_list %}{{ include ('default/front/page/event/list.html.twig') }}{% endblock %}
+
+{% endblock %}

@@ -102,26 +102,26 @@
 ] %}
 
 {% for item in sidebarItems %}
-                  		
+
                   		{% set active = null %}
-                  		
+
                   		{% set splitRequestUri =  requestUri | split('/') %}
-                  		
+
                   		{% set currentUri = splitRequestUri[2] %}
-						
+
 						{% if item.id == app.request.get('entity') %}
 							{% set activePageName = activePageName | merge([item.name]) %}
 						{% endif %}
-						
+
 						{% if app.request.get('entity') == null %}
 							{% if item.id == currentUri %}
 								{% set activePageName = activePageName | merge([item.name]) %}
-							{% endif %}						
+							{% endif %}
 
 						{% endif %}
-										                    
+
  {% endfor %}
- 
+
 <body>
 <div id="wrapper">
     {% block navigation_bar %}
@@ -144,27 +144,27 @@
                         </div>
                     </li>
                     {% for item in sidebarItems %}
-                  		
+
                   		{% set active = null %}
-                  		
+
                   		{% set splitRequestUri =  requestUri | split('/') %}
-                  		
+
                   		{% set currentUri = splitRequestUri[2] %}
-						
+
 						{% if item.id == app.request.get('entity') %}
 							{% set active = 'active' %}
 							{% set activePageName = activePageName | merge([item.name]) %}
 						{% endif %}
-						
+
 						{% if app.request.get('entity') == null %}
 							{% if item.id == currentUri %}
 								{% set active = 'active' %}
 								{% set activePageName = activePageName | merge([item.name]) %}
 
-							{% endif %}						
+							{% endif %}
 
 						{% endif %}
-										                    
+
                         <li id="{{ item.id }}" {% if active != null %} class="{{ active }}" {% endif %}}>
                             <a href="{{ item.href }}"><i class="fa {{ item.icon }}"></i>
                                 <span class="nav-label">{{ item.name }}</span>
@@ -212,12 +212,12 @@
 				{% block page_heading %}{{ activePageName | first }}{% endblock %}
 			</h2>
 		</div>
-        
+
          <div class="col-lg-2">
 
 		</div>
      </div>
-            
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="wrapper wrapper-content">
@@ -317,15 +317,33 @@
         });
     });
 
+     $('.save-category-seo').on('click', function(e) {
 
-    function getRandomHexColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
+		     var entity = $(this).data('entity'),
+			       data = {};
+
+      		$.each( $('.seo-form'), function(key, element ) {
+      			console.log($(element).val());
+      			data[$(element).attr('name')] = $(element).val();
+      		});
+
+      		data['entity'] = entity;
+
+      		data['description'] = CKEDITOR.instances['category-description'].getData();
+
+		      $.ajax({
+                url: '{{ path('admin.api.save_category_data') }}',
+                method: 'post',
+                data: data,
+                success: function () {
+					             swal({
+                        title: 'Сохранено!',
+                        text: 'Данные успешно записаны',
+                        type: 'success'
+                    });
+                }
+            });
+	    });
 
 </script>
 

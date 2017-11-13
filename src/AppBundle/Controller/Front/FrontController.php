@@ -7,24 +7,17 @@ use AppBundle\Entity\Artist;
 use AppBundle\Entity\Banner;
 use AppBundle\Entity\Booking;
 use AppBundle\Entity\Event;
-use AppBundle\Entity\Feedback;
 use AppBundle\Entity\Hall;
-use AppBundle\Entity\History;
 use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
 use AppBundle\Form\BookingType;
-use AppBundle\Form\FeedbackType;
-use AppBundle\Form\ReviewType;
 use AppBundle\Service\FileUploaderService;
 use AppBundle\Service\Utilities;
 use AppBundle\Service\MailerService;
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation as Http;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Yaml\Yaml;
 
 
 class FrontController extends AppController

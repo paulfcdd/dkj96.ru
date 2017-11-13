@@ -1,28 +1,8 @@
 /.idea/
 /.project/
-/tests/
-/app/config/parameters.yml
 /app/config/page/*
+/vendor/
 /app/config/metrics/*
-/logs/*
-/stats/*
-/public_html/*
-
-/vendor/*
-/public_html/*
-/bin/dkj-dump.sql
-
-### Symfony ###
-# Cache and logs (Symfony2)
-/app/cache/*
-/app/logs/*
-/app/config/metrics/*
-/app/config/page/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
-
-# Email spool folder
-/app/spool/*
 
 # Cache, session files and logs (Symfony3)
 !var/.gitkeep
@@ -45,13 +25,4 @@
 /web/upload/*
 /web/robots.txt
 /web/.htaccess
-
-# PHPUnit
-/app/phpunit.xml
-/phpunit.xml
-
-# Build data
-/build/
-
-# Backup entities generated with doctrine:generate:entities command
-**/Entity/*~
+/web/node_modules/

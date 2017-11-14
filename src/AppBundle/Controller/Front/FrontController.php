@@ -3,17 +3,9 @@
 namespace AppBundle\Controller\Front;
 
 
-use AppBundle\Entity\Artist;
-use AppBundle\Entity\Banner;
-use AppBundle\Entity\Booking;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\Hall;
-use AppBundle\Entity\News;
-use AppBundle\Entity\Review;
+use AppBundle\Entity as Entity;
 use AppBundle\Form\BookingType;
-use AppBundle\Service\FileUploaderService;
-use AppBundle\Service\Utilities;
-use AppBundle\Service\MailerService;
+use AppBundle\Service as Service;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation as Http;
@@ -23,12 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontController extends AppController
 {
     /**
-	 * @param Hall|null $hall
+	 * @param Entity\Hall|null $hall
 	 * @param Http\Request $request
 	 * @return Http\Response
 	 * @Route("/halls/booking/{hall}", name="halls.book_hall")
 	 */
-	public function bookHallAction(Hall $hall = null, Http\Request $request)
+	public function bookHallAction(Entity\Hall $hall = null, Http\Request $request)
 	{
 
 		$doctrine = $this->getDoctrine();
@@ -37,7 +29,7 @@ class FrontController extends AppController
 
 		if (!$hall) {
 			$form->add('hall', EntityType::class, [
-				'class' => Hall::class,
+				'class' => Entity\Hall::class,
 				'label' => 'Выберите зал',
 				'attr' => [
 					'class' => 'form-control no-border-radius'
@@ -63,7 +55,7 @@ class FrontController extends AppController
 
 			if ($form->isValid() && $resaptchaVerifyer->success) {
 
-				/** @var Booking $formData */
+				/** @var Entity\Booking $formData */
 				$formData = $form->getData();
 
 				$hallTitle = null;
@@ -75,8 +67,8 @@ class FrontController extends AppController
 				if ($formData->getHall()) {
 					$hallTitle = $formData->getHall()->getTitle();
 				}
-				/** @var MailerService $mailer */
-				$mailer = $this->get(MailerService::class);
+				/** @var Service\MailerService $mailer */
+				$mailer = $this->get(Service\MailerService::class);
 
 				$mailer
 					->setTo($this->getParameter('administrator'))
@@ -101,13 +93,16 @@ class FrontController extends AppController
 		return $this->render(':default/front/page:booking.html.twig', [
 			'hall' => $hall,
 			'form' => $form->createView(),
-			'halls' => $doctrine->getRepository(Hall::class)->findAll(),
+			'halls' => $doctrine->getRepository(Entity\Hall::class)->findAll(),
 		]);
 	}
 
+    /**
+     * @return Http\Response
+     */
 	public function renderBannerAction() {
 
-		$banners = $this->getDoctrine()->getRepository(Banner::class)->findAll();
+		$banners = $this->getDoctrine()->getRepository(Entity\Banner::class)->findAll();
 
 		return $this->render(':default/front/page/parts:banner.html.twig', [
 			'banners' => $banners,
@@ -115,13 +110,13 @@ class FrontController extends AppController
 	}
 
 	/**
-	 * @param News $news
-	 * @param Utilities $utilities
+	 * @param Entity\News $news
+	 * @param Service\Utilities $utilities
 	 * @return Http\Response
 	 * @Route("/news/{news}", name="front.news")
 	 * @Method({"POST", "GET"})
 	 */
-	public function showNewsAction(News $news = null, Utilities $utilities, Http\Request $request)
+	public function showNewsAction(Entity\News $news = null, Service\Utilities $utilities, Http\Request $request)
 	{
 		if ($news)
 		{
@@ -185,42 +180,9 @@ class FrontController extends AppController
 		$em = $this->getDoctrine()->getManager();
 
 		return $this->render(':default/front/page/review:list.html.twig', [
-			'reviews' => $em->getRepository(Review::class)->findBy(['approved' => 1, 'status' => 1]),
+			'reviews' => $em->getRepository(Entity\Review::class)->findBy(['approved' => 1, 'status' => 1]),
 		]);
 
-	}
-
-	/**
-	 * @Route("/artists", name="front.artists")
-	 */
-	public function listArtistsPageAction()
-	{
-		return $this->render(':default/front/page:artisty.html.twig', [
-			'artists' => $this->getDoctrine()->getRepository(Artist::class)->findAll(),
-			'metaTags' => $this->getMetaTags('artist'),
-		]);
-	}
-
-	/**
-	 * @param $artist
-	 * @return Http\Response
-	 * @Route("/artists/{artist}", name="front.artists.detail")
-	 */
-	public function singleArtistAction(Artist $artist)
-	{
-		if ($artist)
-		{
-			if ($artist->isRedirect())
-			{
-				return $this->redirect($artist->getRedirectUrl());
-			}
-		}
-
-		return $this->render(':default/front/page/artists:single.html.twig', [
-			'artist' => $artist,
-			'imagesExt' => FileUploaderService::IMAGES,
-			'videosExt' => FileUploaderService::VIDEOS,
-		]);
 	}
 
 	/**
@@ -232,25 +194,53 @@ class FrontController extends AppController
 		$em = $this->getDoctrine()->getManager();
 
 		return $this->render(':default/front/page/event:list.html.twig', [
-			'events' => $em->getRepository(Event::class)->findAll(),
+			'events' => $em->getRepository(Entity\Event::class)->findAll(),
 			'metaTags' => $this->getMetaTags('event'),
 		]);
 
 	}
 
-	/**
-	 * @param Hall $hall
-	 * @param Http\Request $request
-	 * @return Http\Response
-	 * @Route("/halls/{hall}/booking-calendar", name="halls.booking_calendar")
-	 * @Method({"POST"})
-	 */
-	public function renderBookingsModalAction(Hall $hall, Http\Request $request)
-	{
+    /**
+     * @param Http\Request $request
+     * @param $form
+     * @param $object
+     */
+    public function sendReview(Http\Request $request, $form, $object) {
+        $response = $request->request->get('g-recaptcha-response');
 
-		return $this->render(':default/front/page/halls:hall_calendar_modal.html.twig', [
-			'bookings' => $hall->getBookings()
+        $em = $this->getDoctrine()->getManager();
 
-		]);
-	}
+        $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
+
+        $resaptchaVerifyer = json_decode($resaptchaVerifyer);
+
+        if ($form->isValid() && $resaptchaVerifyer->success) {
+
+            /** @var Entity\Review $formData */
+            $formData = $form->getData();
+
+            /** @var Service\MailerService $mailer */
+            $mailer = $this->get(Service\MailerService::class);
+
+            $mailer
+                ->setTo($this->getParameter('client'))
+                ->setFrom($formData->getEmail())
+                ->setSubject('Новый отзыв о событии '.$object->getTitle())
+                ->setBody($formData->getMessage());
+
+            $formData->setEvent($object);
+
+            $em->persist($formData);
+
+            $em->flush();
+
+            $mailer->sendMessage();
+
+            $this->addFlash('success', 'Отзыв отправлен');
+
+        } else {
+            $this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
+        }
+    }
+
 }

@@ -75,7 +75,7 @@
                         {% set imgPath = asset('img/logo_dkj.jpg') %}
                     {% endif %}
 
-                    <a class="pull-left" href="{{ path('front.artists.detail', {'artist': object.id}) }}">
+                    <a class="pull-left" href="{{ path('front.load_page', {'entity': app.request.get('entity'), 'slug': slug}) }}">
                         <img class="media-object" src="{{ imgPath }}" style="height: 256px; width: 256px; border-radius: 50%; margin-right: 20px;">
                     </a>
                     <div class="media-body">

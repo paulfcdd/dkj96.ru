@@ -26,14 +26,12 @@ class PageController extends AppController
     {
         $repository = $this->getEntityRepository($entity);
 
-        if ($entity == 'history')
-        {
-            $view = ':default/front/page/'.$entity.':show.html.twig';
-            $parameters = [
-                'history' => $this->getDoctrine()->getRepository(Entity\History::class)->findOneBy(['isEnabled' => true]),
-                'categoryData' => $this->getEntityRepository('category')->findOneByEntity($entity),
-            ];
-            return $this->render($view, $parameters);
+        $object = null;
+
+        if (!intval($slug)) {
+            $object = $repository->findOneBySlug($slug);
+        } else {
+            $object = $repository->findOneById($slug);
         }
 
         if (!$slug)
@@ -41,12 +39,15 @@ class PageController extends AppController
             return $this->loadListAction($repository, $entity, $utilities, $request);
         }
 
-        $object = null;
 
-        if (!intval($slug)) {
-            $object = $repository->findOneBySlug($slug);
-        } else {
-            $object = $repository->findOneById($slug);
+        if ($object instanceof Entity\History)
+        {
+            $view = ':default/front/page/'.$entity.':show.html.twig';
+            $parameters = [
+                'history' => $this->getDoctrine()->getRepository(Entity\History::class)->findOneBy(['isEnabled' => true]),
+                'categoryData' => $this->getEntityRepository('category')->findOneByEntity($entity),
+            ];
+            return $this->render($view, $parameters);
         }
 
         if ($object)
@@ -71,39 +72,8 @@ class PageController extends AppController
                 $form = $this->createForm(Form\ReviewType::class)->handleRequest($request);
 
                 if ($form->isSubmitted()) {
-                    $response = $request->request->get('g-recaptcha-response');
 
-                    $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
-
-                    $resaptchaVerifyer = json_decode($resaptchaVerifyer);
-
-                    if ($form->isValid() && $resaptchaVerifyer->success) {
-
-                        /** @var Entity\Review $formData */
-                        $formData = $form->getData();
-
-                        /** @var Service\MailerService $mailer */
-                        $mailer = $this->get(Service\MailerService::class);
-
-                        $mailer
-                            ->setTo($this->getParameter('client'))
-                            ->setFrom($formData->getEmail())
-                            ->setSubject('Новый отзыв о событии '.$object->getTitle())
-                            ->setBody($formData->getMessage());
-
-                        $formData->setEvent($object);
-
-                        $em->persist($formData);
-
-                        $em->flush();
-
-                        $mailer->sendMessage();
-
-                        $this->addFlash('success', 'Отзыв отправлен');
-
-                    } else {
-                        $this->addFlash('error', 'Вы должны подтвердить, что вы не робот');
-                    }
+                    $this->sendReview($request, $form, $object);
                 }
 
                 if ($object->getEventDate() > new \DateTime()) {

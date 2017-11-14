@@ -14,6 +14,8 @@ class AppController extends Controller
     const METRICS_FILE_PATH = __DIR__.('/../../../../app/config/metrics/');
     const DATE_FORMAT = 'Y-m-d';
 
+
+
     public function getMetricsCodeAction($metricsName)
     {
         $metricsFile = self::METRICS_FILE_PATH . $metricsName . '.yml';

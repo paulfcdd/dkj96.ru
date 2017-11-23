@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends ':default/front:base.html.twig' %}
 
 {% block title %}{{ object.seoTitle }}{% endblock %}
 {% block seoDescription %}{{ object.seoDescription }}{% endblock %}
@@ -69,7 +69,6 @@
     {% endfor %}
 
     <div class="container col-xs-padding-right-0 single-hall-page">
-
         <div class="space-fix-container"></div>
 
         <div class="row xs-padding-0-10px">
@@ -111,7 +110,7 @@
                                data-placement="top"
                                data-toggle="modal"
                                title="Занятость зала"
-                               data-target="#myModal">
+                               data-target="#hall-reservations">
                            <i class="fa fa-calendar-o" aria-hidden="true"></i> <label class="hidden-sm hidden-lg hidden-md">Занятость зала</label>
                        </button>
 
@@ -188,8 +187,8 @@
             </div>
         </div>
 
-        <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+        <div id="hall-reservations" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width: 70%">
 
                 <!-- Modal content-->
                 <div class="modal-content no-border-radius">
@@ -198,13 +197,16 @@
                         <h4 class="modal-title">Занятость зала "{{ object.title }}"</h4>
                     </div>
                     <div class="modal-body">
-                        <div id='calendar'></div>
-
-                        <div>
-                            <p>
-                                <i class="fa fa-square" aria-hidden="true" style="color: red"></i> - Забронировано
-                            </p>
-                        </div>
+						{% if object.googleCalendarIdKey is not empty %}
+                        <iframe 
+							src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;src={{ object.googleCalendarIdKey }}&ctz=Asia%2FYekaterinburg" 
+							style="border: 0" 
+							width="100%" height="600" frameborder="0" 
+							scrolling="no">
+						</iframe>
+							{% else %}
+							<h3>Для данного зала календарь недоступен</h3>
+						{% endif %}
                     </div>
                     <div class="modal-footer">
                         <a href="{{ path('halls.book_hall', {'hall': object.id}) }}"
@@ -219,7 +221,7 @@
 
             </div>
         </div>
-
+        
         <div id="blueimp-gallery" class="blueimp-gallery">
             <div class="slides"></div>
             <h3 class="title"></h3>

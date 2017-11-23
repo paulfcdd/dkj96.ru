@@ -2,143 +2,75 @@
 
 {% block title %}Главная страница | {{ parent() }} {% endblock %}
 
+{% set categoryTitle = '' %}
+{% set categoryDescription = '' %}
+
+{% if categoryData is not null and categoryData is not empty %}
+    {% set categoryDescription = categoryData.description %}
+    {% set categoryTitle = categoryData.title %}
+{% endif %}
+
 {% block content %}
-    <div class="col-lg-4">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Новые Бронирования</h5>
-                <div class="ibox-tools">
-                    <span class="label label-warning-light pull-left">{{ bookings | length }} новых</span>
-                    <a class="collapse-link pull-right">
-						<i class="fa fa-chevron-up"></i>
-					</a>
-                </div>
-            </div>
-            <div class="ibox-content no-padding">
-                <ul class="list-group">
+    {% set entity = 'index' %}
+    <div class="col-lg-12">
+        <div class="tabs-container">
 
+            <div class="tabs-left">
+                <ul class="nav nav-tabs">
 
-                    <div class="ibox-content">
+                    <li class="active">
+                        <a data-toggle="tab" href="#seo-tab" aria-expanded="false">
+                            <span class="fa fa-cog"></span> Настройки SEO
+                        </a>
+                    </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#page-text-tab" aria-expanded="false">
+                            <span class="fa fa-file-text"></span> Информация о категории
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content ">
 
-                        <div>
-                            <div class="feed-activity-list">
-                                {% for booking in bookings %}
-                                    <div class="feed-element">
-                                        <a href="{{ path('admin.messages.details',
-                                        {'id': booking.id, 'entity': 'booking'}) }}" class="pull-left">
-                                            <span class="fa fa-envelope fa-2x"></span>
-                                        </a>
-                                        <div class="media-body ">
-                                            <strong>{{ booking.hall.title }}</strong> {{ booking.email }}<br>
-                                            <small class="text-muted">
-                                                {% set dateReceived = booking.dateReceived | date('d.m.Y') %}
-                                                {% set timeReceived = booking.dateReceived | date('H:i') %}
+                    <div id="seo-tab" class="tab-pane active">
 
-                                                {{ dateReceived~' - '~timeReceived }}
-                                            </small>
-                                            <div class="well">
-                                                {{ booking.message | nl2br }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
+                        <div class="panel-body">
+                            {% include 'default/admin/parts/seo_form.html.twig' with{
+                            'categoryData': categoryData,
+                            'entity': entity
+                            } %}
                         </div>
 
                     </div>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Новые сообщения</h5>
-                <div class="ibox-tools">
-                    <span class="label label-warning-light pull-left">{{ messages | length~' '~'новых' }}</span>
-                    <a class="collapse-link pull-right">
-						<i class="fa fa-chevron-up"></i>
-					</a>
-                </div>
-            </div>
-            <div class="ibox-content">
 
-                <div>
-                    <div class="feed-activity-list">
-                        {% for message in messages %}
-                            <div class="feed-element">
-                                <a href="{{ path('admin.messages.details', {
-                                    'entity': 'feedback',
-                                    'id': message.id
-                                }) }}" class="pull-left">
-                                    <span class="fa fa-envelope fa-2x"></span>
-                                </a>
-                                <div class="media-body ">
-                                    Новое сообщение от <strong>{{ message.email }}</strong><br>
-                                    <small class="text-muted">
-                                        {% set dateReceived = message.dateReceived | date('d.m.Y') %}
-                                        {% set timeReceived = message.dateReceived | date('H:i') %}
+                    <div id="page-text-tab" class="tab-pane">
 
-                                        {{ dateReceived~' - '~timeReceived }}
-                                    </small>
-                                    <div class="well">
-                                        {{ message.message | nl2br }}
-                                    </div>
-                                </div>
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                <label for="category-title">Заголовк категории</label>
+                                <input type="text" class="seo-form form-control"
+                                       id="category-title"
+                                       name="title"
+                                       value="{{ categoryTitle }}"
+                                >
                             </div>
-                        {% endfor %}
+
+                            <div class="form-group">
+                                <label for="category-description">Описание категории</label>
+                                <textarea class="ckeditor seo-form"
+                                          id="category-description"
+                                          name="description">{{ categoryDescription }}</textarea>
+                            </div>
+                            <button type="button"
+                                    class="btn btn-primary save-category-seo"
+                                    data-entity="{{ entity }}">
+                                <span class="fa fa-floppy-o"></span> Сохранить
+                            </button>
+                        </div>
                     </div>
                 </div>
-
-            </div>
-        </div>
-
-    </div>
-    <div class="col-lg-4">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Новые отзывы</h5>
-                <div class="ibox-tools">
-                    <span class="label label-warning-light pull-left">{{ reviews | length }} новых</span>
-                    <a class="collapse-link pull-right">
-						<i class="fa fa-chevron-up"></i>
-					</a>
-                </div>
-            </div>
-            <div class="ibox-content">
-
-                <div>
-                    <div class="feed-activity-list">
-
-
-                        {% for review in reviews %}
-                                <div class="feed-element">
-                                    <a href="{{ path('admin.messages.details', {
-                                        'entity': 'review',
-                                        'id': review.id
-                                    }) }}" class="pull-left">
-                                        <span class="fa fa-envelope fa-2x"></span>
-                                    </a>
-                                    <div class="media-body ">
-                                        <strong>{{ review.event.title }}</strong> {{ review.email }}<br>
-                                        <small class="text-muted">
-                                            {% set dateReceived = review.dateReceived | date('d.m.Y') %}
-                                            {% set timeReceived = review.dateReceived | date('H:i') %}
-
-                                            {{ dateReceived~' - '~timeReceived }}
-                                        </small>
-                                        <div class="well">
-                                            {{ review.message | nl2br }}
-                                        </div>
-                                    </div>
-                                </div>
-                        {% endfor %}
-
-                    </div>
-
-                </div>
-
             </div>
         </div>
     </div>
+
 {% endblock %}

@@ -22,6 +22,7 @@ class AbstractFormType extends AbstractType
 				'required' => false,
 				'attr' => [
 					'placeholder' => 'Не более 80 знаков',
+
 				],
            ])
            ->add('seoKeywords', TextareaType::class, [

@@ -51,17 +51,11 @@ class AdminController extends Controller
      * @Route("/admin/dashboard", name="admin.index")
      */
     public function indexAction() {
-		
+
+        $em = $this->getDoctrine()->getManager();
+
         return $this->render(':default/admin:index.html.twig', [
-            'bookings' => $this->getUnreadNotifications(
-               Booking::class, ['booked' => 0, 'status' => 0], ['dateReceived' => 'DESC'], 10
-            ),
-            'messages' => $this->getUnreadNotifications(
-                Feedback::class, ['status' => 0], ['dateReceived' => 'DESC'], 10
-            ),
-            'reviews' => $this->getUnreadNotifications(
-                Review::class, ['status' => 0], ['dateReceived' => 'DESC'], 10
-            )
+            'categoryData' =>  $em->getRepository(Category::class)->findOneByEntity('index')
         ]);
     }
 
@@ -420,9 +414,7 @@ class AdminController extends Controller
 	}
 
 	public function getFileContentAction(string $fileName) {
-		
-		$robotsFile = self::ROBOTS;
-		
+
 		$file = self::getConstants()[strtoupper($fileName)];
 
 		if (file_exists($file)) {
@@ -439,7 +431,7 @@ class AdminController extends Controller
 
 	}
 	
-	public static function getConstants() {
+	protected static function getConstants() {
         $oClass = new \ReflectionClass(__CLASS__);
         return $oClass->getConstants();
     }

@@ -3,7 +3,7 @@
 /app/config/page/*
 /vendor/
 /app/config/metrics/*
-
+/.web-server-pid
 # Cache, session files and logs (Symfony3)
 !var/.gitkeep
 !var/cache/.gitkeep

@@ -14,13 +14,15 @@ class ReviewType extends FeedbackType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('name', TextType::class, [
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control no-border-radius',
-                    'placeholder' => 'Ваше имя и фамилия',
-                ]
-            ]);
+					->add('name', TextType::class, [
+						'label' => false,
+						'attr' => [
+							'class' => 'form-control no-border-radius',
+							'placeholder' => 'Ваше имя и фамилия',
+						]
+					])
+					->remove('toWhom');
+        
     }
 
     public function configureOptions(OptionsResolver $resolver)

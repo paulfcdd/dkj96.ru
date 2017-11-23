@@ -1,0 +1,158 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} {{ metaTags.seoTitle }} {% endblock %}
+{% block seoDescription %}{{ metaTags.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ metaTags.seoKeywords }}{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/front/page/event_list.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+
+            var date = new Date(),
+                month = date.getMonth(),
+                year = date.getFullYear(),
+                limit = 5,
+                monthFirstDay = new Date(year, month, 1),
+                monthLastDay = new Date(year, month + 1, 0),
+                apiUrl = '{{ path('api.load-events-by-month') }}';
+
+            monthDisabler(month);
+
+            getEvents(apiUrl, monthFirstDay, monthLastDay);
+
+            $('#year').change(function () {
+                var selectedYear = $(this).val();
+                if (selectedYear == year) {
+                    monthDisabler(month);
+                } else {
+                    $('#month option').each(function (key, val) {
+                        $(val).attr('disabled', false);
+                    })
+                }
+            });
+
+            $('#month option[value="' + month + '"]').prop("selected", true);
+            for (var i = 0; i < limit; ++i) {
+                var nextYear = year + i;
+                $('#year').append(
+                    '<option value="' + nextYear + '">' + nextYear + '</option>'
+                );
+            }
+
+            $('.filter-event-btn').on('click', function () {
+                $('.event-list-row').empty();
+                $('.loader-row').show();
+
+                var targetMonth = parseInt($('#month').val()),
+                    targetYear = parseInt($('#year').val()),
+                    monthFirstDay = new Date(targetYear, targetMonth, 1),
+                    monthLastDay = new Date(targetYear, targetMonth + 1, 0);
+
+                getEvents(apiUrl, monthFirstDay, monthLastDay);
+            })
+        });
+
+        function getEvents(apiUrl, monthFirstDay, monthLastDay) {
+            $.ajax({
+                url: apiUrl,
+                method: 'post',
+                data: {
+                    'firstDay': $.datepicker.formatDate('yy-mm-dd', monthFirstDay),
+                    'lastDay': $.datepicker.formatDate('yy-mm-dd', monthLastDay)
+                },
+                beforeSend: function () {
+                    $('.loader-row').show();
+                },
+                success: function (data) {
+                    $('.loader-row').hide();
+                    $('.event-filter').show();
+                    $('.event-list-row').append(data);
+                }
+            });
+        }
+
+        function monthDisabler(month) {
+            for (var j = 0; j < month; j++) {
+                $('#month option[value="' + j + '"]').attr('disabled', 'disabled');
+            }
+            $('#month option[value="' + month + '"]').prop("selected", true);
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+                <p class="padding-0-100px">
+                    Анонс мероприятий в Дворце Культуры Железнодорожников
+                </p>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% for object in objects %}
+        {% for file in object.files %}
+            {% if file.isDefault == true %}
+                {% set bgimg = file.name %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container halls-list-block event-list">
+
+        <div class="row">
+            <div class="container-fluid event-filter" hidden>
+                <div class="row inline">
+                    <div class="form-group col-lg-6 col-xs-12">
+                        <select class="form-control no-border-radius" id="month" style="width: 100%">
+                            <option value="0">Январь</option>
+                            <option value="1">Февраль</option>
+                            <option value="2">Март</option>
+                            <option value="3">Апрель</option>
+                            <option value="4">Май</option>
+                            <option value="5">Июнь</option>
+                            <option value="6">Июль</option>
+                            <option value="7">Август</option>
+                            <option value="8">Сентябрь</option>
+                            <option value="9">Октябрь</option>
+                            <option value="10">Ноябрь</option>
+                            <option value="11">Декабрь</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-4 col-xs-12">
+                        <select class="form-control no-border-radius" id="year" style="width: 100%">
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-2 col-xs-12">
+                        <button class="btn btn-default filter-event-btn no-border-radius">Показать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row loader-row" hidden>
+            <div class="loader-container col-md-4 col-md-offset-5">
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <div class="row event-list-row">
+
+        </div>
+    </div>
+
+{% endblock %}

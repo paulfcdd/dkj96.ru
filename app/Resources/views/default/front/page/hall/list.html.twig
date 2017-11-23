@@ -1,0 +1,101 @@
+{% extends '::base.html.twig' %}
+
+{% set seoTitle = '' %}
+{% set seoDescription = '' %}
+{% set seoKeywords = '' %}
+{% set categoryTitle = '' %}
+{% set categoryDescription = '' %}
+
+{% if categoryData is not null and categoryData is not empty %}
+  {% set seoTitle = categoryData.seoTitle %}
+  {% set seoDescription = categoryData.seoDescription %}
+  {% set seoKeywords = categoryData.seoKeywords %}
+  {% set categoryDescription = categoryData.description %}
+  {% set categoryTitle = categoryData.title %}
+{% endif %}
+
+
+
+{% block title %} {{ seoTitle }} {% endblock %}
+{% block seoDescription %}{{ seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ seoKeywords }}{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+    {% endblock %}
+
+{% block content %}
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+        <div class="container padding-0-100px" id="main-text-under-banner">
+            <div class="text-center letter-spacing-1px banner-content-block">
+              <h1>{{ categoryTitle }}</h1>
+              <div class="text-center letter-spacing-1px banner-content-block">
+                   {{ categoryDescription | raw }}
+              </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container padding-left-0 padding-right-0 halls-list-block">
+
+
+        {% for object in objects %}
+
+			{% set slug = null %}
+
+			{% if object.slug != null %}
+				{% set slug = object.slug %}
+			{% else %}
+				{% set slug = object.id %}
+			{% endif %}
+
+            {% set hallDetailPath =  path('front.load_page', {'entity': app.request.get('entity'), 'slug': slug}) %}
+
+            {% set defaultImage = null %}
+
+            {% if object.files | length > 0 %}
+                {% for file in object.files %}
+                    {% if file.isDefault == 1 %}
+                        {% set defaultImage = file %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <div class="col-xs-12 padding-0-100px xs-padding-0-10px single-hall">
+                <div class="media">
+                    <a class="pull-left" href="{{ hallDetailPath }}">
+                        {% if defaultImage is not null %}
+                            {% set imgPath = asset('upload/hall/'~defaultImage.name) %}
+                            {% else %}
+                            {% set imgPath = asset('img/logo_dkj.jpg') %}
+                        {% endif %}
+                        <img class="media-object" src="{{ imgPath }}">
+                    </a>
+                    <div class="media-body">
+                        <h3 class="media-heading hall-label">
+                            <a href="{{ hallDetailPath }}">{{ object.title }}</a>
+                        </h3>
+                        <div class="by-author hall-description">
+                            {{ object.description }}
+                        </div>
+                        <a href="{{ hallDetailPath }}" class="read-more-link pull-right xs-width-100">
+                            Подробнее
+                        </a>
+                        <a href="{{ path('halls.book_hall', {
+                            'hall': object.id
+                        }) }}" class="pull-left read-more-link">
+                            Бронировать
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

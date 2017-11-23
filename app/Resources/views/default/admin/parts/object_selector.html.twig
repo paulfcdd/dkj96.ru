@@ -1,0 +1,7 @@
+<div class="form-group banner-object-container">
+	<select class="form-control" id="banner_object" name="banner[object]">
+		{% for object in objects %}
+			<option value="{{ object.id }}">{{ object.title }}</option>
+		{% endfor %}
+	</select>
+</div>

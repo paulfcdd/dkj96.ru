@@ -9,6 +9,8 @@
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="{% block seoDescription %}{% endblock %}">
+    <meta name="keywords" content="{% block seoKeywords %}{% endblock %}">
 
     <title>{% block title %}Дворец Культуры Железнодорожников{% endblock %}</title>
 
@@ -25,34 +27,11 @@
     <script src='https://www.google.com/recaptcha/api.js'></script>
 
     {% block yandex_metrika_counter %}
-        <script type="text/javascript" >
-            (function (d, w, c) {
-                (w[c] = w[c] || []).push(function() {
-                    try {
-                        w.yaCounter45684630 = new Ya.Metrika({
-                            id:45684630,
-                            clickmap:true,
-                            trackLinks:true,
-                            accurateTrackBounce:true,
-                            webvisor:true,
-                            trackHash:true,
-                            ecommerce:"dataLayer"
-                        });
-                    } catch(e) { }
-                });
+		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'yandex'})) }}
+    {% endblock %}
 
-                var n = d.getElementsByTagName("script")[0],
-                    s = d.createElement("script"),
-                    f = function () { n.parentNode.insertBefore(s, n); };
-                s.type = "text/javascript";
-                s.async = true;
-                s.src = "https://cdn.jsdelivr.net/npm/yandex-metrica-watch/watch.js";
-
-                if (w.opera == "[object Opera]") {
-                    d.addEventListener("DOMContentLoaded", f, false);
-                } else { f(); }
-            })(document, window, "yandex_metrika_callbacks");
-        </script>
+    {% block google_analytics %}
+		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'google'})) }}
     {% endblock %}
 </head>
 <body>
@@ -61,16 +40,48 @@
 <div class="wrapper">
 
     <div class="header row">
+
         {% block header %}
 
-            {% set mainMenu = {
-            'front.index' : 'Главная',
-            'event.list': 'Афиша',
-            'halls.list' : 'Залы',
-            'front.artists' : 'Артисты',
-            'front.history' : 'История',
-            'front.contact' : 'Контакты'
-            } %}
+            {% set mainMenu =
+				[
+					{
+						title: 'Главная',
+						id: 'index',
+						path: path('front.index')
+					},
+					{
+						title: 'Афиша',
+						id: 'event',
+						path: path('front.load_page', {'entity':'event'})
+					},
+					{
+						title: 'Залы',
+						id: 'hall',
+						path: path('front.load_page', {'entity':'hall'})
+					},
+          {
+						title: 'Новости',
+						id: 'news',
+						path: path('front.load_page', {'entity':'news'})
+					},
+					{
+						title: 'Артисты',
+						id: 'artist',
+						path: path('front.load_page', {'entity':'artist'})
+					},
+					{
+						title: 'История',
+						id: 'history',
+						path: path('front.load_page', {'entity':'history'})
+					},
+					{
+						title: 'Контакты',
+						id: 'contact',
+						path: path('front.contact')
+					}
+				]
+            %}
 
             {#
             'front.index' : 'Отзывы',
@@ -89,39 +100,12 @@
 
     <div class="content">
         {% block content %}
+
             {% block main_banner_widget %}
-                <div id="myCarousel" class="carousel slide hidden-xs" data-ride="carousel">
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" id="main-banner-index">
-                        <div class="item active">
-                            <img src="{{ asset('img/carousel/dkj_2.jpg') }}" alt="" style="width:100%;">
-                        </div>
-
-                        <div class="item">
-                            <img src="{{ asset('img/carousel/dkj_3.jpg') }}" alt="" style="width:100%;">
-                        </div>
-                        
-                        <div class="item">
-                            <a href="{{ path('event.details_page', {'event': 37}) }}">
-                                <img src="{{ asset('img/carousel/ny_banner.jpg') }}" alt="" style="width:100%;">
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control custom-carousel-control" href="#myCarousel" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control custom-carousel-control" href="#myCarousel" data-slide="next" style="z-index: 9999;">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-                {#<div class="container-fluid index-page-banner" id="main-banner-index"></div>#}
+                {{ render(controller('AppBundle:Front\\Front:renderBanner')) }}
             {% endblock %}
 
-        {% block under_banner_text_widget %}{% endblock %}
+            {% block under_banner_text_widget %}{% endblock %}
 
         {% endblock %}
         <div id="scroll-on-top"></div>
@@ -141,14 +125,16 @@
                         <li><strong><span class="fa fa-phone"></span>&nbsp;Телефон:</strong></li>
                         <li>+7 (343) 310-53-58; 8-952-733-15-27 - администрация</li>
                         <li>+7 (343) 310-53-29 - касса</li>
-                        <li><strong><span class="fa fa-at"></span>&nbsp;Email:</strong>&nbsp;<a href="mailto:dkj96@ya.ru" class="text-style-5">dkj96@ya.ru</a></li>
+                        <li><strong><span class="fa fa-at"></span>&nbsp;Email:</strong>&nbsp;<a
+                                    href="mailto:dkj96@ya.ru" class="text-style-5">dkj96@ya.ru</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-6 col-xs-12 padding-0-100px footer-widget">
                     <h4 class="footer-widget-label">Социальные сети</h4>
                     <ul class="footer-widget-data-list list-unstyled list-inline">
                         <li>
-                            <a href="https://facebook.com/dssekb" class="btn btn-default social-icon-link" target="_blank">
+                            <a href="https://facebook.com/dssekb" class="btn btn-default social-icon-link"
+                               target="_blank">
                                 <i class="fa fa-facebook fa-2x"></i>
                             </a>
                         </li>
@@ -160,7 +146,8 @@
                         </li>
 
                         <li>
-                            <a href="https://www.youtube.com/channel/UC7vdhFn3qayCS8pkJ3yrPAQ" class="social-icon-link btn btn-default" target="_blank">
+                            <a href="https://www.youtube.com/channel/UC7vdhFn3qayCS8pkJ3yrPAQ"
+                               class="social-icon-link btn btn-default" target="_blank">
                                 <i class="fa fa-youtube fa-2x"></i>
                             </a>
                         </li>
@@ -186,7 +173,7 @@
 <script src="{{ asset('node_modules/clndr/clndr.min.js') }}"></script>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('[data-tooltip="tooltip"]').tooltip();
 
         $('.carousel').carousel({

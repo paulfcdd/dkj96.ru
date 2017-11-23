@@ -1,0 +1,96 @@
+{% extends '::base.html.twig' %}
+
+{% set seoTitle = '' %}
+{% set seoDescription = '' %}
+{% set seoKeywords = '' %}
+{% set categoryTitle = '' %}
+{% set categoryDescription = '' %}
+
+{% if categoryData is not null and categoryData is not empty %}
+  {% set seoTitle = categoryData.seoTitle %}
+  {% set seoDescription = categoryData.seoDescription %}
+  {% set seoKeywords = categoryData.seoKeywords %}
+  {% set categoryDescription = categoryData.description %}
+  {% set categoryTitle = categoryData.title %}
+{% endif %}
+
+
+{% block title %} {{ seoTitle }} {% endblock %}
+{% block seoDescription %}{{ seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ seoKeywords }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/front/page/artisty.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    {% block under_banner_text_widget %}
+    <div class="container padding-0-100px" id="main-text-under-banner">
+        <div class="text-center letter-spacing-1px banner-content-block">
+          <h1>{{ categoryTitle }}</h1>
+          <div class="text-center letter-spacing-1px banner-content-block">
+               {{ categoryDescription | raw }}
+          </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    <div class="space-fix-container"></div>
+
+    <div class="container padding-left-0 padding-right-0 halls-list-block">
+
+        {% for object in objects %}
+
+			{% set slug = object.id %}
+
+            {% set defaultImage = null %}
+
+            {% if object.files | length > 0 %}
+                {% for file in object.files %}
+                    {% if file.isDefault == 1 %}
+                        {% set defaultImage = file %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% if object.slug != null %}
+					{% set slug = object.slug %}
+				{% else %}
+					{% set slug = object.id %}
+			{% endif %}
+
+			{% set path = path('front.load_page', {'entity': entity, 'slug': slug}) %}
+
+            <div class="col-xs-12 padding-0-100px single-hall xs-padding-0-10px">
+                <div class="media">
+
+                    {% if defaultImage is not null %}
+                        {% set imgPath = asset('upload/artist/'~defaultImage.name) %}
+                    {% else %}
+                        {% set imgPath = asset('img/logo_dkj.jpg') %}
+                    {% endif %}
+
+                    <a class="pull-left" href="{{ path('front.artists.detail', {'artist': object.id}) }}">
+                        <img class="media-object" src="{{ imgPath }}" style="height: 256px; width: 256px; border-radius: 50%; margin-right: 20px;">
+                    </a>
+                    <div class="media-body">
+                        <h3 class="media-heading hall-label">
+                            <a href="{{ path }}">{{ object.title }}</a>
+                        </h3>
+                        <div class="by-author hall-description">
+                            {{ object.description }}
+                        </div>
+                        <a href="{{ path }}" class="read-more-link pull-right">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

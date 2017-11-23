@@ -1,6 +1,22 @@
 {% extends '::base.html.twig' %}
 
-{% block title %} Календарь событий во Дворце Культуры Железнодорожников {% endblock %}
+{% set seoTitle = '' %}
+{% set seoDescription = '' %}
+{% set seoKeywords = '' %}
+{% set categoryTitle = '' %}
+{% set categoryDescription = '' %}
+
+{% if categoryData is not null and categoryData is not empty %}
+  {% set seoTitle = categoryData.seoTitle %}
+  {% set seoDescription = categoryData.seoDescription %}
+  {% set seoKeywords = categoryData.seoKeywords %}
+  {% set categoryDescription = categoryData.description %}
+  {% set categoryTitle = categoryData.title %}
+{% endif %}
+
+{% block title %} {{ seoTitle }} {% endblock %}
+{% block seoDescription %}{{ seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ seoKeywords }}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
@@ -9,6 +25,51 @@
 
 {% block javascripts %}
     <script>
+        $(document).ready(function () {
+
+            var date = new Date(),
+                month = date.getMonth(),
+                year = date.getFullYear(),
+                limit = 5,
+                monthFirstDay = new Date(year, month, 1),
+                monthLastDay = new Date(year, month + 1, 0),
+                apiUrl = '{{ path('api.load-events-by-month') }}';
+
+            monthDisabler(month);
+
+            getEvents(apiUrl, monthFirstDay, monthLastDay);
+
+            $('#year').change(function () {
+                var selectedYear = $(this).val();
+                if (selectedYear == year) {
+                    monthDisabler(month);
+                } else {
+                    $('#month option').each(function (key, val) {
+                        $(val).attr('disabled', false);
+                    })
+                }
+            });
+
+            $('#month option[value="' + month + '"]').prop("selected", true);
+            for (var i = 0; i < limit; ++i) {
+                var nextYear = year + i;
+                $('#year').append(
+                    '<option value="' + nextYear + '">' + nextYear + '</option>'
+                );
+            }
+
+            $('.filter-event-btn').on('click', function () {
+                $('.event-list-row').empty();
+                $('.loader-row').show();
+
+                var targetMonth = parseInt($('#month').val()),
+                    targetYear = parseInt($('#year').val()),
+                    monthFirstDay = new Date(targetYear, targetMonth, 1),
+                    monthLastDay = new Date(targetYear, targetMonth + 1, 0);
+
+                getEvents(apiUrl, monthFirstDay, monthLastDay);
+            })
+        });
 
         function getEvents(apiUrl, monthFirstDay, monthLastDay) {
             $.ajax({
@@ -29,60 +90,34 @@
             });
         }
 
-
-        $(document).ready(function () {
-
-            var date = new Date(),
-                month = date.getMonth(),
-                year = date.getFullYear(),
-                limit = 5,
-                monthFirstDay = new Date(year, month, 1),
-                monthLastDay = new Date(year, month + 1, 0),
-                apiUrl = '{{ path('api.load-events-by-month') }}';
-
-                console.log(monthLastDay);
-                getEvents(apiUrl, monthFirstDay, monthLastDay);
-
-            $('#month option[value="'+month+'"]').prop("selected", true);
-            for (var i = 0; i<limit; ++i) {
-                var nextYear = year + i;
-                $('#year').append(
-                    '<option value="'+ nextYear +'">'+nextYear+'</option>'
-                );
+        function monthDisabler(month) {
+            for (var j = 0; j < month; j++) {
+                $('#month option[value="' + j + '"]').attr('disabled', 'disabled');
             }
-
-            $('.filter-event-btn').on('click', function () {
-                $('.event-list-row').empty();
-                $('.loader-row').show();
-
-                var targetMonth = parseInt($('#month').val()),
-                    targetYear = parseInt($('#year').val()),
-                    monthFirstDay = new Date(targetYear, targetMonth, 1),
-                    monthLastDay = new Date(targetYear, targetMonth + 1, 0);
-
-                getEvents(apiUrl, monthFirstDay, monthLastDay);
-            })
-        });
+            $('#month option[value="' + month + '"]').prop("selected", true);
+        }
     </script>
 {% endblock %}
 
 {% block content %}
+
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
     <div class="space-fix-container"></div>
 
     {% block under_banner_text_widget %}
-        <div class="container padding-0-100px" id="main-text-under-banner">
-            <div class="text-center letter-spacing-1px banner-content-block">
-                <p class="padding-0-100px">
-                   Анонс мероприятий в Дворце Культуры Железнодорожников
-                </p>
-            </div>
+    <div class="container padding-0-100px" id="main-text-under-banner">
+        <div class="text-center letter-spacing-1px banner-content-block">
+          <h1>{{ categoryTitle }}</h1>
+          <div class="text-center letter-spacing-1px banner-content-block">
+               {{ categoryDescription | raw }}
+          </div>
         </div>
+    </div>
     {% endblock %}
 
-    {% for event in events %}
-        {% for file in event.files %}
+    {% for object in objects %}
+        {% for file in object.files %}
             {% if file.isDefault == true %}
                 {% set bgimg = file.name %}
             {% endif %}

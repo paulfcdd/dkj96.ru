@@ -37,12 +37,12 @@ class MessageController extends AdminController
         }
 
         return $this->render(':default/admin/messages:list.html.twig',[
-            'objects' => $em->getRepository($entityClass)
-                ->findBy([], ['dateReceived' => 'DESC'], null, null),
-            'theme' => self::MESSAGES_ENTITY_NAMES_MAP[$entity],
-            'entity' => $entity,
-            'addReviewButton' => $addReviewButton,
-
+					'objects' => $em->getRepository($entityClass)
+						->findBy([], ['dateReceived' => 'DESC'], null, null),
+					'theme' => self::MESSAGES_ENTITY_NAMES_MAP[$entity],
+					'entity' => $entity,
+					'addReviewButton' => $addReviewButton,
+					'toWhomMap' => Feedback::TO_WHOM,
         ]);
 
     }

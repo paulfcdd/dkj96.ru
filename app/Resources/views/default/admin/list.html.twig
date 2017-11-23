@@ -1,127 +1,256 @@
 {% extends ':default/admin:base.html.twig' %}
+{% set sectionName = 'admin.'~app.request.attributes.get('_route_params')['entity']  %}
+
+{% block title %}{{ sectionName | trans }} | {{ parent() }}  {% endblock %}
+
+{% set categoryTitle = '' %}
+{% set categoryDescription = '' %}
+
+{% if categoryData is not null and categoryData is not empty %}
+  {% set categoryDescription = categoryData.description %}
+  {% set categoryTitle = categoryData.title %}
+{% endif %}
+
+{% block styles %}
+<link href="{{ asset('css/admin/dataTables.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{%block add_object_btn %}
+<li>
+	<a href="{{ path('admin.manage', {
+				'entity': app.request.get('entity')
+			}) }}">
+		<i class="fa fa-plus"></i> Новый объект
+	</a>
+</li>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
+<script>
+        $(document).ready(function(){
+            $('.dataTables-example').DataTable({
+                pageLength: 10,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy'},
+                    {extend: 'csv'},
+                    {extend: 'excel', title: 'ExampleFile'},
+                    {extend: 'pdf', title: 'ExampleFile'},
+
+                    {extend: 'print',
+                     customize: function (win){
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                    }
+                    }
+                ]
+
+            });
+
+        });
+
+    </script>
+
+{% endblock %}
+
 
 {% block content %}
 
     {% set entity = app.request.get('entity') %}
 
-    <div class="col-md-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                {% set sectionName = 'admin.'~app.request.attributes.get('_route_params')['entity']  %}
-                <h5>{{ sectionName | trans }}: список объектов</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#">Config option 1</a>
-                        </li>
-                        <li><a href="#">Config option 2</a>
-                        </li>
-                    </ul>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </div>
+    <div class="col-lg-12">
+		<div class="tabs-container">
 
-            <div class="ibox-content">
+            <div class="tabs-left">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a data-toggle="tab" href="#list-tab" aria-expanded="true">
+							<span class="fa fa-list"></span> Список объектов
+						</a>
+					</li>
+                    <li class="{% if pageName == 'banner' %}hidden{% endif %}">
+						<a data-toggle="tab" href="#seo-tab" aria-expanded="false">
+							<span class="fa fa-cog"></span> Настройки SEO
+						</a>
+					</li>
+                    <li class="{% if pageName == 'banner' %}hidden{% endif %}">
+						<a data-toggle="tab" href="#page-text-tab" aria-expanded="false">
+							<span class="fa fa-file-text"></span> Информация о категории
+						</a>
+					</li>
+                </ul>
+				<div class="tab-content ">
 
-                {% if entity == 'banner' %}
-                    {% include ':default/admin/views:banner_list.html.twig' with {
-                        'banners': objects
-                    } %}
-                    {% else %}
-                <table class="table table-responsive">
-                    <thead>
-                    <th>Название</th>
-                    {% if routeParams.entity == 'history' %}
-                        <th>Статус</th>
-                    {% endif %}
-                    <th>Дата создания</th>
-                    {% if routeParams.entity == 'portfolio' %}
-                        <th>Дата события</th>
-                        <th>Название события</th>
-                        {% else %}
-                            <th>Дата изменения</th>
-                    {% endif %}
-                    <th class="text-center">Автор</th>
-                    <th class="text-right">Управление</th>
-                    </thead>
-                    <tbody>
+					<div id="list-tab" class="tab-pane active">
 
-                    {% for object in objects %}
-                        <tr id="{{ routeParams.entity~'_'~object.id }}">
+						<div class="panel-body">
 
-                            <td>{{ object.title }}</td>
+							{% if entity == 'banner' %}
+								{% include ':default/admin/views:banner_list.html.twig' with {
+									'banners': objects
+								} %}
+							{% else %}
+								<table class="table table-striped table-bordered table-hover dataTables-example">
+									<thead>
+									<th>id</th>
+									<th>Название</th>
+									{% if routeParams.entity == 'history' %}
+										<th>Статус</th>
+									{% endif %}
+									<th>Дата создания</th>
+									{% if entity != 'booking' %}
+									{% if routeParams.entity == 'portfolio' %}
+										<th>Дата события</th>
+										<th>Название события</th>
+										{% else %}
+											<th>Дата изменения</th>
+									{% endif %}
+									{%endif%}
+									{% if entity != 'booking' %}
+										<th class="text-center">Автор</th>
+									{% endif %}
+									<th class="text-right">Управление</th>
+									</thead>
+									<tbody>
 
-                            {% if routeParams.entity == 'history' %}
+									{% for object in objects %}
 
-                                {% if object.enabled == 1 %}
-                                    {% set status = 'Включено' %}
-                                    {% else %}
-                                        {% set status = 'Выключено' %}
-                                {% endif %}
+										<tr id="{{ routeParams.entity~'_'~object.id }}">
+
+											<td>{{ object.id }}</td>
 
 
-                                <td>{{ status }}</td>
-                            {% endif %}
+											{% set objectTitle = null %}
 
-                            <td>{{ object.dateCreated | date('d.m.Y') }}</td>
-                            <td>
-                                {% if routeParams.entity == 'portfolio' %}
-                                    {{ object.event.eventDate | date('d.m.Y') }}
-                                {% else %}
-                                    {% if object.dateUpdated is not null %}
-                                        {{ object.dateUpdated | date('d.m.Y') }}
-                                    {% endif %}
-                                {% endif %}
-                            </td>
-                            {% if routeParams.entity == 'portfolio' %}
-                                <td>
-                                    {{ object.event.title }}
-                                </td>
-                            {% endif %}
-                            <td class="text-center">
-                                {{ object.author.username }}
-                            </td>
-                            <td class="text-right">
+											{% if entity == 'booking' %}
+												{% set objectTitle = object.email %}
+												{% else %}
+												{% set objectTitle = object.title %}
+											{% endif %}
 
-                                <div class="btn-group">
-                                    <a href="{{ path('admin.manage', {
-                                        'entity': entity,
-                                        'id': object.id
-                                    }) }}" role="button" class="btn btn-success"><span class="fa fa-edit"></span></a>
-                                    {% if entity == 'hall' %}
-                                        <a href="{{ path('admin.booking.calendar', {
-                                            'hall': object.id
-                                        }) }}" role="button" class="btn btn-primary">
-                                            <span class="fa fa-calendar"></span></a>
-                                    {% endif %}
-                                    <a href="#" role="button" class="btn btn-danger delete-object"
-                                       data-objectname="{{ routeParams.entity }}"
-                                       data-objectid="{{ object.id }}">
-                                        <span class="fa fa-trash"></span>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
+											<td>{{ objectTitle }}</td>
 
-                    </tbody>
-                </table>
-                {% endif %}
-            </div>
-            <div class="ibox-footer">
-                <a href="{{ path('admin.manage', {
-                    'entity': app.request.get('entity')
-                }) }}" role="button" class="btn btn-primary">
-                    Добавить
-                </a>
-            </div>
-        </div>
-    </div>
+											{% if routeParams.entity == 'history' %}
+
+												{% if object.enabled == 1 %}
+													{% set status = 'Включено' %}
+													{% else %}
+														{% set status = 'Выключено' %}
+												{% endif %}
+
+
+												<td>{{ status }}</td>
+											{% endif %}
+
+											<td>
+
+											{% set objectDate = null %}
+
+											{% if entity == 'booking' %}
+												{% set objectDate = object.dateReceived %}
+												{% else %}
+												{% set objectDate = object.dateCreated %}
+											{% endif %}
+
+												{{ objectDate | date('d.m.Y') }}
+											</td>
+
+											{% if entity != 'booking' %}
+
+											<td>
+												{% if routeParams.entity == 'portfolio' %}
+													{{ object.event.eventDate | date('d.m.Y') }}
+												{% else %}
+													{% if object.dateUpdated is not null %}
+														{{ object.dateUpdated | date('d.m.Y') }}
+													{% endif %}
+												{% endif %}
+											</td>
+											{% endif %}
+											{% if routeParams.entity == 'portfolio' %}
+												<td>
+													{{ object.event.title }}
+												</td>
+											{% endif %}
+											{% if entity != 'booking' %}
+											<td class="text-center">
+												{{ object.author.username }}
+											</td>
+											{% endif %}
+											<td class="text-right">
+
+												<div class="btn-group">
+													<a href="{{ path('admin.manage', {
+														'entity': entity,
+														'id': object.id
+													}) }}" role="button" class="btn btn-success"><span class="fa fa-edit"></span></a>
+													{% if entity == 'hall' %}
+														<a href="{{ path('admin.booking.calendar', {
+															'hall': object.id
+														}) }}" role="button" class="btn btn-primary">
+															<span class="fa fa-calendar"></span></a>
+													{% endif %}
+													<a href="#" role="button" class="btn btn-danger delete-object"
+													   data-objectname="{{ routeParams.entity }}"
+													   data-objectid="{{ object.id }}">
+														<span class="fa fa-trash"></span>
+													</a>
+												</div>
+											</td>
+										</tr>
+									{% endfor %}
+
+									</tbody>
+								</table>
+							{% endif %}
+						</div>
+					</div>
+
+                    <div id="seo-tab" class="tab-pane">
+
+						<div class="panel-body">
+							{% include 'default/admin/parts/seo_form.html.twig' with{
+								'categoryData': categoryData,
+								'entity': entity
+							} %}
+                        </div>
+
+                    </div>
+
+                    <div id="page-text-tab" class="tab-pane">
+
+						<div class="panel-body">
+
+							<div class="form-group">
+								<input type="texy" class="seo-form form-control"
+											id="category-title"
+											name="title"
+											value="{{ categoryTitle }}"
+											>
+							</div>
+
+								<div class="form-group">
+									<textarea class="ckeditor seo-form"
+											  id="category-description"
+											  name="description">{{ categoryDescription }}</textarea>
+								</div>
+								<button type="button"
+										class="btn btn-primary save-category-seo"
+										data-entity="{{ entity }}">
+									<span class="fa fa-floppy-o"></span> Сохранить
+								</button>
+						</div>
+	      </div>
+			</div>
+		</div>
+	</div>
+</div>
+
 {% endblock %}

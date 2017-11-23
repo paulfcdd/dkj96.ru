@@ -1,6 +1,9 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}{{ artist.title }}{% endblock %}
+{% block title %}{{ object.seoTitle }}{% endblock %}
+
+{% block seoDescription %}{{ object.seoDescription }}{% endblock %}
+{% block seoKeywords %}{{ object.seoKeywords }}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('node_modules/blueimp-gallery/css/blueimp-gallery.min.css') }}" rel="stylesheet">
@@ -30,7 +33,7 @@
 
     {% set files = [] %}
 
-    {% for file in artist.files %}
+    {% for file in object.files %}
 
         {% if file.isDefault == false %}
             {% set files = files | merge([file]) %}
@@ -57,8 +60,14 @@
         <div class="row xs-padding-0-10px">
             <div class="col-xs-12 text-left padding-0-100px">
                 <ol class="breadcrumb single-hall-page-breadcrumbs">
-                    <li class="breadcrumb-item"><a href="{{ path('front.artists') }}">Артисты</a></li>
-                    <li class="breadcrumb-item active">{{ artist.title }}</li>
+                    <li class="breadcrumb-item"><a href="{{ path('front.index') }}">Главная</a></li>
+                    <li class="breadcrumb-item">
+          						<a href="{{ path('front.load_page', {
+          								'entity': app.request.get('entity')}) }}">
+          								Артисты
+          						</a>
+                    </li>
+                    <li class="breadcrumb-item active">{{ object.title }}</li>
                 </ol>
 
             </div>
@@ -69,9 +78,9 @@
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-sm-10">
-                        <h4 class="underscored-label">
-                            {{ artist.title }}
-                        </h4>
+                        <h1 class="underscored-label">
+                            {{ object.title }}
+                        </h1>
                     </div>
 
                     <div class="col-sm-2">
@@ -89,11 +98,11 @@
             </div>
             <div class="col-xs-12">
                 <p>
-                    {{ artist.description }}
+                    {{ object.description }}
                 </p>
             </div>
             <div class="col-xs-12 padding-top-20px">
-                {{ artist.content | raw }}
+                {{ object.content | raw }}
             </div>
         </div>
 

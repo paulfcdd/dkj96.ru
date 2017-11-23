@@ -1,0 +1,34 @@
+{% set seoTitle = '' %}
+{% set seoKeywords = '' %}
+{% set seoDescription = '' %}
+
+{% if categoryData is defined and categoryData is not null %}
+	{% set seoTitle = categoryData.seoTitle %}
+	{% set seoKeywords = categoryData.seoKeywords %}
+	{% set seoDescription = categoryData.seoDescription %}
+{% endif %}
+
+		<div class="form-group">
+			<label for="seoTitle">Тег Title</label>
+			<input 	type="text" id="seoTitle" name="seoTitle" 
+					class="form-control seo-form" 
+					value="{{ seoTitle }}">
+		</div>
+						
+		<div class="form-group">
+			<label for="seoKeywords">Тег Keywords</label>
+			<textarea class="form-control seo-form" rows="3" 
+					  id="seoKeywords" name="seoKeywords">{{ seoKeywords }}</textarea>
+		</div>
+						
+		<div class="form-group">
+			<label for="seoDescription">Тег Description</label>
+			<textarea class="form-control seo-form" rows="3" 
+					  id="seoDescription" name="seoDescription">{{ seoDescription }}</textarea>
+		</div>
+											
+		<div class="form-group">
+		   <button type="button" class="btn btn-primary save-category-seo" data-entity="{{ entity }}">
+				Сохранить
+			</button>
+		</div>

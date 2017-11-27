@@ -4,10 +4,20 @@
 
 {% block stylesheets %}
     <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+    {% if object.widgetCssCode is not null %}
+        {{ object.widgetCssCode | raw }}
+    {% endif %}
+
+    {% if object.widgetJsCode is not null %}
+        {{ object.widgetJsCode | raw }}
+    {% endif %}
+
 {% endblock %}
 
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
+
+    {#{{ dump(object) }}#}
 
     <div class="container col-xs-padding-right-0 single-hall-page">
         <div class="space-fix-container"></div>
@@ -53,6 +63,13 @@
                         <h1 class="underscored-label">
                             {{ object.title }}
                         </h1>
+
+
+                        {% if object.widgetHtmlCode is not null %}
+                            <div class="pull-right">
+                                {{ object.widgetHtmlCode | raw }}
+                            </div>
+                        {% endif %}
 
                         {% if showBuyTicketBtn %}
 

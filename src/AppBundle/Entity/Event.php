@@ -66,18 +66,19 @@ class Event
      * @var string
      * @ORM\Column(type="text", length=2000, nullable=true)
      */
-    private $widgetJsCssCode;
+    private $widgetJsCode;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", length=2000, nullable=true)
+     */
+    private $widgetCssCode;
 
     /**
      * @var string
      * @ORM\Column(type="text", length=2000, nullable=true)
      */
     private $widgetHtmlCode;
-
-//    /**
-//     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EventWidget", mappedBy="event")
-//     */
-//    private $widgets;
 
     /**
      * @return Portfolio
@@ -196,21 +197,40 @@ class Event
     /**
      * @return string
      */
-    public function getWidgetJsCssCode()
+    public function getWidgetJsCode()
     {
-        return $this->widgetJsCssCode;
+        return $this->widgetJsCode;
     }
 
     /**
-     * @param string $widgetJsCssCode
-     * @return $this
+     * @param string $widgetJsCode
+     * @return Event
      */
-    public function setWidgetJsCssCode(string $widgetJsCssCode = null)
+    public function setWidgetJsCode(string $widgetJsCode)
     {
-        $this->widgetJsCssCode = $widgetJsCssCode;
-
+        $this->widgetJsCode = $widgetJsCode;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getWidgetCssCode()
+    {
+        return $this->widgetCssCode;
+    }
+
+    /**
+     * @param string $widgetCssCode
+     * @return Event
+     */
+    public function setWidgetCssCode(string $widgetCssCode)
+    {
+        $this->widgetCssCode = $widgetCssCode;
+        return $this;
+    }
+
+
 
     /**
      * @return string

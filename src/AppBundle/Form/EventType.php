@@ -38,11 +38,18 @@ class EventType extends AbstractFormType
                 'label' => 'Дата события'
             ])
             ->add('files', FileUploadType::class)
-            ->add('widgetJsCssCode', TextareaType::class, [
+            ->add('widgetJsCode', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('widgetCssCode', TextareaType::class, [
                 'required' => false,
             ])
             ->add('widgetHtmlCode', TextareaType::class, [
                 'required' => false,
+                'attr' => [
+                    'cols' => 10,
+                    'rows' => 10,
+                ]
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',

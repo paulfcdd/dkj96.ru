@@ -23,6 +23,14 @@
             <i class="fa fa-calendar"></i> К календарю
         </a>
     </li>
+
+    {% if booking is defined %}
+        <li>
+            <a href="{{ path('admin.booking.delete', {'booking' : booking.id}) }}">
+                <i class="fa fa-trash"></i> Удалить бронь
+            </a>
+        </li>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -40,7 +48,12 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
 
-                <h5>{{ hall.title }}: новое бронирование</h5>
+                {% set text = 'новое бронирование' %}
+                {% if booking is defined %}
+                    {% set text = 'управление бронированием' %}
+                {% endif %}
+
+                <h5>{{ hall.title }}: {{ text }}</h5>
                 <div class="ibox-tools">
 
                 </div>

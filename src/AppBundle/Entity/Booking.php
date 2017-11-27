@@ -33,6 +33,12 @@ class Booking
     private $date;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(type="time", length=20)
+     */
+    private $time;
+
+    /**
      * @var string
      * @ORM\Column()
      */
@@ -183,6 +189,24 @@ class Booking
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+    /**
+     * @param \DateTime $time
+     * @return Booking
+     */
+    public function setTime(\DateTime $time)
+    {
+        $this->time = $time;
+        return $this;
     }
 
     /**

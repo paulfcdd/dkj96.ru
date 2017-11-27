@@ -31,7 +31,8 @@ class BookingController extends AdminController
     /**
      * @Route("/admin/bookings/detail/{booking}", name="admin.booking.details")
      */
-    public function bookingDetailAction(Booking $booking, Request $request) {
+    public function bookingDetailAction(Booking $booking, Request $request)
+    {
 
 
         if (!$booking->isStatus()) {
@@ -48,7 +49,8 @@ class BookingController extends AdminController
      * @param Booking $booking
      * @return bool
      */
-    private function changeBookingStatus(Booking $booking) {
+    private function changeBookingStatus(Booking $booking)
+    {
         $booking->setStatus(1);
 
         $this->getDoctrine()->getManager()->flush();
@@ -60,7 +62,8 @@ class BookingController extends AdminController
      * @Method({"POST", "GET"})
      * @Route("/admin/booking/compose/{booking}", name="admin.booking.compose")
      */
-    public function bookingComposeAction(Booking $booking, Request $request) {
+    public function bookingComposeAction(Booking $booking, Request $request)
+    {
 
         $mailer = $this->get(MailerService::class);
 
@@ -81,7 +84,8 @@ class BookingController extends AdminController
         ]);
     }
 
-    public function renderBookingMenuAction() {
+    public function renderBookingMenuAction()
+    {
 
         return $this->render(':default/admin/booking:sidebar.html.twig', [
             'bookings' => $this->getDoctrine()->getRepository(Booking::class)->findAll()
@@ -90,15 +94,15 @@ class BookingController extends AdminController
 
     /**
      * @param Hall $hall
-     * @param Request $request
      * @return Response
      * @Route("/admin/booking/calendar/{hall}", name="admin.booking.calendar")
      */
-    public function bookingCalendarAction(Hall $hall, Request $request) {
+    public function bookingCalendarAction(Hall $hall)
+    {
 
         $bookings = $this->getDoctrine()->getRepository(Booking::class)->findBy(
             [
-                'hall'=>$hall,
+                'hall' => $hall,
                 'booked' => true,
             ]);
 
@@ -106,5 +110,59 @@ class BookingController extends AdminController
             'hall' => $hall,
             'bookings' => $bookings
         ]);
+    }
+
+    /**
+     * @Route("/admin/booking/add/hall{hall}", name="admin.booking.add")
+     */
+    public function addBookingAction(Hall $hall, Request $request)
+    {
+        $form = $this->createForm(BookingType::class)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Booking $formData */
+            $formData = $form->getData();
+            $formData
+                ->setHall($hall)
+                ->setBooked(true);
+            $this->em->persist($formData);
+            $this->em->flush();
+            $this->addFlash('success', 'Бронирование зала ' . $hall->getTitle() . 'на дату ' . $formData->getDate() . ' сохранено');
+        }
+
+        return $this->render(':default/admin/booking:add.html.twig', [
+            'hall' => $hall,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Booking $booking
+     * @param Request $request
+     * @return Response
+     * @Route("/admin/booking/edit/{booking}", name="admin.booking.edit")
+     */
+    public function editBookingAction(Booking $booking, Request $request) {
+
+        $form = $this->createForm(BookingType::class, $booking)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Booking $formData */
+            $formData = $form->getData();
+            $formData
+                ->setHall($booking->getHall())
+                ->setBooked(true);
+            $this->em->persist($formData);
+            $this->em->flush();
+            $this->addFlash('success', 'Бронирование зала ' . $booking->getHall()->getTitle() . 'на дату ' . $formData->getDate() . ' сохранено');
+        }
+
+        return $this->render(':default/admin/booking:add.html.twig', [
+            'hall' => $booking->getHall(),
+            'form' => $form->createView()
+        ]);
+
     }
 }

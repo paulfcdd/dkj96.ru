@@ -85,6 +85,17 @@ class PageController extends AppController
                 $parameters['form'] = $form->createView();
             }
 
+            if ($object instanceof Entity\Hall) {
+
+                $bookings = $this->getDoctrine()->getRepository(Entity\Booking::class)->findBy(
+                    [
+                        'hall' => $object,
+                        'booked' => true,
+                    ]);
+
+                $parameters['bookings'] = $bookings;
+            }
+
             return $this->render($view, $parameters);
 
         }

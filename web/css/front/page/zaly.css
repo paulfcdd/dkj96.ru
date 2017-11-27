@@ -44,6 +44,10 @@
 .single-hall-page .single-hall-page-content {
   font-family: 'Century Gothic Regular';
 }
+.single-hall-page .single-hall-page-content .hall-buttons-group .group-item {
+  background-color: #D22630 !important;
+  color: #F0DEBA;
+}
 .single-hall-page .single-hall-page-content p {
   font-size: 16px;
   color: #333333;

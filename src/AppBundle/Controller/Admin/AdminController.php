@@ -16,6 +16,7 @@ use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
 use AppBundle\Service\FileUploaderService;
 use AppBundle\Service\MailerService;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -42,9 +43,12 @@ class AdminController extends Controller
 	const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
 
 	protected $configFilePath;
+	public $em;
 
-    public function __construct(){
+
+    public function __construct(EntityManager $entityManager){
 			$this->configFilePath = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH));
+			$this->em = $entityManager;
 		}
 
     /**

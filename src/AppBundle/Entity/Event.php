@@ -18,6 +18,11 @@ class Event
     use AbstractEntityTrait;
     use FileTrait;
 
+    public function __construct()
+    {
+        $this->widgets = new ArrayCollection();
+    }
+
     /**
      * @var \DateTime $eventDate
      *
@@ -56,6 +61,23 @@ class Event
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Portfolio", mappedBy="event")
      */
     private $portfolio;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", length=2000, nullable=true)
+     */
+    private $widgetJsCssCode;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", length=2000, nullable=true)
+     */
+    private $widgetHtmlCode;
+
+//    /**
+//     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EventWidget", mappedBy="event")
+//     */
+//    private $widgets;
 
     /**
      * @return Portfolio
@@ -170,4 +192,44 @@ class Event
     {
         return $this->eventTime;
     }
+
+    /**
+     * @return string
+     */
+    public function getWidgetJsCssCode()
+    {
+        return $this->widgetJsCssCode;
+    }
+
+    /**
+     * @param string $widgetJsCssCode
+     * @return $this
+     */
+    public function setWidgetJsCssCode(string $widgetJsCssCode = null)
+    {
+        $this->widgetJsCssCode = $widgetJsCssCode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWidgetHtmlCode()
+    {
+        return $this->widgetHtmlCode;
+    }
+
+    /**
+     * @param string $widgetHtmlCode
+     * @return $this
+     */
+    public function setWidgetHtmlCode(string $widgetHtmlCode = null)
+    {
+        $this->widgetHtmlCode = $widgetHtmlCode;
+
+        return $this;
+
+    }
+
 }

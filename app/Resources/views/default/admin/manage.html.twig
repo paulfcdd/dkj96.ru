@@ -4,20 +4,18 @@
 {% block styles %}
 {% endblock %}
 {% set entity = app.request.get('entity') %}
-{% block page_heading %}
-    {% if object.id == null %}
-        Добавить новый объект
-    {% else %}
-        {{ object.title }}
-    {% endif %}
-{% endblock %}
+
+{% block page_heading %}{% endblock %}
 
 {% block scripts %}
     <script>
 
         $(document).ready(function () {
             var form = $('#form_{{ form.vars.name }}');
+
+            {% if entity != 'event' %}
             form.append('<div style="margin-top: 20px;"><button class="btn btn-success" type="submit"><span class="fa fa-floppy-o"></span> Сохранить</button></div>')
+            {% endif %}
 
             $('#banner_category').change(function () {
 
@@ -55,9 +53,10 @@
         });
 
 
+        {% if entity != 'event' %}
         $('#{{ entity }}_seoTitle').liTranslit({
             elAlias: $('#{{ entity }}_slug')
-        });
+        });        {% endif %}
     </script>
 
 

@@ -1,0 +1,161 @@
+{% extends ':default/admin:manage.html.twig' %}
+
+{% block page_heading %}
+    {% if object.id == null %}
+        Добавить новый объект
+    {% else %}
+        {{ object.title }}
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ parent() }}
+    <script>
+        $('.url-translit-generator').on('click', function (e) {
+            $('#{{ entity }}_title').liTranslit({
+                elAlias: $('#{{ entity }}_slug')
+            });
+            $('#{{ entity }}_title').unbind();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="col-lg-12">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ message | raw }}
+            </div>
+        {% endfor %}
+
+        {{ form_start(form) }}
+
+        <div style="margin: 0 0 20px 0;">
+            {{ form_widget(form.save) }}
+        </div>
+
+        <div class="tabs-container">
+            <div class="tabs-left">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#main_info" aria-expanded="false">
+                            <span class="fa fa-info"></span> Основная информация
+                        </a>
+                    </li>
+
+                    <li class="">
+                        <a data-toggle="tab" href="#date-time" aria-expanded="false">
+                            <span class="fa fa-clock-o"></span> Время и дата
+                        </a>
+                    </li>
+
+                    <li class="">
+                        <a data-toggle="tab" href="#seo" aria-expanded="false">
+                            <span class="fa fa-google"></span> SEO-информация
+                        </a>
+                    </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#files" aria-expanded="false">
+                            <span class="fa fa-file"></span> Файлы
+                        </a>
+                    </li>
+
+                    <li class="">
+                        <a data-toggle="tab" href="#widgets" aria-expanded="false">
+                            <span class="fa fa-cog"></span> Виджеты
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content ">
+
+                    <div id="main_info" class="tab-pane active">
+                        <div class="panel-body">
+                            {{ form_label(form.title) }}
+                            {{ form_widget(form.title) }}
+
+                            {{ form_label(form.slug) }}
+                            <div class="input-group">
+                                <!-- /btn-group -->
+                                {{ form_widget(form.slug) }}
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary url-translit-generator">
+                                        <i class="fa fa-link" aria-hidden="true"></i> Генерировать URL
+                                    </button>
+                                </div>
+                            </div>
+
+                            {#{{ form_widget(form.slug) }}#}
+
+                            {{ form_label(form.price) }}
+                            {{ form_widget(form.price) }}
+
+                            {{ form_label(form.ticketUrl) }}
+                            {{ form_widget(form.ticketUrl) }}
+
+                            {{ form_label(form.description) }}
+                            {{ form_widget(form.description) }}
+
+                            {{ form_label(form.content) }}
+                            {{ form_widget(form.content) }}
+                        </div>
+                    </div>
+
+                    <div id="seo" class="tab-pane">
+                        <div class="panel-body">
+                            {{ form_label(form.seoTitle) }}
+                            {{ form_widget(form.seoTitle) }}
+
+                            {{ form_label(form.seoKeywords) }}
+                            {{ form_widget(form.seoKeywords) }}
+
+                            {{ form_label(form.seoDescription) }}
+                            {{ form_widget(form.seoDescription) }}
+
+                            {{ form_label(form.redirect) }}
+                            {{ form_widget(form.redirect) }}
+
+                            {{ form_label(form.redirectUrl) }}
+                            {{ form_widget(form.redirectUrl) }}
+                        </div>
+                    </div>
+
+                    <div id="files" class="tab-pane">
+
+                        <div class="panel-body">
+                            {{ form_label(form.files) }}
+                            {{ form_widget(form.files) }}
+                        </div>
+
+                    </div>
+
+                    <div id="widgets" class="tab-pane">
+
+                        <div class="panel-body">
+                            {{ form_label(form.widgetJsCssCode) }}
+                            {{ form_widget(form.widgetJsCssCode) }}
+
+                            {{ form_label(form.widgetHtmlCode) }}
+                            {{ form_widget(form.widgetHtmlCode) }}
+                        </div>
+
+                    </div>
+
+                    <div id="date-time" class="tab-pane">
+
+                        <div class="panel-body">
+                            {{ form_label(form.eventTime) }}
+                            {{ form_widget(form.eventTime) }}
+
+                            {{ form_label(form.eventDate) }}
+                            {{ form_widget(form.eventDate) }}
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

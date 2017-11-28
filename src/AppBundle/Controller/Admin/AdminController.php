@@ -57,6 +57,8 @@ class AdminController extends Controller
     public function indexAction()
     {
 
+        dump($this->getUser()->getRoles());
+
         $em = $this->getDoctrine()->getManager();
 
         return $this->render(':default/admin:index.html.twig', [

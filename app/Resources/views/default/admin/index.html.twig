@@ -11,66 +11,67 @@
 {% endif %}
 
 {% block content %}
-    {% set entity = 'index' %}
-    <div class="col-lg-12">
-        <div class="tabs-container">
+    {% if app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
+        {% set entity = 'index' %}
+        <div class="col-lg-12">
+            <div class="tabs-container">
 
-            <div class="tabs-left">
-                <ul class="nav nav-tabs">
+                <div class="tabs-left">
+                    <ul class="nav nav-tabs">
 
-                    <li class="active">
-                        <a data-toggle="tab" href="#seo-tab" aria-expanded="false">
-                            <span class="fa fa-cog"></span> Настройки SEO
-                        </a>
-                    </li>
-                    <li class="">
-                        <a data-toggle="tab" href="#page-text-tab" aria-expanded="false">
-                            <span class="fa fa-file-text"></span> Информация о категории
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content ">
+                        <li class="active">
+                            <a data-toggle="tab" href="#seo-tab" aria-expanded="false">
+                                <span class="fa fa-cog"></span> Настройки SEO
+                            </a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" href="#page-text-tab" aria-expanded="false">
+                                <span class="fa fa-file-text"></span> Информация о категории
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content ">
 
-                    <div id="seo-tab" class="tab-pane active">
+                        <div id="seo-tab" class="tab-pane active">
 
-                        <div class="panel-body">
-                            {% include 'default/admin/parts/seo_form.html.twig' with{
-                            'categoryData': categoryData,
-                            'entity': entity
-                            } %}
+                            <div class="panel-body">
+                                {% include 'default/admin/parts/seo_form.html.twig' with{
+                                'categoryData': categoryData,
+                                'entity': entity
+                                } %}
+                            </div>
+
                         </div>
 
-                    </div>
+                        <div id="page-text-tab" class="tab-pane">
 
-                    <div id="page-text-tab" class="tab-pane">
+                            <div class="panel-body">
 
-                        <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="category-title">Заголовк категории</label>
+                                    <input type="text" class="seo-form form-control"
+                                           id="category-title"
+                                           name="title"
+                                           value="{{ categoryTitle }}"
+                                    >
+                                </div>
 
-                            <div class="form-group">
-                                <label for="category-title">Заголовк категории</label>
-                                <input type="text" class="seo-form form-control"
-                                       id="category-title"
-                                       name="title"
-                                       value="{{ categoryTitle }}"
-                                >
+                                <div class="form-group">
+                                    <label for="category-description">Описание категории</label>
+                                    <textarea class="ckeditor seo-form"
+                                              id="category-description"
+                                              name="description">{{ categoryDescription }}</textarea>
+                                </div>
+                                <button type="button"
+                                        class="btn btn-primary save-category-seo"
+                                        data-entity="{{ entity }}">
+                                    <span class="fa fa-floppy-o"></span> Сохранить
+                                </button>
                             </div>
-
-                            <div class="form-group">
-                                <label for="category-description">Описание категории</label>
-                                <textarea class="ckeditor seo-form"
-                                          id="category-description"
-                                          name="description">{{ categoryDescription }}</textarea>
-                            </div>
-                            <button type="button"
-                                    class="btn btn-primary save-category-seo"
-                                    data-entity="{{ entity }}">
-                                <span class="fa fa-floppy-o"></span> Сохранить
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    {% endif %}
 {% endblock %}

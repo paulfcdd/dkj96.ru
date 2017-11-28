@@ -101,26 +101,42 @@
     }
 ] %}
 
-{% for item in sidebarItems %}
+{% set managerSideBar = [
+    {
+        id: 'hall',
+        href: path('admin.list', {'entity': 'hall'}),
+        icon: 'fa-university',
+        name: 'Залы'
+    }
+] %}
 
-                  		{% set active = null %}
 
-                  		{% set splitRequestUri =  requestUri | split('/') %}
+{% set slider = sidebarItems %}
 
-                  		{% set currentUri = splitRequestUri[2] %}
+{% if app.user.roles[0] == 'ROLE_MANAGER' %}
+    {% set slider = managerSideBar %}
+{% endif %}
 
-						{% if item.id == app.request.get('entity') %}
-							{% set activePageName = activePageName | merge([item.name]) %}
-						{% endif %}
+{% for item in slider %}
 
-						{% if app.request.get('entity') == null %}
-							{% if item.id == currentUri %}
-								{% set activePageName = activePageName | merge([item.name]) %}
-							{% endif %}
+    {% set active = null %}
 
-						{% endif %}
+    {% set splitRequestUri =  requestUri | split('/') %}
 
- {% endfor %}
+    {% set currentUri = splitRequestUri[2] %}
+
+    {% if item.id == app.request.get('entity') %}
+        {% set activePageName = activePageName | merge([item.name]) %}
+    {% endif %}
+
+    {% if app.request.get('entity') == null %}
+        {% if item.id == currentUri %}
+            {% set activePageName = activePageName | merge([item.name]) %}
+        {% endif %}
+
+    {% endif %}
+
+{% endfor %}
 
 <body>
 <div id="wrapper">
@@ -143,7 +159,7 @@
                             ДКЖ
                         </div>
                     </li>
-                    {% for item in sidebarItems %}
+                    {% for item in slider %}
 
                   		{% set active = null %}
 
@@ -165,7 +181,7 @@
 
 						{% endif %}
 
-                        <li id="{{ item.id }}" {% if active != null %} class="{{ active }}" {% endif %}}>
+                        <li id="{{ item.id }}" {% if active != null %} class="{{ active }}" {% endif %}>
                             <a href="{{ item.href }}"><i class="fa {{ item.icon }}"></i>
                                 <span class="nav-label">{{ item.name }}</span>
                             </a>

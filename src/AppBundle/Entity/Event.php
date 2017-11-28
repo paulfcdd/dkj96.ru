@@ -18,11 +18,6 @@ class Event
     use AbstractEntityTrait;
     use FileTrait;
 
-    public function __construct()
-    {
-        $this->widgets = new ArrayCollection();
-    }
-
     /**
      * @var \DateTime $eventDate
      *

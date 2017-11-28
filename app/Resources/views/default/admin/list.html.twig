@@ -15,6 +15,12 @@
     <link href="{{ asset('css/admin/dataTables.min.css') }}" rel="stylesheet">
 {% endblock %}
 
+{% set disabled = '' %}
+
+{% if app.user.roles[0] == 'ROLE_MANAGER' %}
+    {% set disabled = 'disabled' %}
+{% endif %}
+
 {% block add_object_btn %}
     <li>
         <a href="{{ path('admin.manage', {
@@ -191,7 +197,7 @@
                                                     <a href="{{ path('admin.manage', {
                                                         'entity': entity,
                                                         'id': object.id
-                                                    }) }}" role="button" class="btn btn-success"><span
+                                                    }) }}" role="button" class="btn btn-success {{ disabled }}"><span
                                                                 class="fa fa-edit"></span></a>
                                                     {% if entity == 'hall' %}
                                                         <a href="{{ path('admin.booking.calendar', {
@@ -199,7 +205,7 @@
                                                         }) }}" role="button" class="btn btn-primary">
                                                             <span class="fa fa-calendar"></span></a>
                                                     {% endif %}
-                                                    <a href="#" role="button" class="btn btn-danger delete-object"
+                                                    <a href="#" role="button" class="btn btn-danger delete-object {{ disabled }}"
                                                        data-objectname="{{ routeParams.entity }}"
                                                        data-objectid="{{ object.id }}">
                                                         <span class="fa fa-trash"></span>

@@ -27,12 +27,15 @@ class PageController extends AppController
         $repository = $this->getEntityRepository($entity);
 
         $object = null;
-
-        if (!intval($slug)) {
-            $object = $repository->findOneBySlug($slug);
-        } else {
-            $object = $repository->findOneById($slug);
+        
+        if ($slug) {
+            if (!intval($slug)) {
+                $object = $repository->findOneBySlug($slug);
+            } else {
+                $object = $repository->findOneById($slug);
+            }
         }
+
 
         if (!$slug)
         {

@@ -13,6 +13,38 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class PageController extends AppController
 {
+    /**
+     * @return Http\Response
+     * @Route("/portfolio", name="front.portfolio")
+     */
+    public function portfolioAction() {
+
+        return $this->render(':default/front/page:portfolio.html.twig', [
+            'objects' => $this->getDoctrine()
+                ->getRepository(Entity\Portfolio::class)
+                ->findBy([], ['eventDate' => 'DESC']),
+        ]);
+    }
+
+    /**
+     * @param $portfolio
+     * @return Http\Response
+     * @Route("/portfolio/{portfolio}", name="front.portfolio.single")
+     */
+    public function singlePortfolioAction(Entity\Portfolio $portfolio) {
+
+        if ($portfolio->isRedirect())
+        {
+            return $this->redirect($portfolio->getRedirectUrl());
+        }
+
+        return $this->render(':default/front/page/portfolio:single.html.twig', [
+            'portfolio' => $portfolio,
+            'imagesExt' => Service\FileUploaderService::IMAGES,
+            'videosExt' => Service\FileUploaderService::VIDEOS,
+        ]);
+
+    }
 
     /**
      * @param Entity\Hall|null $hall
@@ -114,6 +146,7 @@ class PageController extends AppController
         $object = null;
 
         if ($slug) {
+
             if (!intval($slug)) {
                 $object = $repository->findOneBySlug($slug);
             } else {

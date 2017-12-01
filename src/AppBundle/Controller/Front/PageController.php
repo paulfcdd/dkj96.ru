@@ -121,13 +121,6 @@ class PageController extends AppController
             }
         }
 
-
-        if (!$slug)
-        {
-            return $this->loadListAction($repository, $entity, $utilities, $request);
-        }
-
-
         if ($object instanceof Entity\History)
         {
             $view = ':default/front/page/'.$entity.':show.html.twig';
@@ -136,6 +129,11 @@ class PageController extends AppController
                 'categoryData' => $this->getEntityRepository('category')->findOneByEntity($entity),
             ];
             return $this->render($view, $parameters);
+        }
+
+        if (!$slug)
+        {
+            return $this->loadListAction($repository, $entity, $utilities, $request);
         }
 
 
@@ -235,6 +233,15 @@ class PageController extends AppController
             $parameters['offset'] = $paginator->getOffset();
             $parameters['limit'] = $paginator->getLimit();
 
+        }
+
+        if ($entityName == 'history') {
+
+            $history = $this->getEntityRepository($entityName)->findOneBy(['isEnabled' => true]);
+
+            return $this->render(':default/front/page/history:show.html.twig', [
+                'history' => $history
+            ]);
         }
 
         return $this->render($view, $parameters);

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Front;
 
+use Symfony\Bridge\Doctrine\Form\Type as FormType;
 use Symfony\Component\HttpFoundation as Http;
 use AppBundle\Service as Service;
 use AppBundle\Entity as Entity;
@@ -12,6 +13,90 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class PageController extends AppController
 {
+
+    /**
+     * @param Entity\Hall|null $hall
+     * @param Http\Request $request
+     * @return Http\Response
+     * @Route("/hall/booking/{hall}", name="halls.book_hall")
+     */
+    public function bookHallAction(Entity\Hall $hall = null, Http\Request $request)
+    {
+
+        $doctrine = $this->getDoctrine();
+
+        $form = $this->createForm(Form\BookingType::class);
+        $form->remove('time');
+
+        if (!$hall) {
+            $form->add('hall', FormType\EntityType::class, [
+                'class' => Entity\Hall::class,
+                'label' => 'Выберите зал',
+                'attr' => [
+                    'class' => 'form-control no-border-radius'
+                ],
+                'choice_label' => function ($hall) {
+                    return $hall->getTitle() . ' - ' . $hall->getCapacity() . ' чел.';
+                },
+                'required' => false,
+                'placeholder' => null
+            ]);
+        }
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            $response = $request->request->get('g-recaptcha-response');
+
+            $resaptchaVerifyer = $this->googleRecaptchaVerifyer($response);
+
+            $resaptchaVerifyer = json_decode($resaptchaVerifyer);
+
+            if ($form->isValid() && $resaptchaVerifyer->success) {
+
+                /** @var Entity\Booking $formData */
+                $formData = $form->getData();
+
+                $hallTitle = null;
+
+                if ($hall) {
+                    $hallTitle = $hall->getTitle();
+                }
+
+                if ($formData->getHall()) {
+                    $hallTitle = $formData->getHall()->getTitle();
+                }
+                /** @var Service\MailerService $mailer */
+                $mailer = $this->get(Service\MailerService::class);
+
+                $mailer
+                    ->setTo($this->getParameter('administrator'))
+                    ->setFrom($formData->getEmail())
+                    ->setSubject('Запрос на бронирование зала '.$hallTitle)
+                    ->setBody($formData->getMessage());
+
+                $doctrine->getManager()->persist($formData);
+
+                try {
+                    $doctrine->getManager()->flush();
+                    $mailer->sendMessage();
+                    $this->addFlash('success', 'Заявка на бронь отправлена');
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', 'Во время отправления заявки произошла ошибка, попробуйте позже');
+                }
+            } else {
+                $this->addFlash('error', 'Подтвердите что Вы не робот');
+            }
+        }
+
+        return $this->render(':default/front/page:booking.html.twig', [
+            'hall' => $hall,
+            'form' => $form->createView(),
+            'halls' => $doctrine->getRepository(Entity\Hall::class)->findAll(),
+        ]);
+    }
 
     /**
      * @param string|null $entity
@@ -27,7 +112,7 @@ class PageController extends AppController
         $repository = $this->getEntityRepository($entity);
 
         $object = null;
-        
+
         if ($slug) {
             if (!intval($slug)) {
                 $object = $repository->findOneBySlug($slug);
@@ -52,6 +137,7 @@ class PageController extends AppController
             ];
             return $this->render($view, $parameters);
         }
+
 
         if ($object)
         {

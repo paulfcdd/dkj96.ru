@@ -18,20 +18,19 @@
     <script src="https://use.fontawesome.com/dd34fe19f7.js"></script>
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
     <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
-    <link href="{{ asset('node_modules/photoswipe/dist/photoswipe.css') }}" rel="stylesheet">
-    <link href="{{ asset('node_modules/photoswipe/dist/default-skin/default-skin.css') }}" rel="stylesheet">
 
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    <link rel="stylesheet" href="{{ asset('node_modules/blueimp-gallery/css/blueimp-gallery.css') }}">
 
     <script src='https://www.google.com/recaptcha/api.js'></script>
 
     {% block yandex_metrika_counter %}
-		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'yandex'})) }}
+        {{ render(controller('AppBundle:Front\\App:getMetricsCode', {'metricsName': 'yandex'})) }}
     {% endblock %}
 
     {% block google_analytics %}
-		{{ render(controller('AppBundle:Front\\Front:getMetricsCode', {'metricsName': 'google'})) }}
+        {{ render(controller('AppBundle:Front\\App:getMetricsCode', {'metricsName': 'google'})) }}
     {% endblock %}
 </head>
 <body>
@@ -44,48 +43,43 @@
         {% block header %}
 
             {% set mainMenu =
-				[
-					{
-						title: 'Главная',
-						id: 'index',
-						path: path('front.index')
-					},
-					{
-						title: 'Афиша',
-						id: 'event',
-						path: path('front.load_page', {'entity':'event'})
-					},
-					{
-						title: 'Залы',
-						id: 'hall',
-						path: path('front.load_page', {'entity':'hall'})
-					},
-          {
-						title: 'Новости',
-						id: 'news',
-						path: path('front.load_page', {'entity':'news'})
-					},
-					{
-						title: 'Артисты',
-						id: 'artist',
-						path: path('front.load_page', {'entity':'artist'})
-					},
-					{
-						title: 'История',
-						id: 'history',
-						path: path('front.load_page', {'entity':'history'})
-					},
-					{
-						title: 'Контакты',
-						id: 'contact',
-						path: path('front.contact')
-					}
-				]
-            %}
-
-            {#
-            'front.index' : 'Отзывы',
-            #}
+            [
+                {
+                    title: 'Главная',
+                    id: 'index',
+                    path: path('front.index')
+                },
+                {
+                    title: 'Афиша',
+                    id: 'event',
+                    path: path('front.load_page', {'entity':'event'})
+                },
+                {
+                    title: 'Залы',
+                    id: 'hall',
+                    path: path('front.load_page', {'entity':'hall'})
+                },
+                {
+                    title: 'Новости',
+                    id: 'news',
+                    path: path('front.load_page', {'entity':'news'})
+                },
+                {
+                    title: 'Артисты',
+                    id: 'artist',
+                    path: path('front.load_page', {'entity':'artist'})
+                },
+                {
+                    title: 'История',
+                    id: 'history',
+                    path: path('front.load_page', {'entity':'history'})
+                },
+                {
+                    title: 'Контакты',
+                    id: 'contact',
+                    path: path('front.contact')
+                }
+            ] %}
 
             <div>
                 {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}
@@ -159,18 +153,14 @@
 
 </div><!-- .wrapper -->
 
-
 <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
-{#<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>#}
 <script src="{{ asset('node_modules/lodash/lodash.min.js') }}"></script>
 <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/jquery.gotop.js') }}"></script>
 <script src="{{ asset('js/utils.js') }}"></script>
-<script src="{{ asset('node_modules/photoswipe/dist/photoswipe.min.js') }}"></script>
-<script src="{{ asset('node_modules/photoswipe/dist/photoswipe-ui-default.min.js') }}"></script>
-<script src="{{ asset('node_modules/clndr/clndr.min.js') }}"></script>
+<script src="{{ asset('node_modules/blueimp-gallery/js/blueimp-gallery.js') }}"></script>
 
 <script>
     $(document).ready(function () {

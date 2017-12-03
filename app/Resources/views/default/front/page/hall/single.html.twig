@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends ':default/front:base.html.twig' %}
 
 {% block title %}{{ object.seoTitle }}{% endblock %}
 {% block seoDescription %}{{ object.seoDescription }}{% endblock %}
@@ -18,10 +18,21 @@
     <script>
         var events = [];
 
+        {% for booking in bookings %}
+        var event = {
+            id: '{{ booking.id }}',
+            title: '{{ booking.time | date('H:i') }} - бронь',
+            phone: '{{ booking.phone }}',
+            start: '{{ booking.date | date('Y-m-d') }}',
+            editable: false,
+            overlap: false
+        };
+        events.push(event);
+        {% endfor %}
+
         $('#calendar').fullCalendar({
             defaultDate: $(this).fullCalendar('today'),
             events: events,
-            eventBackgroundColor: 'red',
             locale: 'ru'
         });
 
@@ -43,6 +54,7 @@
 {% endblock %}
 
 {% block content %}
+
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
 
     {% set files = [] %}
@@ -69,7 +81,6 @@
     {% endfor %}
 
     <div class="container col-xs-padding-right-0 single-hall-page">
-
         <div class="space-fix-container"></div>
 
         <div class="row xs-padding-0-10px">
@@ -88,48 +99,23 @@
         <div class="row xs-padding-0-10px padding-0-100px single-hall-page-content">
             <div class="col-xs-12">
                <div class="row">
-                   <div class="col-sm-10">
+                   <div class="col-sm-12">
                        <h1 class="underscored-label">
                            {{ object.title }}
                        </h1>
                    </div>
-
-                   <div class="col-sm-2 col-xs-12 pull-right">
-                       <a href="{{ path('halls.book_hall', {'hall': object.id}) }}"
-                          class="btn btn-default xs-width-100 no-border-radius"
-                          data-tooltip="tooltip"
-                          data-placement="top"
-                          title="Бронирование"
-                          role="button"
-                          target="_blank">
-                           <i class="fa fa-lock" aria-hidden="true"></i> <label class="hidden-sm hidden-lg hidden-md">Бронирование</label>
-                       </a>
-
-                       <button type="button"
-                               class="btn btn-default xs-width-100 no-border-radius"
-                               data-tooltip="tooltip"
-                               data-placement="top"
-                               data-toggle="modal"
-                               title="Занятость зала"
-                               data-target="#myModal">
-                           <i class="fa fa-calendar-o" aria-hidden="true"></i> <label class="hidden-sm hidden-lg hidden-md">Занятость зала</label>
-                       </button>
-
-                       {% if images is not empty %}
-                           <button
-                                   type="button"
-                                   id="init-photoswipe"
-                                   class="btn btn-default xs-width-100 no-border-radius"
-                                   data-dir="hall"
-                                   data-toggle="modal"
-                                   data-target="#gallery"
-                                   data-tooltip="tooltip"
-                                   data-placement="top"
-                                   title="Галерея">
-                               <i class="fa fa-camera" aria-hidden="true"></i> <label
-                                       class="hidden-sm hidden-lg hidden-md">Галерея</label>
+                   <div class="col-sm-12">
+                       <div class="btn-group hall-buttons-group">
+                           <a href="{{ path('halls.book_hall', {'hall': object.id}) }}" type="button" class="btn btn-default group-item">
+                               <i class="fa fa-lock" aria-hidden="true"></i> Бронирование
+                           </a>
+                           <button type="button" class="btn btn-default group-item" data-toggle="modal" data-target="#hall-reservations">
+                               <i class="fa fa-calendar-o" aria-hidden="true"></i> Занятость зала
                            </button>
-                       {% endif %}
+                           <button type="button" class="btn btn-default group-item" data-toggle="modal" data-target="#gallery">
+                               <i class="fa fa-camera" aria-hidden="true"></i> Галерея
+                           </button>
+                       </div>
                    </div>
                </div>
                 <div class="row">
@@ -188,8 +174,8 @@
             </div>
         </div>
 
-        <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+        <div id="hall-reservations" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width: 70%">
 
                 <!-- Modal content-->
                 <div class="modal-content no-border-radius">
@@ -199,12 +185,6 @@
                     </div>
                     <div class="modal-body">
                         <div id='calendar'></div>
-
-                        <div>
-                            <p>
-                                <i class="fa fa-square" aria-hidden="true" style="color: red"></i> - Забронировано
-                            </p>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <a href="{{ path('halls.book_hall', {'hall': object.id}) }}"
@@ -219,7 +199,7 @@
 
             </div>
         </div>
-
+        
         <div id="blueimp-gallery" class="blueimp-gallery">
             <div class="slides"></div>
             <h3 class="title"></h3>

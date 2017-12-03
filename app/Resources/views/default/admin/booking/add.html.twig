@@ -1,0 +1,70 @@
+{% extends ':default/admin:base.html.twig' %}
+
+{% block scripts %}
+    <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.js') }}"></script>
+    <script src="http://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.js"></script>
+    <script src="{{ asset('node_modules/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+
+    <script>
+        $( function() {
+            $( "#booking_date" ).datepicker({
+                format: 'dd-mm-yyyy',
+                numberOfMonths: 2
+            });
+
+        } );
+    </script>
+{% endblock %}
+
+{% block add_object_btn %}
+    <li>
+        <a href="{{ path('admin.booking.calendar', {'hall' : hall.id}) }}">
+            <i class="fa fa-calendar"></i> К календарю
+        </a>
+    </li>
+
+    {% if booking is defined %}
+        <li>
+            <a href="{{ path('admin.booking.delete', {'booking' : booking.id}) }}">
+                <i class="fa fa-trash"></i> Удалить бронь
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+
+        {% for message in app.flashes('success') %}
+            <div class="col-md-12 alert alert-success alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <p>{{ message }}</p>
+                <a class="alert-link" href="{{ path('admin.booking.calendar', {'hall' : hall.id}) }}">К календарю</a>.
+            </div>
+        {% endfor %}
+
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+
+                {% set text = 'новое бронирование' %}
+                {% if booking is defined %}
+                    {% set text = 'управление бронированием' %}
+                {% endif %}
+
+                <h5>{{ hall.title }}: {{ text }}</h5>
+                <div class="ibox-tools">
+
+                </div>
+            </div>
+            <div class="ibox-content">
+                {{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}
+                {{ form_end(form) }}
+            </div>
+            <div class="ibox-footer">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,11 +1,12 @@
+#!/usr/bin/env bash
 echo '========= Pull new changes from repository ==========='
 git pull && php bin/composer.phar self-update && php bin/composer.phar install
 
 echo '========= Updating database structure ==========='
 bin/console doctrine:schema:update --force
 
-echo '========= Updating database structure ==========='
-cd web/ && 
+echo '========= Updating node modules ==========='
+cd web/ &&
 npm update
 
 echo '========= Clear cache ==========='

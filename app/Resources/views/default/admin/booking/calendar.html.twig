@@ -8,6 +8,7 @@
 {% block scripts %}
     <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('node_modules/fullcalendar/dist/locale/ru.js') }}"></script>
     <script src="http://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.js"></script>
 
     <script>
@@ -18,7 +19,7 @@
         {% for booking in bookings %}
         var event = {
             id: '{{ booking.id }}',
-            title: '{{ booking.email }}',
+            title: '{{ booking.time | date('H:i') ~' - ' ~ booking.email }}',
             phone: '{{ booking.phone }}',
             start: '{{ booking.date | date('Y-m-d') }}',
             editable: false,
@@ -29,12 +30,21 @@
 
         $('#calendar').fullCalendar({
             events: events,
-            eventRender: function(event, element) {
-                element.find('.fc-title').after("<p id=phone>"+event.phone+"</p>");
-                element.find('#phone').after("<a href='"+url.replace('_booking', event.id)+"' target='_blank'>Детали брони</a>");
+            locale: 'ru',
+            eventClick: function (event) {
+                var url = '{{ path('admin.booking.edit', {'booking': '_id'}) }}';
+                window.location.href = url.replace('_id', event.id);
             }
         });
     </script>
+{% endblock %}
+
+{% block add_object_btn %}
+    <li>
+        <a href="{{ path('admin.booking.add', {'hall': hall.id} ) }}">
+            <i class="fa fa-plus"></i> Новое бронирование
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}
@@ -45,21 +55,6 @@
 
                 <h5>{{ hall.title }}: календарь бронирований</h5>
                 <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#">Config option 1</a>
-                        </li>
-                        <li><a href="#">Config option 2</a>
-                        </li>
-                    </ul>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
                 </div>
             </div>
             <div class="ibox-content">

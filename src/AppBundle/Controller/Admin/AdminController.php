@@ -16,6 +16,7 @@ use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
 use AppBundle\Service\FileUploaderService;
 use AppBundle\Service\MailerService;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -32,36 +33,33 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Yaml\Yaml;
 
 
-
 class AdminController extends Controller
 {
-	const CONFIG_FILE_PATH = __DIR__.('/../../../../app/config/page/');
-	const METRICS_FILE_PATH = __DIR__.('/../../../../app/config/metrics/');
-	const ROBOTS = __DIR__.('/../../../../web/robots.txt');
-	const HTACCESS = __DIR__.('/../../../../web/.htaccess');
-	const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
+    const CONFIG_FILE_PATH = __DIR__ . ('/../../../../app/config/page/');
+    const METRICS_FILE_PATH = __DIR__ . ('/../../../../app/config/metrics/');
+    const ROBOTS = __DIR__ . ('/../../../../web/robots.txt');
+    const HTACCESS = __DIR__ . ('/../../../../web/.htaccess');
+    const ENTITY_NAMESPACE = 'AppBundle\\Entity\\';
 
-	protected $configFilePath;
+    protected $configFilePath;
+    public $em;
 
-    public function __construct(){
-			$this->configFilePath = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH));
-		}
+
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->configFilePath = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH));
+        $this->em = $entityManager;
+    }
 
     /**
      * @Route("/admin/dashboard", name="admin.index")
      */
-    public function indexAction() {
-		
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
         return $this->render(':default/admin:index.html.twig', [
-            'bookings' => $this->getUnreadNotifications(
-               Booking::class, ['booked' => 0, 'status' => 0], ['dateReceived' => 'DESC'], 10
-            ),
-            'messages' => $this->getUnreadNotifications(
-                Feedback::class, ['status' => 0], ['dateReceived' => 'DESC'], 10
-            ),
-            'reviews' => $this->getUnreadNotifications(
-                Review::class, ['status' => 0], ['dateReceived' => 'DESC'], 10
-            )
+            'categoryData' => $em->getRepository(Category::class)->findOneByEntity('index')
         ]);
     }
 
@@ -73,7 +71,8 @@ class AdminController extends Controller
      * @param int $offset
      * @return array
      */
-    public function getUnreadNotifications(string $className, array $criteria, array $orderBy, int $limit = null, int $offset = null) {
+    public function getUnreadNotifications(string $className, array $criteria, array $orderBy, int $limit = null, int $offset = null)
+    {
 
         $em = $this->getDoctrine()->getManager();
 
@@ -90,13 +89,14 @@ class AdminController extends Controller
      * @return Response
      * @Route("/admin/{entity}/list", name="admin.list")
      */
-    public function listAction(string $entity) {
+    public function listAction(string $entity)
+    {
 
         $em = $this->getDoctrine()->getManager();
 
         $class = ucfirst($entity);
 
-        $repository = $em->getRepository('AppBundle\\Entity\\'.$class);
+        $repository = $em->getRepository('AppBundle\\Entity\\' . $class);
 
         $categoryData = $em->getRepository(Category::class)->findOneByEntity($entity);
 
@@ -114,9 +114,12 @@ class AdminController extends Controller
      * @return Response
      * @Route("/admin/{entity}/manage/{id}", name="admin.manage")
      */
-    public function manageAction(string $entity, int $id = null, Request $request) {
+    public function manageAction(string $entity, int $id = null, Request $request)
+    {
 
         $em = $this->getDoctrine()->getManager();
+
+        $view = ':default/admin:manage.html.twig';
 
         $uploader = $this->get(FileUploaderService::class);
 
@@ -168,17 +171,16 @@ class AdminController extends Controller
             }
 
             if ($formData instanceof Banner) {
-            	if ($formData->isLink()) {
-            		if (isset($request->request->get('banner')['object'])) {
-									$formData->setObject($request->request->get('banner')['object']);
-								}
-							}
-						}
+                if ($formData->isLink()) {
+                    if (isset($request->request->get('banner')['object'])) {
+                        $formData->setObject($request->request->get('banner')['object']);
+                    }
+                }
+            }
 
 
-
-					$em->persist($formData);
-					$em->flush();
+            $em->persist($formData);
+            $em->flush();
 
             if (isset($form['files'])) {
                 $attachedFiles = $form['files']->getData();
@@ -192,12 +194,12 @@ class AdminController extends Controller
                 if (!empty($attachedFiles)) {
 
 
-									if ($object instanceof Banner) {
-										if (!empty($form['files'])) {
-											$this->deleteObjectRelatedFiles($class, $object->getId());
-										}
+                    if ($object instanceof Banner) {
+                        if (!empty($form['files'])) {
+                            $this->deleteObjectRelatedFiles($class, $object->getId());
+                        }
 
-									}
+                    }
 
                     foreach ($attachedFiles as $attachedFile) {
 
@@ -227,7 +229,11 @@ class AdminController extends Controller
             ]);
         }
 
-        return $this->render(':default/admin:manage.html.twig', [
+        if ($object instanceof Event) {
+            $view = ':default/admin/manage:event.html.twig';
+        }
+
+        return $this->render($view, [
             'form' => $form->createView(),
             'object' => $object,
         ]);
@@ -241,7 +247,8 @@ class AdminController extends Controller
      * @param string $class
      * @return File
      */
-    private function photoUploader(FileUploaderService $uploader, string $entity, UploadedFile $uploadedFile, $formData, string $class) {
+    private function photoUploader(FileUploaderService $uploader, string $entity, UploadedFile $uploadedFile, $formData, string $class)
+    {
         $file = new File();
 
         $uploader
@@ -263,7 +270,8 @@ class AdminController extends Controller
      * @return Response
      * @Route("/admin/{entity}/manage/{id}/files", name="admin.manage.files")
      */
-    public function fileManagerAction(string $entity, int $id) {
+    public function fileManagerAction(string $entity, int $id)
+    {
 
 
         return $this->render(':default/admin:files.html.twig', [
@@ -278,9 +286,10 @@ class AdminController extends Controller
      * @param $object
      * @return Form
      */
-    private function entityFormBuilder($className, $object) {
+    private function entityFormBuilder($className, $object)
+    {
 
-        $formName = 'AppBundle\Form\\'.$className.'Type';
+        $formName = 'AppBundle\Form\\' . $className . 'Type';
 
         $form = $this->createForm($formName, $object);
 
@@ -293,7 +302,8 @@ class AdminController extends Controller
      * @param int $id
      * @return array
      */
-    private function fileLoader(string $class, int $id) {
+    private function fileLoader(string $class, int $id)
+    {
 
         $doctrine = $this->getDoctrine();
 
@@ -309,11 +319,12 @@ class AdminController extends Controller
      * @param string $entity
      * @return string
      */
-    protected function getClassName(string $entity) {
+    protected function getClassName(string $entity)
+    {
 
         $className = ucfirst($entity);
 
-        $class = 'AppBundle\\Entity\\'.$className;
+        $class = 'AppBundle\\Entity\\' . $className;
 
         return $class;
     }
@@ -322,124 +333,130 @@ class AdminController extends Controller
      * @param string $entity
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getEntityRepository(string $entity) {
+    public function getEntityRepository(string $entity)
+    {
 
         return $this->getDoctrine()->getRepository($this->getClassName($entity));
 
     }
 
-	/**
-	 * @param string $objectClass
-	 * @param int $objectId
-	 * @return bool
-	 */
-	protected function deleteObjectRelatedFiles(string $objectClass, int $objectId) {
+    /**
+     * @param string $objectClass
+     * @param int $objectId
+     * @return bool
+     */
+    protected function deleteObjectRelatedFiles(string $objectClass, int $objectId)
+    {
 
-		$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-		$objectFiles = $em->getRepository(File::class)->findBy([
-			'entity' => $objectClass,
-			'foreignKey' => $objectId,
-		]);
+        $objectFiles = $em->getRepository(File::class)->findBy([
+            'entity' => $objectClass,
+            'foreignKey' => $objectId,
+        ]);
 
-		foreach ($objectFiles as $objectFile) {
-			$this->deleteFile($objectFile);
-		}
+        foreach ($objectFiles as $objectFile) {
+            $this->deleteFile($objectFile);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * @param File $file
-	 * @return Response
-	 */
-	protected function deleteFile(File $file) {
+    /**
+     * @param File $file
+     * @return Response
+     */
+    protected function deleteFile(File $file)
+    {
 
-		$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-		$finder = new Finder();
+        $finder = new Finder();
 
-		$fileDir = $this->getParameter('upload_directory');
+        $fileDir = $this->getParameter('upload_directory');
 
-		$finder->name($file->getName());
+        $finder->name($file->getName());
 
-		foreach ($finder->in($fileDir) as $item) {
-			unlink($item);
-		}
+        foreach ($finder->in($fileDir) as $item) {
+            unlink($item);
+        }
 
-		$em->remove($file);
+        $em->remove($file);
 
-		$em->flush();
+        $em->flush();
 
-		return JsonResponse::create('ok');
-	}
+        return JsonResponse::create('ok');
+    }
 
-	protected function getStaticPageSeo($pageName = 'index')
-	{
-		$fileName = $pageName . '.yml';
+    protected function getStaticPageSeo($pageName = 'index')
+    {
+        $fileName = $pageName . '.yml';
 
-		$config = $this->yamlParse($fileName, self::CONFIG_FILE_PATH);
+        $config = $this->yamlParse($fileName, self::CONFIG_FILE_PATH);
 
-		return $config;
+        return $config;
 
-	}
+    }
 
-	protected function getMetricsCode($metricsType) {
+    protected function getMetricsCode($metricsType)
+    {
 
-		$fileName = $metricsType . '.yml';
+        $fileName = $metricsType . '.yml';
 
-		$metrics = $this->yamlParse($fileName, self::METRICS_FILE_PATH);
+        $metrics = $this->yamlParse($fileName, self::METRICS_FILE_PATH);
 
-		return $metrics;
+        return $metrics;
 
-	}
+    }
 
-	protected function yamlParse($fileName, $filePath) {
+    protected function yamlParse($fileName, $filePath)
+    {
 
-		$configPath = $filePath . $fileName;
+        $configPath = $filePath . $fileName;
 
-		if (!file_exists($configPath)) {
-			copy($filePath.'default.yml', $configPath);
-		}
+        if (!file_exists($configPath)) {
+            copy($filePath . 'default.yml', $configPath);
+        }
 
-		$yaml = Yaml::parse(file_get_contents($configPath));
+        $yaml = Yaml::parse(file_get_contents($configPath));
 
-		return $yaml;
+        return $yaml;
 
-	}
+    }
 
-	protected function yamlDump($pageName, $pageData, $filePath) {
+    protected function yamlDump($pageName, $pageData, $filePath)
+    {
 
-		$pathToFile = $filePath . $pageName;
+        $pathToFile = $filePath . $pageName;
 
-		$yaml = Yaml::dump($pageData);
+        $yaml = Yaml::dump($pageData);
 
-		$dump = file_put_contents($pathToFile, $yaml);
+        $dump = file_put_contents($pathToFile, $yaml);
 
-		return $dump;
-	}
+        return $dump;
+    }
 
-	public function getFileContentAction(string $fileName) {
-		
-		$robotsFile = self::ROBOTS;
-		
-		$file = self::getConstants()[strtoupper($fileName)];
+    public function getFileContentAction(string $fileName)
+    {
 
-		if (file_exists($file)) {
-			$handle = fopen($file, 'r');
+        $file = self::getConstants()[strtoupper($fileName)];
 
-			$fileContent = fread($handle, filesize($file));
+        if (file_exists($file)) {
+            $handle = fopen($file, 'r');
 
-			fclose($handle);
+            $fileContent = fread($handle, filesize($file));
 
-			return Response::create($fileContent);
-		} else {
-			return 'File ' . $file . ' not found!';
-		}
+            fclose($handle);
 
-	}
-	
-	public static function getConstants() {
+            return Response::create($fileContent);
+        } else {
+            return 'File ' . $file . ' not found!';
+        }
+
+    }
+
+    protected static function getConstants()
+    {
         $oClass = new \ReflectionClass(__CLASS__);
         return $oClass->getConstants();
     }

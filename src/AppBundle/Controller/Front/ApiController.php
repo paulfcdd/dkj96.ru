@@ -13,11 +13,8 @@ use AppBundle\Service\Utilities;
 /**
  * @Method({"POST"})
  */
-class ApiController extends FrontController
+class ApiController extends AppController
 {
-
-    const DATE_FORMAT = 'Y-m-d';
-
     public function em()
     {
         return $this->getDoctrine()->getManager();
@@ -99,12 +96,15 @@ class ApiController extends FrontController
             'entity' => 'event'
         ]);
     }
-    
-     /**
+
+    /**
+     * @param HTTP\Request $request
+     * @param Utilities $utilities
+     * @return HTTP\Response
      * @param HTTP\Request $request
      * @Route("/api/switch-page", name="api.switch-page")
      */
-    public function switchPageAction(HTTP\Request $request, Utilities $utilities) 
+    public function switchPageAction(HTTP\Request $request, Utilities $utilities)
     {
 		$paginator = $utilities
 				->setObjectName($this->getClassName($request->request->get('entity')))

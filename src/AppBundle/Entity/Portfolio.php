@@ -25,7 +25,7 @@ class Portfolio
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Event", inversedBy="portfolio")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Event", inversedBy="portfolio", orphanRemoval=true)
      */
     private $event;
 

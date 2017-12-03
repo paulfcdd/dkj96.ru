@@ -58,6 +58,24 @@ class Event
     private $portfolio;
 
     /**
+     * @var string
+     * @ORM\Column(type="text", length=2000, nullable=true)
+     */
+    private $widgetJsCode;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", length=2000, nullable=true)
+     */
+    private $widgetCssCode;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", length=2000, nullable=true)
+     */
+    private $widgetHtmlCode;
+
+    /**
      * @return Portfolio
      */
     public function getPortfolio()
@@ -170,4 +188,63 @@ class Event
     {
         return $this->eventTime;
     }
+
+    /**
+     * @return string
+     */
+    public function getWidgetJsCode()
+    {
+        return $this->widgetJsCode;
+    }
+
+    /**
+     * @param string $widgetJsCode
+     * @return Event
+     */
+    public function setWidgetJsCode(string $widgetJsCode)
+    {
+        $this->widgetJsCode = $widgetJsCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWidgetCssCode()
+    {
+        return $this->widgetCssCode;
+    }
+
+    /**
+     * @param string $widgetCssCode
+     * @return Event
+     */
+    public function setWidgetCssCode(string $widgetCssCode)
+    {
+        $this->widgetCssCode = $widgetCssCode;
+        return $this;
+    }
+
+
+
+    /**
+     * @return string
+     */
+    public function getWidgetHtmlCode()
+    {
+        return $this->widgetHtmlCode;
+    }
+
+    /**
+     * @param string $widgetHtmlCode
+     * @return $this
+     */
+    public function setWidgetHtmlCode(string $widgetHtmlCode = null)
+    {
+        $this->widgetHtmlCode = $widgetHtmlCode;
+
+        return $this;
+
+    }
+
 }

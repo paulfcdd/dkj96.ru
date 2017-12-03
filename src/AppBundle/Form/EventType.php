@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -36,7 +37,26 @@ class EventType extends AbstractFormType
             ->add('eventDate', DateType::class, [
                 'label' => 'Дата события'
             ])
-            ->add('files', FileUploadType::class);
+            ->add('files', FileUploadType::class)
+            ->add('widgetJsCode', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('widgetCssCode', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('widgetHtmlCode', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'cols' => 10,
+                    'rows' => 10,
+                ]
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Сохранить',
+                'attr' => [
+                    'class' => 'btn btn-primary'
+                ]
+            ]);
 
     }
 

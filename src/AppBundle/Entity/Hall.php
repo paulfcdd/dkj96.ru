@@ -35,7 +35,13 @@ class Hall
      * @ORM\OneToMany(targetEntity="Booking", mappedBy="hall")
      */
     private $bookings;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    private $googleCalendarIdKey;
     /**
      * Constructor
      */
@@ -127,5 +133,30 @@ class Hall
     public function getBookings()
     {
         return $this->bookings;
+    }
+    
+    
+    /**
+     * Set googleCalendarIdKey
+     *
+     * @param string $googleCalendarIdKey
+     *
+     * @return Hall
+     */
+    public function setGoogleCalendarIdKey($googleCalendarIdKey)
+    {
+        $this->googleCalendarIdKey = $googleCalendarIdKey;
+
+        return $this;
+    }
+
+    /**
+     * Get googleCalendarIdKey
+     *
+     * @return string
+     */
+    public function getGoogleCalendarIdKey()
+    {
+        return $this->googleCalendarIdKey;
     }
 }

@@ -87,7 +87,7 @@ trait AbstractEntityTrait {
     private $redirectUrl;
     
     /**
-     * @var string
+     * @var string | null
      * 
      * @ORM\Column(nullable=true)
      */ 
@@ -309,7 +309,7 @@ trait AbstractEntityTrait {
      * @param string $slug
      * @return $this
      */
-    public function setSlug(string $slug)
+    public function setSlug(string $slug = null)
     {
         $this->slug = $slug;
         

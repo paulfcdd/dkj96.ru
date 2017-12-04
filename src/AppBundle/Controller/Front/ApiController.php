@@ -57,7 +57,6 @@ class ApiController extends AppController
                 'firstDay' => $firstDay,
                 'lastDay' => $lastDay
             ])
-//            ->addOrderBy('e.date', 'ASC')
             ->orderBy('e.date', 'ASC')
             ->addOrderBy('e.time', 'ASC')
             ->getQuery();
@@ -88,7 +87,7 @@ class ApiController extends AppController
             $event['name'] = $item->getEvent()->getTitle();
             $event['time'] = $item->getTime()->format('H:i');
             $event['ticketUrl'] = $item->getEvent()->getTicketUrl();
-            $event['slug'] = $item->getEvent()->getSlug();
+            $event['slug'] = $item->getEvent()->getSlug() ?? $item->getEvent()->getId();
 
             array_push($groupByDays[$key]['events'], $event);
 

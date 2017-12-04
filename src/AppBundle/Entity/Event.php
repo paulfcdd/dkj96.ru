@@ -76,6 +76,17 @@ class Event
     private $widgetHtmlCode;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EventDateTime", mappedBy="event")
+     */
+    private $eventDateTime;
+
+    public function __construct()
+    {
+        $this->eventDateTime = new ArrayCollection();
+    }
+
+
+    /**
      * @return Portfolio
      */
     public function getPortfolio()
@@ -245,6 +256,41 @@ class Event
 
         return $this;
 
+    }
+
+    /**
+     * @param $eventDateTime
+     * @return $this
+     */
+    public function addEventDateTime($eventDateTime) {
+
+        if (!$this->eventDateTime->contains($eventDateTime)) {
+            $this->eventDateTime->add($eventDateTime);
+        }
+
+        return $this;
+
+    }
+
+    /**
+     * @param $eventDateTime
+     * @return $this
+     */
+    public function removeEventDateTime($eventDateTime) {
+
+        if ($this->eventDateTime->contains($eventDateTime)) {
+            $this->eventDateTime->remove($eventDateTime);
+        }
+
+        return $this;
+
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEventDateTime() {
+        return $this->eventDateTime;
     }
 
 }

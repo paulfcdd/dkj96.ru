@@ -8,14 +8,97 @@
     {% endif %}
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('node_modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
+    <link href="{{ asset('css/admin/dataTables.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block scripts %}
-{{ parent() }}
+    {{ parent() }}
+    <script src="{{ asset('admin/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
+
     <script>
         $('.url-translit-generator').on('click', function (e) {
             $('#{{ entity }}_title').liTranslit({
                 elAlias: $('#{{ entity }}_slug')
             });
             $('#{{ entity }}_title').unbind();
+        });
+
+        $('#event-date').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true
+        });
+
+        $('#event-time').timepicker({
+            showMeridian: false
+        });
+
+        $('.save-event-date-time').on('click', function () {
+            var btn = this,
+                time = $('#event-time').val(),
+                date = $('#event-date').val(),
+                event = $(this).data('eventid'),
+                url = '{{ path('admin.api.save_event_date_time_action') }}';
+
+            $.ajax({
+                method: 'post',
+                url: url,
+                data: {
+                    date: date,
+                    time: time,
+                    event: event
+                },
+                success: function () {
+                    $('.notification-box')
+                        .removeClass('hidden')
+                        .addClass('alert-success');
+
+                    $('.event-date-time-table').append('' +
+                        '<tr>' +
+                        '<td>' + date +'</td>' +
+                        '<td>' + time +'</td>' +
+                        '</tr>')
+                    $('.notification-text').text('Дата сохранена');
+
+                },
+                error: function () {
+                    $('.notification-box')
+                        .removeClass('hidden')
+                        .addClass('alert-danger');
+
+                    $('.notification-text').text('Возникла ошибка');
+                }
+            });
+
+        })
+
+        $('.event-date-time-table').DataTable({
+            pageLength: 10,
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                {extend: 'copy'},
+                {extend: 'csv'},
+                {extend: 'excel', title: 'ExampleFile'},
+                {extend: 'pdf', title: 'ExampleFile'},
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ]
+
         });
     </script>
 {% endblock %}
@@ -145,20 +228,79 @@
                     </div>
 
                     <div id="date-time" class="tab-pane">
-
                         <div class="panel-body">
-                            {{ form_label(form.eventTime) }}
-                            {{ form_widget(form.eventTime) }}
 
-                            {{ form_label(form.eventDate) }}
-                            {{ form_widget(form.eventDate) }}
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#date-time-modal" style="margin: 0 0 20px 0">
+                                Open Modal
+                            </button>
+
+                            <table class="table table-responsive event-date-time-table">
+                                <thead>
+                                <th>Date</th>
+                                <th>Time</th>
+                                </thead>
+                                <tbody>
+                                {% for event in object.eventDateTime %}
+                                    <tr>
+                                        <td>{{ event.date | date('d.m.Y') }}</td>
+                                        <td>{{ event.time | date('H:i') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
 
                     </div>
-
                 </div>
             </div>
+            {{ form_end(form) }}
         </div>
-        {{ form_end(form) }}
+        <!-- Modal -->
+        <div id="date-time-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="alert alert-success alert-dismissable hidden notification-box">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <p class="notification-text"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event-date">Дата события</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input id="event-date" type="text" class="form-control" name="event-date">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event-time">Время события</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                <input id="event-time" type="text" class="form-control" name="event-time">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary save-event-date-time"
+                                    data-eventid="{{ object.id }}">Сохранить
+                            </button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Закрыть</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 {% endblock %}

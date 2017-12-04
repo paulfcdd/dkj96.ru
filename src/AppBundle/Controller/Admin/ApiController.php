@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Entity\EventDateTime;
 use AppBundle\Entity\File;
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\Category;
@@ -32,7 +33,8 @@ class ApiController extends AdminController
      * @param string|null $name
      * @return \Doctrine\Common\Persistence\ObjectManager|object
      */
-    public function doctrineManager(string $name = null) {
+    public function doctrineManager(string $name = null)
+    {
         return $this->getDoctrine()->getManager($name);
     }
 
@@ -40,7 +42,8 @@ class ApiController extends AdminController
      * @return JsonResponse
      * @Route("/mark_as_unread/{id}/{entity}", name="admin.api.message_unread")
      */
-    public function markAsUnreadAjaxAction($id, $entity) {
+    public function markAsUnreadAjaxAction($id, $entity)
+    {
 
         $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
 
@@ -60,7 +63,8 @@ class ApiController extends AdminController
      * @return JsonResponse
      * @Route("/confirm-action/{id}/{entity}", name="admin.api.confirm_action")
      */
-    public function confirmAjaxAction($id, $entity) {
+    public function confirmAjaxAction($id, $entity)
+    {
 
         $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
 
@@ -74,12 +78,14 @@ class ApiController extends AdminController
             return JsonResponse::create(true);
         }
     }
+
     /**
      * @Route("/object_delete/{object}/{id}", name="admin.api.object_delete")
      */
-    public function deleteObjectAjaxAction($object, $id) {
+    public function deleteObjectAjaxAction($object, $id)
+    {
 
-        $objectClass = 'AppBundle\\Entity\\'.ucfirst($object);
+        $objectClass = 'AppBundle\\Entity\\' . ucfirst($object);
 
         $objectEntity = $this->doctrineManager()->getRepository($objectClass)->findOneById($id);
 
@@ -113,7 +119,8 @@ class ApiController extends AdminController
      * @return JsonResponse
      * @Route("/message_delete/{entity}/{id}", name="admin.api.message_delete")
      */
-    public function deleteMessageAjaxAction($entity, $id) {
+    public function deleteMessageAjaxAction($entity, $id)
+    {
 
         $entityRepository = $this->getEntityRepository($entity)->findOneById($id);
 
@@ -132,7 +139,8 @@ class ApiController extends AdminController
      * @param Booking $booking
      * @return JsonResponse
      */
-    protected function confirmBooking(Booking $booking) {
+    protected function confirmBooking(Booking $booking)
+    {
 
         $em = $this->getDoctrine()->getManager();
 
@@ -146,7 +154,7 @@ class ApiController extends AdminController
             $booking->setBooked(true);
             $mailer = $this->get(MailerService::class);
             $mailer
-                ->setSubject('Подтверждение брони зала '.$booking->getHall()->getTitle())
+                ->setSubject('Подтверждение брони зала ' . $booking->getHall()->getTitle())
                 ->setFrom($this->getParameter('mail_from'))
                 ->setTo($booking->getEmail())
                 ->setBody('Ваше бронирование было подтверждено');
@@ -170,7 +178,8 @@ class ApiController extends AdminController
      * @Route("/set_image_as_default/{file}", name="admin.api.set_as_default")
      *
      */
-    public function setImageAsDefaultAjaxAction(File $file) {
+    public function setImageAsDefaultAjaxAction(File $file)
+    {
 
         $doctrine = $this->getDoctrine();
 
@@ -209,124 +218,152 @@ class ApiController extends AdminController
      * @return JsonResponse
      * @Route("/file_delete/{file}", name="admin.api.file_delete")
      */
-    public function deleteFileAjaxAction(File $file) {
+    public function deleteFileAjaxAction(File $file)
+    {
 
-       parent::deleteFile($file);
+        parent::deleteFile($file);
 
-       return JsonResponse::create();
-		}
+        return JsonResponse::create();
+    }
 
-	/**
-	 * @param Request $request
-	 * @return Response
-	 * @Route("/render_object_selector", name="admin.api.render_object_selector")
-	 */
-		public function renderObjectSelectorAction(Request $request) {
+    /**
+     * @param Request $request
+     * @return Response
+     * @Route("/render_object_selector", name="admin.api.render_object_selector")
+     */
+    public function renderObjectSelectorAction(Request $request)
+    {
 
-			$object = $request->request->get('category');
+        $object = $request->request->get('category');
 
-			$classFQN = $this->getClassName($object);
+        $classFQN = $this->getClassName($object);
 
-			$objects = $this->doctrineManager()->getRepository($classFQN)->findAll();
+        $objects = $this->doctrineManager()->getRepository($classFQN)->findAll();
 
-			return $this->render(':default/admin/parts:object_selector.html.twig', [
-				'objects' => $objects
-			]);
-		}
+        return $this->render(':default/admin/parts:object_selector.html.twig', [
+            'objects' => $objects
+        ]);
+    }
 
-		/**
-		* @param Request $request
-		* @Route("/save_main_page_seo_to_yml", name="admin.api.save_main_page_seo_to_yml")
-		*/
-		public function saveMainPageSeoToYmlAction(Request $request)
-		{
-			$requestParams = $request->request;
+    /**
+     * @param Request $request
+     * @Route("/save_main_page_seo_to_yml", name="admin.api.save_main_page_seo_to_yml")
+     */
+    public function saveMainPageSeoToYmlAction(Request $request)
+    {
+        $requestParams = $request->request;
 
-			$pageName = $requestParams->get('pageName') . '.yml';
-			$config = $this->yamlParse($pageName, self::CONFIG_FILE_PATH);
+        $pageName = $requestParams->get('pageName') . '.yml';
+        $config = $this->yamlParse($pageName, self::CONFIG_FILE_PATH);
 
-			$config['seoTitle'] = $requestParams->get('seoTitle');
-			$config['seoKeywords'] = $requestParams->get('seoKeywords');
-			$config['seoDescription'] = $requestParams->get('seoDescription');
+        $config['seoTitle'] = $requestParams->get('seoTitle');
+        $config['seoKeywords'] = $requestParams->get('seoKeywords');
+        $config['seoDescription'] = $requestParams->get('seoDescription');
 
-			$writeFile = $this->yamlDump($pageName, $config, self::CONFIG_FILE_PATH);
+        $writeFile = $this->yamlDump($pageName, $config, self::CONFIG_FILE_PATH);
 
-			if ($writeFile) {
+        if ($writeFile) {
 
-				if ($requestParams->get('pageName') == 'index') {
-					return $this->redirectToRoute('admin.settings');
-				}
+            if ($requestParams->get('pageName') == 'index') {
+                return $this->redirectToRoute('admin.settings');
+            }
 
-				return $this->redirectToRoute('admin.list', ['entity' => $requestParams->get('pageName')]);
-
-
-			}
-
-		}
-
-		/**
-		* @param Request $request
-		* @Route("/save-metrics-code", name="admin.api.save_metrics_code")
-		*/
-		public function saveMetricsCodeAction(Request $request)
-		{
-			$requestParams = $request->request;
-
-			$metricsFileName = $requestParams->get('metricsType') . '.yml';
-
-			$metricsFile = $this->yamlParse($metricsFileName, self::METRICS_FILE_PATH);
-
-			$metricsFile = $requestParams->get('metricsCode');
-
-			$writeFile = $this->yamlDump($metricsFileName, $metricsFile, self::METRICS_FILE_PATH);
-
-			if ($writeFile) {
-				return $this->redirectToRoute('admin.settings');
-			}
-		}
-
-		/**
-		* @param Request $request
-		* @Route("/save-robots-txt", name="admin.api.save_serivice_file")
-		*/
-		public function saveRobotsTxtAction(Request $request)
-		{
-      $fileName = strtoupper($request->request->get('file'));
-      $content = $request->request->get('content');
-      $file = self::getConstants()[$fileName];
-      $fileArr = explode('/', $file);
-			try {
-				file_put_contents($file, $content);
-        $this->addFlash('success', 'Файл <b>'. end($fileArr) . '</b> сохранен!');
-				return $this->redirectToRoute('admin.settings');
-			} catch(\Exception $e) {
-				return Response::create('Cannot write to file '.$file.'. Reason: <strong>'.$e->getMessage().'</strong>');
-			}
-		}
-
-		/**
-		* @param Request $request
-		* @Route("/save-category-data", name="admin.api.save_category_data")
-		*/
-		public function saveCategoryDataAction(Request $request) {
-
-			$entity = $request->request->get('entity');
-
-			$object = $this->getEntityRepository('category')->findOneByEntity($entity);
-
-			if (!$object) {
-				$object = new Category();
-			}
-
-			foreach($request->request->all() as $key=>$val) {
-				$object->{'set'.ucfirst($key)}($val);
-			}
-
-			$this->doctrineManager()->persist($object);
-			$this->doctrineManager()->flush();
-
-			return JsonResponse::create();
+            return $this->redirectToRoute('admin.list', ['entity' => $requestParams->get('pageName')]);
 
 
-		}
+        }
+
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/save-metrics-code", name="admin.api.save_metrics_code")
+     */
+    public function saveMetricsCodeAction(Request $request)
+    {
+        $requestParams = $request->request;
+
+        $metricsFileName = $requestParams->get('metricsType') . '.yml';
+
+        $metricsFile = $this->yamlParse($metricsFileName, self::METRICS_FILE_PATH);
+
+        $metricsFile = $requestParams->get('metricsCode');
+
+        $writeFile = $this->yamlDump($metricsFileName, $metricsFile, self::METRICS_FILE_PATH);
+
+        if ($writeFile) {
+            return $this->redirectToRoute('admin.settings');
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/save-robots-txt", name="admin.api.save_serivice_file")
+     */
+    public function saveRobotsTxtAction(Request $request)
+    {
+        $fileName = strtoupper($request->request->get('file'));
+        $content = $request->request->get('content');
+        $file = self::getConstants()[$fileName];
+        $fileArr = explode('/', $file);
+        try {
+            file_put_contents($file, $content);
+            $this->addFlash('success', 'Файл <b>' . end($fileArr) . '</b> сохранен!');
+            return $this->redirectToRoute('admin.settings');
+        } catch (\Exception $e) {
+            return Response::create('Cannot write to file ' . $file . '. Reason: <strong>' . $e->getMessage() . '</strong>');
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/save-category-data", name="admin.api.save_category_data")
+     */
+    public function saveCategoryDataAction(Request $request)
+    {
+
+        $entity = $request->request->get('entity');
+
+        $object = $this->getEntityRepository('category')->findOneByEntity($entity);
+
+        if (!$object) {
+            $object = new Category();
+        }
+
+        foreach ($request->request->all() as $key => $val) {
+            $object->{'set' . ucfirst($key)}($val);
+        }
+
+        $this->doctrineManager()->persist($object);
+        $this->doctrineManager()->flush();
+
+        return JsonResponse::create();
+
+
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *@Route("/save-event-date-time-action", name="admin.api.save_event_date_time_action")
+     */
+    public function saveEventDateTimeAction(Request $request)
+    {
+
+        $event = $this->getEntityRepository('event')->findOneById($request->request->get('event'));
+
+        $eventDateTime = new EventDateTime();
+        $eventDateTime
+            ->setEvent($event)
+            ->setDate(\DateTime::createFromFormat('d-m-Y', $request->request->get('date')))
+            ->setTime(\DateTime::createFromFormat('H:i', $request->request->get('time')));
+
+        try{
+            $this->doctrineManager()->persist($eventDateTime);
+            $this->doctrineManager()->flush();
+            return JsonResponse::create();
+        } catch (\Exception $exception) {
+            return JsonResponse::create($exception->getMessage(), 500);
+        }
+    }
 }

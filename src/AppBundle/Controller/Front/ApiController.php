@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Front;
 
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventDateTime;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation as HTTP;
@@ -50,42 +51,44 @@ class ApiController extends AppController
 
         $query = $qb->createQueryBuilder()
             ->select('e')
-            ->from('AppBundle:Event', 'e')
-            ->where('e.eventDate BETWEEN :firstDay AND :lastDay')
+            ->from('AppBundle:EventDateTime', 'e')
+            ->where('e.date BETWEEN :firstDay AND :lastDay')
             ->setParameters([
                 'firstDay' => $firstDay,
                 'lastDay' => $lastDay
             ])
-            ->orderBy('e.eventDate', 'ASC')
+//            ->addOrderBy('e.date', 'ASC')
+            ->orderBy('e.date', 'ASC')
+            ->addOrderBy('e.time', 'ASC')
             ->getQuery();
 
         $result = $query->getResult();
 
         $groupByDays = [];
 
-        /** @var Event $item */
+        /** @var EventDateTime $item */
         foreach ($result as $item) {
 
-            $key = $item->getEventDate()->format('j');
+            $key = $item->getDate()->format('j');
 
             if (!array_key_exists($key, $groupByDays)) {
 
-                $groupByDays[$key]['date'] = $item->getEventDate()->format('j') . ' ' . $translator->trans('front.event.calendar.months.'. $item->getEventDate()->format('n'));
-                $groupByDays[$key]['day'] = $translator->trans('front.event.calendar.days.'.$item->getEventDate()->format('N'));
+                $groupByDays[$key]['date'] = $item->getDate()->format('j') . ' ' . $translator->trans('front.event.calendar.months.'. $item->getDate()->format('n'));
+                $groupByDays[$key]['day'] = $translator->trans('front.event.calendar.days.'.$item->getDate()->format('N'));
                 $groupByDays[$key]['events'] = [];
             }
 
             $event = [];
 
             $event['id'] = $item->getId();
-            $event['dayNum'] = $item->getEventDate()->format('j');
-            $event['dayName'] = $translator->trans('front.event.calendar.days.'.$item->getEventDate()->format('N'));
-            $event['month'] = $translator->trans('front.event.calendar.months.'. $item->getEventDate()->format('n'));
-            $event['price'] = $item->getPrice();
-            $event['name'] = $item->getTitle();
-            $event['time'] = $item->getEventTime()->format('H:i');
-            $event['ticketUrl'] = $item->getTicketUrl();
-            $event['slug'] = $item->getSlug();
+            $event['dayNum'] = $item->getDate()->format('j');
+            $event['dayName'] = $translator->trans('front.event.calendar.days.'.$item->getDate()->format('N'));
+            $event['month'] = $translator->trans('front.event.calendar.months.'. $item->getDate()->format('n'));
+            $event['price'] = $item->getEvent()->getPrice();
+            $event['name'] = $item->getEvent()->getTitle();
+            $event['time'] = $item->getTime()->format('H:i');
+            $event['ticketUrl'] = $item->getEvent()->getTicketUrl();
+            $event['slug'] = $item->getEvent()->getSlug();
 
             array_push($groupByDays[$key]['events'], $event);
 

@@ -20,7 +20,7 @@ class EventDateTime
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event", inversedBy="eventDateTime")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;

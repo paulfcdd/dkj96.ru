@@ -31,12 +31,6 @@ class EventType extends AbstractFormType
                 'label' => 'Ссылка на покупку билета (не обязательно)',
                 'required' => false,
             ])
-            ->add('eventTime', TimeType::class, [
-                'label' => 'Время события'
-            ])
-            ->add('eventDate', DateType::class, [
-                'label' => 'Дата события'
-            ])
             ->add('files', FileUploadType::class)
             ->add('widgetJsCode', TextareaType::class, [
                 'required' => false,

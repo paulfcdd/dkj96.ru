@@ -114,7 +114,7 @@ class Event
      * @param string $ticketUrl
      * @return Event
      */
-    public function setTicketUrl(string $ticketUrl)
+    public function setTicketUrl(string $ticketUrl = null)
     {
         $this->ticketUrl = $ticketUrl;
         return $this;

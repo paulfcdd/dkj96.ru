@@ -358,7 +358,7 @@ class ApiController extends AdminController
         $eventDateTime = new EventDateTime();
         $eventDateTime
             ->setEvent($event)
-            ->setDate(\DateTime::createFromFormat('d-m-Y', $request->request->get('date')))
+            ->setDate(\DateTime::createFromFormat('d.m.Y', $request->request->get('date')))
             ->setTime(\DateTime::createFromFormat('H:i', $request->request->get('time')));
 
         try{

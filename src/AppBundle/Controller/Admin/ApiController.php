@@ -80,6 +80,9 @@ class ApiController extends AdminController
     }
 
     /**
+     * @param $object
+     * @param $id
+     * @return JsonResponse
      * @Route("/object_delete/{object}/{id}", name="admin.api.object_delete")
      */
     public function deleteObjectAjaxAction($object, $id)
@@ -87,7 +90,7 @@ class ApiController extends AdminController
 
         $objectClass = 'AppBundle\\Entity\\' . ucfirst($object);
 
-        $objectEntity = $this->doctrineManager()->getRepository($objectClass)->findOneById($id);
+        $objectEntity = $this->getEntityRepository($object)->findOneById($id);
 
         if ($objectEntity instanceof Hall) {
 
@@ -345,7 +348,7 @@ class ApiController extends AdminController
     /**
      * @param Request $request
      * @return JsonResponse
-     *@Route("/save-event-date-time-action", name="admin.api.save_event_date_time_action")
+     * @Route("/save-event-date-time-action", name="admin.api.save_event_date_time_action")
      */
     public function saveEventDateTimeAction(Request $request)
     {
@@ -360,6 +363,27 @@ class ApiController extends AdminController
 
         try{
             $this->doctrineManager()->persist($eventDateTime);
+            $this->doctrineManager()->flush();
+            return JsonResponse::create();
+        } catch (\Exception $exception) {
+            return JsonResponse::create($exception->getMessage(), 500);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @Route("/edit-event-date-time-action", name="admin.api.edit_event_date_time_action")
+     */
+    public function editEventDateTimeAction(Request $request) {
+
+        /** @var EventDateTime $eventDateTime */
+        $eventDateTime = $this->getEntityRepository('EventDateTime')->findOneById($request->request->get('event'));
+        $eventDateTime
+            ->setDate(\DateTime::createFromFormat('d.m.Y', $request->request->get('date')))
+            ->setTime(\DateTime::createFromFormat('H:i', $request->request->get('time')));
+
+        try{
             $this->doctrineManager()->flush();
             return JsonResponse::create();
         } catch (\Exception $exception) {

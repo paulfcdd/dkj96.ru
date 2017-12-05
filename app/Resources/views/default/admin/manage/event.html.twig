@@ -33,7 +33,16 @@
             autoclose: true
         });
 
+        $('.event-date-edit').datepicker({
+            format: 'dd-mm-yyyy',
+            autoclose: true
+        });
+
         $('#event-time').timepicker({
+            showMeridian: false
+        });
+
+        $('.event-time-edit').timepicker({
             showMeridian: false
         });
 
@@ -74,7 +83,42 @@
                 }
             });
 
-        })
+        });
+
+        $('.edit-event-date-time').on('click', function () {
+            var btn = this,
+                event = $(this).data('eventid'),
+                time = $('#event-time-edit-'+event).val(),
+                date = $('#event-date-edit-'+event).val(),
+                url = '{{ path('admin.api.edit_event_date_time_action') }}';
+
+            $.ajax({
+                method: 'post',
+                url: url,
+                data: {
+                    date: date,
+                    time: time,
+                    event: event
+                },
+                success: function () {
+                    $('.notification-box-main')
+                        .removeClass('hidden')
+                        .addClass('alert-success');
+
+
+                    $('.notification-text-main').text('Дата сохранена');
+
+                },
+                error: function () {
+                    $('.notification-box-main')
+                        .removeClass('hidden')
+                        .addClass('alert-danger');
+
+                    $('.notification-text-main').text('Возникла ошибка');
+                }
+            });
+
+        });
 
         $('.event-date-time-table').DataTable({
             pageLength: 10,
@@ -105,6 +149,12 @@
 
 {% block content %}
     <div class="col-lg-12">
+
+        <div class="alert alert-success alert-dismissable notification-box-main hidden">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <p class="notification-text-main"></p>
+        </div>
+
         {% for message in app.flashes('success') %}
             <div class="alert alert-success alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -231,19 +281,48 @@
                         <div class="panel-body">
 
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#date-time-modal" style="margin: 0 0 20px 0">
-                                Open Modal
+                                Добавить новую дату
                             </button>
 
                             <table class="table table-responsive event-date-time-table">
                                 <thead>
-                                <th>Date</th>
-                                <th>Time</th>
+                                <th class="text-center">Дата концера</th>
+                                <th class="text-center">Время концерта</th>
+                                <th class="text-center">Управление</th>
                                 </thead>
                                 <tbody>
                                 {% for event in object.eventDateTime %}
-                                    <tr>
-                                        <td>{{ event.date | date('d.m.Y') }}</td>
-                                        <td>{{ event.time | date('H:i') }}</td>
+                                    <tr id="EventDateTime_{{ event.id }}">
+                                        <td class="text-center">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                <input class="form-control event-date-edit" type="text" value="{{ event.date | date('d.m.Y') }}"
+                                                       id="event-date-edit-{{ event.id }}" name="event-day-edit-{{ event.id }}">
+                                                {#<input id="event-date" type="text" class="form-control" name="event-date">#}
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                <input class="form-control event-time-edit" type="text"
+                                                       value="{{ event.time | date('H:i') }}" id="event-time-edit-{{ event.id }}" name="event-time-edit-{{ event.id }}">
+                                                {#<input id="event-date" type="text" class="form-control" name="event-date">#}
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button"
+                                                        class="btn btn-primary edit-event-date-time"
+                                                        data-eventid="{{ event.id }}">
+                                                    <span class="fa fa-floppy-o"></span>
+                                                </button>
+                                                <a href="#" role="button" class="btn btn-danger delete-object"
+                                                   data-objectname="EventDateTime"
+                                                   data-objectid="{{ event.id }}">
+                                                    <span class="fa fa-trash"></span>
+                                                </a>
+                                            </div>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
@@ -263,11 +342,11 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <h4 class="modal-title">Новая дата/время концерта</h4>
                     </div>
                     <div class="modal-body">
 
-                        <div class="alert alert-success alert-dismissable hidden notification-box">
+                        <div class="alert alert-dismissable hidden notification-box">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <p class="notification-text"></p>
                         </div>

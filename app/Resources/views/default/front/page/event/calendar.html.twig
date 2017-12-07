@@ -9,6 +9,8 @@
 
             {% for subevent in event.events %}
 
+                {{ subevent.widgetCssCode | raw }}
+
 				{% set slug = subevent.id %}
 
 				{% if subevent.slug != null %}
@@ -29,6 +31,10 @@
                         </label>
                     {% endif %}
 
+                    {% if subevent.widgetHtmlCode is not null %}
+                        {{ subevent.widgetHtmlCode | raw }}
+                    {% endif %}
+
                     <div class="btn-group event-buttons">
                         <a role="button"
                            type="button"
@@ -40,16 +46,17 @@
                            target="_blank">
                             Подробнее
                         </a>
-                        <a role="button"
-                           type="button"
-                           class="btn btn-success no-border-radius"
-                                {% if subevent.ticketUrl is null %}
-                                    disabled="disabled"
-                                {% endif %}
-                           href="{{ subevent.ticketUrl }}"
-                           target="_blank">
-                            Купить билет
-                        </a>
+                        {% if subevent.widgetHtmlCode is null %}
+                            <a role="button" type="button"
+                               class="btn btn-success no-border-radius"
+                                    {% if subevent.ticketUrl is null %}
+                                        disabled="disabled"
+                                    {% endif %}
+                               href="{{ subevent.ticketUrl }}"
+                               target="_blank">
+                                Купить билет
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

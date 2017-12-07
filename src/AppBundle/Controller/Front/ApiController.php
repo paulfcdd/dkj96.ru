@@ -88,6 +88,9 @@ class ApiController extends AppController
             $event['time'] = $item->getTime()->format('H:i');
             $event['ticketUrl'] = $item->getEvent()->getTicketUrl();
             $event['slug'] = $item->getEvent()->getSlug() ?? $item->getEvent()->getId();
+            $event['widgetCssCode'] = $item->getEvent()->getWidgetCssCode();
+            $event['widgetHtmlCode'] = $item->getEvent()->getWidgetHtmlCode();
+            $event['widgetJsCode'] = $item->getEvent()->getWidgetJsCode();
 
             array_push($groupByDays[$key]['events'], $event);
 

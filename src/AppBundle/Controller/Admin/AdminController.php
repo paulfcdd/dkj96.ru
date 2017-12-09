@@ -47,7 +47,6 @@ class AdminController extends Controller
 
     public function __construct(EntityManager $entityManager)
     {
-        $this->configFilePath = Yaml::parse(file_get_contents(self::CONFIG_FILE_PATH));
         $this->em = $entityManager;
     }
 

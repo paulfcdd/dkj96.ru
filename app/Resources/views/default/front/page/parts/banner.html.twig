@@ -37,7 +37,7 @@
 					{% endif %}
 
 					{% if banner.category == 'event' %}
-						{% set path = path('event.details_page', {'event': banner.object}) %}
+						{% set path = path('front.load_page', {'entity': banner.category, 'slug': banner.object}) %}
 					{% endif %}
 
 					<a href="{{ path }}">

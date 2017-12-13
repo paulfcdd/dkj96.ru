@@ -1,5 +1,8 @@
 {% extends ':default/admin:base.html.twig' %}
-{% form_theme form ':default/admin/form:manage_fields.html.twig' %}
+
+{% block form_theme %}
+    {% form_theme form ':default/admin/form:manage_fields.html.twig' %}
+{% endblock %}
 
 {% block styles %}
 {% endblock %}

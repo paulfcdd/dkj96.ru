@@ -11,6 +11,12 @@ use FOS\UserBundle\Model\User as BaseUser;
  */
 class User extends BaseUser
 {
+
+    const USER_ROLES = [
+      'Администратор' => 'ROLE_SUPER_ADMIN',
+      'Менеджер' => 'ROLE_MANAGER',
+    ];
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

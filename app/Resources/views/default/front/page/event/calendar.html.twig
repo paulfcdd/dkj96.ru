@@ -31,8 +31,9 @@
                         </label>
                     {% endif %}
 
-                    {% if subevent.widgetHtmlCode is not null %}
-                        {{ subevent.widgetHtmlCode | raw }}
+                    {% if subevent.widgetHtmlCode is not null and subevent.kassy_ru_PID is not null %}
+                        {% set widgetHtmlCode = subevent.widgetHtmlCode | replace({'%pid_id%': subevent.kassy_ru_PID}) %}
+                        {{ widgetHtmlCode | raw }}
                     {% endif %}
 
                     <div class="btn-group event-buttons">

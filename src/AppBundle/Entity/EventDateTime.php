@@ -40,6 +40,12 @@ class EventDateTime
     private $time;
 
     /**
+     * @var string $kassyRuPID
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $kassyRuPID;
+
+    /**
      * @return int
      */
     public function getId() {
@@ -97,6 +103,24 @@ class EventDateTime
     public function setTime(\DateTime $time)
     {
         $this->time = $time;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKassyRuPID()
+    {
+        return $this->kassyRuPID;
+    }
+
+    /**
+     * @param string $kassyRuPID
+     * @return EventDateTime
+     */
+    public function setKassyRuPID($kassyRuPID)
+    {
+        $this->kassyRuPID = $kassyRuPID;
         return $this;
     }
 

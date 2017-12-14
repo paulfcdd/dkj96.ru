@@ -117,7 +117,7 @@ class AdminController extends Controller
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @return Response;
-     * @Route("/admin/settings/manage/user/{user}", name="admin.user.manage")
+     * @Route("/admin/users/manage/{user}", name="admin.user.manage")
      * @Method({"POST", "GET"})
      */
     public function manageUserAction(User $user, Request $request, UserPasswordEncoderInterface $encoder) {

@@ -50,6 +50,7 @@
             var btn = this,
                 time = $('#event-time').val(),
                 date = $('#event-date').val(),
+                kassy_ru_pid = $('#event-kassy-ru-pid').val(),
                 event = $(this).data('eventid'),
                 url = '{{ path('admin.api.save_event_date_time_action') }}';
 
@@ -59,7 +60,8 @@
                 data: {
                     date: date,
                     time: time,
-                    event: event
+                    event: event,
+                    kassy_ru_pid: kassy_ru_pid
                 },
                 success: function () {
                     $('.notification-box')
@@ -90,6 +92,7 @@
                 event = $(this).data('eventid'),
                 time = $('#event-time-edit-'+event).val(),
                 date = $('#event-date-edit-'+event).val(),
+                kassy_ru_pid = $('#event-kassy-ru-pid-' + event).val(),
                 url = '{{ path('admin.api.edit_event_date_time_action') }}';
 
             $.ajax({
@@ -98,7 +101,8 @@
                 data: {
                     date: date,
                     time: time,
-                    event: event
+                    event: event,
+                    kassy_ru_pid: kassy_ru_pid
                 },
                 success: function () {
                     $('.notification-box-main')
@@ -151,7 +155,7 @@
     <div class="col-lg-12">
 
         <div class="alert alert-success alert-dismissable notification-box-main hidden">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <a href="#" class="close" aria-label="close">&times;</a>
             <p class="notification-text-main"></p>
         </div>
 
@@ -288,6 +292,7 @@
                                 <thead>
                                 <th class="text-center">Дата концера</th>
                                 <th class="text-center">Время концерта</th>
+                                <th class="text-center">Kassy.ru PID</th>
                                 <th class="text-center">Управление</th>
                                 </thead>
                                 <tbody>
@@ -306,7 +311,13 @@
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                                 <input class="form-control event-time-edit" type="text"
                                                        value="{{ event.time | date('H:i') }}" id="event-time-edit-{{ event.id }}" name="event-time-edit-{{ event.id }}">
-                                                {#<input id="event-date" type="text" class="form-control" name="event-date">#}
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
+                                                <input class="form-control" type="text"
+                                                       value="{{ event.kassyRuPID }}" id="event-kassy-ru-pid-{{ event.id }}" name="event-kassy-ru-pid-{{ event.id }}">
                                             </div>
                                         </td>
                                         <td class="text-center">
@@ -364,6 +375,14 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                 <input id="event-time" type="text" class="form-control" name="event-time">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event-time">kassy.ru PID</label> <span class="fa fa-info-circle"></span>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
+                                <input id="event-kassy-ru-pid" type="text" class="form-control" name="event-kassy-ru-pid">
                             </div>
                         </div>
                     </div>

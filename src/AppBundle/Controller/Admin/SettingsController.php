@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Entity as Entity;
 
 class SettingsController extends AdminController
 {
@@ -17,13 +18,13 @@ class SettingsController extends AdminController
 	public function mainScreenAction() {
 		
 		$categoryData = $this->getEntityRepository('category')->findOneByEntity('index');
-				
+
 		return $this->render(':default/admin:settings.html.twig', [
 			'pageSeo' => $this->getStaticPageSeo(),
 			'yandex_code' => $this->getMetricsCode('yandex'),
 			'google_code' => $this->getMetricsCode('google'),
 			'categoryData' => $categoryData,
-			'entity' => 'index',
+			'entity' => 'index'
 		]);
 	}	
 }

@@ -12,8 +12,10 @@ use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Banner;
+use AppBundle\Entity\User;
 use AppBundle\Form\AbstractFormType;
 use AppBundle\Form\NewsType;
+use AppBundle\Form\UserType;
 use AppBundle\Service\FileUploaderService;
 use AppBundle\Service\MailerService;
 use Doctrine\ORM\EntityManager;
@@ -30,6 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Yaml\Yaml;
 
 
@@ -59,6 +62,91 @@ class AdminController extends Controller
 
         return $this->render(':default/admin:index.html.twig', [
             'categoryData' => $em->getRepository(Category::class)->findOneByEntity('index')
+        ]);
+    }
+
+    /**
+     * @Route("/admin/users", name="admin.user.list")
+     */
+    public function usersList() {
+        $users = $this->getEntityRepository('user')->findAll();
+
+        return $this->render(':default/admin/list:users.html.twig', [
+            'users' => $users,
+            'userRoles' => array_flip(User::USER_ROLES)
+        ]);
+    }
+
+    /**
+     * @Route("/admin/settings/add/user", name="admin.user.add")
+     * @Method({"POST", "GET"})
+     */
+    public function addUserAction(Request $request, UserPasswordEncoderInterface $encoder) {
+
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user)->handleRequest($request);
+
+        if ($request->isMethod('POST')) {
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+
+                    /** @var User $formData */
+                    $formData = $form->getData();
+
+                    $userManager = $this->get('fos_user.user_manager');
+
+                    $encoded = $encoder->encodePassword($formData, $formData->getPassword());
+
+                    $formData->setPassword($encoded);
+
+                    $formData->setRoles([$request->request->get('user')['roles']]);
+
+                    $userManager->updateUser($formData);
+                }
+            }
+        }
+
+        return $this->render('default/admin/manage/user.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * @param User $user
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @return Response;
+     * @Route("/admin/settings/manage/user/{user}", name="admin.user.manage")
+     * @Method({"POST", "GET"})
+     */
+    public function manageUserAction(User $user, Request $request, UserPasswordEncoderInterface $encoder) {
+
+        $form = $this->createForm(UserType::class, $user)->handleRequest($request);
+
+        if ($request->isMethod('POST')) {
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+
+                    /** @var User $formData */
+                    $formData = $form->getData();
+
+                    $userManager = $this->get('fos_user.user_manager');
+
+                    $encoded = $encoder->encodePassword($formData, $formData->getPassword());
+
+                    $formData->setPassword($encoded);
+
+                    $formData->setRoles([$request->request->get('user')['roles']]);
+
+                    $userManager->updateUser($formData);
+                }
+            }
+        }
+
+        return $this->render('default/admin/manage/user.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 
@@ -329,13 +417,13 @@ class AdminController extends Controller
     }
 
     /**
-     * @param string $entity
+     * @param string $entityClassName
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getEntityRepository(string $entity)
+    public function getEntityRepository(string $entityClassName)
     {
 
-        return $this->getDoctrine()->getRepository($this->getClassName($entity));
+        return $this->getDoctrine()->getRepository($this->getClassName($entityClassName));
 
     }
 

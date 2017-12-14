@@ -91,7 +91,7 @@ class ApiController extends AppController
             $event['widgetCssCode'] = $item->getEvent()->getWidgetCssCode();
             $event['widgetHtmlCode'] = $item->getEvent()->getWidgetHtmlCode();
             $event['widgetJsCode'] = $item->getEvent()->getWidgetJsCode();
-
+            $event['kassy_ru_PID'] = $item->getKassyRuPID();
             array_push($groupByDays[$key]['events'], $event);
 
         }

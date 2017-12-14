@@ -359,7 +359,8 @@ class ApiController extends AdminController
         $eventDateTime
             ->setEvent($event)
             ->setDate(\DateTime::createFromFormat('d.m.Y', $request->request->get('date')))
-            ->setTime(\DateTime::createFromFormat('H:i', $request->request->get('time')));
+            ->setTime(\DateTime::createFromFormat('H:i', $request->request->get('time')))
+            ->setKassyRuPID($request->request->get('kassy_ru_pid'));
 
         try{
             $this->doctrineManager()->persist($eventDateTime);
@@ -381,7 +382,8 @@ class ApiController extends AdminController
         $eventDateTime = $this->getEntityRepository('EventDateTime')->findOneById($request->request->get('event'));
         $eventDateTime
             ->setDate(\DateTime::createFromFormat('d.m.Y', $request->request->get('date')))
-            ->setTime(\DateTime::createFromFormat('H:i', $request->request->get('time')));
+            ->setTime(\DateTime::createFromFormat('H:i', $request->request->get('time')))
+            ->setKassyRuPID($request->request->get('kassy_ru_pid'));
 
         try{
             $this->doctrineManager()->flush();

@@ -1,65 +1,87 @@
 {% extends ':default/admin:base.html.twig' %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.css') }}">
+{% endblock %}
+
 {% block content %}
-    <div class="col-lg-3">
-        {% block booking_left_menu %}
-            {{ render(controller('AppBundle:Admin/Booking:renderBookingMenu')) }}
-        {% endblock %}
+    {% set activeHall = halls | first %}
+    <div class="col-lg-12">
+        <div class="tabs-container">
+
+            <div class="tabs-left">
+                <ul class="nav nav-tabs">
+
+                    {% for hall in halls %}
+                        <li {% if hall.id == activeHall.id %}class="active"{% endif %}>
+                            <a data-toggle="tab" href="#hall-{{ hall.id }}" aria-expanded="false">
+                                {{ hall.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content ">
+
+                    {% for hall in halls %}
+
+                        <div id="hall-{{ hall.id }}" class="tab-pane {% if hall.id == activeHall.id %}active{% endif %}">
+
+                            <div class="panel-body">
+
+                                <div id="calendar-{{ hall.id }}"></div>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-lg-9 animated fadeInRight">
-       {% block booking_main_blok %}
-           <div class="mail-box-header">
+{% endblock %}
 
-               <h2>
-                   Входящие ({{ objects | length }})
-               </h2>
+{% block scripts %}
+    <script src="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.js') }}"></script>
+    {#<script src="{{ asset('node_modules/fullcalendar/dist/locale/ru.js') }}"></script>#}
+    <script>
 
-           </div>
-           <div class="mail-box">
-
-               <table class="table table-hover table-mail">
-                   <thead>
-                   <th>Email</th>
-                   <th>Тема</th>
-                   <th colspan="2" class="text-center">Дата получения</th>
-                   </thead>
-                   <tbody>
-
-                   {% for object in objects %}
-                       {% set unread = null %}
-                       {% if object.status == null %}
-                           {% set unread = 'unread' %}
-                       {% endif %}
-
-                       <tr class="{{ unread }}">
-                           <td class="mail-ontact">
-                               <a href="#">
-                               {#<a href="{{ path('admin.booking.details', {'booking': booking.id}) }}">#}
-                                   {{ object.email }}
-                               </a>
-                           </td>
-                           <td class="mail-subject">
-                               <a href="#">
-                               {#<a href="{{ path('admin.booking.details', {'booking': booking.id}) }}">#}
-                                   {{ theme }}
-                               </a>
-                           </td>
-                           <td class="text-right mail-date">
-                               <span class="fa fa-calendar"></span> {{ object.dateReceived | date('d.m.Y') }}
-                           </td>
-                           <td class="text-right mail-date">
-                               <span class="fa fa-clock-o"></span> {{ object.dateReceived | date('H:i') }}
-                           </td>
-                       </tr>
-
-                   {% endfor %}
+        var events = [],
+            url = '{{ path('admin.booking.details', {'booking': '_booking'}) }}';
 
 
-                   </tbody>
-               </table>
+        {% for hall in halls %}
+        events['hall-{{ hall.id }}'] = [];
+            {% for booking in hall.bookings %}
+                {#var event = {#}
+                    {#id: '{{ booking.id }}',#}
+                    {#title: '{{ booking.time | date('H:i') ~' - ' ~ booking.email }}',#}
+                    {#phone: '{{ booking.phone }}',#}
+                    {#start: '{{ booking.date | date('Y-m-d') }}',#}
+                    {#editable: false,#}
+                    {#overlap: false#}
+                {#};#}
+        events['hall-{{ hall.id }}'].push( {
+            id: '{{ booking.id }}',
+            title: '{{ booking.time | date('H:i') ~' - ' ~ booking.email }}',
+            phone: '{{ booking.phone }}',
+            start: '{{ booking.date | date('Y-m-d') }}',
+            editable: false,
+            overlap: false
+        });
+            {% endfor %}
+        {% endfor %}
 
-
-           </div>
-       {% endblock %}
-    </div>
+        {% for hall in halls %}
+        $('#calendar-{{ hall.id }}').fullCalendar({
+            events:  events['hall-{{ hall.id }}'],
+            locale: 'ru',
+            eventClick: function (event) {
+                var url = '{{ path('admin.booking.edit', {'booking': '_id'}) }}';
+                window.location.href = url.replace('_id', event.id);
+            }
+        });
+        {% endfor %}
+    </script>
 {% endblock %}

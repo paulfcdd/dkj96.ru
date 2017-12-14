@@ -31,91 +31,112 @@
         id: 'dashboard',
         href: path('admin.index'),
         icon: 'fa-th-large',
-        name: 'Главная'
+        name: 'Главная',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'settings',
         href: path('admin.settings'),
         icon: 'fa-cog',
-        name: 'Настройки'
+        name: 'Настройки',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
+    },
+    {
+        id: 'users',
+        href: path('admin.user.list'),
+        icon: 'fa-user',
+        name: 'Пользователи',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'banner',
         href: path('admin.list', {'entity': 'banner'}),
         icon: 'fa-picture-o',
-        name: 'Баннеры'
+        name: 'Баннеры',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'hall',
         href: path('admin.list', {'entity': 'hall'}),
         icon: 'fa-university',
-        name: 'Залы'
+        name: 'Залы',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN', 'ROLE_MANAGER']
     },
     {
         id: 'event',
         href: path('admin.list', {'entity': 'event'}),
         icon: 'fa-calendar',
-        name: 'События'
+        name: 'События',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'portfolio',
         href: path('admin.list', {'entity': 'portfolio'}),
         icon: 'fa-camera',
-        name: 'Портфолио'
+        name: 'Портфолио',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'news',
         href: path('admin.list', {'entity': 'news'}),
         icon: 'fa-newspaper-o',
-        name: 'Новости'
+        name: 'Новости',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'artist',
         href: path('admin.list', {'entity': 'artist'}),
         icon: 'fa-pied-piper-alt',
-        name: 'Артисты'
+        name: 'Артисты',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'history',
         href: path('admin.list', {'entity': 'history'}),
         icon: 'fa-hourglass',
-        name: 'История'
+        name: 'История',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'booking',
-        href: path('admin.list', {'entity': 'booking'}),
+        href: path('admin.booking.list'),
         icon: 'fa-lock',
-        name: 'Бронирования'
+        name: 'Бронирования',
+        disable: true,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'feedback',
         href: path('admin.message.listing', {'entity': 'feedback'}),
         icon: 'fa-envelope',
-        name: 'Обратная связь'
+        name: 'Обратная связь',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
         id: 'review',
         href: path('admin.message.listing', {'entity': 'review'}),
         icon: 'fa-commenting-o',
-        name: 'Отзывы'
-    }
-] %}
-
-{% set managerSideBar = [
-    {
-        id: 'hall',
-        href: path('admin.list', {'entity': 'hall'}),
-        icon: 'fa-university',
-        name: 'Залы'
+        name: 'Отзывы',
+        disable: false,
+        avaliableFor: ['ROLE_SUPER_ADMIN']
     }
 ] %}
 
 
 {% set slider = sidebarItems %}
 
-{% if app.user.roles[0] == 'ROLE_MANAGER' %}
-    {% set slider = managerSideBar %}
-{% endif %}
+{% set userRole = app.user.roles[0] %}
 
 {% for item in slider %}
 
@@ -140,6 +161,7 @@
 
 <body>
 <div id="wrapper">
+
     {% block navigation_bar %}
 
         <nav class="navbar-default navbar-static-side" role="navigation">
@@ -176,12 +198,15 @@
 							{% if item.id == currentUri %}
 								{% set active = 'active' %}
 								{% set activePageName = activePageName | merge([item.name]) %}
-
 							{% endif %}
-
 						{% endif %}
 
-                        <li id="{{ item.id }}" {% if active != null %} class="{{ active }}" {% endif %}>
+                        {% set visibility = in_array(userRole, item.avaliableFor) %}
+
+                        <li id="{{ item.id }}"
+                                {% if active != null %} class="{{ active }}" {% endif %}
+                                {% if item.disable %}style="display: none"{% endif %}
+                                {% if visibility == false %}style="display: none"{% endif %}>
                             <a href="{{ item.href }}"><i class="fa {{ item.icon }}"></i>
                                 <span class="nav-label">{{ item.name }}</span>
                             </a>

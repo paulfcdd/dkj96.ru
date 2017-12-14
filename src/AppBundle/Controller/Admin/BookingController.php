@@ -29,6 +29,19 @@ class BookingController extends AdminController
 {
 
     /**
+     * @Route("/admin/bookings/list", name="admin.booking.list")
+     */
+    public function adminBookingList() {
+
+        $halls = $this->getEntityRepository('hall')->findAll();
+
+        return $this->render('default/admin/booking/list.html.twig', [
+            'halls' => $halls,
+        ]);
+
+    }
+
+    /**
      * @Route("/admin/bookings/detail/{booking}", name="admin.booking.details")
      */
     public function bookingDetailAction(Booking $booking, Request $request)

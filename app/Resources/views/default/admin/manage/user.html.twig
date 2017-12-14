@@ -1,0 +1,66 @@
+{% extends ':default/admin:manage.html.twig' %}
+
+{% block form_theme %}
+    {% form_theme form ':default/admin/form:user.html.twig' %}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('admin/plugins/switchery/switchery.min.css') }}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('admin/plugins/switchery/switchery.min.js') }}"></script>
+    <script>
+        var elem = document.querySelector('.switcher');
+        var init = new Switchery(elem);
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="col-md-12">
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                {% set sectionName = 'admin.'~form.vars.name %}
+                <h5>Пользователь: <strong>{{ user.username }}</strong></h5>
+                {% if user.enabled %}
+                    <span class="label label-primary">Включен</span>
+                {% else %}
+                    <span class="label label-danger">Отключен</span>
+                {% endif %}
+            </div>
+            <div class="ibox-content">
+                {{ form_start(form) }}
+
+                <div class="form-group">
+                    {{ form_label(form.username) }}
+                    {{ form_widget(form.username) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.email) }}
+                    {{ form_widget(form.email) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.password) }}
+                    {{ form_widget(form.password) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.roles) }}
+                    {{ form_widget(form.roles, {'attr': {'class':'form-control'}}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.enabled) }}
+                    {{ form_widget(form.enabled) }}
+                </div>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

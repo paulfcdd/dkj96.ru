@@ -8,6 +8,7 @@ use AppBundle\Entity\Hall;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
+use AppBundle\Entity\User;
 use AppBundle\Service\MailerService;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class ApiController
@@ -390,6 +392,37 @@ class ApiController extends AdminController
             return JsonResponse::create();
         } catch (\Exception $exception) {
             return JsonResponse::create($exception->getMessage(), 500);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @return JsonResponse
+     * @Route("/change-user-password", name="admin.api.change_user_pass")
+     */
+    public function changeUserPasswordAction(Request $request, UserPasswordEncoderInterface $encoder){
+
+        if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
+
+            /** @var User $user */
+            $user = $this->getEntityRepository('user')->findOneById($request->request->get('userId'));
+
+            $userManager = $this->get('fos_user.user_manager');
+
+            $encodedPassword = $encoder->encodePassword($user, $request->request->get('password'));
+
+            $user->setPassword($encodedPassword);
+
+            try {
+                $userManager->updateUser($user);
+                return JsonResponse::create('Пароль обновлен');
+            } catch (\Exception $exception) {
+                return JsonResponse::create('Во время обработки запроса возникла ошибка', 500);
+            }
+
+        } else {
+            return JsonResponse::create('У вас нет прав для изменения пароля', 401);
         }
     }
 }

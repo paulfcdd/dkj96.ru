@@ -122,7 +122,10 @@ class AdminController extends Controller
      */
     public function manageUserAction(User $user, Request $request, UserPasswordEncoderInterface $encoder) {
 
-        $form = $this->createForm(UserType::class, $user)->handleRequest($request);
+        $form = $this
+            ->createForm(UserType::class, $user)
+            ->remove('password')
+            ->handleRequest($request);
 
         if ($request->isMethod('POST')) {
             if ($form->isSubmitted()) {

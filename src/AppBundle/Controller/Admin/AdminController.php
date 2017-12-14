@@ -78,7 +78,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/settings/add/user", name="admin.user.add")
+     * @Route("/admin/users/add", name="admin.user.add")
      * @Method({"POST", "GET"})
      */
     public function addUserAction(Request $request, UserPasswordEncoderInterface $encoder) {

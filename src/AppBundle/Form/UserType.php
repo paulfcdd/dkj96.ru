@@ -52,6 +52,7 @@ class UserType extends AbstractType
                'attr' => [
                    'class' => 'btn btn-primary'
                ],
+                'label' => 'Сохранить'
             ]);
     }
 

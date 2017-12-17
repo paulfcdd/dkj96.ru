@@ -35,6 +35,12 @@ body {
   /* End custom classes*/
   /* Responsive classes*/
 }
+.wrapper .ul-nav-wrapper {
+  padding-left: 0 !important;
+}
+.wrapper .ul-nav-wrapper .col-lg-ul-nav {
+  display: inline-flex;
+}
 .wrapper .banner-btn {
   position: absolute;
   bottom: 30%;

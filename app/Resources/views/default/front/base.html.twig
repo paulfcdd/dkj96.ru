@@ -101,45 +101,7 @@
                 }
             ] %}
 
-        <div class="container padding-0-100px top-navbar">
-            <div class="row">
-                <div class="col-lg-12 list-wrapper">
-                    <ul class="list-inline">
-                        <li>
-                            <span class='fa fa-youtube-play my-icon'></span>
-                            <span class="my-text">YouTube</span>
-                        </li>
-                        <li>
-                            <span class='fa fa-instagram my-icon'></span>
-                            <span class="my-text">&nbsp;dkz_ekb</span>
-                        </li>
-                        <li>
-                            <span class='fa fa-facebook-official my-icon'></span>
-                            <span class="my-text">&nbsp;dssekb</span>
-                        </li>
-                        <li>
-                            <span class='fa fa-odnoklassniki my-icon'></span>
-                            <span class="my-text">&nbsp;OK</span>
-                        </li>
-                        <li>
-                            <p class="admin_phone">
-                                администрация +7 (343) 310-53-58 |
-                            </p>
-                        </li>
-                        <li>
-                            <p class="admin_phone">
-                                8 (952) 733-15-27
-                            </p>
-                        </li>
-                        <li>
-                            <p id="ticket_phone">
-                                кассы +7 (343) 310-53-58
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+            {{ render(controller('AppBundle:Front\\Front:renderTopNavbar')) }}
 
             <div>
                 {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}

@@ -46,6 +46,44 @@
             });
 
 
+            $('.is-link-checker').change(function() {
+                var itemId = $(this).data('itemid')
+                if (this.checked) {
+                    $('#url-'+itemId).attr('disabled', false);
+                    $(this).val('1');
+                } else {
+                    $('#url-'+itemId).attr('disabled', true);
+                    $(this).val('0');
+                }
+            });
+
+            $('.save-element-info').on('click', function () {
+                var id = $(this).data('elementid'),
+                    isLink = $('#isLink-'+ id).val(),
+                    sortOrder = $('#sortOrder-'+ id).val(),
+                    icon = $('#icon-'+ id).val(),
+                    content = $('#elem-content-'+ id).val(),
+                    url = $('#url-'+ id).val(),
+                    requestUrl = '{{ path('admin.api.edit_top_menu_element') }}';
+
+                $.ajax({
+                    method: 'post',
+                    url: requestUrl,
+                    data: {
+                        id: id,
+                        isLink: isLink,
+                        sortOrder: sortOrder,
+                        icon: icon,
+                        content: content,
+                        url: url
+                    }, success: function (data) {
+                    }, error: function (data) {
+
+                    }
+                });
+
+            });
+
             $('.users-table').DataTable({
                 pageLength: 10,
                 responsive: true,
@@ -76,6 +114,7 @@
 {% endblock %}
 
 {% block content %}
+
     <div class="col-lg-12">
         {% for message in app.flashes('success') %}
             <div class="alert alert-success alert-dismissable">
@@ -158,16 +197,63 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Имя</th>
-                                    <th>E-mail</th>
-                                    <th>Роль</th>
-                                    <th>Последний вход</th>
-                                    <th>Статус</th>
+                                    <th>Ссылка</th>
+                                    <th>Порядок сортировки</th>
+                                    <th>Иконка</th>
+                                    <th>Содержание</th>
+                                    <th>URL</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
+                                {% for barItem in topNavabr %}
+                                    <tr id="topNavbar-{{ barItem.id }}">
+                                        <td>{{ barItem.id }}</td>
+                                        <td>
+                                            {% if barItem.isLink %}
+                                            {% set checked = 'checked' %}
+                                            {% else %}
+                                            {% set checked = '' %}
+                                            {% endif %}
+                                            <input type="checkbox" class="is-link-checker" data-itemid="{{ barItem.id }}" id="isLink-{{ barItem.id }}" name="isLink-{{ barItem.id }}" value="{{ barItem.isLink }}" {{ checked }}>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="number" name="sortOrder-{{ barItem.id }}" id="sortOrder-{{ barItem.id }}" value="{{ barItem.sortOrder }}">
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa {{ barItem.icon }}"></i></span>
+                                                <select class="form-control" id="icon-{{ barItem.id }}" name="icon">
+                                                    <option value="" selected>Нет</option>
+                                                    {% for key, val in faIcons %}
+                                                        <option value="{{ key }}" {% if barItem.icon == key %}selected{% endif %}>
+                                                           {{ val }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" name="elem-content-{{ barItem.id }}" id="elem-content-{{ barItem.id }}" value="{{ barItem.content }}">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="url" name="url-{{ barItem.id }}" id="url-{{ barItem.id }}" value="{{ barItem.url }}">
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-success save-element-info" data-elementid="{{ barItem.id }}">
+                                                    <span class="fa fa-floppy-o"></span>
+                                                </button>
+                                                <button type="button"
+                                                        data-objectname="topNavbar"
+                                                        data-objectid="{{ barItem.id }}"
+                                                        class="btn btn-danger delete-object">
+                                                    <span class="fa fa-trash"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>

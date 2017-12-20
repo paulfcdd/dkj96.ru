@@ -39,6 +39,7 @@ class SettingsController extends AdminController
 			'categoryData' => $categoryData,
 			'entity' => 'index',
             'topNavabr' => $topNavbar,
+            'faIcons' => array_flip(Entity\TopNavbar::ICONS),
             'form' => $topNavbarForm->createView(),
 		]);
 	}	

@@ -8,6 +8,7 @@ use AppBundle\Entity\Hall;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
+use AppBundle\Entity\TopNavbar;
 use AppBundle\Entity\User;
 use AppBundle\Service\MailerService;
 use Doctrine\DBAL\DBALException;
@@ -424,5 +425,23 @@ class ApiController extends AdminController
         } else {
             return JsonResponse::create('У вас нет прав для изменения пароля', 401);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/save-top-menu-element", name="admin.api.save_top_menu_element")
+     */
+    public function saveTopMenuElement(Request $request) {
+
+        $topMenuElement = new TopNavbar();
+        $formData = $request->request->all()['formData'];
+
+        foreach ($formData as $item) {
+
+        }
+
+        var_dump($formData);
+        die;
+
     }
 }

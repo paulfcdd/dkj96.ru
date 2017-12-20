@@ -10,6 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TopNavbar
 {
+    const ICONS = [
+        'YouTube' => 'fa-youtube-play',
+        'Instagram' => 'fa-instagram',
+        'Facebook' => 'fa-facebook-official',
+        'Одноклассники' => 'fa-odnoklassniki',
+        'ВКонтакте' => 'fa-vk',
+
+    ];
+
     /**
      * @var integer
      *
@@ -22,7 +31,7 @@ class TopNavbar
     /**
      * @var boolean
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $isLink;
 
@@ -35,23 +44,31 @@ class TopNavbar
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
-     */
-    protected $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column()
      */
     protected $icon;
 
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column()
      */
     protected $content;
+
+    /**
+     * @var string
+     * @ORM\Column(nullable=true)
+     */
+    protected $url;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
 
     /**
      * @return bool
@@ -92,24 +109,6 @@ class TopNavbar
     /**
      * @return string
      */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return TopNavbar
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getIcon()
     {
         return $this->icon;
@@ -142,6 +141,26 @@ class TopNavbar
         $this->content = $content;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     * @return TopNavbar
+     */
+    public function setUrl(string $url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
 
 
 }

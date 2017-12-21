@@ -6,7 +6,7 @@
                     {% for item in topNavbar %}
                         <li>
                         {% if item.isLink %}
-                            <a href="{{ item.url }}" style="text-decoration: none;  color: #6d6d6d;">
+                            <a href="{{ item.url }}">
                                 {% if item.icon is not null %}
                                     <span class="fa {{ item.icon }} my-icon"></span>
                                 {% endif %}
@@ -14,7 +14,7 @@
                             </a>
                         {% else %}
                             <li>
-                                <p class="phone-nums" style="text-transform: uppercase;">
+                                <p class="phone-nums">
                                     {{ item.content }}
                                 </p>
                             </li>

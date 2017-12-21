@@ -239,8 +239,11 @@ body {
 .wrapper .header .top-navbar .list-wrapper {
   padding-top: 20px;
 }
-.wrapper .header .top-navbar .admin_phone,
-.wrapper .header .top-navbar #ticket_phone {
+.wrapper .header .top-navbar .list-wrapper a {
+  text-decoration: none;
+  color: #6d6d6d;
+}
+.wrapper .header .top-navbar .list-wrapper .phone-nums {
   text-transform: uppercase;
 }
 .wrapper .header .site-logo {

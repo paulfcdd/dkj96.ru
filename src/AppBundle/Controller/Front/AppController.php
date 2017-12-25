@@ -25,6 +25,13 @@ class AppController extends Controller
         return Http\Response::create($metricsContent);
     }
 
+    public function renderTopNavbarAction() {
+        $topNavabr = $this->getEntityRepository('topNavbar')->findBy([], ['sortOrder' => 'ASC']);
+
+        return $this->render(':default/front/page/parts:top-navbar.html.twig', [
+            'topNavbar' => $topNavabr
+        ]);
+    }
 
     /**
      * @param string $entity

@@ -8,7 +8,9 @@ use AppBundle\Entity\Hall;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\News;
 use AppBundle\Entity\Review;
+use AppBundle\Entity\TopNavbar;
 use AppBundle\Entity\User;
+use AppBundle\Form\TopNavbarType;
 use AppBundle\Service\MailerService;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
@@ -424,5 +426,67 @@ class ApiController extends AdminController
         } else {
             return JsonResponse::create('У вас нет прав для изменения пароля', 401);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/save-top-menu-element", name="admin.api.save_top_menu_element")
+     */
+    public function saveTopMenuElement(Request $request) {
+
+        $topMenuElement = new TopNavbar();
+
+        $formData = $request->request->all()['formData'];
+
+        foreach ($formData as $item) {
+
+            $setterName = explode('[', $item['name']);
+
+            $setterName = explode(']', $setterName[1]);
+
+            $setterName = 'set'.ucfirst($setterName[0]);
+
+            if ($setterName !== 'set_token') {
+                $topMenuElement->$setterName($item['value']);
+            }
+
+//            $topMenuElement->$setterName();
+        }
+
+        $this->doctrineManager()->persist($topMenuElement);
+
+        try {
+            $this->doctrineManager()->flush();
+            return JsonResponse::create();
+        } catch (\Exception $e) {
+         return JsonResponse::create('error', 500);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/edit-top-menu-element", name="admin.api.edit_top_menu_element")
+     */
+    public function editTopMenuElement(Request $request) {
+
+        /** @var TopNavbar $topMenuElement */
+        $topMenuElement = $this->getEntityRepository('topNavbar')->findOneById($request->request->get('id'));
+
+        $topMenuElement
+            ->setIsLink($request->request->get('isLink'))
+            ->setIcon($request->request->get('icon'))
+            ->setSortOrder($request->request->get('sortOrder'))
+            ->setContent($request->request->get('content'))
+            ->setUrl($request->request->get('url'));
+
+        $this->doctrineManager()->persist($topMenuElement);
+
+        try {
+            $this->doctrineManager()->flush();
+            return JsonResponse::create();
+        } catch (\Exception $e) {
+            return JsonResponse::create('error', 500);
+        }
+
     }
 }

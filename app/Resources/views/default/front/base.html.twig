@@ -101,45 +101,7 @@
                 }
             ] %}
 
-        <div class="container padding-0-100px top-navbar">
-            <div class="row">
-                <div class="col-lg-12 list-wrapper">
-                    <ul class="list-inline">
-                        <li>
-                            <span class='fa fa-youtube-play my-icon'></span>
-                            <span class="my-text">YouTube</span>
-                        </li>
-                        <li>
-                            <span class='fa fa-instagram my-icon'></span>
-                            <span class="my-text">&nbsp;dkz_ekb</span>
-                        </li>
-                        <li>
-                            <span class='fa fa-facebook-official my-icon'></span>
-                            <span class="my-text">&nbsp;dssekb</span>
-                        </li>
-                        <li>
-                            <span class='fa fa-odnoklassniki my-icon'></span>
-                            <span class="my-text">&nbsp;OK</span>
-                        </li>
-                        <li>
-                            <p class="admin_phone">
-                                администрация +7 (343) 310-53-58 |
-                            </p>
-                        </li>
-                        <li>
-                            <p class="admin_phone">
-                                8 (952) 733-15-27
-                            </p>
-                        </li>
-                        <li>
-                            <p id="ticket_phone">
-                                кассы +7 (343) 310-53-58
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+            {{ render(controller('AppBundle:Front\\Front:renderTopNavbar')) }}
 
             <div>
                 {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}
@@ -170,43 +132,49 @@
     <div class="footer xs-padding-0-10px">
         {% block footer %}
             <div class="container padding-left-0 padding-right-0 padding-top-20px">
-                <div class="col-sm-6 col-xs-12 padding-0-100px footer-widget">
+                <div class="col-sm-12 col-xs-12 padding-0-100px footer-widget">
                     <h4 class="footer-widget-label">Контакты</h4>
 
-                    <ul class="footer-widget-data-list list-unstyled">
-                        <li><strong><span class="fa fa-map-marker"></span>&nbsp;Адрес:</strong></li>
-                        <li>г. Екатеринбург, ул. Челюскинцев, 102</li>
-                        <li><strong><span class="fa fa-phone"></span>&nbsp;Телефон:</strong></li>
-                        <li>+7 (343) 310-53-58; 8-952-733-15-27 - администрация</li>
-                        <li>+7 (343) 310-53-29 - касса</li>
-                        <li><strong><span class="fa fa-at"></span>&nbsp;Email:</strong>&nbsp;<a
-                                    href="mailto:dkj96@ya.ru" class="text-style-5">dkj96@ya.ru</a></li>
-                    </ul>
+                   <div class="col-sm-6 col-xs-12 padding-left-0">
+                       <ul class="footer-widget-data-list list-unstyled">
+                           <li><strong><span class="fa fa-map-marker"></span>&nbsp;Адрес:</strong></li>
+                           <li>г. Екатеринбург, ул. Челюскинцев, 102</li>
+                       </ul>
+                   </div>
+                   <div class="col-sm-6 col-xs-12 padding-right-0">
+                       <ul class="footer-widget-data-list list-unstyled">
+                           <li><strong><span class="fa fa-phone"></span>&nbsp;Телефон:</strong></li>
+                           <li>+7 (343) 310-53-58; 8-952-733-15-27 - администрация</li>
+                           <li>+7 (343) 310-53-29 - касса</li>
+                           <li><strong><span class="fa fa-at"></span>&nbsp;Email:</strong>&nbsp;<a
+                                       href="mailto:dkj96@ya.ru" class="text-style-5">dkj96@ya.ru</a></li>
+                       </ul>
+                   </div>
                 </div>
-                <div class="col-sm-6 col-xs-12 padding-0-100px footer-widget">
-                    <h4 class="footer-widget-label">Социальные сети</h4>
-                    <ul class="footer-widget-data-list list-unstyled list-inline">
-                        <li>
-                            <a href="https://facebook.com/dssekb" class="btn btn-default social-icon-link"
-                               target="_blank">
-                                <i class="fa fa-facebook fa-2x"></i>
-                            </a>
-                        </li>
+                {#<div class="col-sm-6 col-xs-12 padding-0-100px footer-widget">#}
+                    {#<h4 class="footer-widget-label">Социальные сети</h4>#}
+                    {#<ul class="footer-widget-data-list list-unstyled list-inline">#}
+                        {#<li>#}
+                            {#<a href="https://facebook.com/dssekb" class="btn btn-default social-icon-link"#}
+                               {#target="_blank">#}
+                                {#<i class="fa fa-facebook fa-2x"></i>#}
+                            {#</a>#}
+                        {#</li>#}
 
-                        <li>
-                            <a href="https://vk.com/dkz_ekb" class="social-icon-link btn btn-default" target="_blank">
-                                <i class="fa fa-vk fa-2x"></i>
-                            </a>
-                        </li>
+                        {#<li>#}
+                            {#<a href="https://vk.com/dkz_ekb" class="social-icon-link btn btn-default" target="_blank">#}
+                                {#<i class="fa fa-vk fa-2x"></i>#}
+                            {#</a>#}
+                        {#</li>#}
 
-                        <li>
-                            <a href="https://www.youtube.com/channel/UC7vdhFn3qayCS8pkJ3yrPAQ"
-                               class="social-icon-link btn btn-default" target="_blank">
-                                <i class="fa fa-youtube fa-2x"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                        {#<li>#}
+                            {#<a href="https://www.youtube.com/channel/UC7vdhFn3qayCS8pkJ3yrPAQ"#}
+                               {#class="social-icon-link btn btn-default" target="_blank">#}
+                                {#<i class="fa fa-youtube fa-2x"></i>#}
+                            {#</a>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#</div>#}
             </div>
         {% endblock %}
     </div>

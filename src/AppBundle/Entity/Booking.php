@@ -34,7 +34,7 @@ class Booking
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="time", length=20)
+     * @ORM\Column(type="time", length=20, nullable=true)
      */
     private $time;
 

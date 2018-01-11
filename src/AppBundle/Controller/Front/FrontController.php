@@ -5,9 +5,11 @@ namespace AppBundle\Controller\Front;
 
 use AppBundle\Entity as Entity;
 use AppBundle\Form\BookingType;
+use AppBundle\Form\Type\FileUploadType;
 use AppBundle\Service as Service;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\DependencyInjection\Tests\Compiler\E;
 use Symfony\Component\HttpFoundation as Http;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -48,20 +50,20 @@ class FrontController extends AppController
 
 		$parameters = [
 			'news' => $news,
-            'imagesExt' => FileUploaderService::IMAGES,
-            'videosExt' => FileUploaderService::VIDEOS,
+            'imagesExt' => Service\FileUploaderService::IMAGES,
+            'videosExt' => Service\FileUploaderService::VIDEOS,
 		];
 
 		if (!$news) {
 
 			$paginator = $utilities
-				->setObjectName(News::class)
+				->setObjectName(Entity\News::class)
 				->setCriteria([])
 				->setOrderBy(['publishStartDate' => 'DESC'])
 				->setLimit(5)
 				->setOffset(0);
 
-			$repository = $this->getDoctrine()->getRepository(News::class);
+			$repository = $this->getDoctrine()->getRepository(Entity\News::class);
 
 
 			if ($request->isMethod('POST')) {

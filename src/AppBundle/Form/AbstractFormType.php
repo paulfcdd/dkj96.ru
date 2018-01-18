@@ -3,13 +3,11 @@
 namespace AppBundle\Form;
 
 
-use AppBundle\Form\Type\CKeditorType;
+use AppBundle\Form\Type as AppFormType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type as FormType;
+
 
 
 class AbstractFormType extends AbstractType
@@ -17,7 +15,7 @@ class AbstractFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
        $builder
-           ->add('seoTitle', TextType::class, [
+           ->add('seoTitle', FormType\TextType::class, [
 				'label' => 'Мета-таг Title',
 				'required' => false,
 				'attr' => [
@@ -25,25 +23,25 @@ class AbstractFormType extends AbstractType
 
 				],
            ])
-           ->add('seoKeywords', TextareaType::class, [
+           ->add('seoKeywords', FormType\TextareaType::class, [
 				'label' => 'Мета-таг Keywords',
 				'required' => false,
 				'attr' => [
 					'placeholder' => 'Не более 250 знаков'
 				],
            ])
-           ->add('seoDescription', TextareaType::class, [
+           ->add('seoDescription', FormType\TextareaType::class, [
 				'label' => 'Мета-таг Description',
 				'required' => false,
 				'attr' => [
 					'placeholder' => 'Не более 200 знаков'
 				],
            ])
-           ->add('slug', TextType::class, [
+           ->add('slug', FormType\TextType::class, [
 				'label' => 'Задайте URL записи',
 				'required' => false,
            ])
-           ->add('redirect', ChoiceType::class, [
+           ->add('redirect', FormType\ChoiceType::class, [
 				'multiple' => false,
 				'expanded' => true,
 				'label' => 'Установить редирект?',
@@ -52,22 +50,28 @@ class AbstractFormType extends AbstractType
 					'Нет' => 0,
 				]
            ])
-           ->add('redirectUrl', TextType::class, [
+           ->add('redirectUrl', FormType\TextType::class, [
 				'label' => 'Введите URL для редиректа',
 				'attr' => [
 					'placeholder' => "Подайте урл вида '/', '/event/23' и т.д."
 				],
 				'required' => false,	           
 			])
-           ->add('title', TextType::class, [
+           ->add('title', FormType\TextType::class, [
                'label' => 'Название',
                'required' => false,
            ])
-           ->add('description', TextareaType::class, [
+           ->add('description', FormType\TextareaType::class, [
                'label' => 'Краткое описание'
            ])
-           ->add('content', CKeditorType::class, [
+           ->add('content', AppFormType\CKeditorType::class, [
                'label' => 'Полная информация'
+           ])
+           ->add('save', FormType\SubmitType::class, [
+               'attr' => [
+                   'class' => 'btn btn-success'
+               ],
+               'label' => 'Сохранить'
            ]);
     }
 }

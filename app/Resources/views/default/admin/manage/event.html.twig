@@ -2,31 +2,24 @@
 
 {% block page_heading %}
     {% if object.id == null %}
-        Добавить новый объект
+        Добавить новое событие
     {% else %}
         {{ object.title }}
     {% endif %}
 {% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ asset('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}">
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
     <link href="{{ asset('css/admin/dataTables.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
-    <script src="{{ asset('admin/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
     <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 
     <script>
-        $('.url-translit-generator').on('click', function (e) {
-            $('#{{ entity }}_title').liTranslit({
-                elAlias: $('#{{ entity }}_slug')
-            });
-            $('#{{ entity }}_title').unbind();
-        });
 
         $('#event-date').datepicker({
             format: 'dd.mm.yyyy',

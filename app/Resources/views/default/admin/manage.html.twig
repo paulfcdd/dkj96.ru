@@ -3,19 +3,20 @@
 {% form_theme form ':default/admin/form:manage_fields.html.twig' %}
 
 {% block styles %}
+    <link rel="stylesheet" href="{{ asset('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}">
 {% endblock %}
 {% set entity = app.request.get('entity') %}
 
 {% block page_heading %}{% endblock %}
 
 {% block scripts %}
+    <script src="{{ asset('admin/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
     <script>
-
         $(document).ready(function () {
             var form = $('#form_{{ form.vars.name }}');
 
             {% if entity != 'event' %}
-            form.append('<div style="margin-top: 20px;"><button class="btn btn-success" type="submit"><span class="fa fa-floppy-o"></span> Сохранить</button></div>')
+                form.append('<div style="margin-top: 20px;"><button class="btn btn-success" type="submit"><span class="fa fa-floppy-o"></span> Сохранить</button></div>')
             {% endif %}
 
             $('#banner_category').change(function () {
@@ -55,48 +56,61 @@
 
 
         {% if entity != 'event' %}
-        $('#{{ entity }}_seoTitle').liTranslit({
-            elAlias: $('#{{ entity }}_slug')
-        });        {% endif %}
+            $('#{{ entity }}_seoTitle').liTranslit({
+                elAlias: $('#{{ entity }}_slug')
+            });
+        {% endif %}
+
+        $('.url-translit-generator').on('click', function (e) {
+            $('#{{ entity }}_title').liTranslit({
+                elAlias: $('#{{ entity }}_slug')
+            });
+            $('#{{ entity }}_title').unbind();
+        });
+
+        $('[data-field-type=datepicker-type').datepicker({
+            format: 'dd.mm.yyyy',
+            autoclose: true
+        });
     </script>
 
 
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-12">
+    {#<div class="col-md-12">#}
 
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                {% set sectionName = 'admin.'~form.vars.name %}
-                <h5>Управление объектом</h5>
-            </div>
-            <div class="ibox-content">
-                {% if app.request.get('entity') == 'banner' %}
+    {#<div class="ibox float-e-margins">#}
+    {#<div class="ibox-title">#}
+    {#{% set sectionName = 'admin.'~form.vars.name %}#}
+    {#<h5>Управление объектом</h5>#}
+    {#</div>#}
+    {#<div class="ibox-content">#}
+    {#{% if app.request.get('entity') == 'banner' %}#}
 
-                    {% if object.files is not empty %}
-                        {% set banner = object.files | first %}
-                        <img src="{{ asset('upload/banner/'~banner.name) }}" width="100%">
-                    {% else %}
-                        <p>Файл еще не загружен</p>
-                    {% endif %}
+    {#{% if object.files is not empty %}#}
+    {#{% set banner = object.files | first %}#}
+    {#<img src="{{ asset('upload/banner/'~banner.name) }}" width="100%">#}
+    {#{% else %}#}
+    {#<p>Файл еще не загружен</p>#}
+    {#{% endif %}#}
 
-                {% else %}
-                    {% if object.files is defined %}
-                        {% if object.files is not empty %}
-                            <a href="{{ path('admin.manage.files', {
-                                'entity': routeParams.entity,
-                                'id': routeParams.id
-                            }) }}" class="btn btn-success">
-                                <i class="fa fa-files-o" aria-hidden="true"></i> Медиафайлы
-                            </a>
-                        {% endif %}
-                    {% endif %}
-                {% endif %}
+    {#{% else %}#}
+    {#{% if object.files is defined %}#}
+    {#{% if object.files is not empty %}#}
+    {#<a href="{{ path('admin.manage.files', {#}
+    {#'entity': routeParams.entity,#}
+    {#'id': routeParams.id#}
+    {#}) }}" class="btn btn-success">#}
+    {#<i class="fa fa-files-o" aria-hidden="true"></i> Медиафайлы#}
+    {#</a>#}
+    {#{% endif %}#}
+    {#{% endif %}#}
+    {#{% endif %}#}
 
-                {{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}
-                {{ form_end(form) }}
-            </div>
-        </div>
-    </div>
+    {#{{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}#}
+    {#{{ form_end(form) }}#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
 {% endblock %}

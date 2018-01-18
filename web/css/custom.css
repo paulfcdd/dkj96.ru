@@ -35,6 +35,12 @@ body {
   /* End custom classes*/
   /* Responsive classes*/
 }
+.wrapper .ul-nav-wrapper {
+  padding-left: 0 !important;
+}
+.wrapper .ul-nav-wrapper .col-lg-ul-nav {
+  display: inline-flex;
+}
 .wrapper .banner-btn {
   position: absolute;
   bottom: 30%;
@@ -227,6 +233,19 @@ body {
   margin-right: 0;
   font-family: 'Century Gothic Regular';
 }
+.wrapper .header .top-navbar {
+  color: #6d6d6d;
+}
+.wrapper .header .top-navbar .list-wrapper {
+  padding-top: 20px;
+}
+.wrapper .header .top-navbar .list-wrapper a {
+  text-decoration: none;
+  color: #6d6d6d;
+}
+.wrapper .header .top-navbar .list-wrapper .phone-nums {
+  text-transform: uppercase;
+}
 .wrapper .header .site-logo {
   padding-bottom: 0;
   padding-top: 0;
@@ -248,7 +267,7 @@ body {
   margin-bottom: 0;
   background-color: transparent;
   border: none;
-  margin-top: 20px;
+  margin-top: 0;
 }
 .wrapper .header .main-header .row {
   position: relative;
@@ -257,6 +276,10 @@ body {
   position: absolute;
   top: 0;
   left: 250px;
+}
+.wrapper .header .main-header .main-menu {
+  padding-top: 5em;
+  padding-left: 0;
 }
 .wrapper .header .main-header .main-menu ul .active a {
   background: #6B3E21;

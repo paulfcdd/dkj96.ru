@@ -78,7 +78,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/settings/add/user", name="admin.user.add")
+     * @Route("/admin/users/add", name="admin.user.add")
      * @Method({"POST", "GET"})
      */
     public function addUserAction(Request $request, UserPasswordEncoderInterface $encoder) {
@@ -117,7 +117,7 @@ class AdminController extends Controller
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @return Response;
-     * @Route("/admin/settings/manage/user/{user}", name="admin.user.manage")
+     * @Route("/admin/users/manage/{user}", name="admin.user.manage")
      * @Method({"POST", "GET"})
      */
     public function manageUserAction(User $user, Request $request, UserPasswordEncoderInterface $encoder) {
@@ -199,9 +199,11 @@ class AdminController extends Controller
     }
 
     /**
-     * @param $entity
-     * @param $id
-     * @return Response
+     * @param string $entity
+     * @param int|null $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
      * @Route("/admin/{entity}/manage/{id}", name="admin.manage")
      */
     public function manageAction(string $entity, int $id = null, Request $request)
@@ -209,7 +211,8 @@ class AdminController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $view = ':default/admin:manage.html.twig';
+
+        $view = ':default/admin/manage:'.$entity.'.html.twig';
 
         $uploader = $this->get(FileUploaderService::class);
 
@@ -317,10 +320,6 @@ class AdminController extends Controller
                 'entity' => $entity,
                 'id' => $formData->getId()
             ]);
-        }
-
-        if ($object instanceof Event) {
-            $view = ':default/admin/manage:event.html.twig';
         }
 
         return $this->render($view, [

@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PortfolioType extends AbstractType
 {
@@ -57,16 +58,26 @@ class PortfolioType extends AbstractType
 				'attr' => [
 					'placeholder' => "Подайте урл вида '/', '/event/23' и т.д."
 				],
-				'required' => false,	           
 			])
-            ->add('title', TextType::class)
+            ->add('title', TextType::class, [
+                'label' => 'Название',
+            ])
             ->add('event', EntityType::class, [
+                'label' => 'Для какого мероприятия создается портфолио?',
                 'class' => Event::class,
                 'choice_label' => 'title'
             ])
-            ->add('description', CKeditorType::class)
+            ->add('description', CKeditorType::class, [
+                'label' => 'Содержание',
+            ])
             ->add('files', FileUploadType::class, [
                 'label' => 'Допустимые форматы - JPG/PNG/MP4/MPEG. Для обложки альбома необходимо загружать квадратные изображения'
+            ])
+            ->add('save', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ],
+                'label' => 'Сохранить'
             ]);
     }
 

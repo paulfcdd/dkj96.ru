@@ -32,11 +32,31 @@
     {% block google_analytics %}
         {{ render(controller('AppBundle:Front\\App:getMetricsCode', {'metricsName': 'google'})) }}
     {% endblock %}
+    <style>
+
+        .top-header {
+            margin-top: 20px;
+        }
+
+        .top-header > ul {
+            display: inline-block;
+        }
+
+        .my-icon {
+            vertical-align: middle;
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 <body>
 
 
 <div class="wrapper">
+
+
+    {#<div class="top-header text-center" style="width: 100%;">#}
+        {##}
+    {#</div>#}
 
     <div class="header row">
 
@@ -81,6 +101,8 @@
                 }
             ] %}
 
+            {{ render(controller('AppBundle:Front\\Front:renderTopNavbar')) }}
+
             <div>
                 {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}
             </div>
@@ -110,43 +132,49 @@
     <div class="footer xs-padding-0-10px">
         {% block footer %}
             <div class="container padding-left-0 padding-right-0 padding-top-20px">
-                <div class="col-sm-6 col-xs-12 padding-0-100px footer-widget">
+                <div class="col-sm-12 col-xs-12 padding-0-100px footer-widget">
                     <h4 class="footer-widget-label">Контакты</h4>
 
-                    <ul class="footer-widget-data-list list-unstyled">
-                        <li><strong><span class="fa fa-map-marker"></span>&nbsp;Адрес:</strong></li>
-                        <li>г. Екатеринбург, ул. Челюскинцев, 102</li>
-                        <li><strong><span class="fa fa-phone"></span>&nbsp;Телефон:</strong></li>
-                        <li>+7 (343) 310-53-58; 8-952-733-15-27 - администрация</li>
-                        <li>+7 (343) 310-53-29 - касса</li>
-                        <li><strong><span class="fa fa-at"></span>&nbsp;Email:</strong>&nbsp;<a
-                                    href="mailto:dkj96@ya.ru" class="text-style-5">dkj96@ya.ru</a></li>
-                    </ul>
+                   <div class="col-sm-6 col-xs-12 padding-left-0">
+                       <ul class="footer-widget-data-list list-unstyled">
+                           <li><strong><span class="fa fa-map-marker"></span>&nbsp;Адрес:</strong></li>
+                           <li>г. Екатеринбург, ул. Челюскинцев, 102</li>
+                       </ul>
+                   </div>
+                   <div class="col-sm-6 col-xs-12 padding-right-0">
+                       <ul class="footer-widget-data-list list-unstyled">
+                           <li><strong><span class="fa fa-phone"></span>&nbsp;Телефон:</strong></li>
+                           <li>+7 (343) 310-53-58; 8-952-733-15-27 - администрация</li>
+                           <li>+7 (343) 310-53-29 - касса</li>
+                           <li><strong><span class="fa fa-at"></span>&nbsp;Email:</strong>&nbsp;<a
+                                       href="mailto:dkj96@ya.ru" class="text-style-5">dkj96@ya.ru</a></li>
+                       </ul>
+                   </div>
                 </div>
-                <div class="col-sm-6 col-xs-12 padding-0-100px footer-widget">
-                    <h4 class="footer-widget-label">Социальные сети</h4>
-                    <ul class="footer-widget-data-list list-unstyled list-inline">
-                        <li>
-                            <a href="https://facebook.com/dssekb" class="btn btn-default social-icon-link"
-                               target="_blank">
-                                <i class="fa fa-facebook fa-2x"></i>
-                            </a>
-                        </li>
+                {#<div class="col-sm-6 col-xs-12 padding-0-100px footer-widget">#}
+                    {#<h4 class="footer-widget-label">Социальные сети</h4>#}
+                    {#<ul class="footer-widget-data-list list-unstyled list-inline">#}
+                        {#<li>#}
+                            {#<a href="https://facebook.com/dssekb" class="btn btn-default social-icon-link"#}
+                               {#target="_blank">#}
+                                {#<i class="fa fa-facebook fa-2x"></i>#}
+                            {#</a>#}
+                        {#</li>#}
 
-                        <li>
-                            <a href="https://vk.com/dkz_ekb" class="social-icon-link btn btn-default" target="_blank">
-                                <i class="fa fa-vk fa-2x"></i>
-                            </a>
-                        </li>
+                        {#<li>#}
+                            {#<a href="https://vk.com/dkz_ekb" class="social-icon-link btn btn-default" target="_blank">#}
+                                {#<i class="fa fa-vk fa-2x"></i>#}
+                            {#</a>#}
+                        {#</li>#}
 
-                        <li>
-                            <a href="https://www.youtube.com/channel/UC7vdhFn3qayCS8pkJ3yrPAQ"
-                               class="social-icon-link btn btn-default" target="_blank">
-                                <i class="fa fa-youtube fa-2x"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                        {#<li>#}
+                            {#<a href="https://www.youtube.com/channel/UC7vdhFn3qayCS8pkJ3yrPAQ"#}
+                               {#class="social-icon-link btn btn-default" target="_blank">#}
+                                {#<i class="fa fa-youtube fa-2x"></i>#}
+                            {#</a>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#</div>#}
             </div>
         {% endblock %}
     </div>

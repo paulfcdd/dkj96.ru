@@ -20,9 +20,21 @@ class NewsType extends AbstractFormType
             ->add('files', FileUploadType::class)
             ->add('publishStartDate', DateType::class, [
                 'label' => 'Старт публикации',
+                'format' => 'dd.M.yyyy',
+                'widget' => 'single_text',
+                'attr' => [
+                    'data-field-type' => 'datepicker-type'
+                ],
+                'required' => false,
             ])
             ->add('publishEndDate', DateType::class, [
-                'label' => 'Конец публикации'
+                'label' => 'Конец публикации',
+                'format' => 'dd.M.yyyy',
+                'widget' => 'single_text',
+                'attr' => [
+                    'data-field-type' => 'datepicker-type'
+                ],
+                'required' => false,
             ]);
 
     }

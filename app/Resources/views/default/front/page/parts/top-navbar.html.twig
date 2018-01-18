@@ -1,0 +1,28 @@
+{% if topNavbar is not empty %}
+    <div class="container padding-0-100px top-navbar">
+        <div class="row">
+            <div class="col-lg-12 list-wrapper">
+                <ul class="list-inline">
+                    {% for item in topNavbar %}
+                        <li>
+                        {% if item.isLink %}
+                            <a href="{{ item.url }}">
+                                {% if item.icon is not null %}
+                                    <span class="fa {{ item.icon }} my-icon"></span>
+                                {% endif %}
+                                <span class="my-text">{{ item.content }}</span>
+                            </a>
+                        {% else %}
+                            <li>
+                                <p class="phone-nums">
+                                    {{ item.content }}
+                                </p>
+                            </li>
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endif %}

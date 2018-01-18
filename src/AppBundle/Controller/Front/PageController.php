@@ -273,7 +273,9 @@ class PageController extends AppController
             $history = $this->getEntityRepository($entityName)->findOneBy(['isEnabled' => true]);
 
             return $this->render(':default/front/page/history:show.html.twig', [
-                'history' => $history
+                'history' => $history,
+                'categoryData' => $this->getEntityRepository('category')->findOneByEntity($entityName),
+
             ]);
         }
 

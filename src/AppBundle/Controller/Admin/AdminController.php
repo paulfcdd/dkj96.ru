@@ -199,9 +199,11 @@ class AdminController extends Controller
     }
 
     /**
-     * @param $entity
-     * @param $id
-     * @return Response
+     * @param string $entity
+     * @param int|null $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
      * @Route("/admin/{entity}/manage/{id}", name="admin.manage")
      */
     public function manageAction(string $entity, int $id = null, Request $request)
@@ -209,7 +211,8 @@ class AdminController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $view = ':default/admin:manage.html.twig';
+
+        $view = ':default/admin/manage:'.$entity.'.html.twig';
 
         $uploader = $this->get(FileUploaderService::class);
 
@@ -317,10 +320,6 @@ class AdminController extends Controller
                 'entity' => $entity,
                 'id' => $formData->getId()
             ]);
-        }
-
-        if ($object instanceof Event) {
-            $view = ':default/admin/manage:event.html.twig';
         }
 
         return $this->render($view, [

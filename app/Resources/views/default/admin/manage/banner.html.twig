@@ -1,0 +1,24 @@
+{% extends ':default/admin:manage.html.twig' %}
+
+{% block content %}
+    <div class="col-md-12">
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                {% set sectionName = 'admin.'~form.vars.name %}
+                <h5>Управление объектом</h5>
+            </div>
+            <div class="ibox-content">
+                {% if object.files is not empty %}
+                    {% set banner = object.files | first %}
+                    <img src="{{ asset('upload/banner/'~banner.name) }}" width="100%">
+                {% else %}
+                    <p>Файл еще не загружен</p>
+                {% endif %}
+
+                {{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -146,7 +146,6 @@
 
 {% block content %}
     <div class="col-lg-12">
-
         <div class="alert alert-success alert-dismissable notification-box-main hidden">
             <a href="#" class="close" aria-label="close">&times;</a>
             <p class="notification-text-main"></p>
@@ -174,11 +173,13 @@
                         </a>
                     </li>
 
+                    {% if object.id is not null %}
                     <li class="">
                         <a data-toggle="tab" href="#date-time" aria-expanded="false">
                             <span class="fa fa-clock-o"></span> Время и дата
                         </a>
                     </li>
+                    {% endif %}
 
                     <li class="">
                         <a data-toggle="tab" href="#seo" aria-expanded="false">

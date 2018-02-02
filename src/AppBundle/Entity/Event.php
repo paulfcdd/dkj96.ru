@@ -21,14 +21,14 @@ class Event
     /**
      * @var \DateTime $eventDate
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $eventDate;
 
     /**
      * @var \DateTime $eventTime
      *
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="time", nullable=true)
      */
     private $eventTime;
 

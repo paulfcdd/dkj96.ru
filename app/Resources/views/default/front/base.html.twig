@@ -15,14 +15,14 @@
     <title>{% block title %}Дворец Культуры Железнодорожников{% endblock %}</title>
 
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css">
-    <script src="https://use.fontawesome.com/dd34fe19f7.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('node_modules/font-awesome/css/font-awesome.min.css') }}" typeof="text/css">
+    {#<link rel="stylesheet" href="{{ asset('css/custom.css') }}" type="text/css">#}
     <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
 
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
     <link rel="stylesheet" href="{{ asset('node_modules/blueimp-gallery/css/blueimp-gallery.css') }}">
-
+    <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
 
     {% block yandex_metrika_counter %}
@@ -46,23 +46,144 @@
             vertical-align: middle;
             font-size: 1.5em;
         }
+
+        /*html,*/
+        /*body {*/
+            /*width: 100%;*/
+            /*height: 100%;*/
+            /*font-size: 16px;*/
+        /*}*/
+
+        /*body {*/
+            /*background: #111;*/
+            /*background: radial-gradient(#111, #000);*/
+        /*}*/
+
     </style>
+
+    {#Check if accessible settings was setted up#}
+    <script>
+        $(document).ready(function () {
+            if (localStorage.getItem('accessibleSettings')) {
+                var accessibleSetting = JSON.parse(localStorage.getItem('accessibleSettings')),
+                    cssFileName = accessibleSetting['font-size'],
+                    url = '{{ asset('css/front/accessible/%css_file_name%.css') }}',
+                    linkLine = '<link rel="stylesheet" href="%url%" id="accessibileCss">',
+                    cssFileLink = url.replace('%css_file_name%', cssFileName);
+
+                linkLine = linkLine.replace('%url%', cssFileLink);
+                console.log(cssFileLink);
+                console.log(linkLine);
+                $('head').append(linkLine);
+                $('#settings-panel').css('display', 'block');
+
+                $(accessibleSetting).each(function (key, value) {
+                    for (inputName in value) {
+                        $('input[name=' + inputName + '][value=' + value[inputName] + ']').attr('checked', 'checked');
+                    }
+                });
+
+                if (accessibleSetting.images === 'off') {
+                    $("img").removeAttr("src");
+                }
+
+                $('.page-preloader')
+                    .delay(1500)
+                    .queue(function (next) {
+                        $(this).css('display', 'none');
+                        next();
+                    });
+
+            }else {
+                url = '{{ asset('css/custom.css') }}';
+                console.log(url);
+                $('head').append('<link rel="stylesheet" href="'+url+'" type="text/css">');
+            }
+        });
+    </script>
 </head>
 <body>
-
-
+<div class="page-preloader">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+            <filter id="gooey">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"></feColorMatrix>
+                <feBlend in="SourceGraphic" in2="goo"></feBlend>
+            </filter>
+        </defs>
+    </svg>
+    <div class="blob blob-0"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <div class="blob blob-5"></div>
+</div>
 <div class="wrapper">
 
+    <div class="accessebility-block container-fluid margin-left-0 margin-right-0">
+        <div class="row padding-right-0">
+            <div id="settings-panel">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
 
-    {#<div class="top-header text-center" style="width: 100%;">#}
-        {##}
-    {#</div>#}
-
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <form class="form-inline accessebility-settings-form">
+                                <div class="form-group text-size-group">
+                                    <label>Размер шрифта</label>
+                                    <label class="radio-inline" id="large">
+                                        <input type="radio" value="large" name="font-size" checked>A
+                                    </label>
+                                    <label class="radio-inline" id="larger">
+                                        <input type="radio" value="larger" name="font-size">A
+                                    </label>
+                                    <label class="radio-inline" id="largest">
+                                        <input type="radio" value="largest" name="font-size">A
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Изображения</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" value="on" name="images" checked>Включить
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" value="off" name="images">Отключить
+                                    </label>
+                                </div>
+                                <div class="form-group pull-right">
+                                    <button class="btn btn-default" type="submit">Сохранить</button>
+                                    <button class="btn btn-default reset-accessible-settings" type="button">Сбросить
+                                    </button>
+                                </div>
+                            </form>
+                        </div><!-- /.navbar-collapse -->
+                    </div><!-- /.container-fluid -->
+                </nav>
+            </div>
+            <h4>
+                <a class="disabled-btn">
+                    <span class="fa fa-eye fa-2x"></span>
+                </a>
+            </h4>
+        </div>
+    </div>
     <div class="header row">
 
         {% block header %}
 
-            {% set mainMenu =
+        {% set mainMenu =
             [
                 {
                     title: 'Главная',
@@ -101,16 +222,15 @@
                 }
             ] %}
 
-            {{ render(controller('AppBundle:Front\\Front:renderTopNavbar')) }}
+        {{ render(controller('AppBundle:Front\\Front:renderTopNavbar')) }}
 
-            <div>
-                {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}
-            </div>
+        <div>
+            {% include ':default/front/header:col-lg-nav.html.twig' with {'mainMenu': mainMenu} %}
+        </div>
 
-            <div>
-                {% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}
-            </div>
-
+        <div>
+            {% include ':default/front/header:col-xs-nav.html.twig' with {'mainMenu': mainMenu} %}
+        </div>
         {% endblock %}
     </div>
 
@@ -135,53 +255,51 @@
                 <div class="col-sm-12 col-xs-12 padding-0-100px footer-widget">
                     <h4 class="footer-widget-label">Контакты</h4>
 
-                   <div class="col-sm-6 col-xs-12 padding-left-0">
-                       <ul class="footer-widget-data-list list-unstyled">
-                           <li><strong><span class="fa fa-map-marker"></span>&nbsp;Адрес:</strong></li>
-                           <li>г. Екатеринбург, ул. Челюскинцев, 102</li>
-                       </ul>
-                   </div>
-                   <div class="col-sm-6 col-xs-12 padding-right-0">
-                       <ul class="footer-widget-data-list list-unstyled">
-                           <li><strong><span class="fa fa-phone"></span>&nbsp;Телефон:</strong></li>
-                           <li>+7 (343) 310-53-58; 8-952-733-15-27 - администрация</li>
-                           <li>+7 (343) 310-53-29 - касса</li>
-                           <li><strong><span class="fa fa-at"></span>&nbsp;Email:</strong>&nbsp;<a
-                                       href="mailto:dkj96@ya.ru" class="text-style-5">dkj96@ya.ru</a></li>
-                       </ul>
-                   </div>
+                    <div class="col-sm-6 col-xs-12 padding-left-0">
+                        <ul class="footer-widget-data-list list-unstyled">
+                            <li><strong><span class="fa fa-map-marker"></span>&nbsp;Адрес:</strong></li>
+                            <li>г. Екатеринбург, ул. Челюскинцев, 102</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-xs-12 padding-right-0">
+                        <ul class="footer-widget-data-list list-unstyled">
+                            <li><strong><span class="fa fa-phone"></span>&nbsp;Телефон:</strong></li>
+                            <li>+7 (343) 310-53-58; 8-952-733-15-27 - администрация</li>
+                            <li>+7 (343) 310-53-29 - касса</li>
+                            <li><strong><span class="fa fa-at"></span>&nbsp;Email:</strong>&nbsp;<a
+                                        href="mailto:dkj96@ya.ru" class="text-style-5">dkj96@ya.ru</a></li>
+                        </ul>
+                    </div>
                 </div>
                 {#<div class="col-sm-6 col-xs-12 padding-0-100px footer-widget">#}
-                    {#<h4 class="footer-widget-label">Социальные сети</h4>#}
-                    {#<ul class="footer-widget-data-list list-unstyled list-inline">#}
-                        {#<li>#}
-                            {#<a href="https://facebook.com/dssekb" class="btn btn-default social-icon-link"#}
-                               {#target="_blank">#}
-                                {#<i class="fa fa-facebook fa-2x"></i>#}
-                            {#</a>#}
-                        {#</li>#}
+                {#<h4 class="footer-widget-label">Социальные сети</h4>#}
+                {#<ul class="footer-widget-data-list list-unstyled list-inline">#}
+                {#<li>#}
+                {#<a href="https://facebook.com/dssekb" class="btn btn-default social-icon-link"#}
+                {#target="_blank">#}
+                {#<i class="fa fa-facebook fa-2x"></i>#}
+                {#</a>#}
+                {#</li>#}
 
-                        {#<li>#}
-                            {#<a href="https://vk.com/dkz_ekb" class="social-icon-link btn btn-default" target="_blank">#}
-                                {#<i class="fa fa-vk fa-2x"></i>#}
-                            {#</a>#}
-                        {#</li>#}
+                {#<li>#}
+                {#<a href="https://vk.com/dkz_ekb" class="social-icon-link btn btn-default" target="_blank">#}
+                {#<i class="fa fa-vk fa-2x"></i>#}
+                {#</a>#}
+                {#</li>#}
 
-                        {#<li>#}
-                            {#<a href="https://www.youtube.com/channel/UC7vdhFn3qayCS8pkJ3yrPAQ"#}
-                               {#class="social-icon-link btn btn-default" target="_blank">#}
-                                {#<i class="fa fa-youtube fa-2x"></i>#}
-                            {#</a>#}
-                        {#</li>#}
-                    {#</ul>#}
+                {#<li>#}
+                {#<a href="https://www.youtube.com/channel/UC7vdhFn3qayCS8pkJ3yrPAQ"#}
+                {#class="social-icon-link btn btn-default" target="_blank">#}
+                {#<i class="fa fa-youtube fa-2x"></i>#}
+                {#</a>#}
+                {#</li>#}
+                {#</ul>#}
                 {#</div>#}
             </div>
         {% endblock %}
     </div>
 
 </div><!-- .wrapper -->
-
-<script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('node_modules/lodash/lodash.min.js') }}"></script>
 <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -200,6 +318,32 @@
     });
 
 
+    $(document).ready(function () {
+        $(".disabled-btn").click(function () {
+            $("#settings-panel").slideToggle("slow");
+        });
+
+        var accessibleSettings = {
+            'font-size': '',
+            'images': ''
+        };
+
+        $('.accessebility-settings-form').submit(function (e) {
+            e.preventDefault();
+            var formData = $(this).serializeArray();
+            $(formData).each(function (key, val) {
+                accessibleSettings[val.name] = val.value;
+            });
+            localStorage.setItem('accessibleSettings', JSON.stringify(accessibleSettings));
+            location.reload();
+        });
+
+        $('.reset-accessible-settings').on('click', function (e) {
+            e.preventDefault();
+            localStorage.removeItem('accessibleSettings');
+            location.reload();
+        })
+    });
 </script>
 {% block javascripts %}{% endblock %}
 

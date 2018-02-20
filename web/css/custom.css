@@ -24,6 +24,9 @@ body {
   height: 100%;
   background-color: #F0DEBA;
 }
+.page-preloader {
+  display: none;
+}
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -34,6 +37,21 @@ body {
   /* Custom classes*/
   /* End custom classes*/
   /* Responsive classes*/
+}
+.wrapper .accessebility-block #settings-panel {
+  display: none;
+}
+.wrapper .accessebility-block #settings-panel nav {
+  margin-bottom: 0;
+}
+.wrapper .accessebility-block #settings-panel .accessebility-settings-form #large {
+  font-size: 15px;
+}
+.wrapper .accessebility-block #settings-panel .accessebility-settings-form #larger {
+  font-size: 20px;
+}
+.wrapper .accessebility-block #settings-panel .accessebility-settings-form #largest {
+  font-size: 25px;
 }
 .wrapper .ul-nav-wrapper {
   padding-left: 0 !important;
@@ -301,6 +319,55 @@ body {
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
+}
+.wrapper .content {
+  flex: 1 0 auto;
+}
+.wrapper .content #main-banner-index {
+  height: 410px;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .content #main-banner-index {
+    height: 100px;
+  }
+}
+.wrapper .content .banner-text {
+  background: grey;
+  opacity: .8;
+  position: absolute;
+  bottom: 30%;
+  right: 0;
+  padding: 0 0 0 10px;
+}
+.wrapper .content .banner-text h3 {
+  padding-left: 10px;
+  color: white;
+  opacity: 1;
+  font-size: 24pt;
+  line-height: 20pt;
+  font-family: 'Bebas Bold';
+}
+.wrapper .content .banner-btn {
+  position: absolute;
+  bottom: 30%;
+  right: 20%;
+}
+.wrapper .content #main-text-under-banner .banner-content-block {
+  font-family: 'Century Gothic Regular';
+  font-size: 15px;
+  color: #6B3E21;
+  line-height: 21px;
+  font-weight: normal;
+  font-style: normal;
+}
+.wrapper .content #main-text-under-banner .banner-content-block .content-block-row {
+  padding: 0;
+  white-space: nowrap;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .content #main-text-under-banner .banner-content-block .content-block-row {
+    white-space: normal;
+  }
 }
 .wrapper .content {
   flex: 1 0 auto;

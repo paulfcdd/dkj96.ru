@@ -47,3 +47,52 @@
     white-space: normal;
   }
 }
+.content {
+  flex: 1 0 auto;
+}
+.content #main-banner-index {
+  height: 410px;
+}
+@media only screen and (max-width: 479px) {
+  .content #main-banner-index {
+    height: 100px;
+  }
+}
+.content .banner-text {
+  background: grey;
+  opacity: .8;
+  position: absolute;
+  bottom: 30%;
+  right: 0;
+  padding: 0 0 0 10px;
+}
+.content .banner-text h3 {
+  padding-left: 10px;
+  color: white;
+  opacity: 1;
+  font-size: 24pt;
+  line-height: 20pt;
+  font-family: 'Bebas Bold';
+}
+.content .banner-btn {
+  position: absolute;
+  bottom: 30%;
+  right: 20%;
+}
+.content #main-text-under-banner .banner-content-block {
+  font-family: 'Century Gothic Regular';
+  font-size: 15px;
+  color: #6B3E21;
+  line-height: 21px;
+  font-weight: normal;
+  font-style: normal;
+}
+.content #main-text-under-banner .banner-content-block .content-block-row {
+  padding: 0;
+  white-space: nowrap;
+}
+@media only screen and (max-width: 479px) {
+  .content #main-text-under-banner .banner-content-block .content-block-row {
+    white-space: normal;
+  }
+}

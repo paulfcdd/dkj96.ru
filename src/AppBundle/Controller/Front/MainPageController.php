@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation as Http;
 use AppBundle\Entity as Entity;
 
 
-class MainPageAction extends AppController
+class MainPageController extends AppController
 {
     /**
      * @param string | null $page
@@ -19,16 +19,16 @@ class MainPageAction extends AppController
     {
 
         /** @var EntityManager $eventRepo */
-        $eventRepo = $this->getDoctrine()->getRepository(Entity\Event::class);
+        $eventRepo = $this->getDoctrine()->getRepository(Entity\EventDateTime::class);
 
         /** @var EntityManager $newsRepo */
         $newsRepo = $this->getDoctrine()->getRepository(Entity\News::class);
 
         $eventQB = $eventRepo->createQueryBuilder('e')
-            ->where('e.eventDate > :filterdate')
+            ->where('e.date > :filterdate')
             ->setParameter('filterdate', new \DateTime())
             ->setMaxResults(6)
-            ->orderBy('e.eventDate', 'ASC')
+            ->orderBy('e.date', 'ASC')
             ->getQuery();
 
         $newsQB = $newsRepo->createQueryBuilder('n')
@@ -38,9 +38,10 @@ class MainPageAction extends AppController
             ->orderBy('n.publishStartDate', 'DESC')
             ->getQuery();
 
+
         return $this->render(':default/front/page:index.html.twig', [
             'page' => $page,
-            'events' => $eventQB->getResult(),
+            'eventsDate' => $eventQB->getResult(),
             'news' => $newsQB->getResult(),
             'reviews' => $this->getSortedList(
                 Entity\Review::class, ['dateReceived' => 'DESC'], new \DateTime(), null, 2

@@ -19,7 +19,8 @@ class HallType extends AbstractFormType
 
         $builder
 			->add('googleCalendarIdKey', TextType::class, [
-				'label' => 'Идентификатор календаря'
+				'label' => 'Идентификатор календаря',
+                'required' => false
 			])
             ->add('capacity', IntegerType::class, [
                 'label' => 'Вместимость зала',

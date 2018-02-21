@@ -87,7 +87,9 @@
                     </a>
                     <div class="upcoming-event">
                         <ul class="media-list main-list">
-                            {% for event in events %}
+                            {% for eventDate in eventsDate %}
+
+                                {% set event = eventDate.event %}
 
                                 {% set slug = event.id %}
 
@@ -163,7 +165,6 @@
                                                     </a>
                                                     <h6>
                                                         <i class="fa fa-calendar"></i> {{ item.publishStartDate | date('d.m.Y') }}
-                                                        | <i class="fa fa-user"></i> {{ item.author }}
                                                     </h6>
                                                 </h4>
                                             </div>

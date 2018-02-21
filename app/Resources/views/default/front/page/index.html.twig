@@ -87,7 +87,9 @@
                     </a>
                     <div class="upcoming-event">
                         <ul class="media-list main-list">
-                            {% for event in events %}
+                            {% for eventDate in eventsDate %}
+
+                                {% set event = eventDate.event %}
 
                                 {% set slug = event.id %}
 

@@ -286,7 +286,6 @@ class AdminController extends Controller
 
                 if (!empty($attachedFiles)) {
 
-
                     if ($object instanceof Banner) {
                         if (!empty($form['files'])) {
                             $this->deleteObjectRelatedFiles($class, $object->getId());
@@ -335,6 +334,7 @@ class AdminController extends Controller
      * @param $formData
      * @param string $class
      * @return File
+     * @throws \Exception
      */
     private function photoUploader(FileUploaderService $uploader, string $entity, UploadedFile $uploadedFile, $formData, string $class)
     {

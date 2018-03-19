@@ -5,18 +5,34 @@ namespace AppBundle\Service;
 
 class MailerService
 {
-
+    /**
+     * @var \Swift_Mailer
+     */
     protected $mailer;
-
+    /**
+     * @var \Swift_Message
+     */
     protected $message;
-
+    /**
+     * @var string
+     */
     protected $subject;
-
+    /**
+     * @var string
+     */
     protected $from;
-
+    /**
+     * @var string
+     */
     protected $to;
-
+    /**
+     * @var string
+     */
     protected $body;
+    /**
+     * @var array | null
+     */
+    protected $attachment = null;
 
     /**
      * @return mixed
@@ -91,6 +107,24 @@ class MailerService
     }
 
     /**
+     * @return array|null
+     */
+    public function getAttachment(): ?array
+    {
+        return $this->attachment;
+    }
+
+    /**
+     * @param array|null $attachment
+     * @return MailerService
+     */
+    public function setAttachment(?array $attachment): MailerService
+    {
+        $this->attachment = $attachment;
+        return $this;
+    }
+
+    /**
      * MailerService constructor.
      * @param \Swift_Mailer $mailer
      * @param \Swift_Message $message
@@ -99,6 +133,21 @@ class MailerService
     {
         $this->mailer = $mailer;
         $this->message = $message;
+    }
+
+    /**
+     * @return $this
+     */
+    public function attach() {
+        $attachment = $this->getAttachment();
+        if (!$attachment or empty($attachment)) {
+            return $this;
+        }
+        foreach ($attachment as $attach) {
+            $this->message->attach(\Swift_Attachment::fromPath($attach));
+        }
+
+        return $this;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 
 use AppBundle\Entity\Booking;
+use AppBundle\Form\Type\FileUploadType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -67,6 +68,7 @@ class BookingType extends AbstractType
                     'rows' => 4
                 ]
             ])
+            ->add('files', FileUploadType::class, [])
             ->add('send', SubmitType::class, [
                 'label' => 'Отправить',
                 'attr' => [

@@ -1,28 +1,25 @@
-{% extends ':default/admin/booking:list.html.twig' %}
+{% extends ':default/admin:base.html.twig' %}
 
-{% block booking_main_blok %}
+{% block page_heading %}Заявка на бронь №{{ booking.id }}{% endblock %}
+
+{% block content %}
     <div class="mail-box-header">
         <h2>
-            Просмотреть сообщение
+            {{ booking.hall.title }} <a href="{{ path('admin.manage', {
+                'entity': 'hall',
+                'id': booking.hall.id
+            }) }}" target="_blank"><span class="fa fa-link"></span></a>
         </h2>
         <div class="mail-tools tooltip-demo m-t-md">
-
-
             <h4>
-                <span class="font-normal">Тема: </span>Запрос на бронирование зала <a href="{{ path('admin.manage', {
-                    'entity': 'hall',
-                    'id': booking.hall.id
-                }) }}" target="_blank">"{{ booking.hall.title }}"</a>
+                Запрос на бронирование зала
             </h4>
             <h5>
-                <span class="pull-right font-normal"> {{ booking.dateReceived | date('H:i')~' '~booking.dateReceived |date('d.m.Y') }}</span>
-                <span class="font-normal">От: </span> {{ booking.email }}
+                <span class="pull-right font-normal"> {{ booking.dateReceived | date('H:i')~' | '~booking.dateReceived |date('d.m.Y') }}</span>
             </h5>
         </div>
     </div>
     <div class="mail-box">
-
-
         <div class="mail-body">
             <table>
                 <tr>
@@ -35,7 +32,7 @@
                     <td>
                         <b>Кол-во человек:&nbsp;</b>
                     </td>
-                    <td>{{  booking.guests }} чел.</td>
+                    <td>{{  booking.guests~' чел. (вместимость зала: '~booking.hall.capacity~' чел.)' }}</td>
                 </tr>
                 <tr>
                     <td>
@@ -43,17 +40,34 @@
                     </td>
                     <td>{{  booking.phone }}</td>
                 </tr>
+                <tr>
+                    <td>
+                        <b>Email:&nbsp;</b>
+                    </td>
+                    <td>{{  booking.email }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Описание:&nbsp;</b>
+                    </td>
+                    <td>{{  booking.message }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Прикрепленные документы:&nbsp;</b>
+                    </td>
+                    <td>
+                        <ul>
+                            {% for file in booking.files %}
+                                <li><a href="{{ asset('upload/booking/'~file.name) }}">{{ file.name }}</a> </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
             </table>
-            <p>
-                {{ booking.about }}
-            </p>
         </div>
 
         <div class="mail-body text-right tooltip-demo">
-            <a class="btn btn-sm btn-primary" href="{{ path('admin.booking.compose', {'booking': booking.id}) }}">
-                <i class="fa fa-reply"></i> Ответить
-            </a>
-
             {% set fa_class = 'fa-star' %}
             {% set confirm_btn_text = 'Забронировать' %}
             {% set disabled = '' %}
@@ -67,12 +81,9 @@
             <button class="btn btn-sm btn-success confirm-booking" {{ disabled }} data-bookingid="{{ booking.id }}">
                 <i class="fa {{ fa_class }}"></i> {{ confirm_btn_text }}
             </button>
-            <button class="btn btn-sm btn-warning set-as-unread" data-bookingid="{{ booking.id }}">
-                <i class="fa fa-envelope"></i> В непрочитанные
-            </button>
-            <button title="" class="btn btn-sm btn-danger remove-booking" data-bookingid="{{ booking.id }}">
-                <i class="fa fa-trash-o"></i> Удалить
-            </button>
+            <a role="button" href="{{ path('admin.booking.list') }}" class="btn btn-sm btn-warning">
+                <i class="fa fa-list"></i> К списку
+            </a>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -81,60 +92,13 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            $('.set-as-unread').on('click', function () {
-                var id = $(this).data('bookingid'),
-                    url = '{{ path('admin.api.booking_unread', {'booking': '_booking'}) }}';
-
-                $.ajax({
-                    url: url.replace('_booking', id),
-                    method:'post',
-                    success: function () {
-                        window.location.replace("{{ path('admin.booking.listing') }}");
-                    },
-                    error: function (resp) {
-                        alert(resp)
-                    }
-                })
-            });
-            
-            $('.remove-booking').on('click', function () {
-
-                var id = $(this).data('bookingid'),
-                    url = '{{ path('admin.api.booking_delete', {'booking': '_booking'}) }}';
-
-                swal({
-                    title: "Удалить запрос на бронирование?",
-                    text: "Удаленный запрос нельзя восстановить!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Удалить",
-                    closeOnConfirm: false
-                }, function () {
-                    $.ajax({
-                        url: url.replace('_booking', id),
-                        method: 'POST',
-                        success: function () {
-
-                            swal({
-                                title: 'Удалено',
-                                text: 'Запрос на бронирование был успешно удален',
-                                type: 'success'
-                            }, function () {
-                                window.location.replace("{{ path('admin.booking.listing') }}");
-                            });
-
-                        }
-                    });
-                });
-            })
 
             $('.confirm-booking').on('click', function () {
                 var id = $(this).data('bookingid'),
-                    url = '{{ path('admin.api.booking_confirm', {'booking': '_booking'}) }}';
+                    url = '{{ path('admin.api.confirm_action', {'id': '_id', 'entity': 'booking'}) }}';
 
                 swal({
-                    title: "Подтверждение бронирования,
+                    title: "Подтверждение бронирования",
                     text: "Вы уверенны, что хотите подтвердить бронирование зала {{ booking.hall.title }}",
                     type: "info",
                     showCancelButton: true,
@@ -143,10 +107,18 @@
                     closeOnConfirm: false
                 }, function () {
                     $.ajax({
-                        url: url.replace('_booking', id),
+                        url: url.replace('_id', id),
                         method: 'POST',
-                        success: function (data) {
-                            console.log(data);
+                        success: function () {
+                            $('.confirm-booking')
+                                .attr('disabled', true)
+                                .html('<i class="fa fa-check"></i>Забронировано');
+
+                            swal({
+                                title: 'Забронировано',
+                                text: 'Бронь успешно подтверждена',
+                                type: 'success'
+                            });
                         }
                     });
                 });

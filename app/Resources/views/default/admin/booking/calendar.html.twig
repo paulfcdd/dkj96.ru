@@ -32,7 +32,7 @@
             events: events,
             locale: 'ru',
             eventClick: function (event) {
-                var url = '{{ path('admin.booking.edit', {'booking': '_id'}) }}';
+                var url = '{{ path('admin.booking.details', {'booking': '_id'}) }}';
                 window.location.href = url.replace('_id', event.id);
             }
         });

@@ -1,87 +1,86 @@
 {% extends ':default/admin:base.html.twig' %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.css') }}">
+    <link href="{{ asset('css/admin/dataTables.min.css') }}" rel="stylesheet">
 {% endblock %}
 
+
+{% block page_heading %}Все бронирования{% endblock %}
+
 {% block content %}
-    {% set activeHall = halls | first %}
     <div class="col-lg-12">
-        <div class="tabs-container">
-
-            <div class="tabs-left">
-                <ul class="nav nav-tabs">
-
-                    {% for hall in halls %}
-                        <li {% if hall.id == activeHall.id %}class="active"{% endif %}>
-                            <a data-toggle="tab" href="#hall-{{ hall.id }}" aria-expanded="false">
-                                {{ hall.title }}
-                            </a>
-                        </li>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+            </div>
+            <div class="ibox-content">
+                <table class="table table-striped table-bordered table-hover bookings-tbl">
+                    <thead>
+                    <th>ID</th>
+                    <th>Дата отправки</th>
+                    <th>Email</th>
+                    <th>Телефон</th>
+                    <th>Зал</th>
+                    <th>Дата аренды</th>
+                    <th>Статус аренды</th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    {% for booking in bookings %}
+                        <tr>
+                            <td>{{ booking.id }} {% if not booking.status %}<span class="badge badge-warning">Новое</span>{% endif %} </td>
+                            <td>{{ booking.dateReceived | date('d.m.Y') }}</td>
+                            <td>{{ booking.email }}</td>
+                            <td>{{ booking.phone }}</td>
+                            <td>{% if booking.hall %}{{ booking.hall.title }}{% else %}NULL{% endif %}</td>
+                            <td>{{ booking.date }}</td>
+                            <td>{% if not booking.booked %}<span class="badge badge-warning">Не подтверждена</span>{% else %}<span class="badge badge-success">Подтверждена</span>{% endif %}</td>
+                            <td>
+                                <a role="button"
+                                   class="btn btn-success"
+                                   href="{{ path('admin.booking.details', {'booking':booking.id}) }}"
+                                >
+                                    <span class="fa fa-eye"></span>
+                                </a>
+                            </td>
+                        </tr>
                     {% endfor %}
-                </ul>
-                <div class="tab-content ">
-
-                    {% for hall in halls %}
-
-                        <div id="hall-{{ hall.id }}" class="tab-pane {% if hall.id == activeHall.id %}active{% endif %}">
-
-                            <div class="panel-body">
-
-                                <div id="calendar-{{ hall.id }}"></div>
-
-                            </div>
-
-                        </div>
-
-                    {% endfor %}
-
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ asset('node_modules/fullcalendar/dist/fullcalendar.min.js') }}"></script>
-    {#<script src="{{ asset('node_modules/fullcalendar/dist/locale/ru.js') }}"></script>#}
+    <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
     <script>
+        $(document).ready(function () {
+            $('.bookings-tbl').DataTable({
+                pageLength: 10,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    {extend: 'copy'},
+                    {extend: 'csv'},
+                    {extend: 'excel', title: 'ExampleFile'},
+                    {extend: 'pdf', title: 'ExampleFile'},
 
-        var events = [],
-            url = '{{ path('admin.booking.details', {'booking': '_booking'}) }}';
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
 
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
 
-        {% for hall in halls %}
-        events['hall-{{ hall.id }}'] = [];
-            {% for booking in hall.bookings %}
-                {#var event = {#}
-                    {#id: '{{ booking.id }}',#}
-                    {#title: '{{ booking.time | date('H:i') ~' - ' ~ booking.email }}',#}
-                    {#phone: '{{ booking.phone }}',#}
-                    {#start: '{{ booking.date | date('Y-m-d') }}',#}
-                    {#editable: false,#}
-                    {#overlap: false#}
-                {#};#}
-        events['hall-{{ hall.id }}'].push( {
-            id: '{{ booking.id }}',
-            title: '{{ booking.time | date('H:i') ~' - ' ~ booking.email }}',
-            phone: '{{ booking.phone }}',
-            start: '{{ booking.date | date('Y-m-d') }}',
-            editable: false,
-            overlap: false
+            });
+
         });
-            {% endfor %}
-        {% endfor %}
 
-        {% for hall in halls %}
-        $('#calendar-{{ hall.id }}').fullCalendar({
-            events:  events['hall-{{ hall.id }}'],
-            locale: 'ru',
-            eventClick: function (event) {
-                var url = '{{ path('admin.booking.edit', {'booking': '_id'}) }}';
-                window.location.href = url.replace('_id', event.id);
-            }
-        });
-        {% endfor %}
     </script>
 {% endblock %}

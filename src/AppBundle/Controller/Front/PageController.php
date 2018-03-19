@@ -105,8 +105,7 @@ class PageController extends AppController
                 $mailer = $this->get(Service\MailerService::class);
 
                 $mailer
-//                    ->setTo($this->getParameter('administrator'))
-                    ->setTo('paulfcdd@gmail.com')
+                    ->setTo($this->getParameter('administrator'))
                     ->setFrom($formData->getEmail())
                     ->setSubject('Запрос на бронирование зала '.$hallTitle)
                     ->setBody($formData->getMessage());
@@ -131,17 +130,12 @@ class PageController extends AppController
                             $attachedFilesArr[] = $this->getParameter('upload_directory') . $uploader->getDir() . '/' . $file->getName();
 
                         }
-                        $mailer->setAttachment($attachedFilesArr);
+//                        $mailer->setAttachment($attachedFilesArr);
                     }
                 }
-                dump($mailer->attach()->sendMessage());
-                dump($attachedFilesArr);
-                die;
-                //$this->getParameter('upload_directory') . $uploader->getDir() . '/' . $file->getName()
+
                 try {
                     $doctrine->getManager()->flush();
-                    dump($file->getName());
-                    dump($uploader);die;
                     $mailer->sendMessage();
                     $this->addFlash('success', 'Заявка на бронь отправлена');
                 } catch (\Exception $exception) {

@@ -13,7 +13,8 @@ class FileUploaderService
         'image/jpeg',
         'image/png',
         'video/mp4',
-        'video/mpeg'
+        'video/mpeg',
+        'application/pdf'
     ];
 
     const IMAGES = [
@@ -117,10 +118,8 @@ class FileUploaderService
             $fileName = $fileNameHash.'.'.strtolower($this->getFile()->getClientOriginalExtension());
 
             $this->getFile()->move($uploadDir, $fileName);
-
-            return $fileName;
         }
-
+        return $fileName;
     }
 
     /**

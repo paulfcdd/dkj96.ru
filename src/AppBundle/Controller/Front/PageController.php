@@ -9,6 +9,7 @@ use AppBundle\Entity as Entity;
 use AppBundle\Form as Form;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use AppBundle\Service\FileUploaderService;
 
 
 class PageController extends AppController
@@ -54,9 +55,9 @@ class PageController extends AppController
      */
     public function bookHallAction(Entity\Hall $hall = null, Http\Request $request)
     {
-
         $doctrine = $this->getDoctrine();
-
+        $attachedFilesArr = [];
+        $uploader = $this->get(FileUploaderService::class);
         $form = $this->createForm(Form\BookingType::class);
         $form->remove('time');
 
@@ -104,19 +105,47 @@ class PageController extends AppController
                 $mailer = $this->get(Service\MailerService::class);
 
                 $mailer
-                    ->setTo($this->getParameter('administrator'))
+//                    ->setTo($this->getParameter('administrator'))
+                    ->setTo('paulfcdd@gmail.com')
                     ->setFrom($formData->getEmail())
                     ->setSubject('Запрос на бронирование зала '.$hallTitle)
                     ->setBody($formData->getMessage());
 
                 $doctrine->getManager()->persist($formData);
+                $doctrine->getManager()->flush();
 
+                if (isset($form['files'])) {
+                    $attachedFiles = $form['files']->getData();
+                    if (!empty($attachedFiles)) {
+                        foreach ($attachedFiles as $attachedFile) {
+                            $file = new Entity\File();
+                            $uploader
+                                ->setDir('booking')
+                                ->setFile($attachedFile);
+                            $file
+                                ->setForeignKey($formData->getId())
+                                ->setMimeType(strtolower($uploader->getMimeType()))
+                                ->setEntity(Entity\Booking::class)
+                                ->setName($uploader->upload());
+                            $doctrine->getManager()->persist($file);
+                            $attachedFilesArr[] = $this->getParameter('upload_directory') . $uploader->getDir() . '/' . $file->getName();
+
+                        }
+                        $mailer->setAttachment($attachedFilesArr);
+                    }
+                }
+                dump($mailer->attach()->sendMessage());
+                dump($attachedFilesArr);
+                die;
+                //$this->getParameter('upload_directory') . $uploader->getDir() . '/' . $file->getName()
                 try {
                     $doctrine->getManager()->flush();
+                    dump($file->getName());
+                    dump($uploader);die;
                     $mailer->sendMessage();
                     $this->addFlash('success', 'Заявка на бронь отправлена');
                 } catch (\Exception $exception) {
-                    $this->addFlash('error', 'Во время отправления заявки произошла ошибка, попробуйте позже');
+                    $this->addFlash('error', 'Во время отправления заявки произошла ошибка, попробуйте позже. ' . $exception->getMessage());
                 }
             } else {
                 $this->addFlash('error', 'Подтвердите что Вы не робот');

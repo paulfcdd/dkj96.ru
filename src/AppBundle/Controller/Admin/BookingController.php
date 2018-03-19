@@ -32,11 +32,9 @@ class BookingController extends AdminController
      * @Route("/admin/bookings/list", name="admin.booking.list")
      */
     public function adminBookingList() {
-
-        $halls = $this->getEntityRepository('hall')->findAll();
-
+        $bookings = $this->getEntityRepository('booking')->findAll();
         return $this->render('default/admin/booking/list.html.twig', [
-            'halls' => $halls,
+            'bookings' => $bookings
         ]);
 
     }
@@ -176,25 +174,6 @@ class BookingController extends AdminController
             'booking' => $booking,
             'hall' => $booking->getHall(),
             'form' => $form->createView()
-        ]);
-
-    }
-
-    /**
-     * @param Booking $booking
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @Route("/admin/booking/delete/{booking}", name="admin.booking.delete")
-     */
-    public function deleteBookingAction(Booking $booking) {
-
-        $hall = $booking->getHall()->getId();
-
-        $this->em->remove($booking);
-
-        $this->em->flush();
-
-        return $this->redirectToRoute('admin.booking.calendar', [
-            'hall' => $hall,
         ]);
 
     }

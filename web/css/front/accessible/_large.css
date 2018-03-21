@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+  background-color: #FFFFFF;
+  font-family: Arial, sans-serif !important;
+}
+.wrapper .accessebility-block #settings-panel .accessebility-settings-form #large {
+  font-size: 15px;
+}
+.wrapper .accessebility-block #settings-panel .accessebility-settings-form #larger {
+  font-size: 20px;
+}
+.wrapper .accessebility-block #settings-panel .accessebility-settings-form #largest {
+  font-size: 25px;
+}
+.wrapper .label-underscored {
+  font-size: 30px;
+  font-weight: 500;
+  font-style: normal;
+}
+.wrapper .read-more-link {
+  font-size: 18px;
+  line-height: 26px;
+}
+.wrapper .fa-6x {
+  font-size: 6em;
+}
+.wrapper .fa-7x {
+  font-size: 7em;
+}
+.wrapper .fa-8x {
+  font-size: 8em;
+}
+.wrapper .fa-9x {
+  font-size: 9em;
+}
+.wrapper .fa-10x {
+  font-size: 10em;
+}
+.wrapper .underscored-label {
+  color: #6B3E21;
+  display: inline-block;
+  line-height: 33px;
+  font-size: 30px;
+  font-weight: 500;
+  font-style: normal;
+  border-bottom: 2px solid #d22027;
+  font-family: 'Bebas Book';
+}
+.wrapper .header .main-header .main-menu ul .active a {
+  background: transparent;
+  color: black;
+  border: 2px solid black;
+}
+.wrapper .header .main-header .main-menu ul .active:hover {
+  border-bottom: none;
+}
+.wrapper .header .main-header .main-menu ul li:hover {
+  border-bottom: none;
+}
+.wrapper .header .main-header .main-menu ul li a {
+  font-size: calc(27px);
+  color: black;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.wrapper .content p {
+  color: black !important;
+}
+.wrapper .content .banner-text {
+  background: grey;
+  opacity: .8;
+  position: absolute;
+  bottom: 30%;
+  right: 0;
+  padding: 0 0 0 10px;
+}
+.wrapper .content .banner-text h3 {
+  padding-left: 10px;
+  color: white;
+  opacity: 1;
+  font-size: 24pt;
+  line-height: 20pt;
+  font-family: 'Bebas Bold';
+}
+.wrapper .content #main-text-under-banner .banner-content-block {
+  font-size: calc(22.5px);
+  line-height: 21px;
+  font-weight: normal;
+  font-style: normal;
+}
+.wrapper .footer .footer-widget .footer-widget-label {
+  color: #F0DEBA;
+  text-decoration: none;
+  border: none;
+  font-family: "Bebas Book";
+  font-size: 28px;
+  line-height: 33px;
+  font-weight: 500;
+}
+.wrapper .footer .footer-widget .footer-widget-data-list {
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 300;
+  line-height: 8px;
+  color: white;
+}
+.wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link {
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: #717171;
+  width: 3.5em;
+  height: 3.5em;
+  padding: 8px 0 0 0;
+}
+.wrapper .footer .footer-widget .footer-widget-data-list .social-icon-link:hover {
+  background-color: #F0DEBA;
+  color: #717171;
+}
+.wrapper .footer .footer-widget .footer-widget-data-list li {
+  white-space: nowrap;
+  margin-bottom: 26px;
+  position: relative;
+  font-size: 16px;
+  color: #F0DEBA;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .footer .footer-widget .footer-widget-data-list li {
+    white-space: normal;
+  }
+}

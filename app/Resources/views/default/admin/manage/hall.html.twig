@@ -49,7 +49,8 @@
                     </li>
                     <li class="">
                         <a data-toggle="tab" href="#files" aria-expanded="false">
-                            <span class="fa fa-file"></span> Файлы
+                            <span class="fa fa-file"></span>
+                            Файлы {% if object.files is not empty %}({{ object.files | length }}){% endif %}
                         </a>
                     </li>
                 </ul>
@@ -115,6 +116,29 @@
                         <div class="panel-body">
                             {{ form_label(form.files) }}
                             {{ form_widget(form.files) }}
+                            {% if object.files is not empty %}
+                                <div class="row">
+                                    {% for file in object.files %}
+                                        <div class="col-md-4">
+                                            <div class="thumbnail">
+                                                <a href="#">
+                                                    <img src="{{ asset('upload/'~entity~'/'~file.name~'') }}" alt="Lights" style="width:100%">
+                                                    <div class="caption">
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-primary">
+                                                                Фото по умолчанию
+                                                            </button>
+                                                            <button class="btn btn-danger">
+                                                                Удалить фото
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
 
                     </div>

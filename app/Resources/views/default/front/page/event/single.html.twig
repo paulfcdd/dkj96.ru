@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
     <link href="{{ asset('css/front/page/zaly.css') }}" rel="stylesheet">
+
     {% if object.widgetCssCode is not null %}
         {{ object.widgetCssCode | raw }}
     {% endif %}
@@ -11,14 +12,10 @@
     {% if object.widgetJsCode is not null %}
         {{ object.widgetJsCode | raw }}
     {% endif %}
-
 {% endblock %}
 
 {% block content %}
     {% block main_banner_widget %}{{ parent() }}{% endblock %}
-
-    {#{{ dump(object) }}#}
-
     <div class="container col-xs-padding-right-0 single-hall-page">
         <div class="space-fix-container"></div>
 
@@ -96,7 +93,7 @@
                     | <i class="fa fa-money"></i> {{ object.price~' руб.' }}
                 {% endif %}
             </div>
-            <div class="col-xs-12">
+            <div class="col-xs-12 single-record-content-raw">
                 {{ object.content | raw }}
             </div>
         </div>

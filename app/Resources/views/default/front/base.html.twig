@@ -47,24 +47,48 @@
             font-size: 1.5em;
         }
 
-        /*html,*/
-        /*body {*/
-            /*width: 100%;*/
-            /*height: 100%;*/
-            /*font-size: 16px;*/
-        /*}*/
+        /* Preloader */
 
-        /*body {*/
-            /*background: #111;*/
-            /*background: radial-gradient(#111, #000);*/
-        /*}*/
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            display: none;
+            /* change if the mask should have another color then white */
+            z-index: 99;
+            /* makes sure it stays on top */
+        }
 
+        #status {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            left: 50%;
+            /* centers the loading animation horizontally one the screen */
+            top: 50%;
+            /* centers the loading animation vertically one the screen */
+            background-image: url(https://raw.githubusercontent.com/niklausgerber/PreLoadMe/master/img/status.gif);
+            /* path to your loading animation */
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: -100px 0 0 -100px;
+            /* is width and height divided by two */
+        }
     </style>
 
     {#Check if accessible settings was setted up#}
     <script>
         $(document).ready(function () {
             if (localStorage.getItem('accessibleSettings')) {
+                $(window).on('load', function() { // makes sure the whole site is loaded
+                    $('#status').fadeOut(); // will first fade out the loading animation
+                    $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
+                    $('body').delay(350).css({'overflow':'visible'});
+                });
+
                 var accessibleSetting = JSON.parse(localStorage.getItem('accessibleSettings')),
                     cssFileName = accessibleSetting['font-size'],
                     url = '{{ asset('css/front/accessible/%css_file_name%.css') }}',
@@ -87,13 +111,6 @@
                     $("img").removeAttr("src");
                 }
 
-                $('.page-preloader')
-                    .delay(1500)
-                    .queue(function (next) {
-                        $(this).css('display', 'none');
-                        next();
-                    });
-
             }else {
                 url = '{{ asset('css/custom.css') }}';
                 console.log(url);
@@ -103,23 +120,11 @@
     </script>
 </head>
 <body>
-<div class="page-preloader">
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-        <defs>
-            <filter id="gooey">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"></feColorMatrix>
-                <feBlend in="SourceGraphic" in2="goo"></feBlend>
-            </filter>
-        </defs>
-    </svg>
-    <div class="blob blob-0"></div>
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="blob blob-4"></div>
-    <div class="blob blob-5"></div>
+
+<div id="preloader">
+    <div id="status">&nbsp;</div>
 </div>
+
 <div class="wrapper">
 
     <div class="accessebility-block container-fluid margin-left-0 margin-right-0">
@@ -255,13 +260,13 @@
                 <div class="col-sm-12 col-xs-12 padding-0-100px footer-widget">
                     <h4 class="footer-widget-label">Контакты</h4>
 
-                    <div class="col-sm-6 col-xs-12 padding-left-0">
+                    <div class="col-xs-12 col-lg-6 padding-left-0">
                         <ul class="footer-widget-data-list list-unstyled">
                             <li><strong><span class="fa fa-map-marker"></span>&nbsp;Адрес:</strong></li>
                             <li>г. Екатеринбург, ул. Челюскинцев, 102</li>
                         </ul>
                     </div>
-                    <div class="col-sm-6 col-xs-12 padding-right-0">
+                    <div class="col-xs-12 col-lg-6 padding-right-0">
                         <ul class="footer-widget-data-list list-unstyled">
                             <li><strong><span class="fa fa-phone"></span>&nbsp;Телефон:</strong></li>
                             <li>+7 (343) 310-53-58; 8-952-733-15-27 - администрация</li>

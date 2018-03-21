@@ -154,6 +154,103 @@ body {
 .wrapper .content {
   flex: 1 0 auto;
 }
+.wrapper .content .halls-list-block .single-hall {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+.wrapper .content .halls-list-block .single-hall:first-child {
+  padding-bottom: 20px;
+  padding-top: 0;
+}
+.wrapper .content .halls-list-block .single-hall:last-child {
+  padding-top: 20px;
+  padding-bottom: 0;
+}
+.wrapper .content .halls-list-block .single-hall .hall-label {
+  font-family: Arial, sans-serif;
+  border-bottom: 2px solid #000000;
+  display: inline-block;
+}
+.wrapper .content .halls-list-block .single-hall .hall-label a {
+  font-size: calc(42px);
+  line-height: 33px;
+  color: #000000;
+  font-weight: 600;
+  text-decoration: none;
+}
+.wrapper .content .halls-list-block .single-hall .hall-description {
+  font-family: Arial, sans-serif;
+  font-size: calc(31.5px);
+  line-height: 26px;
+  color: #333333;
+}
+.wrapper .content .contact-block .row .col-md-5 {
+  width: 100%;
+  margin-bottom: 30px;
+}
+.wrapper .content .contact-block .flash-message {
+  margin-left: 100px;
+}
+@media only screen and (max-width: 479px) {
+  .wrapper .content .contact-block .col-xs-padding-right-0 {
+    padding-right: 0;
+  }
+}
+.wrapper .content .contact-block h4 {
+  font-family: Arial, sans-serif;
+  color: #000000;
+  font-size: calc(31.5px);
+}
+.wrapper .content .contact-block .contact-block-line {
+  font-family: Arial, sans-serif;
+  color: #000000;
+  font-size: calc(28px);
+}
+.wrapper .content .contact-block .contact-block-line-title {
+  text-decoration: underline;
+}
+.wrapper .content .contact-block #map {
+  display: none;
+}
+.wrapper .content .history-block .history-block-content {
+  letter-spacing: 1px;
+  line-height: 1.8;
+  color: #000000;
+  font-family: Arial, sans-serif;
+  font-size: calc(31.5px);
+}
+.wrapper .content .history-block .history-block-content img:first-child {
+  padding-right: 20px;
+}
+.wrapper .content .history-block .history-block-content img:last-child {
+  padding-left: 20px;
+}
+.wrapper .content .single-hall-page .single-hall-page-breadcrumbs {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: calc(31.5px);
+  font-family: 'Arial', sans-serif;
+}
+.wrapper .content .single-hall-page .single-hall-page-breadcrumbs a,
+.wrapper .content .single-hall-page .single-hall-page-breadcrumbs .active {
+  color: #000000;
+}
+.wrapper .content .single-hall-page .single-hall-page-content {
+  font-family: 'Arial', sans-serif;
+}
+.wrapper .content .single-hall-page .single-hall-page-content .hall-buttons-group .group-item {
+  background-color: #D22630 !important;
+  color: #F0DEBA;
+}
+.wrapper .content .single-hall-page .single-hall-page-content p {
+  font-size: calc(31.5px);
+  color: #000000;
+}
+.wrapper .content .single-hall-page .single-hall-page-content .label-capacity {
+  color: #000000;
+  font-size: calc(31.5px);
+}
 .wrapper .content .event-filter select {
   font-size: calc(24.5px);
 }
@@ -600,14 +697,14 @@ body {
   white-space: nowrap;
 }
 .wrapper .underscored-label {
-  color: #6B3E21;
+  color: #000000;
   display: inline-block;
   line-height: 33px;
-  font-size: 30px;
+  font-size: calc(42px);
   font-weight: 500;
   font-style: normal;
-  border-bottom: 2px solid #d22027;
-  font-family: 'Bebas Book';
+  border-bottom: 2px solid black;
+  font-family: 'Arial', sans-serif;
 }
 @media only screen and (max-width: 479px) {
   .wrapper .xs-padding-0-10px {

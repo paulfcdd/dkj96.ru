@@ -50,7 +50,7 @@
                     <li class="">
                         <a data-toggle="tab" href="#files" aria-expanded="false">
                             <span class="fa fa-file"></span>
-                            Файлы {% if object.files is not empty %}({{ object.files | length }}){% endif %}
+                            Файлы
                         </a>
                     </li>
                 </ul>
@@ -126,7 +126,9 @@
                                                             <button class="btn btn-primary">
                                                                 Фото по умолчанию
                                                             </button>
-                                                            <button class="btn btn-danger">
+                                                            <button class="btn btn-danger delete-object"
+                                                                    data-objectid="{{ file.id }}"
+                                                                    data-objectname="file">
                                                                 Удалить фото
                                                             </button>
                                                         </div>

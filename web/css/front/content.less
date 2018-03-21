@@ -56,4 +56,59 @@
       }
     }
   }
-}
+}.content {
+   flex: 1 0 auto;
+
+   #main-banner-index {
+     height: 410px;
+
+     @media @phone {
+       height: 100px;
+     }
+   }
+
+   .banner-text {
+     background: grey;
+     opacity: .8;
+     position: absolute;
+     bottom: 30%;
+     right: 0;
+     padding: 0 0 0 10px;
+
+
+     h3 {
+       padding-left: 10px;
+       color: white;
+       opacity: 1;
+       font-size: 24pt;
+       line-height: 20pt;
+       font-family: 'Bebas Bold';
+     }
+   }
+
+   .banner-btn {
+     position: absolute;
+     bottom: 30%;
+     right: 20%;
+   }
+
+   #main-text-under-banner {
+     .banner-content-block {
+       font-family: 'Century Gothic Regular';
+       font-size: 15px;
+       color: @main-color-dark;
+       line-height: 21px;
+       font-weight: normal;
+       font-style: normal;
+
+       .content-block-row {
+         padding: 0;
+         white-space: nowrap;
+
+         @media @phone {
+           white-space: normal;
+         }
+       }
+     }
+   }
+ }

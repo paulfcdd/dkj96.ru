@@ -35,6 +35,11 @@ body {
   height: 100%;
   background-color: @main-color-light;
 }
+
+.page-preloader {
+  display: none;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -43,7 +48,26 @@ body {
   margin: 0 auto;
   font: 14px/20px Arial, sans-serif;
 
+  .accessebility-block {
+    #settings-panel {
+      display: none;
+      nav {
+        margin-bottom: 0;
+      }
 
+      .accessebility-settings-form {
+        #large {
+          font-size: 15px;
+        }
+        #larger {
+          font-size: 20px;
+        }
+        #largest {
+          font-size: 25px;
+        }
+      }
+    }
+  }
 
   .ul-nav-wrapper {
 

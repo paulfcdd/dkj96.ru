@@ -52,15 +52,6 @@
                         </p>
                     </a>
                 </div>
-                {#<div class="col-md-4 single-widget">#}
-                {#<a href="#">#}
-                {#<span class="fa fa-search fa-6x widget-panel-icon"></span>#}
-                {#<h4>Планы залов и информация</h4>#}
-                {#<p>#}
-                {#{{ 'Виртуальный  тур по Дворцу культуры железнодорожников' | nl2br }}#}
-                {#</p>#}
-                {#</a>#}
-                {#</div>#}
                 <div class="col-md-5 col-md-offset-2 single-widget">
                     <a href="{{ path('halls.book_hall') }}">
                         <span class="fa fa-key fa-6x widget-panel-icon"></span>
@@ -109,8 +100,8 @@
                                                         <h3>{{ event.title }}</h3>
                                                     </a>
 
-                                                    <i class="fa fa-calendar"></i> {{ event.eventDate | date('d.m.Y') }}
-                                                    | <i class="fa fa-clock-o"></i> {{ event.eventTime | date('H:i') }}
+                                                    <i class="fa fa-calendar"></i> {{ eventDate.date | date('d.m.Y') }}
+                                                    | <i class="fa fa-clock-o"></i> {{ eventDate.time | date('H:i') }}
                                                     |&nbsp;
                                                 </h4>
                                             </div>

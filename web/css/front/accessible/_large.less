@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+@import "/../../config/rwd_config";
+@import "/../../config/color_config";
+
+@main-color-light: #F0DEBA;
+@main-color-dark: #6B3E21;
+@coeficient: 1.5;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: #FFFFFF;
+  font-family: Arial, sans-serif !important;
+}
+
+.wrapper {
+  .accessebility-block {
+    #settings-panel {
+      .accessebility-settings-form {
+        #large {
+          font-size: 15px;
+        }
+        #larger {
+          font-size: 20px;
+        }
+        #largest {
+          font-size: 25px;
+        }
+      }
+    }
+  }
+
+  .label-underscored {
+    font-size: 30px;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .read-more-link {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+
+  .fa-6x {
+    font-size: 6em;
+  }
+
+  .fa-7x {
+    font-size: 7em;
+  }
+
+  .fa-8x {
+    font-size: 8em;
+  }
+
+  .fa-9x {
+    font-size: 9em;
+  }
+
+  .fa-10x {
+    font-size: 10em;
+  }
+
+  .underscored-label {
+    color: @main-color-dark;
+    display: inline-block;
+    line-height: 33px;
+    font-size: 30px;
+    font-weight: 500;
+    font-style: normal;
+    border-bottom: 2px solid #d22027;
+    font-family: 'Bebas Book';
+  }
+
+  .header {
+    .main-header {
+      .main-menu {
+        ul {
+
+          .active {
+            a {
+              background: transparent;
+              color: black;
+              border: 2px solid black;
+            }
+
+            &:hover {
+              border-bottom: none;
+            }
+          }
+
+          li {
+
+            &:hover {
+              border-bottom: none;
+            }
+
+            a {
+              font-size: calc(18px * @coeficient);
+              color: black;
+              padding-top: 15px;
+              padding-bottom: 15px;
+              text-align: center;
+              -webkit-transition: all 0.2s ease-in-out;
+              -o-transition: all 0.2s ease-in-out;
+              transition: all 0.2s ease-in-out;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    p {
+      color: black !important;
+    }
+
+    .banner-text {
+      background: grey;
+      opacity: .8;
+      position: absolute;
+      bottom: 30%;
+      right: 0;
+      padding: 0 0 0 10px;
+
+
+      h3 {
+        padding-left: 10px;
+        color: white;
+        opacity: 1;
+        font-size: 24pt;
+        line-height: 20pt;
+        font-family: 'Bebas Bold';
+      }
+    }
+
+
+    #main-text-under-banner {
+      .banner-content-block {
+        font-size: calc(15px * @coeficient);
+        line-height: 21px;
+        font-weight: normal;
+        font-style: normal;
+      }
+    }
+  }
+
+  .footer {
+
+    .footer-widget {
+      .footer-widget-label {
+        color: @main-color-light;
+        text-decoration: none;
+        border: none;
+        font-family: "Bebas Book";
+        font-size: 28px;
+        line-height: 33px;
+        font-weight: 500;
+      }
+
+      .footer-widget-data-list {
+        font-family: "Titillium Web", sans-serif;
+        font-weight: 300;
+        line-height: 8px;
+        color: white;
+
+        .social-icon-link {
+          border: 1px solid;
+          border-radius: 10px;
+          background-color: @footer-bg-color;
+          width: 3.5em;
+          height: 3.5em;
+          padding: 8px 0 0 0;
+
+          &:hover {
+            background-color: @main-color-light;
+            color: @footer-bg-color;
+          }
+        }
+
+
+        li {
+          white-space: nowrap;
+          margin-bottom: 26px;
+          position: relative;
+          font-size: 16px;
+          color: @main-color-light;
+
+          @media @phone {
+            white-space: normal;
+          }
+        }
+      }
+    }
+  }
+
+}

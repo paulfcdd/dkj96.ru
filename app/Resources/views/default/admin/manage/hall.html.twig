@@ -123,7 +123,8 @@
                                                     <img src="{{ asset('upload/'~entity~'/'~file.name~'') }}" alt="Lights" style="width:100%">
                                                     <div class="caption">
                                                         <div class="btn-group">
-                                                            <button class="btn btn-primary">
+                                                            <button class="btn btn-primary set-as-default"
+                                                            data-fileid="{{ file.id }}">
                                                                 Фото по умолчанию
                                                             </button>
                                                             <button class="btn btn-danger delete-object"

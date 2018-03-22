@@ -323,6 +323,33 @@
 
 <script>
 
+
+    $('.set-as-default').on('click', function () {
+        var fileId = $(this).data('fileid'),
+            url = '{{ path('admin.api.set_as_default', {'file': '_fileId' }) }}',
+            btn = $(this);
+
+        $.ajax({
+            url: url.replace('_fileId', fileId),
+            method:'post',
+            success: function (data) {
+
+                var disableBtn = $.find('.set-as-default[disabled]');
+
+                $(disableBtn)
+                    .attr('disabled', false)
+                    .text('Установить по умолчанию');
+
+                btn
+                    .attr('disabled', true)
+                    .text('Выбрано по умолчанию');
+            },
+            error: function (resp) {
+                alert(resp)
+            }
+        })
+    });
+
     $('.delete-object').on('click', function () {
 
         var objectName = $(this).data('objectname'),

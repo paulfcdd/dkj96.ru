@@ -20,17 +20,8 @@ class SettingsController extends AdminController
 	public function mainScreenAction(Request $request) {
 		
 		$categoryData = $this->getEntityRepository('category')->findOneByEntity('index');
-
 		$topNavbar = $this->getEntityRepository('topNavbar')->findAll();
-
 		$topNavbarForm = $this->createForm(TopNavbarType::class)->handleRequest($request);
-
-
-//		if ($request->isMethod('POST')) {
-//		    if ($topNavbarForm->isSubmitted() && $topNavbarForm->isValid()) {
-//		        var_dump($topNavbarForm->getData());
-//            }
-//        }
 
 		return $this->render(':default/admin:settings.html.twig', [
 			'pageSeo' => $this->getStaticPageSeo(),

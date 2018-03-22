@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\EventDateTime;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -15,8 +16,17 @@ class EventDateTimeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', DateType::class, [])
-            ->add('time', TimeType::class, []);
+            ->add('date', TextType::class, [
+                'attr' => [
+                    'data-type' => 'event-date'
+                ]
+            ])
+            ->add('time', TextType::class, [
+                'attr' => [
+                    'data-type' => 'event-time'
+                ]
+            ])
+            ->add('kassyRuPID', TextType::class, []);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -24,5 +34,10 @@ class EventDateTimeType extends AbstractType
         $resolver->setDefaults([
             'data_class' => EventDateTime::class,
         ]);
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'event_date_time';
     }
 }

@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Event;
 use AppBundle\Form\Type\FileUploadType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -44,6 +45,14 @@ class EventType extends AbstractFormType
                     'cols' => 10,
                     'rows' => 10,
                 ]
+            ])
+            ->add('eventDateTime', CollectionType::class, [
+                'entry_type' => EventDateTimeType::class,
+                'entry_options' => [
+                    'label' => false,
+                ],
+                'allow_add' => true,
+                'label' => false
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Сохранить',

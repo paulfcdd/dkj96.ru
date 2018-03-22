@@ -20,27 +20,27 @@ class EventDateTime
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event", inversedBy="eventDateTime")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event", inversedBy="eventDateTime", cascade={"persist"})
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
 
     /**
-     * @var \DateTime $eventDate
+     * @var string $eventDate
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column()
      */
     private $date;
 
     /**
-     * @var \DateTime $eventTime
+     * @var string $eventTime
      *
      * @ORM\Column(type="time")
      */
     private $time;
 
     /**
-     * @var string $kassyRuPID
+     * @var string | null $kassyRuPID
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $kassyRuPID;
@@ -71,40 +71,42 @@ class EventDateTime
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
-    public function getDate()
+    public function getDate(): ?string
     {
         return $this->date;
     }
 
     /**
-     * @param \DateTime $date
+     * @param string $date
      * @return EventDateTime
      */
-    public function setDate(\DateTime $date)
+    public function setDate(string $date): EventDateTime
     {
         $this->date = $date;
         return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
-    public function getTime()
+    public function getTime(): ?string
     {
         return $this->time;
     }
 
     /**
-     * @param \DateTime $time
+     * @param string $time
      * @return EventDateTime
      */
-    public function setTime(\DateTime $time)
+    public function setTime(string $time): EventDateTime
     {
         $this->time = $time;
         return $this;
     }
+
+
 
     /**
      * @return string

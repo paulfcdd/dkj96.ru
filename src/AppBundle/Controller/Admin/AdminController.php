@@ -275,6 +275,17 @@ class AdminController extends Controller
             $em->persist($formData);
             $em->flush();
 
+//
+//            if ($formData instanceof Event) {
+//                dump($formData);
+//                /** @var Event $event */
+//                $event = $formData;
+//                if (!empty($event->getEventDateTime())) {
+//                    dump($event->getEventDateTime());
+//                }
+//                die;
+//            }
+
             if (isset($form['files'])) {
                 $attachedFiles = $form['files']->getData();
 

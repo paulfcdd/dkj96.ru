@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Booking;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventDateTime;
 use AppBundle\Entity\Feedback;
 use AppBundle\Entity\File;
 use AppBundle\Entity\History;
@@ -274,6 +275,15 @@ class AdminController extends Controller
 
             $em->persist($formData);
             $em->flush();
+
+            if ($formData instanceof Event) {
+                $dates = $em->getRepository(EventDateTime::class)->findBy(['event' => null]);
+                foreach ($dates as $date) {
+                    $date->setEvent($formData);
+                }
+                $em->flush();
+            }
+
 
             if (isset($form['files'])) {
                 $attachedFiles = $form['files']->getData();

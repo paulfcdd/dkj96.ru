@@ -299,6 +299,11 @@ body {
   padding-top: 5em;
   padding-left: 0;
 }
+.wrapper .header .main-header .main-menu .disabled-btn-wrapper {
+  position: absolute;
+  top: 5%;
+  left: 80%;
+}
 .wrapper .header .main-header .main-menu ul .active a {
   background: #6B3E21;
   color: #fff;

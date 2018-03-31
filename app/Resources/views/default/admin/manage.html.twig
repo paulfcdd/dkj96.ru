@@ -68,7 +68,7 @@
             $('#{{ entity }}_title').unbind();
         });
 
-        $('[data-field-type=datepicker-type').datepicker({
+        $('[data-field-type=datepicker-type]').datepicker({
             format: 'dd.mm.yyyy',
             autoclose: true
         });
@@ -78,39 +78,4 @@
 {% endblock %}
 
 {% block content %}
-    {#<div class="col-md-12">#}
-
-    {#<div class="ibox float-e-margins">#}
-    {#<div class="ibox-title">#}
-    {#{% set sectionName = 'admin.'~form.vars.name %}#}
-    {#<h5>Управление объектом</h5>#}
-    {#</div>#}
-    {#<div class="ibox-content">#}
-    {#{% if app.request.get('entity') == 'banner' %}#}
-
-    {#{% if object.files is not empty %}#}
-    {#{% set banner = object.files | first %}#}
-    {#<img src="{{ asset('upload/banner/'~banner.name) }}" width="100%">#}
-    {#{% else %}#}
-    {#<p>Файл еще не загружен</p>#}
-    {#{% endif %}#}
-
-    {#{% else %}#}
-    {#{% if object.files is defined %}#}
-    {#{% if object.files is not empty %}#}
-    {#<a href="{{ path('admin.manage.files', {#}
-    {#'entity': routeParams.entity,#}
-    {#'id': routeParams.id#}
-    {#}) }}" class="btn btn-success">#}
-    {#<i class="fa fa-files-o" aria-hidden="true"></i> Медиафайлы#}
-    {#</a>#}
-    {#{% endif %}#}
-    {#{% endif %}#}
-    {#{% endif %}#}
-
-    {#{{ form_start(form, {'attr': {'id': 'form_'~form.vars.name}}) }}#}
-    {#{{ form_end(form) }}#}
-    {#</div>#}
-    {#</div>#}
-    {#</div>#}
 {% endblock %}

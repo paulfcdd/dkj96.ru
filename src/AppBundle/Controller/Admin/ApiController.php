@@ -110,13 +110,15 @@ class ApiController extends AdminController
             $qb->getResult();
         }
 
+        if ($objectEntity instanceof File) {
+            $this->deleteFile($objectEntity);
+        }
 
         if ($this->deleteObjectRelatedFiles($objectClass, intval($id))) {
             $this->doctrineManager()->remove($objectEntity);
             $this->doctrineManager()->flush();
             return JsonResponse::create($objectClass);
         }
-
 
     }
 

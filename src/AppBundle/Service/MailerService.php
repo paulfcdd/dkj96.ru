@@ -109,7 +109,7 @@ class MailerService
     /**
      * @return array|null
      */
-    public function getAttachment(): ?array
+    public function getAttachment(): array
     {
         return $this->attachment;
     }
@@ -118,7 +118,7 @@ class MailerService
      * @param array|null $attachment
      * @return MailerService
      */
-    public function setAttachment(?array $attachment): MailerService
+    public function setAttachment(array $attachment): MailerService
     {
         $this->attachment = $attachment;
         return $this;

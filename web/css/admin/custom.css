@@ -5,3 +5,9 @@
 .no-resize {
   resize: none;
 }
+#prevModal #prevModaldialog {
+  width: 80%;
+}
+#prevModal #prevModaldialog .modal-content .modal-body #prev-img {
+  width: 100%;
+}

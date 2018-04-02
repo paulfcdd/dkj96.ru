@@ -54,17 +54,6 @@
                             {{ form_label(form.title) }}
                             {{ form_widget(form.title) }}
 
-                            {#{{ form_label(form.slug) }}#}
-                            {#<div class="input-group">#}
-                                {#<!-- /btn-group -->#}
-                                {#{{ form_widget(form.slug) }}#}
-                                {#<div class="input-group-btn">#}
-                                    {#<button type="button" class="btn btn-primary url-translit-generator">#}
-                                        {#<i class="fa fa-link" aria-hidden="true"></i> Генерировать URL#}
-                                    {#</button>#}
-                                {#</div>#}
-                            {#</div>#}
-
                             {{ form_label(form.description) }}
                             {{ form_widget(form.description) }}
                         </div>
@@ -95,6 +84,10 @@
 
                             {{ form_label(form.files) }}
                             {{ form_widget(form.files) }}
+
+                            {% include ':default/admin/parts/manage:files-list-table.html.twig' with {
+                                'files': object.files
+                            } %}
                         </div>
 
                     </div>
@@ -102,6 +95,6 @@
             </div>
             {{ form_end(form) }}
         </div>
-
     </div>
+    {% include ':default/admin/parts/manage:image_preview_modal.html.twig' %}
 {% endblock %}

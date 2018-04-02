@@ -1,0 +1,48 @@
+<table class="table table-striped table-bordered table-hover files-list-table">
+    <thead>
+    <th>ID</th>
+    <th>Название</th>
+    <th>Расширение</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    </thead>
+    <tbody>
+    {% for file in files %}
+        <tr id="{{ 'file_'~file.id }}">
+            <td>{{ file.id }}</td>
+            <td>{{ file.name }}</td>
+            <td>{{ file.mimeType }}</td>
+            <td>
+                <button class="btn btn-success open-img-prev"
+                        data-imgname="{{ file.name }}"
+                        type="button">
+                    <span class="fa fa-eye"></span> Просмотр изобр.
+                </button>
+            </td>
+            <td>
+                {% if not file.isDefault %}
+                    <button class="btn btn-primary set-as-default"
+                            data-fileid="{{ file.id }}"
+                            type="button">
+                        <span class="fa fa-star-o"></span> По умолч.
+                    </button>
+                {% else %}
+                    <button class="btn btn-primary set-as-default"
+                            data-fileid="{{ file.id }}"
+                            type="button" disabled="disabled">Выбрано по умолчанию
+                    </button>
+                {% endif %}
+            </td>
+            <td>
+                <button class="btn btn-warning delete-object" type="button"
+                        data-objectname="file"
+                        data-objectid="{{ file.id }}">
+                    <span class="fa fa-trash"></span> Удалить
+                </button>
+            </td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -4,6 +4,7 @@
 
 {% block styles %}
     <link rel="stylesheet" href="{{ asset('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}">
+    <link href="{{ asset('css/admin/dataTables.min.css') }}" rel="stylesheet">
 {% endblock %}
 {% set entity = app.request.get('entity') %}
 
@@ -11,6 +12,8 @@
 
 {% block scripts %}
     <script src="{{ asset('admin/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
+
     <script>
         $(document).ready(function () {
             var form = $('#form_{{ form.vars.name }}');
@@ -39,6 +42,7 @@
                     })
                 }
             });
+
             {% if object.object is defined and object.object is not empty %}
             $.ajax({
                 url: '{{ path('admin.api.render_object_selector') }}',
@@ -72,6 +76,47 @@
             format: 'dd.mm.yyyy',
             autoclose: true
         });
+
+        /*IMAGE PREVIEW MODAL ACTION*/
+        $(".open-img-prev").click(function () {
+            var imgname = $(this).data('imgname'),
+                modalTitle = $('#prevModal .modal-title').text(),
+                entityName = '{{ routeParams.entity }}',
+                filePathPattern = '{{ asset('upload/%entity%/%imgname%') }}';
+
+            $('.modal-title').text(modalTitle.replace('%imgname%', imgname));
+            $('#prev-img').attr('src', filePathPattern.replace('%entity%', entityName).replace('%imgname%', imgname));
+            console.log(entityName)
+            $("#prevModal").modal();
+        });
+        /*END OF IMAGE PREVIEW MODAL ACTION*/
+
+        /*BUILD IMAGE LIST TABLE*/
+        $('.files-list-table').DataTable({
+            pageLength: 10,
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                {extend: 'copy'},
+                {extend: 'csv'},
+                {extend: 'excel', title: 'ExampleFile'},
+                {extend: 'pdf', title: 'ExampleFile'},
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ]
+
+        });
+        /*END BUILD IMAGE LIST TABLE*/
     </script>
 
 

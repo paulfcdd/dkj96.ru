@@ -114,32 +114,9 @@
                         <div class="panel-body">
                             {{ form_label(form.files) }}
                             {{ form_widget(form.files) }}
-                            {% if object.files is not empty %}
-                                <div class="row">
-                                    {% for file in object.files %}
-                                        <div class="col-md-4">
-                                            <div class="thumbnail">
-                                                <a href="#">
-                                                    <img src="{{ asset('upload/'~entity~'/'~file.name~'') }}" alt="Lights" style="width:100%">
-                                                    <div class="caption">
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-primary set-as-default"
-                                                            data-fileid="{{ file.id }}">
-                                                                Фото по умолчанию
-                                                            </button>
-                                                            <button class="btn btn-danger delete-object"
-                                                                    data-objectid="{{ file.id }}"
-                                                                    data-objectname="file">
-                                                                Удалить фото
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+                            {% include ':default/admin/parts/manage:files-list-table.html.twig' with {
+                                'files': object.files
+                            } %}
                         </div>
 
                     </div>
@@ -149,4 +126,6 @@
         </div>
 
     </div>
+    {% include ':default/admin/parts/manage:image_preview_modal.html.twig' %}
+
 {% endblock %}

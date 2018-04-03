@@ -1,0 +1,43 @@
+{% set disabled = '' %}
+
+{% if app.user.roles[0] == 'ROLE_MANAGER' %}
+    {% set disabled = 'disabled' %}
+{% endif %}
+
+<table class="table table-striped table-bordered table-hover dataTableList">
+    <thead>
+    {% for label in labels %}
+        <th>{{ label }}</th>
+    {% endfor %}
+    <th class="text-right">Управление</th>
+    </thead>
+    <tbody>
+    {% for field in fields %}
+        <tr id="{{ entity~'_'~field.id }}">
+            {% for tableName in tableNames %}
+                <td>{{ field[tableName] }}</td>
+            {% endfor %}
+            <td class="text-right">
+                <div class="btn-group">
+                    <a href="{{ path('admin.'~entity~'.edit', {
+                        'id': field.id
+                    }) }}" role="button" class="btn btn-success {{ disabled }}"><span
+                                class="fa fa-edit"></span></a>
+                    {% if entity == 'hall' %}
+                        <a href="{{ path('admin.booking.calendar', {
+                            'hall': field.id
+                        }) }}" role="button" class="btn btn-primary">
+                            <span class="fa fa-calendar"></span></a>
+                    {% endif %}
+                    <a href="#" role="button" class="btn btn-danger delete-object {{ disabled }}"
+                       data-objectname="{{ entity }}"
+                       data-objectid="{{ field.id }}">
+                        <span class="fa fa-trash"></span>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>

@@ -1,0 +1,42 @@
+{% extends ':default/admin:list.html.twig' %}
+
+{% block dataTable %}
+
+    {% set headLabels = [
+        {
+            'name': 'ID',
+            'tableFieldName': 'id',
+            'datestamp': false
+        },
+        {
+            'name': 'Название',
+            'tableFieldName': 'title',
+            'datestamp': false
+        },
+        {
+            'name': 'Название',
+            'tableFieldName': 'capacity',
+            'datestamp': false
+        },
+        {
+            'name': 'Ссылка',
+            'tableFieldName': 'slug',
+            'datestamp': false
+        },
+        {
+            'name': 'Дата создания',
+            'tableFieldName': 'dateCreated',
+            'datestamp': true
+        },
+        {
+            'name': 'Автор',
+            'tableFieldName': 'author',
+            'datestamp': false
+        }
+    ] %}
+{{ render(controller('AppBundle:Admin\\Admin:renderDataTable', {
+    'headLabels': headLabels,
+    'dataArray': halls,
+    'entity': 'hall'
+})) }}
+{% endblock %}

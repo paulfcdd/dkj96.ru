@@ -53,6 +53,46 @@ class AdminController extends Controller
         $this->em = $entityManager;
     }
 
+    public function renderDataTableAction(array $headLabels, $dataArray, $entity) {
+
+        $labels = [];
+        $tableNames = [];
+        $fields = [];
+
+        foreach ($headLabels as $headLabel) {
+            $labels[] = $headLabel['name'];
+        }
+
+        foreach ($headLabels as $headLabel) {
+            $tableNames[] = $headLabel['tableFieldName'];
+        }
+
+        for ($i = 0; $i<count($dataArray); $i++) {
+            $fields[$i] = [];
+            foreach ($headLabels as $headLabel) {
+                $getterName = 'get'.ucfirst($headLabel['tableFieldName']);
+                $getterValue = call_user_func_array([$dataArray[$i],$getterName], []);
+                if ($getterValue instanceof \DateTime) {
+                    $getterValue = $getterValue->format('d.m.Y');
+                }
+                if ($getterValue instanceof User) {
+                    $getterValue = $dataArray[$i]->getAuthor()->getUsername();
+                }
+                if(!isset($fields[$i]['id'])) {
+                    $fields[$i]['id'] =  $dataArray[$i]->getId();
+                }
+                $fields[$i][$headLabel['tableFieldName']] = $getterValue;
+            }
+        }
+        dump($fields);
+        return $this->render(':default/admin/parts:data_table.html.twig', [
+            'labels' => $labels,
+            'tableNames' => $tableNames,
+            'fields' => $fields,
+            'entity' => $entity
+        ]);
+    }
+
     /**
      * @Route("/admin/dashboard", name="admin.index")
      */
@@ -64,6 +104,7 @@ class AdminController extends Controller
             'categoryData' => $em->getRepository(Category::class)->findOneByEntity('index')
         ]);
     }
+
 
     /**
      * @Route("/admin/users", name="admin.user.list")
@@ -173,30 +214,30 @@ class AdminController extends Controller
         return $object;
     }
 
-    /**
-     * @param string $entity
-     *
-     * @return Response
-     * @Route("/admin/{entity}/list", name="admin.list")
-     */
-    public function listAction(string $entity)
-    {
-
-        $em = $this->getDoctrine()->getManager();
-
-        $class = ucfirst($entity);
-
-        $repository = $em->getRepository('AppBundle\\Entity\\' . $class);
-
-        $categoryData = $em->getRepository(Category::class)->findOneByEntity($entity);
-
-        return $this->render(':default/admin:list.html.twig', [
-            'objects' => $repository->findAll(),
-            'pageSeo' => $this->getStaticPageSeo($entity),
-            'pageName' => $entity,
-            'categoryData' => $categoryData
-        ]);
-    }
+//    /**
+//     * @param string $entity
+//     *
+//     * @return Response
+//     * @Route("/admin/{entity}/list", name="admin.list")
+//     */
+//    public function listAction(string $entity)
+//    {
+//
+//        $em = $this->getDoctrine()->getManager();
+//
+//        $class = ucfirst($entity);
+//
+//        $repository = $em->getRepository('AppBundle\\Entity\\' . $class);
+//
+//        $categoryData = $em->getRepository(Category::class)->findOneByEntity($entity);
+//
+//        return $this->render(':default/admin:list.html.twig', [
+//            'objects' => $repository->findAll(),
+//            'pageSeo' => $this->getStaticPageSeo($entity),
+//            'pageName' => $entity,
+//            'categoryData' => $categoryData
+//        ]);
+//    }
 
     /**
      * @param string $entity
@@ -206,126 +247,126 @@ class AdminController extends Controller
      * @throws \Exception
      * @Route("/admin/{entity}/manage/{id}", name="admin.manage")
      */
-    public function manageAction(string $entity, int $id = null, Request $request)
-    {
+//    public function manageAction(string $entity, int $id = null, Request $request)
+//    {
 
-        $em = $this->getDoctrine()->getManager();
-
-
-        $view = ':default/admin/manage:'.$entity.'.html.twig';
-
-        $uploader = $this->get(FileUploaderService::class);
-
-        $files = null;
-
-        $className = ucfirst($entity);
-
-        $class = $this->getClassName($entity);
-
-        $object = new $class();
-
-        if ($id) {
-            $object = $em->getRepository($class)->findOneById($id);
-        }
-
-        $form = $this->entityFormBuilder($className, $object);
-
-        if (new $object instanceof Review) {
-            $form->add('event', EntityType::class, [
-                'class' => Event::class,
-                'choice_label' => 'title',
-                'attr' => [
-                    'class' => 'form-control'
-                ]
-            ]);
-        }
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $formData = $form
-                ->getData();
-
-            if (!new $object instanceof Review) {
-                $formData->setAuthor($this->getUser());
-            }
-
-            if ($formData instanceof History) {
-                $history = $em->getRepository(History::class)->findOneBy(['isEnabled' => 1]);
-                if ($history) {
-                    $history->setEnabled(0);
-                }
-            }
-
-            if (new $object instanceof Review) {
-                $formData->setStatus(1);
-                $formData->setApproved(1);
-            }
-
-            if ($formData instanceof Banner) {
-                if ($formData->isLink()) {
-                    if (isset($request->request->get('banner')['object'])) {
-                        $formData->setObject($request->request->get('banner')['object']);
-                    }
-                }
-            }
-
-
-            $em->persist($formData);
-            $em->flush();
-
-            if (isset($form['files'])) {
-                $attachedFiles = $form['files']->getData();
-
-                if ($attachedFiles instanceof UploadedFile) {
-                    $em->persist(
-                        $this->photoUploader($uploader, $entity, $attachedFiles, $formData, $class)
-                    );
-                }
-
-                if (!empty($attachedFiles)) {
-
-                    if ($object instanceof Banner) {
-                        if (!empty($form['files'])) {
-                            $this->deleteObjectRelatedFiles($class, $object->getId());
-                        }
-
-                    }
-
-                    foreach ($attachedFiles as $attachedFile) {
-
-                        $file = new File();
-
-                        $uploader
-                            ->setDir($entity)
-                            ->setFile($attachedFile);
-
-                        $file
-                            ->setForeignKey($formData->getId())
-                            ->setMimeType(strtolower($uploader->getMimeType()))
-                            ->setEntity($class)
-                            ->setName($uploader->upload());
-
-                        $em->persist($file);
-
-                    }
-
-                    $em->flush();
-                }
-            }
-
-            return $this->redirectToRoute('admin.manage', [
-                'entity' => $entity,
-                'id' => $formData->getId()
-            ]);
-        }
-
-        return $this->render($view, [
-            'form' => $form->createView(),
-            'object' => $object,
-        ]);
-    }
+//        $em = $this->getDoctrine()->getManager();
+//
+//
+//        $view = ':default/admin/manage:'.$entity.'.html.twig';
+//
+//        $uploader = $this->get(FileUploaderService::class);
+//
+//        $files = null;
+//
+//        $className = ucfirst($entity);
+//
+//        $class = $this->getClassName($entity);
+//
+//        $object = new $class();
+//
+//        if ($id) {
+//            $object = $em->getRepository($class)->findOneById($id);
+//        }
+//
+//        $form = $this->entityFormBuilder($className, $object);
+//
+//        if (new $object instanceof Review) {
+//            $form->add('event', EntityType::class, [
+//                'class' => Event::class,
+//                'choice_label' => 'title',
+//                'attr' => [
+//                    'class' => 'form-control'
+//                ]
+//            ]);
+//        }
+//
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//
+//            $formData = $form
+//                ->getData();
+//
+//            if (!new $object instanceof Review) {
+//                $formData->setAuthor($this->getUser());
+//            }
+//
+//            if ($formData instanceof History) {
+//                $history = $em->getRepository(History::class)->findOneBy(['isEnabled' => 1]);
+//                if ($history) {
+//                    $history->setEnabled(0);
+//                }
+//            }
+//
+//            if (new $object instanceof Review) {
+//                $formData->setStatus(1);
+//                $formData->setApproved(1);
+//            }
+//
+//            if ($formData instanceof Banner) {
+//                if ($formData->isLink()) {
+//                    if (isset($request->request->get('banner')['object'])) {
+//                        $formData->setObject($request->request->get('banner')['object']);
+//                    }
+//                }
+//            }
+//
+//
+//            $em->persist($formData);
+//            $em->flush();
+//
+//            if (isset($form['files'])) {
+//                $attachedFiles = $form['files']->getData();
+//
+//                if ($attachedFiles instanceof UploadedFile) {
+//                    $em->persist(
+//                        $this->photoUploader($uploader, $entity, $attachedFiles, $formData, $class)
+//                    );
+//                }
+//
+//                if (!empty($attachedFiles)) {
+//
+//                    if ($object instanceof Banner) {
+//                        if (!empty($form['files'])) {
+//                            $this->deleteObjectRelatedFiles($class, $object->getId());
+//                        }
+//
+//                    }
+//
+//                    foreach ($attachedFiles as $attachedFile) {
+//
+//                        $file = new File();
+//
+//                        $uploader
+//                            ->setDir($entity)
+//                            ->setFile($attachedFile);
+//
+//                        $file
+//                            ->setForeignKey($formData->getId())
+//                            ->setMimeType(strtolower($uploader->getMimeType()))
+//                            ->setEntity($class)
+//                            ->setName($uploader->upload());
+//
+//                        $em->persist($file);
+//
+//                    }
+//
+//                    $em->flush();
+//                }
+//            }
+//
+//            return $this->redirectToRoute('admin.manage', [
+//                'entity' => $entity,
+//                'id' => $formData->getId()
+//            ]);
+//        }
+//
+//        return $this->render($view, [
+//            'form' => $form->createView(),
+//            'object' => $object,
+//        ]);
+//    }
 
     /**
      * @param FileUploaderService $uploader

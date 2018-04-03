@@ -26,6 +26,121 @@
 {% set requestUri = app.request.requestUri %}
 
 
+{#{% set sidebarItems = [#}
+    {#{#}
+        {#id: 'dashboard',#}
+        {#href: path('admin.index'),#}
+        {#icon: 'fa-th-large',#}
+        {#name: 'Главная',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'settings',#}
+        {#href: path('admin.settings'),#}
+        {#icon: 'fa-cog',#}
+        {#name: 'Настройки',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'users',#}
+        {#href: path('admin.user.list'),#}
+        {#icon: 'fa-user',#}
+        {#name: 'Пользователи',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'banner',#}
+        {#href: path('admin.list', {'entity': 'banner'}),#}
+        {#icon: 'fa-picture-o',#}
+        {#name: 'Баннеры',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'hall',#}
+        {#href: path('admin.list', {'entity': 'hall'}),#}
+        {#icon: 'fa-university',#}
+        {#name: 'Залы',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN', 'ROLE_MANAGER']#}
+    {#},#}
+    {#{#}
+        {#id: 'bookings',#}
+        {#href: path('admin.booking.list'),#}
+        {#icon: 'fa-lock',#}
+        {#name: 'Бронирования',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN', 'ROLE_MANAGER']#}
+    {#},#}
+    {#{#}
+        {#id: 'event',#}
+        {#href: path('admin.list', {'entity': 'event'}),#}
+        {#icon: 'fa-calendar',#}
+        {#name: 'События',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'portfolio',#}
+        {#href: path('admin.list', {'entity': 'portfolio'}),#}
+        {#icon: 'fa-camera',#}
+        {#name: 'Портфолио',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'news',#}
+        {#href: path('admin.list', {'entity': 'news'}),#}
+        {#icon: 'fa-newspaper-o',#}
+        {#name: 'Новости',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'artist',#}
+        {#href: path('admin.list', {'entity': 'artist'}),#}
+        {#icon: 'fa-pied-piper-alt',#}
+        {#name: 'Артисты',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'history',#}
+        {#href: path('admin.list', {'entity': 'history'}),#}
+        {#icon: 'fa-hourglass',#}
+        {#name: 'История',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'booking',#}
+        {#href: path('admin.booking.list'),#}
+        {#icon: 'fa-lock',#}
+        {#name: 'Бронирования',#}
+        {#disable: true,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'feedback',#}
+        {#href: path('admin.message.listing', {'entity': 'feedback'}),#}
+        {#icon: 'fa-envelope',#}
+        {#name: 'Обратная связь',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#},#}
+    {#{#}
+        {#id: 'review',#}
+        {#href: path('admin.message.listing', {'entity': 'review'}),#}
+        {#icon: 'fa-commenting-o',#}
+        {#name: 'Отзывы',#}
+        {#disable: false,#}
+        {#avaliableFor: ['ROLE_SUPER_ADMIN']#}
+    {#}#}
+{#] %}#}
+
 {% set sidebarItems = [
     {
         id: 'dashboard',
@@ -52,95 +167,14 @@
         avaliableFor: ['ROLE_SUPER_ADMIN']
     },
     {
-        id: 'banner',
-        href: path('admin.list', {'entity': 'banner'}),
-        icon: 'fa-picture-o',
-        name: 'Баннеры',
-        disable: false,
-        avaliableFor: ['ROLE_SUPER_ADMIN']
-    },
-    {
         id: 'hall',
-        href: path('admin.list', {'entity': 'hall'}),
+        href: path('admin.hall.list'),
         icon: 'fa-university',
         name: 'Залы',
         disable: false,
         avaliableFor: ['ROLE_SUPER_ADMIN', 'ROLE_MANAGER']
-    },
-    {
-        id: 'bookings',
-        href: path('admin.booking.list'),
-        icon: 'fa-lock',
-        name: 'Бронирования',
-        disable: false,
-        avaliableFor: ['ROLE_SUPER_ADMIN', 'ROLE_MANAGER']
-    },
-    {
-        id: 'event',
-        href: path('admin.list', {'entity': 'event'}),
-        icon: 'fa-calendar',
-        name: 'События',
-        disable: false,
-        avaliableFor: ['ROLE_SUPER_ADMIN']
-    },
-    {
-        id: 'portfolio',
-        href: path('admin.list', {'entity': 'portfolio'}),
-        icon: 'fa-camera',
-        name: 'Портфолио',
-        disable: false,
-        avaliableFor: ['ROLE_SUPER_ADMIN']
-    },
-    {
-        id: 'news',
-        href: path('admin.list', {'entity': 'news'}),
-        icon: 'fa-newspaper-o',
-        name: 'Новости',
-        disable: false,
-        avaliableFor: ['ROLE_SUPER_ADMIN']
-    },
-    {
-        id: 'artist',
-        href: path('admin.list', {'entity': 'artist'}),
-        icon: 'fa-pied-piper-alt',
-        name: 'Артисты',
-        disable: false,
-        avaliableFor: ['ROLE_SUPER_ADMIN']
-    },
-    {
-        id: 'history',
-        href: path('admin.list', {'entity': 'history'}),
-        icon: 'fa-hourglass',
-        name: 'История',
-        disable: false,
-        avaliableFor: ['ROLE_SUPER_ADMIN']
-    },
-    {
-        id: 'booking',
-        href: path('admin.booking.list'),
-        icon: 'fa-lock',
-        name: 'Бронирования',
-        disable: true,
-        avaliableFor: ['ROLE_SUPER_ADMIN']
-    },
-    {
-        id: 'feedback',
-        href: path('admin.message.listing', {'entity': 'feedback'}),
-        icon: 'fa-envelope',
-        name: 'Обратная связь',
-        disable: false,
-        avaliableFor: ['ROLE_SUPER_ADMIN']
-    },
-    {
-        id: 'review',
-        href: path('admin.message.listing', {'entity': 'review'}),
-        icon: 'fa-commenting-o',
-        name: 'Отзывы',
-        disable: false,
-        avaliableFor: ['ROLE_SUPER_ADMIN']
     }
 ] %}
-
 
 {% set slider = sidebarItems %}
 

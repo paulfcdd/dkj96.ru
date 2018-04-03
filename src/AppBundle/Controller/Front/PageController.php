@@ -210,6 +210,15 @@ class PageController extends AppController
 
             if ($object instanceof Entity\Event) {
 
+
+                foreach ($object->getEventDateTime() as $objectDateTime) {
+                    dump($objectDateTime);
+                }
+
+//                dump($object->getEventDateTime());
+
+                die;
+
                 $showBuyTicketBtn = false;
 
                 $form = $this->createForm(Form\ReviewType::class)->handleRequest($request);
